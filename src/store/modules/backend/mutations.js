@@ -16,3 +16,7 @@ export const LAST_BLOCKS = (state, blocks) => {
 export const SET_BLOCKS = (state, blocks) => {
   state.blocks = blocks
 }
+
+export const SET_TOKENS = (state, tokens) => {
+  state.tokens = tokens
+}

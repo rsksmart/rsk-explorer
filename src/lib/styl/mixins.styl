@@ -1,0 +1,53 @@
+
+apply-colors($colors, $pref = '')
+  for $col in $colors
+    $val = lookup($pref + $col)
+    apply-color($col, $val)
+
+apply-color($col, $val)
+  .bg-{$col}
+    background $val
+
+  .{$col}
+    color $val
+    fill $val
+
+  .border-{$col}
+    border-color $val
+    stroke $val
+
+small-titles()
+  opacity 0.8
+  font-size 0.9em
+  margin-left 0.5em
+  margin-top 0.25em
+  letter-spacing 0.0625em
+
+odd()
+  background $darkness-odd
+  color $color
+
+even()
+  background $darkness-even
+  color $color
+
+box()
+  border $frame-border
+  background $quasi-bg
+  min-height $min-box-height
+  margin-top 0.5rem
+
+badge(size)
+  width size
+  height size
+  min-width size
+  min-height size
+  border-radius 50%
+  padding (size / 12)
+  line-height size
+  font-size (size / 2)
+  display flex
+  justify-content center
+  align-items center
+  background color1
+  color white

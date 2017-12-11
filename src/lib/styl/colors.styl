@@ -1,0 +1,15 @@
+@import './variables.styl'
+@import './mixins.styl'
+$colors = json('../../config/colors.json',{ hash: true })
+// generates colors classes
+ for color in $colors
+   apply-color(color,$colors[color])
+
+apply-colors('error' 'info' 'warn','$')
+
+.bg-color1
+  color color3
+.bg-color2
+  color color2
+.bg-color3    
+  color gray

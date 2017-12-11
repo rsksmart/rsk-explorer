@@ -1,20 +1,24 @@
 <template lang="pug">
-  #home
-    h1 Home
-    button(@click='test') test
-    blocks
+  .cols
+    .col-a
+      blocks
+    .col-b
+      tx-chart
+      transactions 
 </template>
 <script>
 import Blocks from './Blocks.vue'
+import Transactions from './Transactions.vue'
+import TxChart from './TxChart.vue'
 export default {
   name: 'Home',
   components: {
-    Blocks
+    Blocks,
+    Transactions,
+    TxChart
   },
   methods: {
-    test () {
-      this.$store.commit('SOCKET_EMIT', { event: 'data', data: { type: 'blocks' } })
-    }
+
   }
 
 }

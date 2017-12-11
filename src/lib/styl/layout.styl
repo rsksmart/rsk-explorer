@@ -1,0 +1,49 @@
+@import './media_queries.styl'
+
+$margin = 1rem
+$min-col-w = 4rem
+
+body
+  margin 0
+  border 0
+  display flex
+  flex-direction column
+
+.wrapper
+  display flex
+  min-height 100vh
+  flex-direction column
+
+.main, .cols
+  flex 1 1 100%
+  min-height 100vh
+  display flex
+
+.col-a
+  order 1
+  flex 1 0 100%
+
+.col-b
+  order 2
+  flex 1 0 100%
+
+@media $media_small
+  .col-a, .col-b
+    margin 0
+    flex 1 1 50%
+
+// Medium
+@media $media_medium
+  .col-a
+    margin 0.5rem 2rem 0.5rem 4rem
+
+  .col-b
+    margin 0.5rem 4rem 0.5rem 2rem
+
+// Large
+@media $media_large
+  .col-a
+    margin 1rem 4rem 1rem 8rem
+
+  .col-b
+    margin 1rem 8rem 1rem 4rem

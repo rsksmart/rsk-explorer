@@ -1,0 +1,47 @@
+.page-title
+  font-size 2.5em
+
+ul.inline
+  display: inline 
+  margin:0
+  padding:0
+  color:$color
+  text-shadow: $txt-sh
+
+.inline
+  list-style: none
+  li
+    display: inline-block
+    &:after
+      content: '/'
+      margin: 0 0.5em
+
+.cross-cursor
+  cursor: crosshair
+
+.suffix
+  font-size: 0.8em
+
+.med
+  font-size: 2em
+
+.row
+  display flex
+  flex-flow row nowrap
+
+.nav-bar
+  display flex
+  flex-flow row nowrap
+  .col
+   flex 1 1 100%
+  .col:first-of-type *
+    text-align left
+  .col:last-of-type 
+    text-align right
+
+.big-number
+  font-size: .6em
+
+ .soft
+    color gray
+    font-size .9em 

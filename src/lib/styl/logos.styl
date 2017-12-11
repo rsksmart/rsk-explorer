@@ -1,0 +1,32 @@
+@import 'variables.styl'  
+  
+  // iso plain-color mixin
+  logo-plain-color()
+    #leaves *
+      fill none
+  
+  // Colors
+  svg.isologo
+    fill color3
+    min-width 15px
+    stroke none
+    .leaf-1
+      fill color1
+    .leaf-2
+      fill color2  
+  
+  .iso
+    svg.isologo
+      #logo 
+        display none
+      #claim
+        display none  
+
+  .bg-color1
+    svg.isologo
+      fill color3
+
+  
+  .plain-color
+    svg
+      logo-plain-color()

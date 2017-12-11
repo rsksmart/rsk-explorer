@@ -1,0 +1,21 @@
+@import './buttons.styl'
+::-webkit-input-placeholder
+  color $controls-color
+  font-style italic
+
+::-webkit-search-cancel-button
+  /* Remove default */
+  -webkit-appearance: none
+  height: .75em
+  width: .75em
+  background: $dark
+
+
+label 
+  margin-top .5em
+
+label + input[type='range']
+  display block  
+
+input.big
+  font-size 1.125em

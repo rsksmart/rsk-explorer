@@ -1,0 +1,65 @@
+<template lang="pug">
+  .block.box
+    .block-icon
+       icon(name='block')
+    .block-number 
+      span &#35;{{block.number}}
+    ul.block-data
+      li by 
+        tool-tip(:value='block.miner' :trim='4' :options='{trimAt:"center"}')
+      li Tx: {{block.transactions.length}}
+      li {{ (now - block.timestamp * 1000) | m-seconds-ago }} ago
+  </template>
+<script>
+import { mapGetters } from 'vuex'
+import ToolTip from './ToolTip.vue'
+import { mSecondsAgo } from '../filters/TimeFilters'
+export default {
+  name: 'Block',
+  components: {
+    ToolTip
+  },
+  filers: {
+    mSecondsAgo
+  },
+  props: ['block'],
+  computed: {
+    ...mapGetters({
+      now: 'getDate'
+    })
+  }
+
+}
+</script>
+<style lang="stylus">
+  @import '../lib/styl/vars.styl'
+
+.blocks, .block-data
+  ul
+    margin 0
+    padding 0
+    li
+      list-style none
+  
+  .block
+    display flex
+    flex-flow row
+    .block-icon 
+      flex 1
+      .svg-icon
+        fill color1
+        width 3rem
+        height @width
+
+    .block-data
+      flex 10
+      display flex
+      margin-left 1rem
+      
+      flex-flow column wrap
+
+    .block-number
+      margin-left 1rem
+      font-size 2em
+</style>
+

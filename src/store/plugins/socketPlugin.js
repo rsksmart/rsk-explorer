@@ -3,7 +3,6 @@ export default function (socket) {
     socket.on('data', data => {
       let action = data.action
       action = 'socket' + action.charAt(0).toUpperCase() + action.slice(1)
-      console.log(action)
       if (store._actions[action]) {
         store.dispatch(action, data.data)
       } else {
