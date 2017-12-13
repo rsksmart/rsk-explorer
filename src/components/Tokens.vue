@@ -3,7 +3,13 @@
     h2 erc20 tokens
     template(v-for='token in tokens')
       .box
-        p {{token}}
+        ul
+          li {{ token.name }}
+          li {{ token.shortName }}
+          li 
+            router-link(:to='"/tokens/" + token._id + "/events"') Events
+          li 
+            router-link(:to='"/tokens/" + token._id + "/accounts"') Accounts
 </template>
 <script>
 import { mapState } from 'vuex'

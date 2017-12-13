@@ -1,7 +1,11 @@
 <template lang="pug">
   .blocks-wrapper
     h2.title blocks
-    pending-blocks(v-if='pending')
+    .box
+      .last-block
+        h4 last block
+        block(:block='lastBlocks[0]')
+      pending-blocks(v-if='pending')
     .blocks(v-if='blocks.length')
       ul(v-for='block in blocks')
         li 
@@ -22,7 +26,8 @@ export default {
   },
   computed: {
     ...mapState({
-      blocks: state => state.backend.blocks
+      blocks: state => state.backend.blocks,
+      lastBlocks: state => state.backend.lastBlocks
     }),
     ...mapGetters({
       pending: 'pendingBlocks'

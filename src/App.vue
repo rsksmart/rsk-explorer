@@ -13,7 +13,11 @@
               li
                 router-link(to='/') home
               li 
-                router-link(to='tokens') tokens
+                router-link(to='/tokens') tokens
+              li
+                router-link(to='/blocks') blocks
+              li
+                router-link(to='/transactions') transactions
             
 
 
