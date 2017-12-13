@@ -28,22 +28,30 @@ body
   flex 1 0 100%
 
 @media $media_small
-  .col-a, .col-b
+  .col-a, .col-b, .main
     margin 0
+  .col-a
     flex 1 1 50%
+   .col-b
+     flex 1 1 50%
 
 // Medium
 @media $media_medium
+   .main
+     margin 0 5rem
   .col-a
-    margin 0.5rem 2rem 0.5rem 4rem
+    margin 0
 
   .col-b
-    margin 0.5rem 4rem 0.5rem 2rem
+    margin 0
 
 // Large
 @media $media_large
+  .main
+    margin 0 15rem
+  
   .col-a
-    margin 1rem 4rem 1rem 8rem
+    margin 0
 
   .col-b
-    margin 1rem 8rem 1rem 4rem
+    margin 0
