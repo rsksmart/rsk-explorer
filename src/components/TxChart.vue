@@ -32,11 +32,11 @@ export default {
         },
         bars: false,
         marks: {
-          type: 'square',
+          type: 'point',
           style: {
             fill: colors.color1
           },
-          size: 7
+          size: 6
         },
         getX (d) {
           return d
@@ -55,7 +55,6 @@ export default {
   },
   mounted () {
     let vm = this
-    console.log(colors.red)
     this.$nextTick(() => {
       vm.onResize()
     })
@@ -89,6 +88,7 @@ export default {
 
   .chart-container
     display flex
+    padding 1em
     justify-content space-between
     width auto
 
@@ -98,6 +98,6 @@ export default {
 
     .curve path
       stroke color2
-      stroke-width 2
+      stroke-width 1
 </style>
 
