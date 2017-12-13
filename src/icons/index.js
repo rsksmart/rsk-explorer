@@ -1,4 +1,8 @@
 /* eslint-disable */
+require('./arrow-down')
+require('./arrow-left')
+require('./arrow-right')
+require('./arrow-up')
 require('./block')
 require('./browser')
 require('./camera')
