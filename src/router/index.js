@@ -22,13 +22,21 @@ export default new Router({
       path: '/tokens/:address/events',
       name: 'Events',
       component: DataPage,
-      props: { type: 'erc20', action: 'getEvents', component: 'ContractEvents' }
+      props: {
+        type: 'erc20',
+        action: 'getEvents',
+        component: 'ContractEvents'
+      }
     },
     {
       path: '/tokens/:address/event/:_id',
       name: 'Event',
       component: DataPage,
-      props: { type: 'erc20', action: 'getEvent', component: '' }
+      props: {
+        type: 'erc20',
+        action: 'getEvent',
+        component: ''
+      }
     },
     {
       path: '/tokens/:address/accounts',
@@ -54,13 +62,17 @@ export default new Router({
       path: '/blocks',
       name: 'Blocks',
       component: DataPage,
-      props: { type: 'blocks', component: 'blocksPage' }
+      props: {
+        type: 'blocks',
+        action: 'getBlocks',
+        component: 'Blocks'
+      }
     },
     {
       path: '/blocks/:block',
       name: 'Block',
       component: DataPage,
-      props: { type: 'blocks' }
+      props: { type: 'blocks', action: 'getBlock' }
     },
     {
       path: '/accounts/:address',
@@ -72,13 +84,17 @@ export default new Router({
       path: '/transactions',
       name: 'Transactions',
       component: DataPage,
-      props: { type: 'blocks', component: 'blocksPage' }
+      props: {
+        type: 'blocks',
+        action: 'getTransactions',
+        component: 'Transactions'
+      }
     },
     {
       path: '/transactions/:tx',
       name: 'Transaction',
       component: DataPage,
-      props: { type: 'blocks' }
+      props: { type: 'blocks', action: 'getTransaction' }
     }
   ]
 })

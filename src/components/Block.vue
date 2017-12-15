@@ -1,5 +1,5 @@
 <template lang="pug">
-  .block.box
+  .block.box(v-if='block')
     .block-icon
        icon(name='block')
     .block-number 
@@ -10,7 +10,7 @@
       li Tx: {{block.transactions.length}}
       li {{ (now - block.timestamp * 1000) | m-seconds-ago }} ago
       li
-        router-link(:to='"/blocks/" + block._id') open
+        router-link(:to='"/blocks/" + block.number') open
   </template>
 <script>
 import { mapGetters } from 'vuex'

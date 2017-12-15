@@ -10,15 +10,16 @@
           td {{row.event}}
           template(v-for='field in eventFields(row)')
             td.txt-right
-              router-link(v-if='field.from' to='field.link.from') {{field.from}}
+              router-link(v-if='field.from' :to='field.link.from') {{field.from}}
               span(v-else) This account
             td 
               icon(name='arrow-right')
             td.txt-left
-              router-link(v-if='field.to' to='field.link.to') {{field.to}}
-              span(v-else) This account
+              router-link(v-if='field.to' :to='field.link.to') {{field.to}}
+              span(v-else) This account {{ field.to }}
           td {{row.args._value | token-value}} {{token.shortName}}
           td {{ now - row.timestamp * 1000  | m-seconds-ago  }} ago
+          td {{row.blockNumber}} 
           
 </template>
 <script>
@@ -41,7 +42,8 @@ export default {
         ' ',
         'to',
         'amount',
-        'date'
+        'date',
+        'block'
       ]
     }
   },
@@ -54,7 +56,7 @@ export default {
   },
   methods: {
     fAccount (val) {
-      return (val !== this.account) ? null : val
+      return (val !== this.account) ? val : null
     },
     eventFields (event) {
       let args = event.args

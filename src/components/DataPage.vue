@@ -11,6 +11,9 @@
         contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
         contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
         account(v-if='isComponent("Account")' :data='data' :token='token')
+        blocks(v-if='isComponent("Blocks")')
+        transactions(v-if='isComponent("Transactions")')
+
 
      //- Generic render
      template(v-else)
@@ -34,6 +37,8 @@ import Spinner from './Spinner.vue'
 import ContractEvents from './ContractEvents.vue'
 import ContractAccounts from './ContractAccounts.vue'
 import Account from './Account.vue'
+import Blocks from './Blocks.vue'
+import Transactions from './Transactions.vue'
 import Paginator from './Paginator.vue'
 export default {
   name: 'data-page',
@@ -42,6 +47,8 @@ export default {
     ContractEvents,
     ContractAccounts,
     Account,
+    Blocks,
+    Transactions,
     Paginator
   },
   props: ['type', 'action', 'fields', 'component'],

@@ -10,7 +10,7 @@
           tool-tip(:value='tx.to' :trim='8' :options='{trimAt:"center"}')
       li {{ (now - tx.timestamp * 1000) | m-seconds-ago }} ago
       li 
-        router-link(:to='"/transactions/" + tx.blockHash') open
+        router-link(:to='"/transactions/" + tx.hash') open
   </template>
 <script>
 import { mapGetters } from 'vuex'
