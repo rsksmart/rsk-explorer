@@ -19,7 +19,7 @@ import { mapState, mapGetters } from 'vuex'
 import Block from './Block.vue'
 import PendingBlocks from './PendingBlocks.vue'
 export default {
-  name: 'Blocks',
+  name: 'last-blocks',
   components: {
     Block,
     PendingBlocks

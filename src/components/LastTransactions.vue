@@ -9,7 +9,7 @@
 import { mapGetters } from 'vuex'
 import Transaction from './Transaction.vue'
 export default {
-  name: 'Transactions',
+  name: 'last-transactions',
   components: {
     Transaction
   },

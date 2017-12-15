@@ -1,20 +1,20 @@
 <template lang="pug">
   .cols
     .col-a
-      blocks
+      last-blocks
     .col-b
       tx-chart
-      transactions 
+      last-transactions 
 </template>
 <script>
-import Blocks from './Blocks.vue'
-import Transactions from './Transactions.vue'
+import LastBlocks from './LastBlocks.vue'
+import LastTransactions from './LastTransactions.vue'
 import TxChart from './TxChart.vue'
 export default {
   name: 'Home',
   components: {
-    Blocks,
-    Transactions,
+    LastBlocks,
+    LastTransactions,
     TxChart
   },
   methods: {
