@@ -2,6 +2,8 @@
   .data-page
     h2 {{ pageContext }} {{pageTitle}}
     spinner(v-if='requestingPageData')
+    .error(v-if='error')
+      pre {{error}}
     .page(v-if='data')
      //- Component
      template(v-if='component')
@@ -15,13 +17,16 @@
         template(v-if='isTable')
           table
             thead
-              tr(v-for='field in tableFields')
-                th {{field}}
+              tr
+                th(v-for='field in tableFields') {{field}}
             tbody  
               tr(v-for='row in data')
                 td(v-for='field in tableFields') {{row[field]}}
         template(v-else)
           pre {{data}}
+     
+     template(v-if='isTable')
+       paginator(:options='pageOptions' :link='0')
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -29,13 +34,15 @@ import Spinner from './Spinner.vue'
 import ContractEvents from './ContractEvents.vue'
 import ContractAccounts from './ContractAccounts.vue'
 import Account from './Account.vue'
+import Paginator from './Paginator.vue'
 export default {
   name: 'data-page',
   components: {
     Spinner,
     ContractEvents,
     ContractAccounts,
-    Account
+    Account,
+    Paginator
   },
   props: ['type', 'action', 'fields', 'component'],
   created () {
@@ -49,6 +56,7 @@ export default {
     ...mapGetters({
       requestingPageData: 'requestingPageData',
       page: 'getPage',
+      error: 'pageError',
       paginator: 'pagePaginator',
       getTokenData: 'getTokenData'
     }),
@@ -73,11 +81,12 @@ export default {
       return (this.type === 'erc20')
     },
     req () {
-      let req = {}
-      req.options = this.$route.params
-      req.type = this.type
-      req.action = this.action
-      return req
+      let options = this.$route.params
+      let type = this.type
+      let action = this.action
+      let page = this.$route.query.page
+      options.page = page
+      return { options, type, action, page }
     },
     token () {
       let token = null
@@ -87,6 +96,9 @@ export default {
         if (token) token.baseUri = '/tokens/' + address + '/'
       }
       return token
+    },
+    pageOptions () {
+      return this.page.pages
     }
   },
   methods: {
