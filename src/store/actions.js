@@ -1,6 +1,6 @@
-export const socketError = ({ commit }, error) => {
-  console.log(error)
+export const socketError = ({ commit, dispatch }, error) => {
   commit('SOCKET_ERROR', error)
+  dispatch('socketPageData', error)
 }
 
 export const init = ({ dispatch, commit }) => {

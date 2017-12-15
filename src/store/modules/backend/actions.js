@@ -5,9 +5,11 @@ export const connectionUpdate = ({ commit }, connected) => {
 }
 
 export const socketNewBlocks = ({ state, commit }, data) => {
-  commit('LAST_BLOCKS', data)
-  if (!state.blocks.length) {
-    commit('SET_BLOCKS', data.slice())
+  if (data && data.length) {
+    commit('LAST_BLOCKS', data)
+    if (!state.blocks.length) {
+      commit('SET_BLOCKS', data.slice())
+    }
   }
 }
 
@@ -30,11 +32,11 @@ export const socketPageData = ({ state, commit }, res) => {
   if (key && requesting && key === requesting) {
     commit('SET_PAGE_REQUEST', false)
     commit('SET_PAGE_REQ', req)
-    if (!error) {
+    if (error) {
+      commit('SET_PAGE_ERROR', error)
+    } else {
       commit('SET_PAGE_PAGES', pages)
       commit('SET_PAGE_DATA', data)
-    } else {
-      commit('SET_PAGE_ERROR', error)
     }
   }
 }

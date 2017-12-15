@@ -1,17 +1,19 @@
 export default function (socket) {
   return store => {
     socket.on('data', res => {
-      let action = res.action
-      let data = res.data
-      if (action) {
-        action = 'socket' + action.charAt(0).toUpperCase() + action.slice(1)
-        if (store._actions[action]) {
-          store.dispatch(action, data)
-        } else {
-          if (res.req && res.req.key) {
-            store.dispatch('socketPageData', res)
+      if (res) {
+        let action = res.action
+        let data = res.data
+        if (action) {
+          action = 'socket' + action.charAt(0).toUpperCase() + action.slice(1)
+          if (store._actions[action]) {
+            store.dispatch(action, data)
           } else {
-            console.info('Unknown action received: ' + action)
+            if (res.req && res.req.key) {
+              store.dispatch('socketPageData', res)
+            } else {
+              console.info('Unknown action received: ' + action)
+            }
           }
         }
       }
