@@ -5,5 +5,5 @@ var cfg = require('../src/config/config.json')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  WS_URL: '"' + cfg.WS_URL + '"'
+  WS_URL: '"ws://192.168.56.103:3003"'
 })
