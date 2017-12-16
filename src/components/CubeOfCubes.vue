@@ -13,12 +13,16 @@
 <script>
 export default {
   name: 'cube-of-cubes',
-  props: ['size', 'x', 'y', 'mod', 'step', 'color'],
+  props: ['size', 'x', 'y', 'mod', 'step', 'color', 'rows'],
   data () {
     return {
       fX: 1.3,
-      fY: 4
+      fY: 4,
+      crows: 0
     }
+  },
+  created () {
+    this.crows = this.rows || this.mod
   },
   computed: {
     cx () {
@@ -55,7 +59,8 @@ export default {
       let cmod = this.mod
       let cx = this.size / 1.8
       let cy = this.size / 2
-      for (let j = 0; j < cmod; j++) {
+      let crows = this.crows
+      for (let j = 0; j < crows; j++) {
         let cyy = cy - (cs * j)
         for (let h = 0; h < cmod; h++) {
           cubes = this.cLine(cubes, cx + (cc.x * h), cyy + (cc.y * h))
