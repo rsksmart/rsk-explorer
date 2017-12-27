@@ -1,3 +1,5 @@
+import { colors, blocksColors } from '../lib/js/colors.js'
+
 export default function () {
   return {
     APP: process.env.APP,
@@ -8,6 +10,8 @@ export default function () {
       h: 0
     },
     socketConnected: false,
-    socketErrors: []
+    socketErrors: [],
+    colors,
+    blocksColors
   }
 }

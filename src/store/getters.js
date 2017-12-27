@@ -16,3 +16,13 @@ export const getTokenData = state => address => {
     })
   }
 }
+
+export const getColors = state => {
+  return state.colors
+}
+
+export const getBlockColor = state => blockNumber => {
+  let colors = state.blocksColors
+  let c = blockNumber % 10
+  return colors[c]
+}
