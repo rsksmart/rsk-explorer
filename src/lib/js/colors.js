@@ -9,16 +9,8 @@ export const colors = Object.assign(autoColors, COLORS)
 
 const bez = chroma.bezier([COLORS.color1, COLORS.blue, COLORS.orange])
 
-export const blocksColors = [
-  bez(0.1).hex(),
-  bez(0.2).hex(),
-  bez(0.3).hex(),
-  bez(0.4).hex(),
-  bez(0.5).hex(),
-  bez(0.6).hex(),
-  bez(0.7).hex(),
-  bez(0.8).hex(),
-  bez(0.9).hex(),
-  bez(1).hex()
-]
+export const blocksColors = Array.apply(null, Array(10)).map((p, i) => {
+  return bez(0.1 * i).hex()
+})
+
 export default JSON.stringify(colors)
