@@ -1,6 +1,5 @@
 <template lang="pug">
   .block.box(v-if='block' :style='blockBoxStyle')
-
     .block-icon.box-icon
        router-link(:to='"/blocks/" + block.number')
         icon(name='cube' :color='blockColor')
@@ -52,37 +51,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
 
-  .blocks, .block-data
-    ul
-      margin 0
-      padding 0
-
-      li
-        list-style none
-
-  .block
-    display flex
-    flex-flow row
-    border-left solid 3px
-
-    .block-icon
-      flex 1
-
-      .svg-icon
-        fill color2
-        width 2em
-        height @width
-
-
-    .block-number
-      color color2
-      margin-left 0.25rem
-      font-size 1.25em
-      font-weight 400
-</style>
 
 
 
