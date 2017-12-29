@@ -180,7 +180,7 @@ export default {
   position relative
   .tip
       position: absolute
-      filter: drop-shadow($box-sh)
+      filter: drop-shadow($tip-sh)
       width: 100%
       color: $dark
       display: flex
@@ -198,7 +198,8 @@ export default {
         overflow visible
         display inline
         margin: 0
-        font-size: .9rem
+        font-size: .9em
+        font-weight normal 
         
   .tip:after 
   .tip:before
