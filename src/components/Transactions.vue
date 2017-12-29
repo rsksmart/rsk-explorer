@@ -1,20 +1,60 @@
 <template lang="pug">
-  .transactions-page
-    table
+  .transactions-page.centered
+    table(v-if='tData')
       thead
         tr
-          th(v-for='field in fields') {{field}}
+          th hash
+          th block
+          th.from from
+          th  
+          th.to to
+          th gas
+          th.soft
+            icon(name='stopwatch')
       tbody
-        tr(v-for='row in data')
-          td(v-for='field in fields') {{ row.transactions[field] }}
+        tr(v-for='row in tData')
+          td 
+            tool-tip(:value='row.hash' :trim='trim' :options='ttOpts')
+          td 
+            router-link(:to='"/blocks/" + row.blockNumber')
+              span(:style='blockStyle(row.blockNumber)') {{ row.blockNumber }}
+          td.from
+            tool-tip.from(:value='row.from' :trim='trim' :options='ttOpts')
+          td.arrow 
+            icon(name='arrow-right' :color='colors.iconColor')
+          td.to
+            tool-tip.to(:value='row.from' :trim='trim' :options='ttOpts')
+          td {{ row.gas }}
+          td.soft 
+            small {{ (now - row.timestamp * 1000) | m-seconds-ago }} ago
+
+           
 </template>
 <script>
+import common from '../mixins/common'
 export default {
   name: 'transactions',
+  mixins: [common],
   props: ['data'],
-  data () {
-    return {
-      fields: ['hash', 'blockNumber', 'from', 'to']
+  computed: {
+    tData () {
+      let data = this.data
+      if (data) {
+        if (data[0].transactions) {
+          return data.map((i, p) => {
+            let t = i.transactions
+            t.timestamp = data[p].timestamp
+            return t
+          })
+        }
+        return data
+      }
+    }
+  },
+  methods: {
+    blockStyle (block) {
+      let color = this.getBlockColor(block)
+      return { color }
     }
   }
 }

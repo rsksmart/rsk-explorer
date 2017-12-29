@@ -77,8 +77,10 @@ export default {
     flex-flow row wrap
 
   .auto-update
-    align-self flex-start
+    display flex
+    justify-content center
     width 100%
+    
 
   .hero
     margin-top 2rem

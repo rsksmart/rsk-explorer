@@ -1,5 +1,5 @@
 <template lang="pug">
-  .tx-chart.box
+  .tx-chart.box.chart
     strong.title Last blocks transactions
     .chart-container(v-if='blocks.length' :style='boxStyle')
       d3-bar-chart(:data='blocks',:options='chartOptions')

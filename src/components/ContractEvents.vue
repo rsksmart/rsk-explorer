@@ -9,12 +9,12 @@
         tr(v-for='row in data')
           td {{row.event}}
           template(v-for='field in eventFields(row)')
-            td.txt-right
+            td
               router-link(v-if='field.from' :to='field.link.from') {{field.from}}
               span(v-else) This account 
             td 
               icon(name='arrow-right' :color='colors.iconColor')
-            td.txt-left
+            td
               router-link(v-if='field.to' :to='field.link.to') {{field.to}}
               span(v-else) This account {{ field.to }}
           td {{row.args._value | token-value}} {{token.shortName}}

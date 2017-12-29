@@ -1,37 +1,37 @@
 <template lang="pug">
   .blocks-page
-    h1 blocks
-    template(v-if='page.data')
+    h1 Blocks
+    template(v-if='data')
       table
         thead
           tr
-            th(v-for='field in fields') {{ field }}
+            th number
+            th hash
+            th transactions
+            th
+              icon(name='stopwatch')
         tbody
-          tr(v-for='row in page.data')
-            template(v-for='field in fields') 
-              td(v-if='!isArray(row[field])') {{ row[field] }}
-              td(v-else) {{ row[field].length }}
+          tr(v-for='block in data' )
+            td
+              router-link(:to='"/blocks/" + block.number' :style='blockStyle()(block.number)') {{block.number}}
+            td
+              tool-tip.to(:value='block.hash' :trim='trim' :options='ttOpts') 
+            
+            td {{block.transactions.length}}
+            td
+              small {{ (now - block.timestamp * 1000) | m-seconds-ago }} ago
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import common from '../mixins/common'
 export default {
   name: 'blocks',
-  data () {
-    return {
-      fields: ['number', 'hash', 'transactions']
-    }
-  },
-  computed: {
-    ...mapGetters({
-      now: 'getDate',
-      page: 'getPage',
-      account: 'getPageAccount'
-    })
-  },
+  props: ['data'],
+  mixins: [common],
   methods: {
     isArray (val) {
       return Array.isArray(val)
     }
+
   }
 
 }

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Tokens from '@/components/Tokens'
 import DataPage from '@/components/DataPage'
+// import Transactions from '@/components/Transactions'
 Vue.use(Router)
 
 export default new Router({
@@ -69,6 +70,7 @@ export default new Router({
       props: {
         type: 'blocks',
         action: 'getBlocks',
+        component: 'Blocks',
         fields: ['number', 'transactions', 'hash', 'timestamp', 'size']
       }
     },
@@ -78,7 +80,9 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
-        action: 'getBlock'
+        component: 'Block',
+        action: 'getBlock',
+        title: ''
       }
     },
     {

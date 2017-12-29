@@ -30,3 +30,8 @@ export const getBlockColor = state => blockNumber => {
   let c = blockNumber % 10
   return colors[c]
 }
+
+export const blockStyle = (state, getters) => blockNumber => {
+  let color = getters.getBlockColor(blockNumber)
+  return { color, fill: color, 'border-color': color }
+}

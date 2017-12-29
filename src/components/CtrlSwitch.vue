@@ -49,6 +49,7 @@ export default {
 
     .label
       margin-left .5em
+      font-size .9em
     input
       display none
 

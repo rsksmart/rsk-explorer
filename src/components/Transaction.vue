@@ -23,7 +23,7 @@ import { mapGetters } from 'vuex'
 import ToolTip from './ToolTip.vue'
 import { mSecondsAgo } from '../filters/TimeFilters'
 export default {
-  name: 'Transaction',
+  name: 'transaction',
   components: {
     ToolTip
   },

@@ -3,15 +3,18 @@
   .wrapper
     .header
       header
-        .iso.plain-color
-          include assets/svg/iso-logo-v.svg
-        .title
-          h1 rsk-explorer
+        .brand
+          .iso
+            include assets/svg/iso-logo-v.svg
+          .title
+            h1 rsk explorer
+        .header-content
         .nav
           nav.menu
             ul
-              li(v-for='menu in fields')
-                router-link(:to='"/" + menu') {{menu}}
+              template(v-for='menu in fields')
+                router-link(:to='"/" + menu' tag='li') 
+                  a(:href='"/" + menu') {{menu}}
     .main
       template(v-if='connected')
         router-view
@@ -87,20 +90,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-
   @import 'lib/styl/style.styl'
-
-  .footer footer
-    display flex
-    justify-content center
-    align-items center
-
-    .iso
-      flex 1
-
-      svg
-        height 5rem
-        fill gray
 </style>
 
 

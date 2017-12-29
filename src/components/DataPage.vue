@@ -1,6 +1,6 @@
 <template lang="pug">
-  .data-page
-    h2 {{ pageContext }} {{pageTitle}}
+  .data-page.centered
+    h2(v-if='title') {{ pageContext }} {{pageTitle}}
     spinner(v-if='requestingPageData')
     .error(v-if='error')
       pre {{error}}
@@ -11,7 +11,8 @@
         contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
         contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
         account(v-if='isComponent("Account")' :data='data' :token='token')
-        //-blocks(v-if='isComponent("Blocks")')
+        blocks(v-if='isComponent("Blocks")' :data='data')
+        block(v-if='isComponent("Block")' :block='data')
         transactions(v-if='isComponent("Transactions")' :data='data')
 
 
@@ -47,6 +48,7 @@ import Account from './Account.vue'
 import Blocks from './Blocks.vue'
 import Transactions from './Transactions.vue'
 import Paginator from './Paginator.vue'
+import Block from './Block.vue'
 import ToolTip from './ToolTip.vue'
 export default {
   name: 'data-page',
@@ -58,9 +60,10 @@ export default {
     Blocks,
     Transactions,
     Paginator,
-    ToolTip
+    ToolTip,
+    Block
   },
-  props: ['type', 'action', 'fields', 'component'],
+  props: ['type', 'action', 'fields', 'component', 'title'],
   created () {
     this.getData()
   },
@@ -80,6 +83,7 @@ export default {
       return this.page.data
     },
     pageTitle () {
+      if (undefined !== this.title) return this.title
       return this.$route.name
     },
     pageContext () {
