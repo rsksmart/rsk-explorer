@@ -7,6 +7,9 @@ export const init = ({ dispatch, commit }) => {
   dispatch('setDateInterval')
 }
 
+export const setSize = ({ commit }, size) => {
+  commit('SET_SIZE', size)
+}
 export const setDateInterval = ({ state, commit }) => {
   // update date every second
   if (!state.dateInterval) {

@@ -4,6 +4,10 @@ export const getDate = (state, getters) => {
   return date
 }
 
+export const getSize = state => {
+  return state.size
+}
+
 export const timeDifference = state => {
   return state.backend.serverTime - state.backend.clientTime
 }
