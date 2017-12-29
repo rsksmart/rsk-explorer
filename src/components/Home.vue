@@ -6,7 +6,9 @@
           .last-block
             block-box(:block='lastBlocks[0]' title='Last Block')
           pending-blocks(v-if='pending')
-
+          .auto-update
+            input(type='checkbox' id='auto-update' v-model='aUpdate')
+            label(for='auto-update') Auto update 
       .col-b 
         tx-chart(:asize='appSize.w + appSize.h')
     .cols
@@ -37,11 +39,24 @@ export default {
     }),
     ...mapGetters({
       pending: 'pendingBlocks',
-      appSize: 'getSize'
-    })
+      appSize: 'getSize',
+      autoUpdate: 'autoUpdate'
+    }),
+    aUpdate: {
+      get () {
+        return this.autoUpdate
+      },
+      set (value) {
+        this.updateBlocks()
+        this.setAutoUpdate(value)
+      }
+    }
   },
   methods: {
-    ...mapActions(['updateBlocks'])
+    ...mapActions([
+      'updateBlocks',
+      'setAutoUpdate'
+    ])
   }
 
 }
@@ -51,15 +66,27 @@ export default {
 
   .home
     display flex
+  .last-blocks
+    flex-flow row wrap
+  .auto-update
+    align-self flex-start
+    width 100%
 
   .hero
     margin-top 2rem
+
   .last-block
-    width 70%
+    flex 7
+    width 100%
+
     ul.block-data
       margin 0
       padding 0
       flex-flow column nowrap
+
     .block-number *
       font-size 2em
+    
+  .pending-blocks 
+    flex 3
 </style>

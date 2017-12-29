@@ -41,3 +41,7 @@ export const SET_PAGE_ERROR = (state, error) => {
 export const SET_PAGE_REQ = (state, req) => {
   state.page.req = req
 }
+
+export const SET_AUTO_UPDATE = (state, update) => {
+  state.autoUpdateBlocks = update
+}

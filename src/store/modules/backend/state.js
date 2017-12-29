@@ -11,6 +11,7 @@ export default function () {
     },
     blocks: [],
     lastBlocks: [],
-    tokens: []
+    tokens: [],
+    autoUpdateBlocks: false
   }
 }

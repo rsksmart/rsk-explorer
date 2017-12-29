@@ -5,9 +5,10 @@ export const connectionUpdate = ({ commit }, connected) => {
 }
 
 export const socketNewBlocks = ({ state, commit }, data) => {
+  let autoUpdate = state.autoUpdateBlocks
   if (data && data.length) {
     commit('LAST_BLOCKS', data)
-    if (!state.blocks.length) {
+    if (!state.blocks.length || autoUpdate) {
       commit('SET_BLOCKS', data.slice())
     }
   }
@@ -49,4 +50,8 @@ export const fetchPageData = ({ commit }, data) => {
   commit('SET_PAGE_ERROR', null)
   commit('SET_PAGE_REQ', null)
   commit('SOCKET_EMIT', { event: 'data', data })
+}
+
+export const setAutoUpdate = ({ state, commit }, update) => {
+  commit('SET_AUTO_UPDATE', update)
 }
