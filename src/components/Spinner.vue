@@ -56,8 +56,11 @@ export default {
   @import '../lib/styl/vars.styl'
 
   .spinner
+    min-height 100vh
+    min-width 100%
     display flex
     justify-content center
+    align-items center
 
     .cubes
       .fill
