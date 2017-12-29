@@ -2,7 +2,7 @@
   svg(:width='size', :height='size' :viewBox='viewBox' :x='xx' :y='yy' )
     //-rect(:width='size' :height='size' x='0' y='0')
     template(v-for='c in pos')
-      svg(:x='cubes[c-1].x', :y='cubes[c-1].y',:width='cs+"px"', :height='cs+"px"' viewBox='10 15 30 30')
+      svg(v-if='cubes[c-1]' :x='cubes[c-1].x', :y='cubes[c-1].y',:width='cs+"px"', :height='cs+"px"' viewBox='10 15 30 30')
         g.cube
           path.bg(fill='white', d='m 24.853203,2.9357662 c 0,0 -14.577404,4.6071848 -23.8719888,7.5356078 l 0.0910875,29.400269 23.7809013,7.613462 23.89186,-7.78049 -0.04156,-29.226136 z')
           path.fill(:fill='color', opacity='.9', d='m 24.853203,2.9357662 c 0,0 -14.577404,4.6071848 -23.8719888,7.5356078 l 0.0910875,29.400269 23.7809013,7.613462 23.89186,-7.78049 -0.04156,-29.226136 z')

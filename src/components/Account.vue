@@ -1,9 +1,13 @@
 <template lang="pug">
   .account
+
     ul.account-balance.box
-      h3 Balance: 
-        span(v-if='balance') {{balance | token-value}} {{token.shortName}}
-        span(v-else) {{ balance }}
+      li
+        h3 Address: {{data.balance._id}}
+      li
+        h3 Balance: 
+          span(v-if='balance') {{balance | token-value}} {{token.shortName}}
+          span(v-else) {{ balance }}
       
     contract-events(:data='data.account' :token='token')
 

@@ -7,7 +7,7 @@
           li {{ token.name }}
           li {{ token.shortName }}
           li 
-            router-link(:to='"/tokens/" + token._id + "/events"') Events
+            router-link(:to='"/tokens/" + token._id + "/events"') Events {{token.Events}}
           li 
             router-link(:to='"/tokens/" + token._id + "/accounts"') Accounts
 </template>

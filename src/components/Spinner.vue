@@ -1,5 +1,5 @@
 <template lang="pug">
-  .spinner
+  .spinner(v-show='show')
     cube-of-cubes.cubes(:mod='mod' :step='step' size='50' )
 </template>
 <script>
@@ -14,18 +14,28 @@ export default {
       step: 5,
       mod: 3,
       dir: 1,
-      limit: 0
+      limit: 0,
+      show: false,
+      interval: null,
+      startTime: 0
     }
   },
   created () {
     let mod = this.mod
     this.limit = mod * mod * mod
     let vm = this
-    setInterval(vm.animate, mod * 30)
+    this.interval = setInterval(vm.animate, mod * 30)
   },
-
+  mounted () {
+    this.startTime = Date.now()
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
+  },
   methods: {
     animate () {
+      let date = Date.now()
+      this.show = (date - this.startTime >= 500)
       let step = this.step
       if (step < this.limit) {
         step += this.dir
@@ -48,6 +58,7 @@ export default {
   .spinner
     display flex
     justify-content center
+
     .cubes
       .fill
         fill none

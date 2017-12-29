@@ -11,9 +11,9 @@
           template(v-for='field in eventFields(row)')
             td.txt-right
               router-link(v-if='field.from' :to='field.link.from') {{field.from}}
-              span(v-else) This account
+              span(v-else) This account 
             td 
-              icon(name='arrow-right')
+              icon(name='arrow-right' :color='colors.iconColor')
             td.txt-left
               router-link(v-if='field.to' :to='field.link.to') {{field.to}}
               span(v-else) This account {{ field.to }}
@@ -51,6 +51,7 @@ export default {
     ...mapGetters({
       now: 'getDate',
       page: 'getPage',
+      colors: 'getColors',
       account: 'getPageAccount'
     })
   },

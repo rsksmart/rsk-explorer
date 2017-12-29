@@ -14,6 +14,10 @@ export default new Router({
       component: Home
     },
     {
+      path: '/home',
+      redirect: '/'
+    },
+    {
       path: '/tokens',
       name: 'Tokens',
       component: Tokens
@@ -65,14 +69,17 @@ export default new Router({
       props: {
         type: 'blocks',
         action: 'getBlocks',
-        component: 'Blocks'
+        fields: ['number', 'transactions', 'hash', 'timestamp', 'size']
       }
     },
     {
       path: '/blocks/:block',
       name: 'Block',
       component: DataPage,
-      props: { type: 'blocks', action: 'getBlock' }
+      props: {
+        type: 'blocks',
+        action: 'getBlock'
+      }
     },
     {
       path: '/accounts/:address',
@@ -86,8 +93,8 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
-        action: 'getTransactions',
-        component: 'Transactions'
+        component: 'Transactions',
+        action: 'getTransactions'
       }
     },
     {

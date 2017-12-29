@@ -1,12 +1,13 @@
 <template lang="pug">
   .pending-blocks.box
-    h3.chart-title new blocks
+    h4.chart-title New blocks
     button(@click='updateBlocks')
-      cube-of-cubes.cubes(:mod='mod' :step='pending' :size='size')
+      cube-of-cubes.cubes( v-if='pending && mod' :mod='mod' :step='pending' :size='size')
       .w-badge
         .badge(:style='badgeStyle') {{pending}}
     small 
-     strong new blocks 
+     strong {{pending}} new blocks 
+    small 
      em.soft in last {{ (now - firstListBlock.timestamp * 1000) | abbr-time }}
 </template>
 <script>
@@ -29,7 +30,9 @@ export default {
     }
   },
   mounted () {
-    this.size = this.$el.clientWidth / 10
+    let size = this.$el.clientWidth / 10
+    size = (size >= 100) ? size : 50
+    this.size = size
   },
   computed: {
     ...mapGetters({
@@ -57,6 +60,8 @@ export default {
   @import '../lib/styl/mixins.styl'
 
   .pending-blocks
+    justify-content center
+    align-items center
     .cubes
       .fill
         fill orange

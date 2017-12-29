@@ -10,17 +10,8 @@
         .nav
           nav.menu
             ul
-              li
-                router-link(to='/') home
-              li 
-                router-link(to='/tokens') tokens
-              li
-                router-link(to='/blocks') blocks
-              li
-                router-link(to='/transactions') transactions
-            
-
-
+              li(v-for='menu in fields')
+                router-link(:to='"/" + menu') {{menu}}
     .main
       template(v-if='connected')
         router-view
@@ -28,30 +19,88 @@
         h1 connecting to server  
     .footer
       footer
-        p Copyright © 2015-2017 RSK Labs. All rights reserved.
-        p RSK Public Key (1310 29B2 D95E 815A 48DA B443 FD4F DAFD 7D17 4BB2)
+        .logo
+          .iso.plain-color
+            include assets/svg/iso-logo-v.svg
+        .text
+          p Copyright © 2015-2017 RSK Labs. All rights reserved.
+          p RSK Public Key (1310 29B2 D95E 815A 48DA B443 FD4F DAFD 7D17 4BB2)
 </template>
 
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
+import ToolTip from './components/ToolTip.vue'
 import './icons'
 export default {
   name: 'app',
+  components: {
+    ToolTip
+  },
+  data () {
+    return {
+      resizeTimeout: null,
+      fields: ['home', 'tokens', 'blocks', 'transactions']
+    }
+  },
   created () {
     this.$store.dispatch('init')
+  },
+  mounted () {
+    this.onResize()
+    window.addEventListener('resize', this.resizeThrottler, false)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.resizeThrottler)
   },
   computed: {
     ...mapState({
       connected: state => state.socketConnected,
       errors: state => state.socketErrors
+    }),
+    ...mapGetters({
+      appSize: 'getSize'
     })
+  },
+  methods: {
+    ...mapActions([
+      'setSize'
+    ]),
+    onResize () {
+      let size = {
+        w: this.$el.clientWidth,
+        h: this.$el.clientHeight
+      }
+      this.setSize(size)
+    },
+    resizeThrottler () {
+      // ignore resize events as long as an actualResizeHandler execution is in the queue
+      if (!this.resizeTimeout) {
+        let vm = this
+        this.resizeTimeout = setTimeout(() => {
+          vm.resizeTimeout = null
+          vm.onResize()
+        }, 66)
+      }
+    }
   }
 }
 </script>
 <style lang="stylus">
 
   @import 'lib/styl/style.styl'
+
+  .footer footer
+    display flex
+    justify-content center
+    align-items center
+
+    .iso
+      flex 1
+
+      svg
+        height 5rem
+        fill gray
 </style>
 
 

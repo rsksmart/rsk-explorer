@@ -1,6 +1,6 @@
 <template lang="pug">
   .tx-chart.box
-    h3 last blocks transactions
+    strong.title Last blocks transactions
     .chart-container(v-if='blocks.length' :style='boxStyle')
       d3-bar-chart(:data='blocks',:options='chartOptions')
 </template>
@@ -10,6 +10,7 @@ import { mapState } from 'vuex'
 import colors from '../config/colors.json'
 export default {
   name: 'tx-chart',
+  props: ['asize'],
   components: {
     D3BarChart
   },
@@ -59,14 +60,21 @@ export default {
       vm.onResize()
     })
   },
+  watch: {
+    asize () {
+      let vm = this
+      this.$nextTick(() => {
+        vm.onResize()
+      })
+    }
+  },
   computed: {
     ...mapState({
       blocks: state => state.backend.lastBlocks
     }),
+
     boxStyle () {
-      let style = {}
-      style.width = this.size.w + 'px'
-      return style
+      return { width: this.size.w + 'px' }
     },
     chartOptions () {
       let size = { w: this.size.w, h: this.size.h }
@@ -76,8 +84,10 @@ export default {
   },
   methods: {
     onResize () {
-      this.size.w = this.$el.clientWidth
-      this.size.h = this.size.w / 4.5
+      let size = this.size
+      size.w = this.$el.clientWidth
+      size.h = size.w / 4.5
+      this.size = size
     }
   }
 }

@@ -11,8 +11,8 @@
         contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
         contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
         account(v-if='isComponent("Account")' :data='data' :token='token')
-        blocks(v-if='isComponent("Blocks")')
-        transactions(v-if='isComponent("Transactions")')
+        //-blocks(v-if='isComponent("Blocks")')
+        transactions(v-if='isComponent("Transactions")' :data='data')
 
 
      //- Generic render
@@ -24,7 +24,14 @@
                 th(v-for='field in tableFields') {{field}}
             tbody  
               tr(v-for='row in data')
-                td(v-for='field in tableFields') {{row[field]}}
+                template(v-for='field in tableFields')
+                  td(v-if='isArray(row[field])') {{ row[field].length }}
+                  template(v-else)
+                    td(v-if='row[field].toString().length < 24') {{ row[field] }}
+                    td(v-else)
+                      tool-tip(:value='row[field].toString()' trim='6' :options='{trimAt:"center"}')
+                    
+                  
         template(v-else)
           pre {{data}}
      
@@ -40,6 +47,7 @@ import Account from './Account.vue'
 import Blocks from './Blocks.vue'
 import Transactions from './Transactions.vue'
 import Paginator from './Paginator.vue'
+import ToolTip from './ToolTip.vue'
 export default {
   name: 'data-page',
   components: {
@@ -49,7 +57,8 @@ export default {
     Account,
     Blocks,
     Transactions,
-    Paginator
+    Paginator,
+    ToolTip
   },
   props: ['type', 'action', 'fields', 'component'],
   created () {
@@ -112,7 +121,9 @@ export default {
     ...mapActions([
       'fetchPageData'
     ]),
-
+    isArray (val) {
+      return Array.isArray(val)
+    },
     getData () {
       return this.fetchPageData(this.req)
     },
@@ -122,3 +133,18 @@ export default {
   }
 }
 </script>
+<style lang="stylus">
+  .page
+    will-change opacity
+    animation-name page-anim
+    animation-duration 0.3s
+    animation-timing-function ease-in
+
+    @keyframes page-anim
+      0%
+        opacity 0
+
+      100%
+        opacity 1
+</style>
+

@@ -1,27 +1,26 @@
 <template lang="pug">
   .blocks-wrapper
-    h2.title blocks
-    .box
-      .last-block
-        h4 last block
-        block(:block='lastBlocks[0]')
-      pending-blocks(v-if='pending')
+    h2.title Blocks
     .blocks(v-if='blocks.length')
+      .pending-msg.box(v-if='pending')
+        button.txt-center.info(@click='updateBlocks')
+          em there are 
+          strong {{pending}} 
+          em new blocks, click  here to update the list
       ul(v-for='block in blocks')
         li 
-          block(:block='block')
-          
+          block-box(:block='block')
     .msg(v-else)
-      h1 requesting blocks      
+      h1 Requesting blocks      
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
-import Block from './Block.vue'
+import { mapState, mapGetters, mapActions } from 'vuex'
+import BlockBox from './BlockBox.vue'
 import PendingBlocks from './PendingBlocks.vue'
 export default {
   name: 'last-blocks',
   components: {
-    Block,
+    BlockBox,
     PendingBlocks
   },
   computed: {
@@ -32,6 +31,10 @@ export default {
     ...mapGetters({
       pending: 'pendingBlocks'
     })
+  },
+  methods: {
+    ...mapActions(['updateBlocks'])
   }
 }
 </script>
+

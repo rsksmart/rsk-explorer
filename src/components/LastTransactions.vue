@@ -1,6 +1,6 @@
 <template lang="pug">
   .tx-wrapper
-    h2.title transactions
+    h2.title Transactions
     .transactions(v-for='tx in transactions')
       transaction(:tx='tx')
      

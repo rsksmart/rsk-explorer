@@ -1,0 +1,24 @@
+.row
+  flex row nowrap
+  justify-content center
+.box
+  display flex
+  flex-flow column wrap
+  width auto
+  // background darken($bg-color, 2%)
+  background lightness($bg-color, 100%)
+  box-shadow $box-sh
+  padding .75em 1em
+  margin 0.5em
+
+  .box-icon 
+    flex 1 1 1em
+
+    margin-left 1em
+    .icon, .svg-icon
+      width 2em
+      height @width
+  .box-content
+    flex 1 1 90%
+    padding-left 1em
+    margin 0

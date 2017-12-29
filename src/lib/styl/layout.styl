@@ -3,53 +3,62 @@
 $margin = 1rem
 $min-col-w = 4rem
 
-body
+body, .wrapper
   margin 0
   border 0
   display flex
   flex-direction column
 
 .wrapper
-  display flex
   min-height 100vh
-  flex-direction column
 
-.main, .cols
+.main, .cols, .home
+  display flex
   flex 1 1 100%
   min-height 100vh
+  flex-flow row wrap
+
+.hero
   display flex
+  flex 1 1 100%
+  flex-flow row wrap
+
+.col-a, .col-b
+  flex 0 1 100%
 
 .col-a
   order 1
-  flex 1 0 100%
 
 .col-b
   order 2
-  flex 1 0 100%
+
 
 @media $media_small
   .col-a, .col-b, .main
     margin 0
-  .col-a
+
+  .col-a, .col-b
+    margin 0
     flex 1 1 50%
-   .col-b
-     flex 1 1 50%
+
+  .hero 
+    flex-flow row nowrap
+    .col-a, .col-b
+      flex 0 1 50%
+      align-items flex-start
 
 // Medium
 @media $media_medium
-   .main
-     margin 0 5rem
-  .col-a
-    margin 0
+  .main
+    margin 0 5rem
 
-  .col-b
-    margin 0
+
 
 // Large
 @media $media_large
   .main
     margin 0 15rem
-  
+
   .col-a
     margin 0
 

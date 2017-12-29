@@ -1,19 +1,24 @@
 <template lang="pug">
-  .block.box(v-if='block')
-    .block-title(v-if='title')
-      h4 {{title}}
+  .block.box(v-if='block' :style='blockBoxStyle')
+
     .block-icon.box-icon
-       icon(name='cube' :color='blockColor')
+       router-link(:to='"/blocks/" + block.number')
+        icon(name='cube' :color='blockColor')
     .box-content
-      .block-number(:style='blockStyle' )
-        span {{block.number}}
-      ul.block-data
-        li by 
-          tool-tip(:value='block.miner' :trim='4' :options='{trimAt:"center"}')
-        li Tx: {{block.transactions.length}}
-        li.soft {{ (now - block.timestamp * 1000) | m-seconds-ago }} ago
-        li
-          router-link(:to='"/blocks/" + block.number') open
+      .block-title(v-if='title')
+        h4 {{title}}
+      ul.block-data.flex
+        li.half
+          router-link(:to='"/blocks/" + block.number')
+            .block-number(:style='blockStyle' )
+              span {{block.number}}
+        li.half 
+          small by 
+            tool-tip(:value='block.miner' :trim='4' :options='{trimAt:"center"}')
+        li.half Tx: {{block.transactions.length}}
+        li.half.soft 
+          icon(name='stopwatch')
+          small {{ (now - block.timestamp * 1000) | m-seconds-ago }} ago
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -39,6 +44,10 @@ export default {
     blockStyle () {
       let color = this.blockColor
       return { color, fill: color }
+    },
+    blockBoxStyle () {
+      let color = this.blockColor
+      return { 'border-color': color }
     }
   }
 }
@@ -57,6 +66,7 @@ export default {
   .block
     display flex
     flex-flow row
+    border-left solid 3px
 
     .block-icon
       flex 1
@@ -66,16 +76,12 @@ export default {
         width 2em
         height @width
 
-    .block-data
-      flex 10
-      display flex
-      margin-left 1rem
-      flex-flow column wrap
 
     .block-number
       color color2
       margin-left 0.25rem
-      font-size 1.5em
+      font-size 1.25em
+      font-weight 400
 </style>
 
 
