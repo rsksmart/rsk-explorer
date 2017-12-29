@@ -7,8 +7,9 @@
             block-box(:block='lastBlocks[0]' title='Last Block')
           pending-blocks(v-if='pending')
           .auto-update
-            input(type='checkbox' id='auto-update' v-model='aUpdate')
-            label(for='auto-update') Auto update 
+            //-input(type='checkbox' id='auto-update' v-model='aUpdate')
+            //-label(for='auto-update') Auto update
+            ctrl-switch(label='Auto update' :value='aUpdate' @change='setAupdate')
       .col-b 
         tx-chart(:asize='appSize.w + appSize.h')
     .cols
@@ -24,6 +25,7 @@ import LastTransactions from './LastTransactions.vue'
 import TxChart from './TxChart.vue'
 import BlockBox from './BlockBox.vue'
 import PendingBlocks from './PendingBlocks.vue'
+import CtrlSwitch from './CtrlSwitch.vue'
 export default {
   name: 'Home',
   components: {
@@ -31,7 +33,8 @@ export default {
     LastTransactions,
     TxChart,
     BlockBox,
-    PendingBlocks
+    PendingBlocks,
+    CtrlSwitch
   },
   computed: {
     ...mapState({
@@ -47,8 +50,7 @@ export default {
         return this.autoUpdate
       },
       set (value) {
-        this.updateBlocks()
-        this.setAutoUpdate(value)
+        this.setAupdate(value)
       }
     }
   },
@@ -56,7 +58,11 @@ export default {
     ...mapActions([
       'updateBlocks',
       'setAutoUpdate'
-    ])
+    ]),
+    setAupdate (value) {
+      this.updateBlocks()
+      this.setAutoUpdate(value)
+    }
   }
 
 }
@@ -66,8 +72,10 @@ export default {
 
   .home
     display flex
+
   .last-blocks
     flex-flow row wrap
+
   .auto-update
     align-self flex-start
     width 100%
@@ -86,7 +94,7 @@ export default {
 
     .block-number *
       font-size 2em
-    
-  .pending-blocks 
+
+  .pending-blocks
     flex 3
 </style>
