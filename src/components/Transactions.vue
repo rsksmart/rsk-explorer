@@ -11,6 +11,7 @@
           th gas
           th.soft
             icon(name='stopwatch')
+          th  
       tbody
         tr(v-for='row in tData')
           td 
@@ -27,6 +28,9 @@
           td {{ row.gas }}
           td.soft 
             small {{ (now - row.timestamp * 1000) | m-seconds-ago }} ago
+          td 
+            router-link(:to='"/transactions/" + row.hash')
+              icon(name='load')
 
            
 </template>
