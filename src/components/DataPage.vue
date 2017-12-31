@@ -3,41 +3,50 @@
     h2(v-if='title') {{ pageContext }} {{pageTitle}}
     spinner(v-if='requestingPageData')
     .error(v-if='error')
-      pre {{error}}
-    .page(v-if='data')
-     //- Component
-     template(v-if='component')
-        //- Event
-        contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
-        contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
-        account(v-if='isComponent("Account")' :data='data' :token='token')
-        blocks(v-if='isComponent("Blocks")' :data='data')
-        block(v-if='isComponent("Block")' :block='data')
-        transactions(v-if='isComponent("Transactions")' :data='data')
-
-
-     //- Generic render
-     template(v-else)
-        template(v-if='isTable')
-          table
-            thead
-              tr
-                th(v-for='field in tableFields') {{field}}
-            tbody  
-              tr(v-for='row in data')
-                template(v-for='field in tableFields')
-                  td(v-if='isArray(row[field])') {{ row[field].length }}
-                  template(v-else)
-                    td(v-if='row[field].toString().length < 24') {{ row[field] }}
-                    td(v-else)
-                      tool-tip(:value='row[field].toString()' trim='6' :options='{trimAt:"center"}')
-                    
-                  
+      h1 {{error.error}}
+    template(v-else) 
+      .page(v-if='data')
+        template(v-if='!isTable')
+          ul.prev-next
+            li.prev(v-if='prev') 
+              router-link(:to='routeParams(prev)') prev
+            li.total
+              span 1 of 1  
+            li.next(v-if='next')
+              router-link(:to='routeParams(next)') next
+        //- Component
+        template(v-if='component')
+            //- Event
+            contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
+            contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
+            account(v-if='isComponent("Account")' :data='data' :token='token')
+            blocks(v-if='isComponent("Blocks")' :data='data')
+            block(v-if='isComponent("Block")' :block='data' :next='next' :prev='prev')
+            transactions(v-if='isComponent("Transactions")' :data='data')
+        //- Generic render
         template(v-else)
-          pre {{data}}
-     
-     template(v-if='isTable')
-       paginator(:options='pageOptions' :link='0')
+            template(v-if='isTable')
+              table
+                thead
+                  tr
+                    th(v-for='field in tableFields') {{field}}
+                tbody  
+                  tr(v-for='row in data')
+                    template(v-for='field in tableFields')
+                      td(v-if='isArray(row[field])') {{ row[field].length }}
+                      template(v-else)
+                        td(v-if='row[field].toString().length < 24') {{ row[field] }}
+                        td(v-else)
+                          tool-tip(:value='row[field].toString()' trim='6' :options='{trimAt:"center"}')
+                        
+                      
+            template(v-else)
+              pre {{data}}
+        
+        template(v-if='isTable')
+          paginator(:options='pageOptions' :link='0')
+
+
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -63,7 +72,7 @@ export default {
     ToolTip,
     Block
   },
-  props: ['type', 'action', 'fields', 'component', 'title'],
+  props: ['type', 'dataType', 'action', 'fields', 'component', 'title'],
   created () {
     this.getData()
   },
@@ -82,6 +91,12 @@ export default {
     data () {
       return this.page.data
     },
+    prev () {
+      return this.page.prev
+    },
+    next () {
+      return this.page.next
+    },
     pageTitle () {
       if (undefined !== this.title) return this.title
       return this.$route.name
@@ -90,7 +105,7 @@ export default {
       if (this.isErc20) return this.token.name
     },
     isTable () {
-      return this.data.length
+      return (this.data) ? this.data.length : null
     },
     tableFields () {
       if (this.isTable) {
@@ -119,11 +134,17 @@ export default {
     },
     pageOptions () {
       return this.page.pages
+    },
+    key () {
+      return this.dataKey()(this.dataType)
     }
   },
   methods: {
     ...mapActions([
       'fetchPageData'
+    ]),
+    ...mapGetters([
+      'dataKey'
     ]),
     isArray (val) {
       return Array.isArray(val)
@@ -133,6 +154,15 @@ export default {
     },
     isComponent (c) {
       return (this.component === c)
+    },
+    routeParams (data) {
+      let params = Object.assign({}, this.$route.params)
+      let key = this.key
+      let name = this.$route.name
+      if (data && key && params) {
+        params[key] = data[key]
+        return { params, name }
+      }
     }
   }
 }

@@ -69,17 +69,19 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
+        dataType: 'blocks',
         action: 'getBlocks',
         component: 'Blocks',
         fields: ['number', 'transactions', 'hash', 'timestamp', 'size']
       }
     },
     {
-      path: '/blocks/:block',
+      path: '/blocks/:number',
       name: 'Block',
       component: DataPage,
       props: {
         type: 'blocks',
+        dataType: 'blocks',
         component: 'Block',
         action: 'getBlock',
         title: ''
@@ -97,15 +99,20 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
+        dataType: 'transactions',
         component: 'Transactions',
         action: 'getTransactions'
       }
     },
     {
-      path: '/transactions/:tx',
+      path: '/transactions/:hash',
       name: 'Transaction',
       component: DataPage,
-      props: { type: 'blocks', action: 'getTransaction' }
+      props: {
+        type: 'blocks',
+        dataType: 'transactions',
+        action: 'getTransaction'
+      }
     }
   ]
 })

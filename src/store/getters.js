@@ -39,3 +39,8 @@ export const blockStyle = (state, getters) => blockNumber => {
 export const autoUpdate = state => {
   return state.config.autoUpdateBlocks
 }
+
+export const dataKey = state => type => {
+  let entity = state.dataEntities[type]
+  if (entity) return entity.key
+}
