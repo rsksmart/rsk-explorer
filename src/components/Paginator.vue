@@ -50,5 +50,8 @@ export default {
     justify-content space-evenly
 
   .page-numbers
-    color color2
+    color $color
+  .page-button
+    .svg-icon  *
+      fill $dark  
 </style>

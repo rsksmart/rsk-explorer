@@ -78,7 +78,7 @@ export default {
 
 
     input:checked + .slider
-      background-color $brand
+      background-color $color
 
     input:focus + .slider
       box-shadow 0 0 1px $brand

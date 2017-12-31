@@ -1,12 +1,15 @@
+  @import './mixins.styl'
 .row
   flex row nowrap
   justify-content center
 .box
+  
   display flex
   flex-flow column wrap
   width auto
+  background $quasi-bg
   // background darken($bg-color, 2%)
-  background lightness($bg-color, 100%)
+  // background lightness($bg-color, 100%)
   box-shadow $box-sh
   padding .75em 1em
   margin 0.5em

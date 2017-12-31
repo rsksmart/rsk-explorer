@@ -4,10 +4,10 @@
     .header
       header
         .brand
-          .iso
+          .iso.plain-color
             include assets/svg/iso-logo-v.svg
           .title
-            h1 rsk explorer
+            h1.logo rsk explorer
         .header-content
         .nav
           nav.menu

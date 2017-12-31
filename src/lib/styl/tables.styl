@@ -7,7 +7,7 @@
     table-layout fixed
     th
       padding: .5em 1em 
-      border-bottom color3 solid 2px
+      border-bottom brand3 solid 2px
       .entity-icon
         .svg-icon 
           height 1.5em
@@ -29,9 +29,9 @@ $head-bg = $color
 $row-odd-bg = $darkness-odd
 $row-even-bg = $darkness-even
 $border-color = alpha($color,.2)
-$pinned-border = $color2 solid 1px
+$pinned-border = $brand2 solid 1px
 
-  table.dark
+  table.dark, table
     color: $txt-color
     tr
       border: $color solid 1px
@@ -47,7 +47,7 @@ $pinned-border = $color2 solid 1px
       background-color $row-even-bg
     tr.pinned
       .pin .svg-icon
-        fill: $color2  
+        fill: $brand2  
     tr:last-child td
       border-bottom: solid 1px $border-color
     tr:hover td

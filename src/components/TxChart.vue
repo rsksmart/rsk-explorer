@@ -23,19 +23,27 @@ export default {
       options: {
         fontSize: 12,
         margin: 10,
-        axis: true,
         curve: {
-          type: 'Linear',
+          type: 'Step',
           gradient: {
             fill: false,
             stroke: false
+          },
+          style: {
+            stroke: colors.green
           }
         },
         bars: false,
+        axis: {
+          valuesY: true,
+          valuesX: true,
+          linesY: true,
+          linesX: true
+        },
         marks: {
-          type: 'point',
+          type: 'square',
           style: {
-            fill: colors.color1
+            fill: colors.green
           },
           size: 6
         },
@@ -107,7 +115,7 @@ export default {
       overflow visible
 
     .curve path
-      stroke color2
+      stroke brand2
       stroke-width 1
 </style>
 

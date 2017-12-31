@@ -1,7 +1,7 @@
 <template lang="pug">
   .blocks-page
-    h1 Blocks
-    template(v-if='data' v-for='block in data')
+    h2 Blocks
+    templte(v-if='data' v-for='block in data')
       block-box(:block='block')
 
 </template>
@@ -26,6 +26,9 @@ export default {
 </script>
 <style lang="stylus">
   .blocks-page
+    h2 
+      display flex
+      flex 1 1 100%
     min-width 100%
     display flex
     flex-flow row wrap

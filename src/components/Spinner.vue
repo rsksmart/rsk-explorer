@@ -64,11 +64,11 @@ export default {
 
     .cubes
       .fill
-        fill none
+        fill $color
         stroke gray
 
       svg
-        stroke color3
+        stroke brand3
         overflow visible
 </style>
 

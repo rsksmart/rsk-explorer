@@ -1,36 +1,66 @@
 json('../../config/colors.json')
-
 // Colors
 
-//$bg-color = lighten(color2,97%)
+// $bg-color = lighten(brand2,97%)
 $bg-color = #f9f9f9
-$bg-dark = darken($bg-color,50%)
-$color = color2
-$txt-color = color3
+$bg-dark = darken($bg-color, 50%)
+$color = brand2
+$txt-color = txt-color
 $title-color = color1
-
 $error = red
 $warn = orange
 $info = blue
-$brand = color1
-
+$brand = brand1
 $controls-color = gray
 $hover-color = red
 // Fonts
 $font-size = 16px
-$base-font = 'Raleway', sans-serif
+$base-font = 'Titillium Web', sans-serif
 // $title-font = 'Brandon Grotesque', sans-serif
 $title-font = 'Brandon Grotesque', sans-serif
 $forms-font = $base-font
-
 // Shadows
-$txt-sh = 1px 1px 1px  rgba(0,0,0,.5)
-$box-sh = 1px 1px 1px rgba(0,0,0,0.1)
-$box-sh2 = -1px -1px 1px rgba(0,0,0,0.2)
-$tip-sh = 1px 1px 1px rgba(0,0,0,0.3)
-$panel-sh = 0px -1px 1px alpha($color,.25) 
+$txt-sh = 1px 1px 1px rgba(0, 0, 0, 0.5)
+$tip-sh = 1px 1px 1px rgba(0, 0, 0, 0.3)
+$panel-sh = 0px -1px 1px alpha($color, 0.25)
 $dialog-sh = $box-sh, $box-sh2
-$hard-sh = 2px 2px 4px rgba(0,0,0,.8)
-
-$color = color1 
-$color2 = color2
+$hard-sh = 2px 2px 4px rgba(0, 0, 0, 0.8)
+// $color = brand1
+//$brand2 = brand2
+$color = green
+$brand2 = orange
+$white = lightness($color, 92%)
+$dark = lightness($color, 27%)
+$dark2 = lightness($brand2, 27%)
+$darkness = #102026
+$darkness-odd = lightness($darkness, 13%)
+$darkness-even = lightness($darkness-odd, 15%)
+$darkness2 = lightness($brand2, 15%)
+$warn-light = lighten($warn, 15%)
+$light = lightness($color, 97%)
+$selected = $brand2
+$midlight = lightness($color, 65%)
+$mid = lightness($color, 55%)
+$bg-color = $darkness
+$bg-dark = lightness($darkness, 7%)
+$quasi-bg = lighten($bg-color, 1%)
+// $quasi-bg = lighten($bg-dark, 3%)
+$gray = gray
+$graylight = lighten($gray, 25%)
+// Borders
+$border = $color solid 1px
+$frame-border = solid alpha($darkness-odd, 1) 1px
+$border-panel = solid 1px $darkness
+// Shadows
+$txt-sh = 1px 1px 1px rgba(0, 0, 0, 0.5)
+$box-sh = 1px 1px 2px rgba(0, 0, 0, 0.7)
+$box-sh2 = -1px -1px 1px rgba(0, 0, 0, 0.2)
+$panel-sh = 0px -1px 1px alpha($color, 0.25)
+$dialog-sh = $box-sh, $box-sh2
+$hard-sh = 2px 2px 4px rgba(0, 0, 0, 0.8)
+$sym-close = '✖'
+// Boxes
+$min-box-height = 4.75rem
+// Buttons
+$action-btn-size = 1.5rem
+$button-close-size = $action-btn-size * 1.5
