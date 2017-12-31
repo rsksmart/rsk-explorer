@@ -1,5 +1,6 @@
 # rsk-explorer client
 
+  Client for rsk-explorer-api
 
 ## Build Setup
 
@@ -17,4 +18,34 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## Deployment
+
+1. Install dependencies
+  ``` bash
+  npm install
+  ```
+
+2. Set api server
+  Edit src/config/config.json and sets **WS_URL** to rsk-explorer-api url
+
+3. Buid for production
+
+  ``` bash
+  # build for production 
+  npm run build
+  ```
+4. Serve ./dist folder on web server
+
+5. Server configuration
+
+  The client uses [vue-router HTML 5 History mode](https://router.vuejs.org/en/essentials/history-mode.html), this requires a special configuration of the web server:
+
+```
+- nginx
+
+``` javascript
+location / {
+  try_files $uri $uri/ /index.html;
+}
+```
