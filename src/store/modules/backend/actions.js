@@ -4,8 +4,8 @@ export const connectionUpdate = ({ commit }, connected) => {
   commit('SOCKET_CONNECTION', connected === true)
 }
 
-export const socketNewBlocks = ({ state, commit }, data) => {
-  let autoUpdate = state.autoUpdateBlocks
+export const socketNewBlocks = ({ state, commit, getters }, data) => {
+  let autoUpdate = getters.autoUpdate
   if (data && data.length) {
     commit('LAST_BLOCKS', data)
     if (!state.blocks.length || autoUpdate) {
@@ -29,6 +29,8 @@ export const socketPageData = ({ state, commit }, res) => {
   let data = res.data
   let pages = res.pages
   let error = res.error
+  let next = res.next
+  let prev = res.prev
   let requesting = state.page.requesting
   if (key && requesting && key === requesting) {
     commit('SET_PAGE_REQUEST', false)
@@ -38,6 +40,8 @@ export const socketPageData = ({ state, commit }, res) => {
     } else {
       commit('SET_PAGE_PAGES', pages)
       commit('SET_PAGE_DATA', data)
+      commit('SET_PAGE_PREV', prev)
+      commit('SET_PAGE_NEXT', next)
     }
   }
 }
@@ -50,8 +54,4 @@ export const fetchPageData = ({ commit }, data) => {
   commit('SET_PAGE_ERROR', null)
   commit('SET_PAGE_REQ', null)
   commit('SOCKET_EMIT', { event: 'data', data })
-}
-
-export const setAutoUpdate = ({ state, commit }, update) => {
-  commit('SET_AUTO_UPDATE', update)
 }

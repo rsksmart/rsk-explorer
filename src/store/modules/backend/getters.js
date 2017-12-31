@@ -45,7 +45,3 @@ export const getPageAccount = (state, getters) => {
     return page.req.options.account
   }
 }
-
-export const autoUpdate = state => {
-  return state.autoUpdateBlocks
-}

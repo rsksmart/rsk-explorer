@@ -20,3 +20,7 @@ export const SET_SIZE = (state, size) => {
   Vue.set(state.size, 'w', size.w)
   Vue.set(state.size, 'h', size.h)
 }
+
+export const SET_CONFIG = (state, payload) => {
+  Vue.set(state.config, payload[0], payload[1])
+}

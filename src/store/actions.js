@@ -24,3 +24,7 @@ export const updateBlocks = ({ state, commit }) => {
   let blocks = state.backend.lastBlocks
   commit('SET_BLOCKS', blocks)
 }
+
+export const setAutoUpdate = ({ state, commit }, update) => {
+  commit('SET_CONFIG', ['autoUpdateBlocks', update])
+}

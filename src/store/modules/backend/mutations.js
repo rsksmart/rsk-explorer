@@ -30,6 +30,14 @@ export const SET_PAGE_DATA = (state, data) => {
   Vue.set(state.page, 'data', data)
 }
 
+export const SET_PAGE_PREV = (state, data) => {
+  Vue.set(state.page, 'prev', data)
+}
+
+export const SET_PAGE_NEXT = (state, data) => {
+  Vue.set(state.page, 'next', data)
+}
+
 export const SET_PAGE_PAGES = (state, pages) => {
   Vue.set(state.page, 'pages', pages)
 }
@@ -40,8 +48,4 @@ export const SET_PAGE_ERROR = (state, error) => {
 
 export const SET_PAGE_REQ = (state, req) => {
   state.page.req = req
-}
-
-export const SET_AUTO_UPDATE = (state, update) => {
-  state.autoUpdateBlocks = update
 }

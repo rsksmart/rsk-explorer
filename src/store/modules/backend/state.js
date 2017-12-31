@@ -7,11 +7,12 @@ export default function () {
       error: null,
       req: {},
       pages: {},
+      prev: {},
+      next: {},
       data: []
     },
     blocks: [],
     lastBlocks: [],
-    tokens: [],
-    autoUpdateBlocks: false
+    tokens: []
   }
 }
