@@ -1,7 +1,7 @@
 <template lang="pug">
   .blocks-page
     h2 Blocks
-    templte(v-if='data' v-for='block in data')
+    template(v-if='data' v-for='block in data')
       block-box(:block='block')
 
 </template>
