@@ -1,6 +1,6 @@
 <template lang="pug">
   .pending-blocks.box
-    h4.chart-title New blocks
+    h4 New blocks
     button(@click='updateBlocks')
       cube-of-cubes.cubes( v-if='pending && mod' :mod='mod' :step='pending' :size='size')
       .w-badge
@@ -62,6 +62,9 @@ export default {
   .pending-blocks
     justify-content center
     align-items center
+    h4
+      padding 0
+      margin 0
     .cubes
       .fill
         fill orange

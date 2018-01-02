@@ -17,7 +17,7 @@ export default {
   data () {
     return {
       size: {
-        w: 100,
+        w: 300,
         h: 100
       },
       options: {
@@ -94,7 +94,7 @@ export default {
     onResize () {
       let size = this.size
       size.w = this.$el.clientWidth
-      size.h = size.w / 4.5
+      size.h = this.$el.clientHeight
       this.size = size
     }
   }

@@ -7,7 +7,7 @@
             icon(name='cube' :color='blockColor')
         .box-content
           .block-title(v-if='title')
-            h4 {{title}}
+            h4.title {{title}}
           ul.block-data.flex
             li.half
               router-link(:to='"/blocks/" + block.number')
@@ -53,6 +53,9 @@ export default {
 <style lang="stylus">
   .block-box
     will-change opacity
+    .title
+      padding 0
+      margin 0
 
   .blockbox-enter-active
     transition opacity 0.5s
