@@ -92,10 +92,22 @@ export default new Router({
       }
     },
     {
+      path: '/accounts',
+      name: 'Accounts',
+      component: DataPage,
+      props: {
+        type: 'blocks',
+        action: 'getAccounts'
+      }
+    },
+    {
       path: '/accounts/:address',
       name: 'Address',
       component: DataPage,
-      props: { type: 'blocks' }
+      props: {
+        type: 'blocks',
+        action: 'getAccount'
+      }
     },
     {
       path: '/transactions',

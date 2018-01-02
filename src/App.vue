@@ -9,6 +9,7 @@
           .title
             h1.logo rsk explorer
         .header-content
+        search-box
         .nav
           nav.menu
             ul
@@ -34,10 +35,12 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import ToolTip from './components/ToolTip.vue'
+import SearchBox from './components/SearchBox.vue'
 import './icons'
 export default {
   name: 'app',
   components: {
+    SearchBox,
     ToolTip
   },
   data () {
@@ -90,6 +93,7 @@ export default {
 }
 </script>
 <style lang="stylus">
+
   @import 'lib/styl/style.styl'
 </style>
 
