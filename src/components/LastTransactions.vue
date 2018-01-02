@@ -2,16 +2,16 @@
   .tx-wrapper
     h2.title Transactions
     .transactions(v-for='tx in transactions')
-      transaction(:tx='tx')
+      transaction-box(:tx='tx')
      
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Transaction from './Transaction.vue'
+import TransactionBox from './TransactionBox.vue'
 export default {
   name: 'last-transactions',
   components: {
-    Transaction
+    TransactionBox
   },
   computed: {
     ...mapGetters({
