@@ -9,11 +9,15 @@
         template(v-if='!isTable')
           ul.prev-next
             li.prev(v-if='prev') 
-              router-link(:to='routeParams(prev)') prev
-            li.total
-              span 1 of 1  
+              router-link(:to='routeParams(prev)')
+                icon(name='triangle-arrow-left')
+                small previous
+            li.total(v-if='total')
+              span {{total}}  
             li.next(v-if='next')
-              router-link(:to='routeParams(next)') next
+              router-link(:to='routeParams(next)')
+                small next
+                icon(name='triangle-arrow-right')
         //- Component
         template(v-if='component')
             //- Event
