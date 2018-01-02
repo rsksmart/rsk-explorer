@@ -2,12 +2,14 @@
   #tokens
     h2 erc20 tokens
     template(v-for='token in tokens')
-      .box
-        ul
-          li {{ token.name }}
-          li {{ token.shortName }}
+      .box.token
+        ul.plain
           li 
-            router-link(:to='"/tokens/" + token._id + "/events"') Events {{token.Events}}
+            h2 {{ token.name }}
+          //-li {{ token.shortName }}
+          li 
+            router-link(:to='"/tokens/" + token._id + "/events"') 
+              span Events: {{token.Events}}
           li 
             router-link(:to='"/tokens/" + token._id + "/accounts"') Accounts
 </template>
@@ -28,3 +30,14 @@ export default {
 
 }
 </script>
+<style lang="stylus">
+ @import '../lib/styl/vars.styl'
+  .token
+    display inline-flex
+    min-width 18em
+    flex 1 
+    padding 0em 3em 3em
+</style>
+
+
+
