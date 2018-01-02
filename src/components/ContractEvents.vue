@@ -1,6 +1,6 @@
 <template lang="pug">
   .events
-    data-table(:data='data' :rowCb='formatData' type='events' :fieldsCb='formatFields' :link='link')
+    data-table(:data='data' :formatRow='formatData' type='events' :formatFields='formatFields' :link='link')
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -21,7 +21,7 @@ export default {
     }
   },
   methods: {
-    formatFields (fields) {
+    formatFields (fields, parentData) {
       let token = this.token
       let uri = token.baseUri + 'accounts/'
       let def = 'This Account'
@@ -30,7 +30,6 @@ export default {
       fields.from.link = uri
       fields.from.default = def
       fields.amount.suffix = token.shortName
-
       return fields
     },
     formatData (event) {
@@ -49,10 +48,6 @@ export default {
         }
         to = checkAccount(to)
         from = checkAccount(from)
-        /*         let link = {
-                  from: uri + from,
-                  to: uri + to
-                } */
         event.to = to
         event.from = from
         return event

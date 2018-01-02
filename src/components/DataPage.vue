@@ -32,9 +32,9 @@
         //- Generic render
         template(v-else)
             template(v-if='isTable')
-              data-table(:data='data' :type='dataType' :parentData='token')
+              data-table(:data='data' :type='dataType' :parentData='parentData')
             template(v-else)
-              pre {{data}}
+              data-item(:data='data' :type='dataType' :parentData='parentData')
         
         template(v-if='isTable')
           paginator(:options='pageOptions' :link='0')
@@ -51,12 +51,14 @@ import Paginator from './Paginator.vue'
 import Block from './Block.vue'
 import ToolTip from './ToolTip.vue'
 import DataTable from './DataTable.vue'
+import DataItem from './DataItem.vue'
 import Transaction from './Transaction.vue'
 export default {
   name: 'data-page',
   components: {
     Spinner,
     DataTable,
+    DataItem,
     ContractEvents,
     ContractAccounts,
     Account,
@@ -83,6 +85,9 @@ export default {
     }),
     data () {
       return this.page.data
+    },
+    parentData () {
+      if (this.isErc20) return this.token
     },
     prev () {
       return this.page.prev
@@ -164,7 +169,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-
   .page
     will-change opacity
     animation-name page-anim

@@ -29,6 +29,7 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'erc20',
+        title: 'Events',
         component: 'ContractEvents',
         dataType: 'events',
         action: 'getEvents'
@@ -39,7 +40,9 @@ export default new Router({
       name: 'Event',
       component: DataPage,
       props: {
+        title: 'Event',
         type: 'erc20',
+        dataType: 'event',
         action: 'getEvent'
       }
     },
@@ -48,6 +51,7 @@ export default new Router({
       name: 'Accounts',
       component: DataPage,
       props: {
+        title: 'Accounts',
         type: 'erc20',
         component: 'ContractAccounts',
         dataType: 'accounts',
@@ -110,8 +114,8 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
-        component: 'Transaction',
-        dataType: 'transactions',
+        title: 'Transaction',
+        dataType: 'transaction',
         action: 'getTransaction'
       }
     }
