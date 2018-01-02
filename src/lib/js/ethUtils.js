@@ -18,7 +18,7 @@ export const isAddress = address => {
   }
 }
 
-export const isTransaction = tx => {
+export const isTx = tx => {
   if (!/^(0x)?[0-9a-f]{64}$/i.test(tx)) {
     // check if it has the basic requirements of an address
     return false

@@ -12,7 +12,7 @@
             li.half
               router-link(:to='"/blocks/" + block.number')
                 .block-number(:style='bStyle' )
-                  span {{block.number}}
+                  span {{block.number | locale}}
             li.half 
               small by 
                 tool-tip(:value='block.miner' :trim='4' :options='{trimAt:"center"}')

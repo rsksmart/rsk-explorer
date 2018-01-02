@@ -2,7 +2,7 @@
   .block-page(v-if='block')
     h2(:style='blockColor(block.number)') 
       icon(name='cube') 
-      span Block {{block.number}}
+      span Block {{block.number | locale}}
     .box
       dl.data
         dt Time 

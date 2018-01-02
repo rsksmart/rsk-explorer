@@ -113,9 +113,9 @@ export default {
       to: {
         field: 'to'
       },
-      value: {
+      /* value: {
         filters: ['tx-value']
-      },
+      }, */
       gas: {
         field: 'gas',
         default: 0

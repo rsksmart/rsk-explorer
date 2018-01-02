@@ -3,7 +3,8 @@ export default {
     icon: 'cube',
     titleIcon: true,
     hideTitle: true,
-    link: '/blocks/'
+    link: '/blocks/',
+    filters: ['locale']
   },
   timestamp: {
     icon: 'stopwatch',
