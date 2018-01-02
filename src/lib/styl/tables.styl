@@ -1,27 +1,27 @@
 @import './vars.styl'
   table
-    border:none
-    padding:0
-    margin:0
-    border-spacing: 0
+    border none
+    padding 0
+    margin 0
+    border-spacing 0
     table-layout fixed
     th
-      padding: .5em 1em 
+      padding .5em 1em 
       border-bottom brand3 solid 2px
       .entity-icon
         .svg-icon 
           height 1.5em
-          width: 1.5em
+          width 1.5em
         .badge
-          bottom: 0
-          right: -1.5em
-          font-size: .6em
+          bottom 0
+          right -1.5em
+          font-size .6em
 
     td
-     font-size: 0.8em
+     font-size 0.8em
      line-height 2em
-     padding: .125em 1em
-     white-space: nowrap
+     padding .125em 1em
+     white-space nowrap
      text-align center
      border-bottom $color solid 1px
 
@@ -31,25 +31,32 @@ $row-even-bg = $darkness-even
 $border-color = alpha($color,.2)
 $pinned-border = $brand2 solid 1px
 
-  table.dark, table
-    color: $txt-color
-    tr
-      border: $color solid 1px
+  table.dark
+    color $txt-color
+    border none
     tr, th
       .svg-icon
         color $color
     th
-      border-bottom: $border-color dashed 1px
-      background-color $head-bg
+      border-bottom $border-color dashed 1px
+      padding 1em 2em
+      // background-color $head-bg
     tr.odd td
       background-color $row-odd-bg
     tr.even td   
       background-color $row-even-bg
     tr.pinned
       .pin .svg-icon
-        fill: $brand2  
+        fill $brand2  
     tr:last-child td
-      border-bottom: solid 1px $border-color
+      border-bottom solid 1px $border-color
     tr:hover td
-      background-color: $darkness2 
-    
+      background-color $darkness2 
+    td 
+      border none
+      border-bottom dashed 1px $border-color
+      padding .75em 1.5em
+    tr > td:first-child , tr > th:first-child
+      padding-left 3em  
+    tr > td:last-child , tr > th:last-child
+      padding-right 3em 
