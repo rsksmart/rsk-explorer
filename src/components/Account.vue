@@ -1,14 +1,16 @@
 <template lang="pug">
   .account
-
-    ul.account-balance.box
-      li
-        h3 Address: {{data.balance._id}}
-      li
-        h3 Balance: 
+    h2 {{token.name}} Account
+    .box
+      ul.account-balance
+        li
+          strong Address: 
+          span {{data.balance._id}}
+        li
+          strong Balance: 
           span(v-if='balance') {{balance | token-value}} {{token.shortName}}
           span(v-else) {{ balance }}
-      
+    h3 Events
     contract-events(:data='data.account' :token='token')
 
 
@@ -38,4 +40,13 @@ export default {
 
 }
 </script>
+<style lang="stylus">
+  .account-balance
+    list-style none
+    li
+      font-size 1.25em
+    strong 
+      margin-right 1em 
+</style>
+
 

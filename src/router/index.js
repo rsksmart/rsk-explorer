@@ -110,6 +110,7 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
+        component: 'Transaction',
         dataType: 'transactions',
         action: 'getTransaction'
       }

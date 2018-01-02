@@ -1,6 +1,6 @@
 <template lang="pug">
   .events
-    data-table(:data='data' :rowCb='formatData' type='events' :fieldsCb='formatFields')
+    data-table(:data='data' :rowCb='formatData' type='events' :fieldsCb='formatFields' :link='link')
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -15,7 +15,10 @@ export default {
     ...mapGetters({
       colors: 'getColors',
       account: 'getPageAccount'
-    })
+    }),
+    link () {
+      return '/tokens/' + this.token.address + '/events'
+    }
   },
   methods: {
     formatFields (fields) {

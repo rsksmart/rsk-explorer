@@ -18,6 +18,7 @@
               router-link(:to='routeParams(next)')
                 small next
                 icon(name='triangle-arrow-right')
+               
         //- Component
         template(v-if='component')
             //- Event
@@ -27,24 +28,11 @@
             blocks(v-if='isComponent("Blocks")' :data='data')
             block(v-if='isComponent("Block")' :block='data' :next='next' :prev='prev')
             transactions(v-if='isComponent("Transactions")' :data='data')
+            transaction(v-if='isComponent("Transaction")' :tx='data')
         //- Generic render
         template(v-else)
             template(v-if='isTable')
               data-table(:data='data' :type='dataType' :parentData='token')
-              //-table
-                thead
-                  tr
-                    th(v-for='field in tableFields') {{field}}
-                tbody  
-                  tr(v-for='row in data')
-                    template(v-for='field in tableFields')
-                      td(v-if='isArray(row[field])') {{ row[field].length }}
-                      template(v-else)
-                        td(v-if='row[field].toString().length < 24') {{ row[field] }}
-                        td(v-else)
-                          tool-tip(:value='row[field].toString()' trim='6' :options='{trimAt:"center"}')
-                        
-                      
             template(v-else)
               pre {{data}}
         
@@ -63,6 +51,7 @@ import Paginator from './Paginator.vue'
 import Block from './Block.vue'
 import ToolTip from './ToolTip.vue'
 import DataTable from './DataTable.vue'
+import Transaction from './Transaction.vue'
 export default {
   name: 'data-page',
   components: {
@@ -73,7 +62,8 @@ export default {
     Account,
     Paginator,
     ToolTip,
-    Block
+    Block,
+    Transaction
   },
   props: ['type', 'dataType', 'action', 'component', 'title'],
   created () {
@@ -99,6 +89,9 @@ export default {
     },
     next () {
       return this.page.next
+    },
+    total () {
+      return this.page.total
     },
     pageTitle () {
       if (undefined !== this.title) return this.title
@@ -171,6 +164,7 @@ export default {
 }
 </script>
 <style lang="stylus">
+
   .page
     will-change opacity
     animation-name page-anim
