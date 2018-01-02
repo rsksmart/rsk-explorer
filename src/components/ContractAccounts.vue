@@ -1,45 +1,21 @@
 <template lang="pug">
   .accounts
-    table
-      thead
-        tr
-          template(v-for='field in fields')
-            th {{field}} 
-      tbody 
-        tr(v-for='row in data')
-          td 
-            router-link(:to='token.baseUri + "account/" + row._id') {{row._id}}
-          td {{row.balance | token-value}} {{token.shortName}}
-
-
-          
+    data-table(:data='data' :fieldsCb='formatFields' type='accounts')
 </template>
 <script>
-import { mapGetters } from 'vuex'
-import { mSecondsAgo } from '../filters/TimeFilters'
-import { tokenValue } from '../filters/TokensFilters'
+import DataTable from './DataTable.vue'
 export default {
   name: 'ContractAccount',
-  filters: {
-    mSecondsAgo,
-    tokenValue
+  components: {
+    DataTable
   },
   props: ['data', 'token'],
-
-  data () {
-    return {
-      fields: [
-        'id',
-        'balance'
-      ]
+  methods: {
+    formatFields (fields) {
+      fields.balance.suffix = this.token.shortName
+      return fields
     }
-  },
-  computed: {
-    ...mapGetters({
-      now: 'getDate'
-    })
   }
-
 }
 </script>
 

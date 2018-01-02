@@ -37,15 +37,15 @@
     
     .box(v-if='block.transactions' )
       h4 Transactions
-      transactions(:data='block.transactions')
+      data-table(:data='transactions' type='transactions' :hideFields='["block"]' link='/transactions')
 </template>
 <script>
 import common from '../mixins/common'
-import Transactions from './Transactions.vue'
+import DataTable from './DataTable.vue'
 export default {
   name: 'block',
   components: {
-    Transactions
+    DataTable
   },
   mixins: [common],
   props: ['block'],
@@ -53,6 +53,14 @@ export default {
     blockColor (number) {
       let color = this.getBlockColor(number)
       return { color }
+    }
+  },
+  computed: {
+    transactions () {
+      let timestamp = this.block.timestamp
+      return this.block.transactions.map((value) => {
+        return { timestamp, transactions: value }
+      })
     }
   }
 

@@ -1,5 +1,4 @@
 import { colors, blocksColors } from '../lib/js/colors.js'
-import dataEntities from '../config/dataEntities'
 
 export default function () {
   return {
@@ -15,7 +14,6 @@ export default function () {
     config: {
       autoUpdateBlocks: false
     },
-    dataEntities,
     colors,
     blocksColors
   }

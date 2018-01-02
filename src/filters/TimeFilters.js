@@ -12,6 +12,10 @@ export const mSecondsAgo = Vue.filter('m-seconds-ago', miliseconds => {
   return sAgo(seconds)
 })
 
+export const addAgo = Vue.filter('add-ago', value => {
+  return value + ' ago'
+})
+
 export const mToSeconds = Vue.filter('m-to-seconds', miliseconds => {
   let seconds = Math.floor(miliseconds / 1000)
   seconds = seconds >= 0 ? seconds : 0

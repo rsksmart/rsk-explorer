@@ -26,7 +26,8 @@
         //- Generic render
         template(v-else)
             template(v-if='isTable')
-              table
+              data-table(:data='data' :type='dataType' :parentData='token')
+              //-table
                 thead
                   tr
                     th(v-for='field in tableFields') {{field}}
@@ -54,25 +55,23 @@ import Spinner from './Spinner.vue'
 import ContractEvents from './ContractEvents.vue'
 import ContractAccounts from './ContractAccounts.vue'
 import Account from './Account.vue'
-import Blocks from './Blocks.vue'
-import Transactions from './Transactions.vue'
 import Paginator from './Paginator.vue'
 import Block from './Block.vue'
 import ToolTip from './ToolTip.vue'
+import DataTable from './DataTable.vue'
 export default {
   name: 'data-page',
   components: {
     Spinner,
+    DataTable,
     ContractEvents,
     ContractAccounts,
     Account,
-    Blocks,
-    Transactions,
     Paginator,
     ToolTip,
     Block
   },
-  props: ['type', 'dataType', 'action', 'fields', 'component', 'title'],
+  props: ['type', 'dataType', 'action', 'component', 'title'],
   created () {
     this.getData()
   },

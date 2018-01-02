@@ -29,18 +29,18 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'erc20',
-        action: 'getEvents',
-        component: 'ContractEvents'
+        component: 'ContractEvents',
+        dataType: 'events',
+        action: 'getEvents'
       }
     },
     {
-      path: '/tokens/:address/event/:_id',
+      path: '/tokens/:address/events/:_id',
       name: 'Event',
       component: DataPage,
       props: {
         type: 'erc20',
-        action: 'getEvent',
-        component: ''
+        action: 'getEvent'
       }
     },
     {
@@ -49,12 +49,13 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'erc20',
-        action: 'getAccounts',
-        component: 'ContractAccounts'
+        component: 'ContractAccounts',
+        dataType: 'accounts',
+        action: 'getAccounts'
       }
     },
     {
-      path: '/tokens/:address/account/:account',
+      path: '/tokens/:address/accounts/:account',
       name: 'Account',
       component: DataPage,
       props: {
@@ -71,8 +72,7 @@ export default new Router({
         type: 'blocks',
         dataType: 'blocks',
         action: 'getBlocks',
-        component: 'Blocks',
-        fields: ['number', 'transactions', 'hash', 'timestamp', 'size']
+        title: 'Blocks'
       }
     },
     {
@@ -99,8 +99,8 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
+        title: 'Transactions',
         dataType: 'transactions',
-        component: 'Transactions',
         action: 'getTransactions'
       }
     },
