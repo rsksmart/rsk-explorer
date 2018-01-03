@@ -18,6 +18,13 @@ export const SET_BLOCKS = (state, blocks) => {
   state.blocks = blocks
 }
 
+export const LAST_TRANSACTIONS = (state, transactions) => {
+  state.lastTransactions = transactions
+}
+
+export const SET_TRANSACTIONS = (state, transactions) => {
+  state.transactions = transactions
+}
 export const SET_TOKENS = (state, tokens) => {
   state.tokens = tokens
 }

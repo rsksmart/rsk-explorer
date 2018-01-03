@@ -1,6 +1,5 @@
 <template lang="pug">
   .data-table(v-if='data && fields')
-    //-pre {{dataFormatted}}
     table.dark(v-if='data')
       thead
         tr

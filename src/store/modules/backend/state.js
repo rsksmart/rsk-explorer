@@ -13,6 +13,8 @@ export default function () {
     },
     blocks: [],
     lastBlocks: [],
+    transactions: [],
+    lastTransactions: [],
     tokens: []
   }
 }

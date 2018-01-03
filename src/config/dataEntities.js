@@ -68,25 +68,25 @@ export default {
     icon: 'cube'
   },
   transactions: {
-    key: 'transactions.hash',
+    key: 'hash',
     icon: 'transaction',
     fields: {
       hash: {
-        field: 'transactions.hash',
+        field: 'hash',
         type: 'hash'
       },
       block: {
-        field: 'transactions.blockNumber',
+        field: 'blockNumber',
         type: 'block'
       },
       from: {
-        field: 'transactions.from'
+        field: 'from'
       },
       to: {
-        field: 'transactions.to'
+        field: 'to'
       },
       gas: {
-        field: 'transactions.gas',
+        field: 'gas',
         default: 0
       },
       time: {

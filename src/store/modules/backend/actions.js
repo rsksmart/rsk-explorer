@@ -6,16 +6,24 @@ export const connectionUpdate = ({ commit }, connected) => {
 
 export const socketNewBlocks = ({ state, commit, getters }, data) => {
   let autoUpdate = getters.autoUpdate
-  if (data && data.length) {
-    commit('LAST_BLOCKS', data)
+  if (data) {
+    let blocks = data.blocks
+    let transactions = data.transactions
+    commit('LAST_BLOCKS', blocks)
+    commit('LAST_TRANSACTIONS', transactions)
     if (!state.blocks.length || autoUpdate) {
-      commit('SET_BLOCKS', data.slice())
+      commit('SET_BLOCKS', blocks.slice())
+      commit('SET_TRANSACTIONS', transactions.slice())
     }
   }
 }
 
 export const socketBlocks = ({ commit }, data) => {
   commit('SET_BLOCKS', data)
+}
+
+export const socketTransactions = ({ commit }, data) => {
+  commit('SET_TRANSACTIONS', data)
 }
 
 export const socketTokens = ({ commit }, data) => {

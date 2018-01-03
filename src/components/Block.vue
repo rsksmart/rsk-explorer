@@ -37,7 +37,7 @@
     
     .box(v-if='block.transactions' )
       h4 Transactions
-      data-table(:data='transactions' type='transactions' :hideFields='["block"]' link='/transactions')
+      data-table(:data='block.transactions' type='transactions' :hideFields='["block"]' link='/transactions')
 </template>
 <script>
 import common from '../mixins/common'
@@ -53,14 +53,6 @@ export default {
     blockColor (number) {
       let color = this.getBlockColor(number)
       return { color }
-    }
-  },
-  computed: {
-    transactions () {
-      let timestamp = this.block.timestamp
-      return this.block.transactions.map((value) => {
-        return { timestamp, transactions: value }
-      })
     }
   }
 

@@ -6,20 +6,8 @@ export const lastListBlock = state => {
   return state.blocks[state.blocks.lenght]
 }
 
-export const blocksTransactions = state => {
-  let blocks = state.blocks
-  if (blocks.length) {
-    return blocks
-      .map(block => {
-        return block.transactions.map(tx => {
-          tx.timestamp = block.timestamp
-          return tx
-        })
-      })
-      .reduce((acc, item) => {
-        return acc.concat(item)
-      })
-  }
+export const transactions = state => {
+  return state.transactions
 }
 
 export const pendingBlocks = state => {

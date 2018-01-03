@@ -14,9 +14,9 @@ export default {
     TransactionBox
   },
   computed: {
-    ...mapGetters({
-      transactions: 'blocksTransactions'
-    })
+    ...mapGetters([
+      'transactions'
+    ])
   }
 }
 </script>

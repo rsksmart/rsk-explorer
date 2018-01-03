@@ -16,7 +16,7 @@
             li.half 
               small by 
                 tool-tip(:value='block.miner' :trim='4' :options='{trimAt:"center"}')
-            li.half Tx: {{block.transactions.length}}
+            li.half Tx: {{block.txs}}
             li.half.soft 
               icon(name='stopwatch')
               small {{ (now - block.timestamp * 1000) | m-seconds-ago }} ago
