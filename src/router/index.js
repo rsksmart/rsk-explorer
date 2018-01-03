@@ -93,7 +93,6 @@ export default new Router({
     },
     {
       path: '/accounts',
-      name: 'Accounts',
       component: DataPage,
       props: {
         type: 'blocks',
