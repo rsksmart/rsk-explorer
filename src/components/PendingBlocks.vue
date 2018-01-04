@@ -1,8 +1,7 @@
 <template lang="pug">
   .pending-blocks.box
-    h4 New blocks
     button(@click='updateBlocks')
-      cube-of-cubes.cubes( v-if='pending && mod' :mod='mod' :step='pending' :size='size')
+      cube-of-cubes.cubes( v-if='pending && mod' :mod='mod' :step='pending' :size='size' :cubeStyleCb='cubeStyle')
       .w-badge
         .badge(:style='badgeStyle') {{pending}}
     small 
@@ -51,7 +50,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['updateBlocks'])
+    ...mapActions(['updateBlocks']),
+    ...mapGetters(['getBlockColor']),
+
+    cubeStyle (cube) {
+      let fill = this.getBlockColor()(cube)
+      return { fill }
+    }
   }
 }
 </script>
@@ -62,9 +67,11 @@ export default {
   .pending-blocks
     justify-content center
     align-items center
+
     h4
       padding 0
       margin 0
+
     .cubes
       .fill
         fill orange
