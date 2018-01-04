@@ -7,8 +7,6 @@
             block-box(:block='lastBlocks[0]' title='Last Block')
           pending-blocks(v-if='pending')
           .auto-update
-            //-input(type='checkbox' id='auto-update' v-model='aUpdate')
-            //-label(for='auto-update') Auto update
             ctrl-switch(label='Auto update' :value='aUpdate' @change='setAupdate')
       .col-b 
         tx-chart(:asize='appSize.w + appSize.h')

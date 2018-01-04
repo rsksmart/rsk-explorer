@@ -18,6 +18,8 @@
  * }
  */
 
+const THIS_ACCOUNT = 'This Account'
+
 const eventFormatRow = (event, parentData) => {
   let args = event.args
   if (args) {
@@ -36,19 +38,31 @@ const eventFormatRow = (event, parentData) => {
 const eventFormatFields = (fields, parentData) => {
   let token = parentData
   let uri = token.baseUri + 'accounts/'
-  let def = 'This Account'
   fields.to.link = uri
-  fields.to.default = def
   fields.from.link = uri
-  fields.from.default = def
   fields.amount.suffix = token.shortName
   return fields
+}
+
+const clearIfMatch = (val, match) => {
+  return val !== match ? val : null
 }
 
 const transactionFormatFields = (fields, parentData) => {
   // fields.timestamp = parentData.timestamp
   return fields
 }
+
+const transactionFormatRow = (tx, parentData) => {
+  let account
+  if (parentData) account = parentData.account
+  if (account) {
+    tx.from = clearIfMatch(tx.from, account)
+    tx.to = clearIfMatch(tx.to, account)
+  }
+  return tx
+}
+
 export default {
   blocks: {
     key: 'number',
@@ -58,6 +72,7 @@ export default {
       number: {
         type: 'block'
       },
+      txs: null,
       hash: null,
       miner: null,
       size: null,
@@ -70,6 +85,8 @@ export default {
   transactions: {
     key: 'hash',
     icon: 'transaction',
+    link: '/transactions',
+    formatRow: transactionFormatRow,
     fields: {
       hash: {
         field: 'hash',
@@ -80,10 +97,15 @@ export default {
         type: 'block'
       },
       from: {
-        field: 'from'
+        type: 'from',
+        default: THIS_ACCOUNT
       },
       to: {
-        field: 'to'
+        type: 'to',
+        default: THIS_ACCOUNT
+      },
+      value: {
+        filters: ['tx-value']
       },
       gas: {
         field: 'gas',
@@ -107,15 +129,18 @@ export default {
         field: 'blockNumber',
         type: 'block'
       },
+      transactionIndex: null,
       from: {
-        field: 'from'
+        field: 'from',
+        default: THIS_ACCOUNT
       },
       to: {
-        field: 'to'
+        field: 'to',
+        default: THIS_ACCOUNT
       },
-      /* value: {
+      value: {
         filters: ['tx-value']
-      }, */
+      },
       gas: {
         field: 'gas',
         default: 0
@@ -153,8 +178,12 @@ export default {
       timestamp: null,
       address: null,
       transactionHash: null,
-      from: null,
-      to: null,
+      from: {
+        default: THIS_ACCOUNT
+      },
+      to: {
+        default: THIS_ACCOUNT
+      },
       amount: {
         field: 'args._value',
         filters: ['token-value']
@@ -180,6 +209,7 @@ export default {
     }
   },
   account: {
-    icon: 'credit-card'
+    icon: 'credit-card',
+    fields: {}
   }
 }

@@ -39,6 +39,7 @@ export const socketPageData = ({ state, commit }, res) => {
   let error = res.error
   let next = res.next
   let prev = res.prev
+  let parentdata = res.parentData
   let requesting = state.page.requesting
   if (key && requesting && key === requesting) {
     commit('SET_PAGE_REQUEST', false)
@@ -50,6 +51,7 @@ export const socketPageData = ({ state, commit }, res) => {
       commit('SET_PAGE_DATA', data)
       commit('SET_PAGE_PREV', prev)
       commit('SET_PAGE_NEXT', next)
+      commit('SET_PAGE_PARENTDATA', parentdata)
     }
   }
 }

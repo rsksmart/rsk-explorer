@@ -5,6 +5,8 @@
     .error(v-if='error')
       h1 {{error.error}}
     template(v-else) 
+      .page-header(v-if='headComponent')
+        account-header(v-if='isHeadComponent("AccountHeader")' :data='parentData')
       .page(v-if='data')
         template(v-if='!isTable')
           ul.prev-next
@@ -28,7 +30,6 @@
             blocks(v-if='isComponent("Blocks")' :data='data')
             block(v-if='isComponent("Block")' :block='data' :next='next' :prev='prev')
             transactions(v-if='isComponent("Transactions")' :data='data')
-            transaction(v-if='isComponent("Transaction")' :tx='data')
         //- Generic render
         template(v-else)
             template(v-if='isTable')
@@ -52,7 +53,7 @@ import Block from './Block.vue'
 import ToolTip from './ToolTip.vue'
 import DataTable from './DataTable.vue'
 import DataItem from './DataItem.vue'
-import Transaction from './Transaction.vue'
+import AccountHeader from './AccountHeader.vue'
 export default {
   name: 'data-page',
   components: {
@@ -65,9 +66,17 @@ export default {
     Paginator,
     ToolTip,
     Block,
-    Transaction
+    AccountHeader
   },
-  props: ['type', 'dataType', 'action', 'component', 'title'],
+  props: [
+    'type',
+    'dataType',
+    'action',
+    'component',
+    'title',
+    'keyData',
+    'headComponent'
+  ],
   created () {
     this.getData()
   },
@@ -84,10 +93,14 @@ export default {
       getTokenData: 'getTokenData'
     }),
     data () {
-      return this.page.data
+      let key = this.keyData
+      let data = this.page.data
+      if (data) return (key) ? data[key] : data
     },
     parentData () {
+      let data = this.page.parentData
       if (this.isErc20) return this.token
+      return data
     },
     prev () {
       return this.page.prev
@@ -156,6 +169,9 @@ export default {
     isComponent (c) {
       return (this.component === c)
     },
+    isHeadComponent (c) {
+      return (this.headComponent === c)
+    },
     routeParams (data) {
       let params = Object.assign({}, this.$route.params)
       let key = this.key
@@ -181,5 +197,8 @@ export default {
 
       100%
         opacity 1
+  
+  .page-header
+    margin-bottom 2em
 </style>
 

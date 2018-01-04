@@ -22,6 +22,14 @@ export default {
     })
   },
   methods: {
-    ...mapGetters(['blockStyle'])
+    ...mapGetters(['blockStyle', 'filterFieldValue']),
+    cellStyle (field, value) {
+      if (field) {
+        let style = {}
+        let type = field.type
+        if (type === 'block') style.color = this.getBlockColor(value)
+        return style
+      }
+    }
   }
 }

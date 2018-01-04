@@ -18,10 +18,10 @@
           template(v-for='field,fieldName,index in fields') 
             td(v-if='!isHidden(fieldName)')
               template(v-if='field.link && getValue(field,row)') 
-                router-link(:to='field.link + getValue(field,row)' :style='cellStyle(field,getValue(field,row))')
-                  data-field(:field='field' :value='getValue(field,row)')
+                router-link(:to='field.link + getValue(field,row,true)')
+                  data-field(:field='field' :value='getValue(field,row,true)' :link='field.link + getValue(field,row,true)')
               template(v-else)
-                data-field(:field='field' :value='getValue(field,row)' :style='cellStyle(field,getValue(field,row))')  
+                data-field(:field='field' :value='getValue(field,row,true)' :link='field.link + getValue(field,row,true)')  
             td(v-if='isFrom(fieldName,index)')
               icon(name='arrow-right')
 

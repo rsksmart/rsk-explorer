@@ -15,6 +15,12 @@ export default {
   transaction: {
     icon: 'credit-card'
   },
+  from: {
+    link: '/accounts/'
+  },
+  to: {
+    link: '/accounts/'
+  },
   hash: {
     icon: 'hash',
     titleIcon: true,

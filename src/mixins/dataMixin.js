@@ -85,7 +85,9 @@ export default {
   methods: {
     ...mapGetters([
       'dataEntity',
+      'getFieldValue',
       'getFieldFilteredValue',
+      'filterFieldValue',
       'dataKey',
       'dataKeyValue'
     ]),
@@ -94,18 +96,12 @@ export default {
       if (this.entity) cb = cb || this.entity[key]
       return typeof cb === 'function' ? cb : null
     },
-    cellStyle (field, value) {
-      let style = {}
-      let type = field.type
-      if (type === 'block') style.color = this.getBlockColor(value)
-      return style
-    },
     rowClass (index) {
       let cssClass = index % 2 ? 'odd' : 'even'
       return cssClass
     },
-    getValue (field, data) {
-      let value = this.getFieldFilteredValue()(field, data)
+    getValue (field, data, raw) {
+      let value = this.getFieldFilteredValue()(field, data, raw)
       return value || ''
     },
     isFrom (fieldName, index) {
@@ -124,8 +120,10 @@ export default {
       let key = this.keyValue(row)
       let linkCb = this.linkCb
       if (linkCb) return linkCb(row, this.parentData, key)
-      link = this.link || this.$route.fullPath
-      return link + '/' + key
+      link = this.link || this.entity.link
+      link = link || this.$route.path
+      link = link + '/' + key
+      return link
     },
     isHidden (field) {
       let hideFields = this.hideFields

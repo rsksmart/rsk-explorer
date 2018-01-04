@@ -1,7 +1,9 @@
 
 <template lang="pug">
   .tooltip(@mouseleave.passive='show=false' @mouseenter.passive='show=true' @touchend.passive='touch')
-    .trim(v-if='trim') {{trimed[0]}}
+    .trim(v-if='trim')
+      slot(name='trim-1')
+        span {{trimed[0]}}
     slot(v-else)
     .points(v-if='trim' :class='pointsClass')
         button(v-if='!show') 
@@ -144,170 +146,188 @@ export default {
 }
 </script>
 <style lang="stylus">
-@import '../lib/styl/vars.styl'
+
+  @import '../lib/styl/vars.styl'
+
   $tip-arrow-size = 5px
-  $tip-bg = white 
+  $tip-bg = white
   $tip-bc = $color
   $tip-border = 1px
-  
-  
+
   .tooltip, .trim
-    position: relative
-    display: inline-block
+    position relative
+    display inline-block
     overflow visible
-    z-index: 1000
+    z-index 1000
 
   .nowrap
     white-space nowrap
+
   // Arrow mixin
   arrow(pos)
-    if pos == 'top' || pos == 'bottom'  
+    if (pos == 'top' || (pos == 'bottom'))
       v = 'left'
       vv = 50%
     else
       v = 'bottom'
       vv = 50%
+
     &:after, &:before
-      {pos}: 100%
-      {v}: vv
-    &:after 
-      border-{pos}-color: $tip-bg
-      margin-{v}: $tip-arrow-size * -1
+      {pos} 100%
+      {v} vv
+
+    &:after
+      border-{pos}-color $tip-bg
+      margin-{v} $tip-arrow-size * -1
+
     &:before
-      border-{pos}-color: $tip-bc
-      margin-{v}: -($tip-arrow-size + $tip-border)
-.tooltip
-  position relative
-  .tip
-      position: absolute
-      filter: drop-shadow($tip-sh)
-      width: 100%
-      color: $dark
-      display: flex
+      border-{pos}-color $tip-bc
+      margin-{v} -($tip-arrow-size + $tip-border)
+
+  .tooltip
+    position relative
+
+    .tip
+      position absolute
+      filter drop-shadow($tip-sh)
+      width 100%
+      color $dark
+      display flex
       justify-content flex-start // arrow on start
-      .value 
-        border-radius: 3px
-        padding .125em .25em
-        background-color: $tip-bg
-        word-break: break-all
-        display: flex
+
+      .value
+        border-radius 3px
+        padding 0.125em 0.25em
+        background-color $tip-bg
+        word-break break-all
+        display flex
         justify-content center
         align-items center
+
       .tip-txt
-        padding: .25em
+        padding 0.25em
         overflow visible
         display inline
-        margin: 0
-        font-size: .9em
-        font-weight normal 
-        
-  .tip:after 
-  .tip:before
-    border: solid transparent
-    content: " "
-    height: 0
-    width: 0
-    position: absolute
-    z-index 100
+        margin 0
+        font-size 0.9em
+        font-weight normal
 
-  .tip:after 
-    border-width: $tip-arrow-size
+    .tip:after, .tip:before
+      border solid transparent
+      content ' '
+      height 0
+      width 0
+      position absolute
+      z-index 100
 
-  .tip:before
-    border-width: $tip-arrow-size + $tip-border
+    .tip:after
+      border-width $tip-arrow-size
 
-  // generates tip classes  
-  for pos in top bottom left right
-    .tip.{pos}
-      arrow(pos)
+    .tip:before
+      border-width $tip-arrow-size + $tip-border
 
-  .points
-    display: inline-block
-    box-shadow: none
-    margin: 0 .25em
-    line-height: .5em
-    margin-top: .25em
-    button
-      height: 1em
-      line-height: 1em 
+    // generates tip classes
+    for pos in top bottom left right
+      .tip.{pos}
+        arrow(pos)
+
+    .points
+      display inline-block
+      box-shadow none
+      margin 0 0.25em
+      line-height 0.5em
+      margin-top 0.25em
+
+      button
+        height 1em
+        line-height 1em
+        color $color
+
+    .points.left
+      float left
+
+    .points.right
+      float right
+
+    button.copy
+      display block
+      position absolute
+      left 0
+      top 0.25em
+      line-height 1em
+      font-size 1em
+      margin 0 0.5em
+
+      .icon
+        font-size 1em
+
+    .copy-txt
+      display inline
+
+      textarea
+        border none
+        margin 0
+        padding 0
+        background-color inherit
+        opacity 0
+        width 1px
+        heigth 1px
+
+    button.close
+      line-height 1em
+      height 1em
+
+      &:after
+        top 0.25em !important
+        right 0.25em !important
+        border-radius 50%
+        line-height 1em
+        height 1em
+        width 1em
+        padding 0.25em
+
+  .head
+    display block
+
+  .msg
+    color $color
+    position absolute
+    top -1.5em
+    left 0
+    width 100%
+    font-size 0.8em
+    opacity 0
+
+  // Copy Animations
+  .anim
+    animation-duration 0.5s
+    animation-name copya
+    animation-timing-function ease-in-out
+    opacity 0
+
+    @keyframes copya
+      0%
+        opacity 0
+
+      75%
+        transform translateY(-1em)
+
+      80%
+        opacity 1
+
+      100%
+        opacity 0
+        transform translateY(-5em)
+
+  .copying
+    animation-duration 1s
+    animation-name copyb
+
+  @keyframes copyb
+    0%
       color $color
 
-  .points.left
-    float: left
-
-  .points.right
-    float: right
-
-  button.copy
-    display: block
-    position:absolute
-    left:0
-    top: .25em
-    line-height: 1em
-    font-size: 1em
-    margin: 0 .5em
-    .icon
-       font-size: 1em
-
-  .copy-txt
-    display:inline
-    textarea
-      border: none
-      margin:0
-      padding:0
-      background-color: inherit
-      opacity: 0
-      width: 1px
-      heigth: 1px
-
-  button.close 
-    line-height: 1em
-    height: 1em
-    &:after
-      top: .25em !important
-      right: .25em !important
-      border-radius: 50%
-      line-height: 1em
-      height: 1em
-      width: 1em
-      padding: .25em
-.head
-  display: block
-.msg
-  color: $color
-  position:absolute
-  top: -1.5em
-  left: 0
-  width: 100%
-  font-size .8em
-  opacity: 0
-
-// Copy Animations
-.anim  
-  animation-duration: 0.5s
-  animation-name: copya
-  animation-timing-function: ease-in-out
-  opacity: 0
-
-  @keyframes copya
-    0%
-      opacity: 0
-    75%
-      transform: translateY(-1em) 
-    80%
-       opacity: 1
     100%
-      opacity: 0  
-      transform: translateY(-5em)
-  
-.copying
-    animation-duration: 1s
-    animation-name: copyb
-
-  @keyframes copyb 
-    0%
-      color: $color
-    100%     
-      color: inherit  
+      color inherit
 </style>  
 

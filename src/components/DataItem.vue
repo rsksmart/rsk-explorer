@@ -6,10 +6,10 @@
           icon.field-icon(v-if='field.titleIcon && field.icon' :name='field.icon')
           span.field-title(v-if='!field.hideTitle') {{ field.title }}:
           template(v-if='field.link && value(field)') 
-            router-link(:to='field.link + value(field)' :style='cellStyle(field,value(field))')
+            router-link(:to='field.link + value(field)' :style='cellStyle(field,value(field,false))')
               data-field(:field='field' :value='value(field)')
           template(v-else)
-            data-field(:field='field' :value='value(field)' :style='cellStyle(field,value(field))') 
+            data-field(:field='field' :value='value(field)' :style='cellStyle(field,value(field,false))') 
           //-li.from-to(v-if='isFrom(fieldName,index)' )
             icon(name='arrow-right') 
 </template>
@@ -21,8 +21,9 @@ export default {
     dataMixin
   ],
   methods: {
-    value (field) {
-      return this.getValue(field, this.dataFormatted)
+    value (field, format) {
+      let raw = !format
+      return this.getValue(field, this.data, raw)
     },
     itemClass (fieldName, index) {
       let cssClass = []
@@ -41,6 +42,7 @@ export default {
       list-style none
       display flex
       flex-flow column wrap
+
       li.item
         flex 3
         font-size 1.25em
@@ -48,12 +50,13 @@ export default {
         align-items center
         justify-content space
         margin-bottom 0.5em
+
         .field-icon, .field-title
           margin-right 0.5em
           color $color
+
         .field-title
           text-transform capitalize
           font-weight bold
-       
 </style>
 

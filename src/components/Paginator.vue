@@ -2,9 +2,13 @@
   .pages 
     button.page-button(v-if='prev' @click='goToPage(prev)')
       icon(name='arrow-left')
-    span.page-numbers {{ page }}  of {{ pages }}
+    div(v-else)
+    span.page-numbers {{ page }} 
+     small / 
+     small {{ pages }}
     button.page-button(v-if='next' @click='goToPage(next)')
       icon(name='arrow-right')
+    div(v-else)
 </template>
 <script>
 export default {

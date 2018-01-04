@@ -3,11 +3,11 @@
   .wrapper
     .header
       header
-        .brand
-          .iso.plain-color
-            include assets/svg/iso-logo-v.svg
-          .title
-            h1.logo rsk explorer
+        .brand(@click='goHome' @touchstart.passive='goHome')
+            .iso.plain-color
+              include assets/svg/iso-logo-v.svg
+            .title
+              h1.logo rsk explorer
         .header-content
         search-box
         .nav
@@ -72,6 +72,10 @@ export default {
     ...mapActions([
       'setSize'
     ]),
+    goHome (event) {
+      this.$router.push({ path: '/Home' })
+    },
+
     onResize () {
       let size = {
         w: this.$el.clientWidth,
@@ -95,6 +99,9 @@ export default {
 <style lang="stylus">
 
   @import 'lib/styl/style.styl'
+
+  .brand
+    cursor pointer
 </style>
 
 

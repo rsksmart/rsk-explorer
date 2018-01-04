@@ -15,25 +15,33 @@ export const dataKey = state => type => {
 
 export const dataKeyValue = (state, getters) => (type, data) => {
   let key = getters.dataKey(type)
-  key = key.split('.')
-  return getters.getFieldValue(key, data)
+  if (key) {
+    key = key.split('.')
+    return getters.getFieldValue(key, data)
+  }
 }
 
-export const getFieldFilteredValue = (state, getters) => (field, data) => {
+export const getFieldFilteredValue = (state, getters) => (field, data, raw) => {
   if (field.field) {
     let value = getters.getFieldValue(field.field, data)
-    if (value) {
-      let type = field.type
-      let now = getters.getDate
-      if (type === 'timestamp') value = now - value * 1000
-      let filters = field.filters
-      if (filters) {
-        value = getters.applyFilters(filters, value)
-      }
+    if (value && !raw) {
+      value = getters.filterFieldValue(field, value)
     }
     return value
   }
 }
+
+export const filterFieldValue = (state, getters) => (field, value) => {
+  let type = field.type
+  let now = getters.getDate
+  if (type === 'timestamp') value = now - value * 1000
+  let filters = field.filters
+  if (filters) {
+    value = getters.applyFilters(filters, value)
+  }
+  return value
+}
+
 export const getFieldValue = state => (field, data) => {
   if (field) {
     let value = data

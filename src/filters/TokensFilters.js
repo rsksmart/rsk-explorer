@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import BigNumber from 'bignumber.js'
-// import etherUnits from '../lib/js/ethUnits'
+import etherUnits from '../lib/js/EtherUnits'
 // const Ether = new BigNumber(10e17)
 
 export const tokenAmount = amount => {
@@ -16,6 +16,15 @@ export const tokenValue = Vue.filter('token-value', amount => {
 })
 
 export const txValue = Vue.filter('tx-value', value => {
-  // return etherUnits.toEther(new BigNumber(0), 'wei')
-  return value
+  value = bignumberObjtoBigNumber(value)
+  if (value) return etherUnits.toEther(value, 'wei')
 })
+
+export const bignumberObjtoBigNumber = value => {
+  if (!value) return
+  let bn = new BigNumber(0)
+  bn.c = value.c
+  bn.e = value.e
+  bn.s = value.s
+  return bn
+}

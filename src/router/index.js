@@ -101,11 +101,12 @@ export default new Router({
     },
     {
       path: '/accounts/:address',
-      name: 'Address',
       component: DataPage,
       props: {
         type: 'blocks',
-        action: 'getAccount'
+        headComponent: 'AccountHeader',
+        dataType: 'transactions',
+        action: 'getAccountTransactions'
       }
     },
     {

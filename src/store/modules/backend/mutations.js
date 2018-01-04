@@ -54,5 +54,9 @@ export const SET_PAGE_ERROR = (state, error) => {
 }
 
 export const SET_PAGE_REQ = (state, req) => {
-  state.page.req = req
+  Vue.set(state.page, 'req', req)
+}
+
+export const SET_PAGE_PARENTDATA = (state, data) => {
+  Vue.set(state.page, 'parentData', data)
 }
