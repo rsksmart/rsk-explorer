@@ -94,8 +94,8 @@ export default {
     onResize () {
       let size = this.size
       size.w = this.$el.clientWidth
-      size.h = this.$el.clientHeight
-      this.size = size
+      size.h = size.w / 3.5
+      this.size = Object.assign({}, size)
     }
   }
 }
@@ -111,6 +111,9 @@ export default {
     width auto
 
   .tx-chart
+    max-height 100%
+    height auto
+
     svg
       overflow visible
 
