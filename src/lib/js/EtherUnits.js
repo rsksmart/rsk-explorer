@@ -67,4 +67,5 @@ export class EtherUnits {
   }
 }
 
-export default EtherUnits
+const ethUnits = new EtherUnits()
+export default ethUnits
