@@ -115,6 +115,16 @@ export default {
     keyValue (data) {
       return this.dataKeyValue()(this.type, data)
     },
+    iconStyle (row) {
+      let style = {}
+      let value = row[this.key]
+      if (this.type === 'blocks') {
+        style.color = this.getBlockColor(value)
+        style.fill = style.color
+      }
+
+      return style
+    },
     rowLink (row) {
       let link
       let key = this.keyValue(row)
