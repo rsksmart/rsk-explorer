@@ -6,6 +6,10 @@ export const SET_SERVER_TIME = (state, time) => {
   state.serverTime = time
 }
 
+export const SET_SYSTEM_SETTINGS = (state, payload) => {
+  state.systemSettings = payload
+}
+
 export const SET_CLIENT_TIME = (state, time) => {
   state.clientTime = time
 }

@@ -18,9 +18,10 @@ export default function (socket) {
         }
       }
     })
-    socket.on('open', () => {
+    socket.on('open', data => {
       socket.emit('ready')
       store.dispatch('connectionUpdate', socket.connected)
+      store.dispatch('init', data)
     })
     socket.on('disconnect', () => {
       store.dispatch('connectionUpdate', socket.connected)

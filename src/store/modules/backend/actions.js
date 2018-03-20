@@ -1,5 +1,14 @@
 const pageDataKeyPrefix = 'PageData_'
 
+export const init = ({ commit }, data) => {
+  if (data) {
+    let serverTime = data.time
+    let systemSettings = data.settings
+    if (serverTime) commit('SET_SERVER_TIME', serverTime)
+    commit('SET_SYSTEM_SETTINGS', systemSettings)
+  }
+}
+
 export const connectionUpdate = ({ commit }, connected) => {
   commit('SOCKET_CONNECTION', connected === true)
 }
