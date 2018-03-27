@@ -5,13 +5,13 @@
       .pending-msg.box(v-if='pending')
         button.txt-center.info(@click='updateBlocks')
           em there are 
-          strong {{pending}} 
+          strong {{ pending }} 
           em new blocks, click  here to update the list
       ul(v-for='block in blocks')
         li 
           block-box(:block='block')
     .msg(v-else)
-      h1 Requesting blocks      
+      h2 Requesting blocks      
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'

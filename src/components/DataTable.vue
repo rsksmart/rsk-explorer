@@ -14,7 +14,7 @@
         tr(v-for='row, rowIndex in dataFormatted' :class='rowClass(rowIndex)')
           td
             router-link(:to='rowLink(row)')
-              icon(:name='iconLoad')
+              icon(:name='iconLoad' :style='iconStyle(row)')
           template(v-for='field,fieldName,index in fields') 
             td(v-if='!isHidden(fieldName)')
               template(v-if='field.link && getValue(field,row)') 

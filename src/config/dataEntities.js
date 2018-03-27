@@ -114,6 +114,9 @@ export default {
       time: {
         field: 'timestamp',
         type: 'timestamp'
+      },
+      type: {
+        field: 'txType'
       }
     }
   },
@@ -203,13 +206,20 @@ export default {
         title: 'id'
       },
       balance: {
-        filters: ['token-value'],
+        filters: ['tx-value'],
         default: '0'
       }
     }
   },
   account: {
     icon: 'credit-card',
-    fields: {}
+    key: 'address',
+    fields: {
+      address: null,
+      balance: {
+        filters: ['tx-value'],
+        default: '0'
+      }
+    }
   }
 }

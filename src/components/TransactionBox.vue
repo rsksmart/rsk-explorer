@@ -13,9 +13,9 @@
               icon(name='cube' :color='blockColor')
               small(:style='blockStyle') &nbsp; {{tx.blockNumber}}
         li.half
-            tool-tip.from(:value='tx.from' :trim='8' :options='{trimAt:"center"}')
+            tool-tip.from(v-if='tx.from' :value='tx.from' :trim='8' :options='{trimAt:"center"}')
             icon(name='arrow-right' :color='blockColor')
-            tool-tip.to(:value='tx.to' :trim='8' :options='{trimAt:"center"}')
+            tool-tip.to(v-if='tx.to' :value='tx.to' :trim='8' :options='{trimAt:"center"}')
         li.half.soft {{ (now - tx.timestamp * 1000) | m-seconds-ago }} ago
 </template>
 <script>

@@ -1,13 +1,14 @@
 <template lang="pug">
   .pending-blocks.box
     button(@click='updateBlocks')
-      cube-of-cubes.cubes( v-if='pending && mod' :mod='mod' :step='pending' :size='size' :cubeStyleCb='cubeStyle')
+      cube-of-cubes.cubes( v-if='step && mod' :mod='mod' :step='step' :size='size' :cubeStyleCb='cubeStyle')
       .w-badge
-        .badge(:style='badgeStyle') {{pending}}
+        .badge(:style='badgeStyle') {{ pending }}
     small 
-     strong {{pending}} new blocks 
+     strong {{ pending }} new blocks 
     small 
-     em.soft in last {{ (now - firstListBlock.timestamp * 1000) | abbr-time }}
+     //-em.soft in last {{ (now - firstListBlock.timestamp * 1000) | abbr-time }}
+     em.soft in last  {{ now - lastBlocksTime | abbr-time }}
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
@@ -37,11 +38,17 @@ export default {
     ...mapGetters({
       pending: 'pendingBlocks',
       firstListBlock: 'firstListBlock',
+      lastBlocksTime: 'lastBlocksTime',
       now: 'getDate'
     }),
     mod () {
       let max = (this.pending > 4) ? this.pending : 4
       if (max) return Math.ceil(Math.cbrt(max))
+    },
+    step () {
+      let step = this.pending
+      if (step > 5000) step = 5000
+      return step
     },
     badgeStyle () {
       let width = (this.pending.toString().length) + 'em'

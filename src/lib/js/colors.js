@@ -6,8 +6,7 @@ const autoColors = {
   titleColor: COLORS.color1
 }
 export const colors = Object.assign(autoColors, COLORS)
-
-const bez = chroma.bezier([COLORS.green, COLORS.blue, COLORS.yellow])
+const bez = chroma.bezier([COLORS.green, chroma(COLORS.green).brighten()])
 
 export const blocksColors = Array.apply(null, Array(10))
   .map((p, i) => {

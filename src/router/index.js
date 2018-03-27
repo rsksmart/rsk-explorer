@@ -96,6 +96,7 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
+        dataType: 'account',
         action: 'getAccounts'
       }
     },
