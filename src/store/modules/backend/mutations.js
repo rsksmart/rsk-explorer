@@ -1,6 +1,6 @@
 import Vue from 'vue'
 // catch socket emit
-export const SOCKET_EMIT = payload => {}
+export const SOCKET_EMIT = payload => { }
 
 export const SET_SERVER_TIME = (state, time) => {
   state.serverTime = time
@@ -18,6 +18,10 @@ export const LAST_BLOCKS = (state, blocks) => {
   state.lastBlocks = blocks
 }
 
+export const LAST_BLOCKS_TIME = (state, time) => {
+  if (undefined === time) time = Date.now()
+  state.lastBlocksTime = time
+}
 export const SET_BLOCKS = (state, blocks) => {
   state.blocks = blocks
 }

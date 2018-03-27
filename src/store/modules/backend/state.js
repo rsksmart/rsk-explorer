@@ -14,6 +14,7 @@ export default function () {
     },
     blocks: [],
     lastBlocks: [],
+    lastBlocksTime: 0,
     transactions: [],
     lastTransactions: [],
     tokens: []

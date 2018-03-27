@@ -12,6 +12,7 @@ export const transactions = state => {
 
 export const pendingBlocks = state => {
   if (state.lastBlocks.length && state.blocks.length) {
+    // rewrite this
     return state.lastBlocks[0].number - state.blocks[0].number
   }
 }
@@ -32,4 +33,8 @@ export const getPageAccount = (state, getters) => {
   if (page && page.req && page.req.options) {
     return page.req.options.account
   }
+}
+
+export const lastBlocksTime = (state) => {
+  return state.lastBlocksTime
 }

@@ -18,6 +18,7 @@ export const socketNewBlocks = ({ state, commit, getters }, data) => {
   if (data) {
     let blocks = data.blocks
     let transactions = data.transactions
+    if (!state.lastBlocksTime) commit('LAST_BLOCKS_TIME')
     commit('LAST_BLOCKS', blocks)
     commit('LAST_TRANSACTIONS', transactions)
     if (!state.blocks.length || autoUpdate) {

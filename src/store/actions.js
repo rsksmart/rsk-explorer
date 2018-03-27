@@ -22,7 +22,10 @@ export const setDateInterval = ({ state, commit }) => {
 
 export const updateBlocks = ({ state, commit }) => {
   let blocks = state.backend.lastBlocks
+  let transactions = state.backend.lastTransactions
+  commit('LAST_BLOCKS_TIME')
   commit('SET_BLOCKS', blocks)
+  commit('SET_TRANSACTIONS', transactions)
 }
 
 export const setAutoUpdate = ({ state, commit }, update) => {
