@@ -21,6 +21,10 @@ export const requestingPageData = state => {
   return state.page.requesting
 }
 
+export const requestedPage = state => {
+  return state.page.req
+}
+
 export const pageError = state => {
   return state.page.error
 }

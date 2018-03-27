@@ -46,7 +46,7 @@ export default {
   data () {
     return {
       resizeTimeout: null,
-      fields: ['home', 'tokens', 'blocks', 'transactions']
+      fields: ['home', 'tokens', 'blocks', 'transactions', 'accounts']
     }
   },
   created () {

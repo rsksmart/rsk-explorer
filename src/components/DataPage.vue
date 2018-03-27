@@ -8,6 +8,9 @@
       .page-header(v-if='headComponent')
         account-header(v-if='isHeadComponent("AccountHeader")' :data='parentData')
       .page(v-if='data')
+        //- filters
+        //-tx-filters(v-if='dataType==="transactions"')
+          
         template(v-if='!isTable')
           ul.prev-next
             li.prev(v-if='prev') 
@@ -54,6 +57,7 @@ import ToolTip from './ToolTip.vue'
 import DataTable from './DataTable.vue'
 import DataItem from './DataItem.vue'
 import AccountHeader from './AccountHeader.vue'
+import TxFilters from './TxFilters.vue'
 export default {
   name: 'data-page',
   components: {
@@ -66,7 +70,8 @@ export default {
     Paginator,
     ToolTip,
     Block,
-    AccountHeader
+    AccountHeader,
+    TxFilters
   },
   props: [
     'type',
@@ -197,7 +202,7 @@ export default {
 
       100%
         opacity 1
-  
+
   .page-header
     margin-bottom 2em
 </style>

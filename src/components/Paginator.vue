@@ -39,7 +39,9 @@ export default {
   },
   methods: {
     goToPage (page) {
-      this.$router.push(this.$route.path + '?page=' + page)
+      let query = Object.assign({}, this.$route.query)
+      query.page = page
+      this.$router.push({ query })
     }
   }
 }
@@ -55,7 +57,8 @@ export default {
 
   .page-numbers
     color $color
+
   .page-button
-    .svg-icon  *
-      fill $dark  
+    .svg-icon *
+      fill $dark
 </style>
