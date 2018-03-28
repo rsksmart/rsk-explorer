@@ -26,7 +26,7 @@ export default {
         let isAddress = ethUtils.isAddress(value)
         let link
         if (isAddress) {
-          // link = '/account/'
+          link = '/accounts/'
         } else if (isTx) {
           link = '/transactions/'
         } else {
