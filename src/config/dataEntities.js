@@ -151,6 +151,9 @@ export default {
       time: {
         field: 'timestamp',
         type: 'timestamp'
+      },
+      type: {
+        field: 'txType'
       }
     }
   },

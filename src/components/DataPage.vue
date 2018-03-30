@@ -8,8 +8,8 @@
       .page-header(v-if='headComponent')
         account-header(v-if='isHeadComponent("AccountHeader")' :data='parentData')
       .page(v-if='data')
-        //- filters
-        //-tx-filters(v-if='dataType==="transactions"')
+        //- Transactions filters
+        tx-filters(v-if='action==="getTransactions"')
           
         template(v-if='!isTable')
           ul.prev-next
@@ -30,9 +30,7 @@
             contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
             contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
             account(v-if='isComponent("Account")' :data='data' :token='token')
-            blocks(v-if='isComponent("Blocks")' :data='data')
             block(v-if='isComponent("Block")' :block='data' :next='next' :prev='prev')
-            transactions(v-if='isComponent("Transactions")' :data='data')
         //- Generic render
         template(v-else)
             template(v-if='isTable')
@@ -138,9 +136,8 @@ export default {
       let options = this.$route.params
       let type = this.type
       let action = this.action
-      let page = this.$route.query.page
-      options.page = page
-      return { options, type, action, page }
+      let query = this.$route.query
+      return { options, type, action, query }
     },
     token () {
       let token = null

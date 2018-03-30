@@ -67,6 +67,8 @@ export const socketPageData = ({ state, commit }, res) => {
 }
 
 export const fetchPageData = ({ commit }, data) => {
+  data.options.page = data.query.page || 1
+  data.options.query = data.query || null
   let key = pageDataKeyPrefix + Date.now()
   data.key = key
   commit('SET_PAGE_REQUEST', key)
