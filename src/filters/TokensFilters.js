@@ -20,6 +20,10 @@ export const txValue = Vue.filter('tx-value', value => {
   if (value) return etherUnits.toEther(value, 'wei')
 })
 
+export const bignumber = Vue.filter('big-number', value => {
+  return bignumberObjtoBigNumber(value)
+})
+
 export const bignumberObjtoBigNumber = value => {
   if (!value) return
   let bn = new BigNumber(0)
