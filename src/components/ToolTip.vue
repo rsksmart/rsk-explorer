@@ -3,14 +3,21 @@
   .tooltip(@mouseleave.passive='show=false' @mouseenter.passive='show=true' @touchend.passive='touch')
     .trim(v-if='trim')
       slot(name='trim-1')
-        span {{trimed[0]}}
+        template(v-if='routerLink')
+          router-link(:to='routerLink')
+            span {{trimed[0]}}
+        span(v-else) {{trimed[0]}}
     slot(v-else)
     .points(v-if='trim' :class='pointsClass')
         button(v-if='!show') 
           span.icon {{ opts.trimTxt }}
-        button(v-if='show  && opts.copy' @click='copyText' @touchend.stop='copyText')
+        button.copy(v-if='show  && opts.copy' @click='copyText' @touchend.stop='copyText')
           icon(name='copy')
-    .trim(v-if='trimed[1]') {{trimed[1]}}
+    .trim(v-if='trimed[1]')
+      template(v-if='routerLink')
+        router-link(:to='routerLink')
+          span {{trimed[1]}}
+      span(v-else) {{trimed[1]}}
     //- Tooltip
     .tip(v-if='show' :class='opts.pos' :style='tipPos')
       //- value
@@ -37,7 +44,8 @@ export default {
   props: [
     'value',
     'trim',
-    'options'
+    'options',
+    'routerLink'
   ],
   data () {
     return {
@@ -147,11 +155,9 @@ export default {
 </script>
 <style lang="stylus">
 
-  @import '../lib/styl/vars.styl'
 
   $tip-arrow-size = 5px
   $tip-bg = white
-  $tip-bc = $color
   $tip-border = 1px
 
   .tooltip, .trim
@@ -181,7 +187,7 @@ export default {
       margin-{v} $tip-arrow-size * -1
 
     &:before
-      border-{pos}-color $tip-bc
+      border-{pos}-color @color
       margin-{v} -($tip-arrow-size + $tip-border)
 
   .tooltip
@@ -241,25 +247,15 @@ export default {
       button
         height 1em
         line-height 1em
-        color $color
+        color @color
+        .icon
+          color @color
 
     .points.left
       float left
 
     .points.right
       float right
-
-    button.copy
-      display block
-      position absolute
-      left 0
-      top 0.25em
-      line-height 1em
-      font-size 1em
-      margin 0 0.5em
-
-      .icon
-        font-size 1em
 
     .copy-txt
       display inline
@@ -272,6 +268,7 @@ export default {
         opacity 0
         width 1px
         heigth 1px
+
 
     button.close
       line-height 1em
@@ -290,7 +287,7 @@ export default {
     display block
 
   .msg
-    color $color
+    color @color
     position absolute
     top -1.5em
     left 0
@@ -325,7 +322,7 @@ export default {
 
   @keyframes copyb
     0%
-      color $color
+      color @color
 
     100%
       color inherit
