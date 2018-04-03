@@ -1,40 +1,35 @@
 html
   font-size 100%
-html
-body 
-button
-  margin: 0
-  padding: 0
-  
+
+html, body, button
+  margin 0
+  padding 0
+
 body
-  font-size: $font-size
-  font-family: $base-font
+  font-size $font-size
+  font-family $base-font
   background-color $bg-color
-  color: $txt-color
+  color $txt-color
 
+body, button, input
+  font-family $forms-font
 
-body, button, input 
-  font-family: $forms-font
-
-h1,h2,h3,h4,h5,h6
-  color: $txt-color
+h1, h2, h3, h4, h5, h6
+  color $txt-color
 
 svg text
- user-select: none
+  user-select none
 
-:focus 
-    outline: 0
+:focus
+  outline 0
 
 a
   text-decoration none
-  color $color
-  &:hover
-    color color2
-    .icon, .svg-icon *
-      fill color2
+  link()
+
 h1
-  display: inline
-  margin  0 
+  display inline
+  margin 0
 
 *[class^='col-']
   .title
