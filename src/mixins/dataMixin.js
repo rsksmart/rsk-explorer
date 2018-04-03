@@ -1,24 +1,9 @@
 import { mapGetters } from 'vuex'
 import common from './common'
-import DataField from '../components/DataField.vue'
 import { txValue } from '../filters/TokensFilters'
 export default {
-  components: {
-    DataField
-  },
   filters: { txValue },
   mixins: [common],
-  props: [
-    'data',
-    'type',
-    'title',
-    'hideFields',
-    'link',
-    'formatRow',
-    'formatFields',
-    'formatLink',
-    'parentData'
-  ],
   computed: {
     pageTitle () {
       return this.title || this.type
@@ -143,6 +128,11 @@ export default {
         })
       }
       return false
+    },
+    makeLink (field, row) {
+      let value = this.getValue(field, row, true)
+      // if (!field.link) console.log('no link', field)
+      return (value && field.link) ? field.link + value : null
     }
   }
 }

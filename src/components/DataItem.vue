@@ -5,18 +5,18 @@
         li.item(v-if='!isHidden(fieldName)' :class='itemClass(fieldName,index)')
           icon.field-icon(v-if='field.titleIcon && field.icon' :name='field.icon')
           span.field-title(v-if='!field.hideTitle') {{ field.title }}:
-          template(v-if='field.link && value(field)') 
-            router-link(:to='field.link + value(field)' :style='cellStyle(field,value(field,false))')
-              data-field(:field='field' :value='value(field)')
-          template(v-else)
-            data-field(:field='field' :value='value(field)' :style='cellStyle(field,value(field,false))') 
-          //-li.from-to(v-if='isFrom(fieldName,index)' )
-            icon(name='arrow-right') 
+          data-field(:field='field' :row='data' :style='cellStyle(field,value(field,false))') 
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
+import DataField from '../components/DataField'
 export default {
   name: 'data-item',
+  props: [
+    'data',
+    'type'
+  ],
+  components: { DataField },
   mixins: [
     dataMixin
   ],

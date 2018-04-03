@@ -90,7 +90,8 @@ export default {
     fields: {
       hash: {
         field: 'hash',
-        type: 'hash'
+        type: 'hash',
+        link: '/transactions/'
       },
       block: {
         field: 'blockNumber',
@@ -123,6 +124,7 @@ export default {
   transaction: {
     key: 'hash',
     icon: 'transaction',
+    link: '/transactions',
     formatFields: transactionFormatFields,
     fields: {
       hash: {
@@ -218,7 +220,9 @@ export default {
     icon: 'credit-card',
     key: 'address',
     fields: {
-      address: null,
+      address: {
+        link: '/accounts/'
+      },
       balance: {
         filters: ['tx-value'],
         default: '0'

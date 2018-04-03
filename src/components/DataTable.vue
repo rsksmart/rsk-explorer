@@ -17,20 +17,28 @@
               icon(:name='iconLoad' :style='iconStyle(row)')
           template(v-for='field,fieldName,index in fields') 
             td(v-if='!isHidden(fieldName)')
-              template(v-if='field.link && getValue(field,row)') 
-                router-link(:to='field.link + getValue(field,row,true)')
-                  data-field(:field='field' :value='getValue(field,row,true)' :link='field.link + getValue(field,row,true)')
-              template(v-else)
-                data-field(:field='field' :value='getValue(field,row,true)' :link='field.link + getValue(field,row,true)')  
+              data-field(:field='field' :row='row')  
             td(v-if='isFrom(fieldName,index)')
               icon(name='arrow-right')
-
-
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
+import DataField from '../components/DataField'
 export default {
   name: 'data-table',
+  props: [
+    'data',
+    'type',
+    'title',
+    'hideFields',
+    'link',
+    'formatRow',
+    'formatFields',
+    'formatLink',
+    'parentData',
+    'sort'
+  ],
+  components: { DataField },
   mixins: [
     dataMixin
   ]
