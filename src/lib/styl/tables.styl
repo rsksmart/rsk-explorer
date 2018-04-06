@@ -8,6 +8,8 @@
     th
       padding .5em 1em 
       border-bottom brand3 solid 2px
+      button
+        font-size  1em
       .entity-icon
         .svg-icon 
           height 1.5em
@@ -35,13 +37,15 @@ $pinned-border = $brand2 solid 1px
     color $txt-color
     border none
     tr, th
-      .svg-icon
+      .svg-icon, button, button *
         color $color
         fill $color
     th
       border-bottom $border-color dashed 1px
       padding 1em 2em
       color $color
+        button *
+          color $color
       // background-color $head-bg
     tr.odd td
       background-color $row-odd-bg
