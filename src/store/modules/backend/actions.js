@@ -42,7 +42,10 @@ export const socketTokens = ({ commit }, data) => {
 
 export const socketPageData = ({ state, commit }, res) => {
   let req = res.req
-  if (!req) return
+  if (!req) {
+    commit('SET_PAGE_ERROR', (res.error || { error: 'error' }))
+    return
+  }
   let key = res.req.key
   let data = res.data
   let pages = res.pages
@@ -50,30 +53,50 @@ export const socketPageData = ({ state, commit }, res) => {
   let next = res.next
   let prev = res.prev
   let parentdata = res.parentData
+  let sort = (res.pages) ? res.pages.sort : null
+  let q = (req.params && req.params.query) ? req.params.query : null
   let requesting = state.page.requesting
+  let type = req.type || null
+  let action = req.action || null
   if (key && requesting && key === requesting) {
     commit('SET_PAGE_REQUEST', false)
-    commit('SET_PAGE_REQ', req)
+
     if (error) {
       commit('SET_PAGE_ERROR', error)
     } else {
+      commit('SET_PAGE_REQ', req)
       commit('SET_PAGE_PAGES', pages)
       commit('SET_PAGE_DATA', data)
       commit('SET_PAGE_PREV', prev)
       commit('SET_PAGE_NEXT', next)
+      commit('SET_PAGE_SORT', sort)
+      commit('SET_Q', { type, action, value: q })
+      commit('SET_SORT', { type, action, value: sort })
       commit('SET_PAGE_PARENTDATA', parentdata)
     }
   }
 }
 
-export const fetchPageData = ({ commit }, data) => {
-  data.options.page = data.query.page || 1
-  data.options.query = data.query || null
+export const socketStats = ({ state, commit }, data) => {
+  // console.log('data', data)
+  commit('SET_STATS', data)
+}
+
+export const fetchPageData = ({ commit, getters }, req) => {
+  req.params = req.params || {}
+  let page = req.page || 1
+  let query = req.query || null
+  let sort = req.sort || null
+  let type = req.type || null
+  let action = req.action || null
+
   let key = pageDataKeyPrefix + Date.now()
-  data.key = key
+  let params = Object.assign(req.params, { page, query, sort })
+  let data = { type, action, params, key }
   commit('SET_PAGE_REQUEST', key)
   commit('SET_PAGE_DATA', null)
   commit('SET_PAGE_ERROR', null)
   commit('SET_PAGE_REQ', null)
+  commit('SET_PAGE_SORT', null)
   commit('SOCKET_EMIT', { event: 'data', data })
 }

@@ -1,15 +1,17 @@
 <template lang="pug">
   .filters
-    span Show only transactions of type:&nbsp;
+    small Show only transactions of type:&nbsp;
     ul.inline.dark
       li.col( v-for='val,name in txFilters')
-        input(type='checkbox' v-model='filterValues' :value='name' :id='name')
-        label(:for='name') {{name}}
+        input(type='checkbox' v-model='filterValues' :value='name' :id='name' @change='update')
+        label(:for='name') 
+          small {{name}}
 </template>
 <script>
 import { mapActions } from 'vuex'
 export default {
   name: 'tx-filters',
+  props: ['q', 'type', 'action'],
   data () {
     return {
       txFilters: {
@@ -20,21 +22,16 @@ export default {
       filterValues: []
     }
   },
-  watch: {
-    filterValues (newValue) {
-      let query = Object.assign({}, this.$route.query)
-      query.txType = newValue
-      this.$router.push({ query })
-    }
-  },
   created () {
-    let query = this.$route.query
-    this.filterValues = query.txType || ['normal']
+    this.filterValues = this.q.txType || []
   },
-  methods: {
-    ...mapActions({ getData: 'fetchPageData' }),
-    update () {
 
+  methods: {
+    ...mapActions(['updateRouterQuery']),
+    update () {
+      let q = Object.assign({}, this.q)
+      q.txType = this.filterValues
+      this.updateRouterQuery({ q })
     }
   }
 }

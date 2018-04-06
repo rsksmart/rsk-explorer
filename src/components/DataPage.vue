@@ -1,15 +1,15 @@
 <template lang="pug">
   .data-page.centered
     h2(v-if='title') {{ pageContext }} {{pageTitle}}
-    spinner(v-if='requestingPageData')
+    spinner(v-if='requestingPageData && !error')
     .error(v-if='error')
-      h1 {{error.error}}
+      h1 {{error.error || 'ERROR'}}
     template(v-else) 
       .page-header(v-if='headComponent')
         account-header(v-if='isHeadComponent("AccountHeader")' :data='parentData')
       .page(v-if='data')
         //- Transactions filters
-        tx-filters(v-if='action==="getTransactions"')
+        tx-filters(v-if='action==="getTransactions"' :q='q' :type='type' :action='action')
           
         template(v-if='!isTable')
           ul.prev-next
@@ -34,7 +34,7 @@
         //- Generic render
         template(v-else)
             template(v-if='isTable')
-              data-table(:data='data' :type='dataType' :parentData='parentData')
+              data-table(:data='data' :type='dataType' :sort='sort' :parentData='parentData')
             template(v-else)
               data-item(:data='data' :type='dataType' :parentData='parentData')
         
@@ -92,8 +92,8 @@ export default {
       requestingPageData: 'requestingPageData',
       page: 'getPage',
       error: 'pageError',
-      paginator: 'pagePaginator',
-      getTokenData: 'getTokenData'
+      getTokenData: 'getTokenData',
+      query: 'getQuery'
     }),
     data () {
       let key = this.keyData
@@ -132,13 +132,6 @@ export default {
     isErc20 () {
       return (this.type === 'erc20')
     },
-    req () {
-      let options = this.$route.params
-      let type = this.type
-      let action = this.action
-      let query = this.$route.query
-      return { options, type, action, query }
-    },
     token () {
       let token = null
       let address = this.$route.params.address
@@ -153,20 +146,31 @@ export default {
     },
     key () {
       return this.dataKey()(this.dataType)
+    },
+    sort () {
+      return this.getSavedSort()(this.type, this.action)
+    },
+    q () {
+      let query = this.query
+      return (query && query.q) ? query.q : this.getSavedQ()(this.type, this.action)
     }
   },
   methods: {
     ...mapActions([
-      'fetchPageData'
+      'fetchRouteData'
     ]),
     ...mapGetters([
-      'dataKey'
+      'dataKey',
+      'getSavedSort',
+      'getSavedQ'
     ]),
     isArray (val) {
       return Array.isArray(val)
     },
     getData () {
-      return this.fetchPageData(this.req)
+      let type = this.type
+      let action = this.action
+      return this.fetchRouteData({ action, type })
     },
     isComponent (c) {
       return (this.component === c)

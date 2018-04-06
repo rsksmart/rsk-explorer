@@ -37,7 +37,7 @@
     
     .box(v-if='block.transactions' )
       h4 Transactions
-      data-table(:data='block.transactions' type='transactions' :hideFields='["block"]' link='/transactions')
+      data-table(:data='block.transactions' type='transactions' :hideFields='["block"]' link='/transactions' :sort='null')
 </template>
 <script>
 import common from '../mixins/common'

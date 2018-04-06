@@ -35,7 +35,3 @@ export const blockStyle = (state, getters) => blockNumber => {
   let color = getters.getBlockColor(blockNumber)
   return { color, fill: color, 'border-color': color }
 }
-
-export const autoUpdate = state => {
-  return state.config.autoUpdateBlocks
-}

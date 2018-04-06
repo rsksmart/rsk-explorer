@@ -13,7 +13,9 @@ export default {
     hideTitle: true
   },
   transaction: {
-    icon: 'credit-card'
+    icon: 'transaction',
+    titleIcon: true,
+    hideTitle: true
   },
   from: {
     link: '/accounts/'

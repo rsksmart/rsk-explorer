@@ -27,7 +27,3 @@ export const updateBlocks = ({ state, commit }) => {
   commit('SET_BLOCKS', blocks)
   commit('SET_TRANSACTIONS', transactions)
 }
-
-export const setAutoUpdate = ({ state, commit }, update) => {
-  commit('SET_CONFIG', ['autoUpdateBlocks', update])
-}

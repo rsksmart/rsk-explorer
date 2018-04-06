@@ -72,7 +72,10 @@ export default {
       number: {
         type: 'block'
       },
-      txs: null,
+      txs: {
+        field: 'txs',
+        type: 'transaction'
+      },
       hash: null,
       miner: null,
       size: null,
@@ -80,7 +83,11 @@ export default {
     }
   },
   block: {
-    icon: 'cube'
+    icon: 'cube',
+    fields: {
+      number: null,
+      hash: null
+    }
   },
   transactions: {
     key: 'hash',
@@ -92,6 +99,10 @@ export default {
         field: 'hash',
         type: 'hash',
         link: '/transactions/'
+      },
+      txi: {
+        field: 'transactionIndex',
+        default: 0
       },
       block: {
         field: 'blockNumber',

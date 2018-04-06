@@ -68,3 +68,12 @@ export const SET_PAGE_REQ = (state, req) => {
 export const SET_PAGE_PARENTDATA = (state, data) => {
   Vue.set(state.page, 'parentData', data)
 }
+
+export const SET_PAGE_SORT = (state, sort) => {
+  sort = sort || {}
+  Vue.set(state.page, 'sort', sort)
+}
+
+export const SET_STATS = (state, data) => {
+  Vue.set(state, 'stats', data)
+}

@@ -29,6 +29,7 @@ export class EntityParser {
     field.name = name
     field.field = field.field || name
     field.field = field.field.split('.')
+    field.fieldName = field.field[0] || null
     field.type = field.type || name
     field.filters = field.filters || null
     field.titleIcon = field.titleIcon || false

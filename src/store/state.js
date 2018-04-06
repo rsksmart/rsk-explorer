@@ -11,9 +11,6 @@ export default function () {
     },
     socketConnected: false,
     socketErrors: [],
-    config: {
-      autoUpdateBlocks: false
-    },
     colors,
     blocksColors
   }

@@ -10,10 +10,12 @@ export default function () {
       pages: {},
       prev: {},
       next: {},
+      sort: null,
       data: []
     },
     blocks: [],
     lastBlocks: [],
+    stats: {},
     lastBlocksTime: 0,
     transactions: [],
     lastTransactions: [],

@@ -6,8 +6,12 @@ import * as mutations from './mutations'
 import state from './state'
 import backend from './modules/backend/'
 import entities from './modules/entities/'
+import config from './modules/config/'
+import routes from './modules/routes/'
 import socket from '../socket.js'
-import socketPlugin from './plugins/socketPlugin.js'
+import socketPlugin from './plugins/socketPlugin'
+import { sync } from 'vuex-router-sync'
+import router from '../router'
 const wsPlugin = socketPlugin(socket)
 Vue.use(Vuex)
 backend.namespaced = false
@@ -19,11 +23,16 @@ const store = new Vuex.Store({
   getters,
   actions,
   mutations,
-  plugins: [wsPlugin],
+  plugins: [
+    wsPlugin
+  ],
   modules: {
     backend,
-    entities
+    entities,
+    config,
+    routes
   }
 })
 
+export const unsync = sync(store, router)
 export default store
