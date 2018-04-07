@@ -9,7 +9,7 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "svg": "vsvg -s ./static/svg/icons -t ./src/icons"
+    "svg": "node ./node_modules/vue-svgicon/bin/svg.js -s ./static/svg/icons -t ./src/icons"
   },
   "dependencies": {
     "bignumber.js": "^5.0.0",
