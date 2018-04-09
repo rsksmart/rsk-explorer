@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Tokens from '@/components/Tokens'
 import DataPage from '@/components/DataPage'
+import { ROUTES as r } from '../config/types'
 // import Transactions from '@/components/Transactions'
 Vue.use(Router)
 
@@ -19,12 +20,12 @@ export default new Router({
       redirect: '/'
     },
     {
-      path: '/tokens',
+      path: `/${r.tokens}`,
       name: 'Tokens',
       component: Tokens
     },
     {
-      path: '/tokens/:address/events',
+      path: `/${r.tokens}/:address/events`,
       name: 'Events',
       component: DataPage,
       props: {
@@ -36,7 +37,7 @@ export default new Router({
       }
     },
     {
-      path: '/tokens/:address/events/:_id',
+      path: `/${r.tokens}/:address/events/:_id`,
       name: 'Event',
       component: DataPage,
       props: {
@@ -47,7 +48,7 @@ export default new Router({
       }
     },
     {
-      path: '/tokens/:address/accounts',
+      path: `/${r.tokens}/:address/accounts`,
       name: 'Accounts',
       component: DataPage,
       props: {
@@ -59,7 +60,7 @@ export default new Router({
       }
     },
     {
-      path: '/tokens/:address/accounts/:account',
+      path: `/${r.tokens}/:address/accounts/:account`,
       name: 'Account',
       component: DataPage,
       props: {
@@ -69,7 +70,7 @@ export default new Router({
       }
     },
     {
-      path: '/blocks',
+      path: `/${r.blocks}`,
       name: 'Blocks',
       component: DataPage,
       props: {
@@ -80,38 +81,38 @@ export default new Router({
       }
     },
     {
-      path: '/blocks/:number',
+      path: `/${r.blocks}/:number`,
       name: 'Block',
       component: DataPage,
       props: {
         type: 'blocks',
-        dataType: 'blocks',
-        component: 'Block',
+        dataType: 'block',
         action: 'getBlock',
         title: ''
       }
     },
     {
-      path: '/accounts',
+      path: `/${r.address}`,
       component: DataPage,
       props: {
         type: 'blocks',
-        dataType: 'account',
-        action: 'getAccounts'
+        dataType: 'address',
+        action: 'getAddresses',
+        title: 'Addresses'
       }
     },
     {
-      path: '/accounts/:address',
+      path: `/${r.address}/:address`,
       component: DataPage,
       props: {
         type: 'blocks',
         headComponent: 'AccountHeader',
         dataType: 'transactions',
-        action: 'getAccountTransactions'
+        action: 'getAddressTransactions'
       }
     },
     {
-      path: '/transactions',
+      path: `/${r.transactions}`,
       name: 'Transactions',
       component: DataPage,
       props: {
@@ -122,7 +123,7 @@ export default new Router({
       }
     },
     {
-      path: '/transactions/:hash',
+      path: `/${r.transactions}/:hash`,
       name: 'Transaction',
       component: DataPage,
       props: {
