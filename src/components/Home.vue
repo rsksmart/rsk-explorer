@@ -65,36 +65,4 @@ export default {
 
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
 
-  .home
-    display flex
-
-  .last-blocks
-    flex-flow row wrap
-
-  .auto-update
-    display flex
-    justify-content center
-    width 100%
-    
-
-  .hero
-    margin-top 2rem
-
-  .last-block
-    flex 7
-    width 100%
-
-    ul.block-data
-      margin 0
-      padding 0
-      flex-flow column nowrap
-
-    .block-number *
-      font-size 2em
-
-  .pending-blocks
-    flex 3
-</style>
