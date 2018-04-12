@@ -30,14 +30,13 @@
             contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
             contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
             account(v-if='isComponent("Account")' :data='data' :token='token')
-            block(v-if='isComponent("Block")' :block='data' :next='next' :prev='prev')
         //- Generic render
         template(v-else)
             template(v-if='isTable')
               data-table(:data='data' :type='dataType' :sort='sort' :parentData='parentData')
             template(v-else)
               data-item(:data='data' :type='dataType' :parentData='parentData')
-        
+
         template(v-if='isTable')
           paginator(:options='pageOptions' :link='0')
 
@@ -50,7 +49,6 @@ import ContractEvents from './ContractEvents.vue'
 import ContractAccounts from './ContractAccounts.vue'
 import Account from './Account.vue'
 import Paginator from './Paginator.vue'
-import Block from './Block.vue'
 import ToolTip from './ToolTip.vue'
 import DataTable from './DataTable.vue'
 import DataItem from './DataItem.vue'
@@ -67,7 +65,6 @@ export default {
     Account,
     Paginator,
     ToolTip,
-    Block,
     AccountHeader,
     TxFilters
   },
