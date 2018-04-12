@@ -2,6 +2,7 @@
   .transaction.box.row(:style='txBoxStyle')
     .box-icon
       router-link(:to='"/transactions/" + tx.hash')
+      
         icon(name='transaction' :color='blockColor')
     .box-content
       ul.plain.flex

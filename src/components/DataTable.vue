@@ -90,7 +90,6 @@ export default {
       this.updateRouterQuery({ sort })
     },
     sortBy (field) {
-      console.log('sort')
       let sort = this.sort
       sort[field] = (sort[field] || -1) * -1
       // this.$router.push({ query: JSON.stringify(sort) })

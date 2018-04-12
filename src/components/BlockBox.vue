@@ -54,6 +54,7 @@ export default {
 </script>
 <style lang="stylus">
   .block-box
+    display block
     will-change opacity
     .title
       padding 0

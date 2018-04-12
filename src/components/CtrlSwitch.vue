@@ -1,5 +1,4 @@
 <template lang="pug">
-  
   .switch
     label
       input(type='checkbox' :checked='value' @change='updateValue')

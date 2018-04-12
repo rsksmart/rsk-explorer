@@ -131,7 +131,6 @@ export default {
     },
     makeLink (field, row) {
       let value = this.getValue(field, row, true)
-      // if (!field.link) console.log('no link', field)
       return (value && field.link) ? field.link + value : null
     }
   }
