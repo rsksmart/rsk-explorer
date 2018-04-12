@@ -1,24 +1,24 @@
 /**
  * type:{
  *    key: item key field
- *    gridComponent: Vue component name to render item in grid mode
       fields:{
         field: null | object: {
                         field: key of data source, field name as default
                         type: field name as default
-                        filters: Array of vue filters names
+                        filters: [Array] of vue filters names
                         suffix:
                         renderTitle:{
-                              icon: boolean, render icon in title
-                              title: boolean, render title text
+                              icon: [boolean], render icon in title
+                              title: [boolean], render title text
                         }
-
+                        renderAs: [string] Vue commponent to render field
+                        renderAsProps: [object] props to pass to component
                       }
       }
  * }
  */
 
-const THIS_ACCOUNT = 'This Account'
+import { ROUTES as r, THIS_ADDRESS } from './types'
 
 const eventFormatRow = (event, parentData) => {
   let args = event.args
@@ -37,7 +37,7 @@ const eventFormatRow = (event, parentData) => {
 }
 const eventFormatFields = (fields, parentData) => {
   let token = parentData
-  let uri = token.baseUri + 'accounts/'
+  let uri = token.baseUri + r.addresses + '/'
   fields.to.link = uri
   fields.from.link = uri
   fields.amount.suffix = token.shortName
@@ -63,11 +63,12 @@ const transactionFormatRow = (tx, parentData) => {
   return tx
 }
 
-export default {
-  blocks: {
+const Blocks = () => {
+  return {
     key: 'number',
     icon: 'cube',
-    gridComponent: 'block-box',
+    singular: 'block',
+    plural: 'blocks',
     fields: {
       number: {
         type: 'block'
@@ -81,24 +82,49 @@ export default {
       size: null,
       timestamp: null
     }
-  },
-  block: {
-    icon: 'cube',
-    fields: {
-      number: null,
-      hash: null
+  }
+}
+
+const Block = () => {
+  let block = Blocks()
+  block.fields = Object.assign(block.fields, {
+    parentHash: null,
+    sha3Uncles: null,
+    miner: null,
+    difficulty: {
+      type: 'bigNumber'
+    },
+    gasLimit: null,
+    gasUsed: null,
+    nonce: null,
+    transactions: {
+      renderAs: 'data-table',
+      renderAsProps: {
+        type: 'transactions',
+        hideFields: ['block'],
+        link: `/${r.transactions}/`,
+        sort: null
+      }
     }
-  },
-  transactions: {
+  })
+  block.itemTitle = true
+  return block
+}
+
+const Txs = () => {
+  return {
     key: 'hash',
     icon: 'transaction',
-    link: '/transactions',
+    singular: 'transaction',
+    plural: 'transactions',
+    link: `/${r.transactions}`,
     formatRow: transactionFormatRow,
+    formatFields: transactionFormatFields,
     fields: {
       hash: {
         field: 'hash',
         type: 'hash',
-        link: '/transactions/'
+        link: `/${r.transactions}/`
       },
       txi: {
         field: 'transactionIndex',
@@ -110,11 +136,11 @@ export default {
       },
       from: {
         type: 'from',
-        default: THIS_ACCOUNT
+        default: THIS_ADDRESS
       },
       to: {
         type: 'to',
-        default: THIS_ACCOUNT
+        default: THIS_ADDRESS
       },
       value: {
         filters: ['tx-value']
@@ -131,45 +157,27 @@ export default {
         field: 'txType'
       }
     }
-  },
-  transaction: {
-    key: 'hash',
-    icon: 'transaction',
-    link: '/transactions',
-    formatFields: transactionFormatFields,
-    fields: {
-      hash: {
-        type: 'hash'
-      },
-      block: {
-        field: 'blockNumber',
-        type: 'block'
-      },
-      transactionIndex: null,
-      from: {
-        field: 'from',
-        default: THIS_ACCOUNT
-      },
-      to: {
-        field: 'to',
-        default: THIS_ACCOUNT
-      },
-      value: {
-        filters: ['tx-value']
-      },
-      gas: {
-        field: 'gas',
-        default: 0
-      },
-      time: {
-        field: 'timestamp',
-        type: 'timestamp'
-      },
-      type: {
-        field: 'txType'
-      }
+  }
+}
+const Tx = () => {
+  let tx = Txs()
+  tx.fields = Object.assign(tx.fields, {
+    block: {
+      field: 'blockNumber',
+      type: 'block'
+    },
+    input: {
+      field: 'input'
     }
-  },
+  })
+  return tx
+}
+
+export default {
+  blocks: Blocks(),
+  block: Block(),
+  transactions: Txs(),
+  transaction: Tx(),
   events: {
     key: '_id',
     icon: 'zap',
@@ -198,10 +206,10 @@ export default {
       address: null,
       transactionHash: null,
       from: {
-        default: THIS_ACCOUNT
+        default: THIS_ADDRESS
       },
       to: {
-        default: THIS_ACCOUNT
+        default: THIS_ADDRESS
       },
       amount: {
         field: 'args._value',
@@ -213,10 +221,10 @@ export default {
       }
     }
   },
-  accounts: {
+  addresses: {
     key: '_id',
     icon: 'credit-card',
-    type: 'accounts',
+    type: 'addresses',
     fields: {
       _id: {
         title: 'id'
@@ -227,12 +235,12 @@ export default {
       }
     }
   },
-  account: {
+  address: {
     icon: 'credit-card',
     key: 'address',
     fields: {
       address: {
-        link: '/accounts/'
+        link: `${r.address}`
       },
       balance: {
         filters: ['tx-value'],

@@ -1,10 +1,14 @@
+import { ROUTES as r } from './types'
 export default {
   block: {
     icon: 'cube',
     titleIcon: true,
     hideTitle: true,
-    link: '/blocks/',
+    link: `/${r.blocks}/`,
     filters: ['locale']
+  },
+  bigNumber: {
+    filters: ['big-number']
   },
   timestamp: {
     icon: 'stopwatch',
@@ -18,10 +22,10 @@ export default {
     hideTitle: true
   },
   from: {
-    link: '/accounts/'
+    link: `/${r.address}/`
   },
   to: {
-    link: '/accounts/'
+    link: `/${r.address}/`
   },
   hash: {
     icon: 'hash',
