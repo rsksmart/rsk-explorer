@@ -1,4 +1,27 @@
 @import 'vars.styl'
+@import 'media_queries.styl'
+@import 'mixins.styl'
+
+$head-h = 3.25em
+$head-margin = 3em
+$head-bg = $bg-color
+$nav-margin = 1em
+.logo
+  svg 
+    height 3em
+.burger
+  height 100%
+  min-height $head-h
+  display flex
+  align-items center
+  justify-content flex-end
+  background $head-bg
+  defaultsColors()
+  
+  button 
+    width 3em
+    height @width
+    
 
 .sticky-header
   position fixed
@@ -6,25 +29,35 @@
   min-width 100%
 
 header
-  background $bg-color
+  background $head-bg
   box-shadow $tip-sh
   color brand2
   display flex
-  flex-flow row nowrap
+  flex-flow row wrap
   align-items center
-  min-height 3.25em
-  justify-content space-between
+  min-height $head-h
+  justify-content flex-start
   .brand
     display flex
     justify-content center
     align-items center
+    margin-left $head-margin
     
     .iso svg
       fill $color
     .logo
       color color1  
+  .search 
+    order 3    
   .header-content
-    flex 6
+    font-family $title-font
+    flex 0 0 100%
+    color white
+    margin-left $head-margin
+    flex-centered()
+    .hc
+      display inline-flex
+      margin 0 0 1em 1em
   .iso
     width 70px
     display inline-block
@@ -36,30 +69,89 @@ header
       font-weight 400
 
   .nav
-    flex 0 1 auto
+    order 3
+    flex 0 1 100%
     display flex
-    justify-content flex-end
-    align-items center
-
-    a
-      color color1
-      &:hover
-        color color2
+    position absolute
+    flex-flow column wrap
+    right 0
+    top 0
+    z-index 2000
+    margin 0 $nav-margin 0 0 
+    padding 0
+    will-change transform
+    transition all 1s ease
     ul 
+      opacity 0
+      transform translateX(100%)
       list-style none
       display flex
       min-height 3em
       padding 0
       margin 0
-      li
-        min-height 100%
+      flex-flow column  nowrap
+     
+      transition all 1s ease
+      li, li a
+        min-height 2em
         display flex
         justify-content center
         align-items center
         padding 0 1em 
-        &:first-child
-          padding-left 2em
-        &:last-child
-          margin-right 1em  
+        background $head-bg
         &.active, &.router-link-active
           border-bottom solid 2px color1
+
+  .nav.open
+    border-left $color 2px solid
+    padding 0 $nav-margin 0 0
+    margin 0 
+    ul
+      opacity 1
+      transform translateX(0)
+    li:last-child
+      a
+        margin 0 0 2em 0 
+  .menu
+    display none
+    li
+      display flex
+  .menu.enabled
+    display block
+    flex 1
+
+
+@media $media_small
+  header
+    .header-content
+      flex 1
+      .hc
+        margin 0 0 0 .5em 
+@media $media_medium
+  header
+    .burger, .burger *  
+      display none
+    .menu
+      display flex
+    .nav
+      position relative
+      flex 0 1 auto
+     
+      ul
+        opacity 1
+        transform translateX(0)
+        flex-flow row wrap
+        li  
+          &:first-child
+            padding-left 2em
+          &:last-child
+            margin-right 1em  
+    .nav.open
+      border none
+      ul
+        li:last-child
+          a
+            margin 0
+@media $media_large
+  .header-content
+    flex 6 1 auto

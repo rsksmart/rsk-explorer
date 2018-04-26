@@ -9,13 +9,18 @@
             .title
               h1.logo rsk explorer
         .header-content
-        search-box
-        .nav
-          nav.menu
+          search-box
+        .nav(:class='(menu) ? "open":""')
+          .burger
+            button(@click='toggleMenu')
+              icon(:name='(!menu) ? "menu" : "close"')
+          nav.menu(:class='(menu) ? "enabled":""')
             ul
-              template(v-for='menu in fields')
-                router-link(:to='"/" + menu' tag='li') 
-                  a(:href='"/" + menu') {{menu}}
+              template(v-for='menu in menuItems')
+                li(v-if='!menu.menuHide' @click='toggleMenu')
+                  router-link(:to='"/" + menu')
+                    icon(v-if='menu.icon' :name='menu.icon')
+                    span {{menu}}
     .main
       template(v-if='connected')
         router-view
@@ -46,6 +51,7 @@ export default {
   data () {
     return {
       resizeTimeout: null,
+      menu: false,
       menuItems: ['home', 'tokens', 'blocks', 'transactions', 'addresses']
     }
   },
@@ -72,6 +78,9 @@ export default {
     ...mapActions([
       'setSize'
     ]),
+    toggleMenu () {
+      this.menu = !this.menu
+    },
     goHome (event) {
       this.$router.push({ path: '/Home' })
     },
@@ -84,6 +93,7 @@ export default {
       this.setSize(size)
     },
     resizeThrottler () {
+      this.menu = false
       // ignore resize events as long as an actualResizeHandler execution is in the queue
       if (!this.resizeTimeout) {
         let vm = this
