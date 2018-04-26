@@ -6,6 +6,7 @@
 <script>
 import * as ethUtils from '../lib/js/ethUtils'
 import { mapState } from 'vuex'
+import { ROUTES as r } from '../config/types'
 export default {
   name: 'search-box',
   data () {
@@ -19,26 +20,22 @@ export default {
     })
   },
   methods: {
+    isBlock (number) {
+      number = parseInt(number)
+      return number > -1 && number <= this.lastBlocks[0].number
+    },
     search (event) {
       let value = this.searchValue
       if (value) {
-        let isTx = ethUtils.isTx(value)
-        let isAddress = ethUtils.isAddress(value)
-        let link
-        if (isAddress) {
-          link = '/accounts/'
-        } else if (isTx) {
-          link = '/transactions/'
-        } else {
-          let lastBlock = this.lastBlocks[0].number
-          value = Number(value)
-
-          if (Number.isInteger(value) && value < lastBlock) {
-            link = '/blocks/'
-          }
+        let tests = {
+          address: (ethUtils.isAddress(value)) ? `/${r.addresses}/` : null,
+          tx: (ethUtils.isTx(value)) ? `/${r.transactions}/` : null,
+          block: (this.isBlock(value)) ? `/${r.blocks}/` : null
         }
+        let links = Object.values(tests).filter(l => l)
+        // fix to show all posible matches:
+        let link = (links.length) ? links[0] + value : null
         if (link) {
-          link += value
           this.$router.push(link)
         } else {
           this.searchValue = ''
