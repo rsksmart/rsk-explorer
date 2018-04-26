@@ -54,11 +54,11 @@ const transactionFormatFields = (fields, parentData) => {
 }
 
 const transactionFormatRow = (tx, parentData) => {
-  let account
-  if (parentData) account = parentData.account
-  if (account) {
-    tx.from = clearIfMatch(tx.from, account)
-    tx.to = clearIfMatch(tx.to, account)
+  let address
+  if (parentData) address = parentData.address
+  if (address) {
+    tx.from = clearIfMatch(tx.from, address)
+    tx.to = clearIfMatch(tx.to, address)
   }
   return tx
 }
@@ -240,7 +240,7 @@ export default {
     key: 'address',
     fields: {
       address: {
-        link: `${r.address}`
+        link: `/${r.addresses}/`
       },
       balance: {
         filters: ['tx-value'],

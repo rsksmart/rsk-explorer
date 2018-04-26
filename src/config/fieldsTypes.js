@@ -22,10 +22,10 @@ export default {
     hideTitle: true
   },
   from: {
-    link: `/${r.address}/`
+    link: `/${r.addresses}/`
   },
   to: {
-    link: `/${r.address}/`
+    link: `/${r.addresses}/`
   },
   hash: {
     icon: 'hash',
