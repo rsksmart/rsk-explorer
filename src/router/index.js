@@ -92,7 +92,7 @@ export default new Router({
       }
     },
     {
-      path: `/${r.address}`,
+      path: `/${r.addresses}`,
       component: DataPage,
       props: {
         type: 'blocks',
@@ -102,7 +102,7 @@ export default new Router({
       }
     },
     {
-      path: `/${r.address}/:address`,
+      path: `/${r.addresses}/:address`,
       component: DataPage,
       props: {
         type: 'blocks',

@@ -46,7 +46,7 @@ export default {
   data () {
     return {
       resizeTimeout: null,
-      fields: ['home', 'tokens', 'blocks', 'transactions', 'address']
+      menuItems: ['home', 'tokens', 'blocks', 'transactions', 'addresses']
     }
   },
   created () {
