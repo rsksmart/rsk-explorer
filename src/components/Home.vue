@@ -8,8 +8,10 @@
           pending-blocks(v-if='pending')
           .auto-update
             ctrl-switch(label='Auto update' :value='aUpdate' @change='setAupdate')
-      .col-b 
-        tx-chart(:asize='appSize.w + appSize.h')
+      .col-b
+        .box
+          .chart-c
+            tx-chart(:asize='appSize.w + appSize.h')
     .cols
       .col-a
         last-blocks
@@ -65,4 +67,11 @@ export default {
 
 }
 </script>
+<style lang="stylus">
+  .home
+    max-width 100%
+  .chart-c
+    margin .5em 1em
+    max-width 100%
+</style>
 

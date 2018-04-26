@@ -1,5 +1,5 @@
 <template lang="pug">
-  .tx-chart.box.chart
+  .tx-chart.chart
     strong.title Last blocks transactions
     .chart-container(v-if='blocks.length' :style='boxStyle')
       d3-bar-chart(:data='blocks',:options='chartOptions')
@@ -85,17 +85,14 @@ export default {
       return { width: this.size.w + 'px' }
     },
     chartOptions () {
-      let size = { w: this.size.w, h: this.size.h }
-      let options = Object.assign({ size }, this.options)
-      return options
+      return Object.assign({ size: this.size }, this.options)
     }
   },
   methods: {
     onResize () {
-      let size = this.size
-      size.w = this.$el.clientWidth
-      size.h = size.w / 3.5
-      this.size = Object.assign({}, size)
+      let w = this.$el.parentElement.offsetWidth
+      let h = w / 3.5
+      this.size = Object.assign({}, { w, h })
     }
   }
 }
@@ -106,9 +103,8 @@ export default {
 
   .chart-container
     display flex
-    padding 1em
     justify-content space-between
-    width auto
+    max-width 100%
 
   .tx-chart
     max-height 100%
