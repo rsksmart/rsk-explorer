@@ -5,7 +5,7 @@
       .pending-msg.box(v-if='pending')
         button.txt-center.info(@click='updateBlocks')
           em there are 
-          strong {{ pending }} 
+            strong.badge {{ pending }} 
           em new blocks, click  here to update the list
       ul(v-for='block in blocks')
         li 
