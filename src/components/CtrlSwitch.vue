@@ -49,8 +49,9 @@ export default {
     .label
       margin-left .5em
       font-size .9em
-    input
+    input[type="checkbox"]
       display none
+      border none
 
     .slider
       position absolute
