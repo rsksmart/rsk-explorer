@@ -27,12 +27,14 @@
                       li(v-for='n in sortIndex' :class='( sortIndex[field.fieldName] == n) ? "selected":""')
                         button(@click='orderSort(field.fieldName,n)') {{n}}
                       li
-                        button cancel  
+                        button(@click='orderSort()')
+                          icon(name='close')
                           //-small {{sortKeys[n-1]}}
                   button(v-else-if='sorts > 1' @click='showSortOrder(field.fieldName)') 
                     sub {{sortIndex[field.fieldName]}} 
-                  button.sort(v-else-if='sort && sort[field.fieldName]' @click='sortRemove(field.fieldName)')
-                    icon(name='delete' title='remove sort')
+                  template(v-if='sort && sort[field.fieldName] && sortOrderMenu != field.fieldName')
+                    button.sort(@click='sortRemove(field.fieldName)')
+                      icon.small(name='delete-forever' title='remove sort')
                 template(v-else)
                   icon(v-if='field.titleIcon && field.icon' :name='field.icon')
                   span(v-if='!field.hideTitle') {{ field.title }}
@@ -55,7 +57,9 @@ import DataField from '../components/DataField'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'data-table',
-  components: { DataField },
+  components: {
+    DataField
+  },
   props: [
     'data',
     'type',
@@ -148,14 +152,22 @@ export default {
   @import '../lib/styl/mixins.styl'
 
   .sort-order-menu
-    flex .5
     list-style none
-    display flex
+    display inline-flex
     flex-flow column nowrap
+    position absolute
+    bottom 1em
+    margin 0 0 0 1em
+    padding 0
+
     li
-      borders()
       font-size 0.9em
-      width 3em
+      width 2em
+      button:hover
+        padding 0 .125em
+        borders()
+        color white
+
       &:hover
         background $quasi-bg
         color white
@@ -187,4 +199,5 @@ export default {
 
   .has-sort
     color inherit
+    position relative
 </style>
