@@ -79,6 +79,6 @@ export default {
     display inline-flex
     div,span
       &::before
-        content: '_'
+        content: '\00a0'
 </style>
 
