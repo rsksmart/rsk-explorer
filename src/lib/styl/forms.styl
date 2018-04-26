@@ -1,4 +1,6 @@
 @import './buttons.styl'
+@import './mixins.styl'
+
 ::-webkit-input-placeholder
   color $controls-color
   font-style italic
@@ -17,5 +19,29 @@ label
 label + input[type='range']
   display block  
 
+input 
+  defaultsColors()
+  borders()
+  &:focus
+    focus()
+
 input.big
   font-size 1.125em
+
+input[type='checkbox']
+  appearance none
+  border $color solid .1em
+  width 1.1em
+  height @width
+  display inline-flex
+  justify-content center
+  align-items center
+  &::after
+      width .4em
+      height @width
+      content ''
+      display block
+      background trasparent
+  &:checked
+    &::after
+      background $color

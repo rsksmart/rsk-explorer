@@ -34,8 +34,26 @@ even()
 box()
   border $frame-border
   background $quasi-bg
+  border-radius $box-border-radius
   // min-height $min-box-height
   // margin-top 0.5rem
+
+flex-centered()
+  display flex
+  justify-content center
+  align-items center
+
+brand-background()
+  background $color
+  .svg-icon
+    fill white
+  a
+    color color1
+    & .svg-icon
+      margin  0 .5em 0 0
+    &:hover 
+      color color2
+      fill color2
 
 badge(size)
   width size
@@ -56,7 +74,75 @@ badge(size)
 link()
   color $color
   fill $color
+
   :hover
     transition $links-transition
     color color2
     fill color2
+
+table($c1, $c2)
+
+  $bc = $c1
+  $bg-color = red
+  color $txt-color
+  border none
+  $odd = lightness($c1,98%)
+  $even = lightness($c1,96%)
+
+  tr, th
+    .svg-icon, button, button *
+      color $c1
+      fill $c1
+
+  th
+    color $c1
+    border-bottom $bc dashed 1px
+    padding 1em 2em
+      button *
+        color $c1
+
+  tr.odd td
+    background-color $odd
+
+  tr.even td
+    background-color $even
+
+  tr.pinned
+    .pin .svg-icon
+      fill $color
+
+  tr:last-child td
+    border-bottom solid 1px $bc
+
+  tr:hover td
+    background-color $bg-color
+
+  td
+    border none
+    border-bottom dashed 1px $bc
+    padding 0.75em 1.5em
+
+  tr > td:first-child, tr > th:first-child
+    padding-left 3em
+
+  tr > td:last-child, tr > th:last-child
+    padding-right 3em
+
+
+setColor(c)
+  color c
+  & svg, .svg-icon
+    fill c
+
+borders()
+  border none 
+  border $border
+  border-radius $border-radius
+
+focus()
+  border $focus-border
+  background $focus-bg
+
+defaultsColors()
+  color $color
+  background $bg-color
