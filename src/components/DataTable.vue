@@ -22,8 +22,17 @@
                     .sort(v-if='isSorted(field.fieldName)')
                       .icon
                         icon.small(:name='sortIcon(field.fieldName)')
-                      sub(v-if='sorts > 1') {{sortIndex[field.fieldName]}} 
-                  button.sort(v-if='sort && sort[field.fieldName]' @click='sortRemove(field.fieldName)') x
+                  template(v-if='sortOrderMenu === field.fieldName')
+                    ul.sort-order-menu
+                      li(v-for='n in sortIndex' :class='( sortIndex[field.fieldName] == n) ? "selected":""')
+                        button(@click='orderSort(field.fieldName,n)') {{n}}
+                      li
+                        button cancel  
+                          //-small {{sortKeys[n-1]}}
+                  button(v-else-if='sorts > 1' @click='showSortOrder(field.fieldName)') 
+                    sub {{sortIndex[field.fieldName]}} 
+                  button.sort(v-else-if='sort && sort[field.fieldName]' @click='sortRemove(field.fieldName)')
+                    icon(name='delete' title='remove sort')
                 template(v-else)
                   icon(v-if='field.titleIcon && field.icon' :name='field.icon')
                   span(v-if='!field.hideTitle') {{ field.title }}
@@ -46,6 +55,7 @@ import DataField from '../components/DataField'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'data-table',
+  components: { DataField },
   props: [
     'data',
     'type',
@@ -59,7 +69,11 @@ export default {
     'parentData',
     'sort'
   ],
-  components: { DataField },
+  data () {
+    return {
+      sortOrderMenu: false
+    }
+  },
   mixins: [
     dataMixin
   ],
@@ -68,9 +82,12 @@ export default {
     sorts () {
       return Object.keys(this.sort).length
     },
+    sortKeys () {
+      return Object.keys(this.sort)
+    },
     sortIndex () {
       let index = {}
-      Object.keys(this.sort).forEach((v, i) => {
+      this.sortKeys.forEach((v, i) => {
         index[v] = i + 1
       })
       return index
@@ -85,6 +102,9 @@ export default {
         icon = (sort === -1) ? icon + 'down' : icon + 'up'
       }
       return icon
+    },
+    showSortOrder (field) {
+      this.sortOrderMenu = field
     },
     getData (sort) {
       this.updateRouterQuery({ sort })
@@ -104,6 +124,18 @@ export default {
       let sort = this.sort
       return (sort && sort[field])
     },
+    orderSort (field, order) {
+      order--
+      const keys = this.sortKeys
+      let newKeys = Object.assign([], keys)
+      const sort = this.sort
+      newKeys[order] = field
+      newKeys[this.sortIndex[field] - 1] = keys[order]
+      let newSort = {}
+      newKeys.map(v => { newSort[v] = sort[v] })
+      this.getData(newSort)
+      this.showSortOrder(null)
+    },
     thClass (field) {
       return (this.isSorted(field)) ? 'has-sort' : ''
     }
@@ -113,6 +145,25 @@ export default {
 </script>
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
+  @import '../lib/styl/mixins.styl'
+
+  .sort-order-menu
+    flex .5
+    list-style none
+    display flex
+    flex-flow column nowrap
+    li
+      borders()
+      font-size 0.9em
+      width 3em
+      &:hover
+        background $quasi-bg
+        color white
+
+    li.selected
+      button
+        color white
+        font-weight bold
 
   .sort
     margin 0 0 0 0.5em
@@ -135,5 +186,5 @@ export default {
     color white
 
   .has-sort
-    color red
+    color inherit
 </style>
