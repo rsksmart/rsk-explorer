@@ -1,15 +1,17 @@
 @import 'vars.styl'
 @import 'media_queries.styl'
 @import 'mixins.styl'
-@import('big-header.styl')
+@import ('big-header.styl')
 
 $head-h = 3.25em
 $head-margin = 3em
 $head-bg = $bg-color
 $nav-margin = 1em
+
 .logo
-  svg 
+  svg
     height 3em
+
 .burger
   height 100%
   min-height $head-h
@@ -18,11 +20,10 @@ $nav-margin = 1em
   justify-content flex-end
   background $head-bg
   defaultsColors()
-  
-  button 
+
+  button
     width 3em
     height @width
-    
 
 .sticky-header
   position fixed
@@ -30,9 +31,6 @@ $nav-margin = 1em
   min-width 100%
 
 .header
-  position fixed
-  z-index 10000
-  min-width 100%
   transition all 1s ease
 
 header
@@ -44,33 +42,41 @@ header
   align-items center
   min-height $head-h
   justify-content flex-start
+
   .brand
     display flex
     justify-content center
     align-items center
     margin-left $head-margin
-    
+
     .iso svg
       fill $color
+
     .logo
-      color color1  
-  .search 
-    order 3    
+      color color1
+
+  .search
+    order 3
+
   .header-content
     font-family $title-font
     flex 0 0 100%
     display flex
     justify-content flex-start
     margin-left $head-margin * 1.5
+
     .hc
       display inline-flex
       margin 0 0 1em 1em
+
   .iso
     width 50px
     height @width
     display inline-block
+
   .title
     flex-centered()
+
     h1
       font-size 1.5rem
       margin 0
@@ -85,11 +91,12 @@ header
     right 0
     top 0
     z-index 2000
-    margin 0 $nav-margin 0 0 
+    margin 0 $nav-margin 0 0
     padding 0
     will-change transform
     transition all 1s ease
-    ul 
+
+    ul
       opacity 0
       transform translateX(100%)
       list-style none
@@ -97,88 +104,100 @@ header
       min-height 3em
       padding 0
       margin 0
-      flex-flow column  nowrap
-     
+      flex-flow column nowrap
       transition all 1s ease
+
       li, li a
         min-height 2em
         display flex
         justify-content center
         align-items center
-        padding 0 1em 
+        padding 0 1em
         background $head-bg
+
         &.active, &.router-link-active
           border-bottom solid 2px color1
 
   .nav.open
     border-left $color 2px solid
     padding 0 $nav-margin 0 0
-    margin 0 
+    margin 0
+
     ul
       opacity 1
       transform translateX(0)
+
     li:last-child
       a
-        margin 0 0 2em 0 
+        margin 0 0 2em 0
+
   .menu
     flex-centered()
     display none
+
     li
       display flex
+
       .icon
         margin 0 1em 0 0
+
   .menu.enabled
     display flex
     flex 1
-
 
 @media $media_small
   header
     .header-content
       flex 1
+
       .hc
-        margin 0 0 0 .5em 
+        margin 0 0 0 0.5em
 
 @media $media_medium
   header
     .header-content
       justify-content flex-end
       margin-right $head-margin
-    .burger, .burger *  
+
+    .burger, .burger *
       display none
+
     .menu
       display flex
       flex-centered()
+
     .nav
       position relative
+
       ul
         opacity 1
         transform translateX(0)
         flex-flow row wrap
-        li  
+
+        li
           &:first-child
             padding-left 2em
+
           &:last-child
-            margin-right 1em  
+            margin-right 1em
+
     .nav.open
       border none
+
       ul
         li:last-child
           a
             margin 0
 
-
-
 @media $media_large
- .header.big-menu
+  .header.big-menu
     transition all 1s ease
     big-header()
-    position relative 
+
   header
     .header-content
       justify-content center
       flex 6 1 auto
+
     .nav
       flex 0 1 auto
-
-

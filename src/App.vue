@@ -51,10 +51,8 @@ export default {
   data () {
     return {
       resizeTimeout: null,
-      maxScroll: 100,
       menu: false,
-      menuItems: ['home', 'tokens', 'blocks', 'transactions', 'addresses'],
-      scroll: 0
+      menuItems: ['home', 'tokens', 'blocks', 'transactions', 'addresses']
     }
   },
   created () {
@@ -63,11 +61,9 @@ export default {
   mounted () {
     this.onResize()
     window.addEventListener('resize', this.resizeThrottler, false)
-    window.addEventListener('scroll', this.onScroll, false)
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.resizeThrottler)
-    window.removeEventListener('scroll', this.onScroll)
   },
   computed: {
     ...mapState({
@@ -79,7 +75,7 @@ export default {
       appSize: 'getSize'
     }),
     bigMenu () {
-      return this.scroll < this.maxScroll && this.isRoute('home')
+      return this.isRoute('home')
     }
   },
   methods: {
@@ -89,10 +85,6 @@ export default {
     ...mapGetters({
       getEntity: 'dataEntity'
     }),
-    onScroll (event) {
-      let scroll = document.scrollTop || document.documentElement.scrollTop
-      this.scroll = scroll || 0
-    },
     isRoute (name) {
       return name === String(this.route.name).toLowerCase()
     },
