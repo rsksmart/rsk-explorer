@@ -2,7 +2,6 @@
   .transaction.box.row(:style='txBoxStyle')
     .box-icon
       router-link(:to='"/transactions/" + tx.hash')
-      
         icon(name='transaction' :color='blockColor')
     .box-content
       ul.plain.flex
@@ -13,10 +12,12 @@
             router-link(:to='"/blocks/" + tx.blockNumber')
               icon(name='cube' :color='blockColor')
               small(:style='blockStyle') &nbsp; {{tx.blockNumber}}
-        li.half
+        li.half(v-if='tx.txType == "normal"')
             tool-tip.from(v-if='tx.from' :value='tx.from' :trim='8' :options='{trimAt:"center"}')
             icon(name='arrow-right' :color='blockColor')
             tool-tip.to(v-if='tx.to' :value='tx.to' :trim='8' :options='{trimAt:"center"}')
+        li.half(v-else)
+          span {{tx.txType}}
         li.half.soft {{ (now - tx.timestamp * 1000) | m-seconds-ago }} ago
 </template>
 <script>
