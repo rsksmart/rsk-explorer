@@ -1,6 +1,7 @@
 @import 'vars.styl'
 @import 'media_queries.styl'
 @import 'mixins.styl'
+@import('big-header.styl')
 
 $head-h = 3.25em
 $head-margin = 3em
@@ -28,6 +29,12 @@ $nav-margin = 1em
   z-index 1000
   min-width 100%
 
+.header
+  position fixed
+  z-index 10000
+  min-width 100%
+  transition all 1s ease
+
 header
   background $head-bg
   box-shadow $tip-sh
@@ -53,7 +60,8 @@ header
     font-family $title-font
     flex 0 0 100%
     display flex
-    justify-content center
+    justify-content flex-start
+    margin-left $head-margin * 1.5
     .hc
       display inline-flex
       margin 0 0 1em 1em
@@ -113,11 +121,14 @@ header
       a
         margin 0 0 2em 0 
   .menu
+    flex-centered()
     display none
     li
       display flex
+      .icon
+        margin 0 1em 0 0
   .menu.enabled
-    display block
+    display flex
     flex 1
 
 
@@ -127,16 +138,19 @@ header
       flex 1
       .hc
         margin 0 0 0 .5em 
+
 @media $media_medium
   header
+    .header-content
+      justify-content flex-end
+      margin-right $head-margin
     .burger, .burger *  
       display none
     .menu
       display flex
+      flex-centered()
     .nav
       position relative
-      flex 0 1 auto
-     
       ul
         opacity 1
         transform translateX(0)
@@ -152,6 +166,19 @@ header
         li:last-child
           a
             margin 0
+
+
+
 @media $media_large
-  .header-content
-    flex 6 1 auto
+ .header.big-menu
+    transition all 1s ease
+    big-header()
+    position relative 
+  header
+    .header-content
+      justify-content center
+      flex 6 1 auto
+    .nav
+      flex 0 1 auto
+
+

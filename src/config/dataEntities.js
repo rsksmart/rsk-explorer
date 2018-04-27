@@ -247,5 +247,8 @@ export default {
         default: '0'
       }
     }
+  },
+  tokens: {
+    icon: 'ellipsis'
   }
 }

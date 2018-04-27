@@ -1,7 +1,7 @@
 
 <template lang="pug">
   .wrapper
-    .header
+    .header(:class='(bigMenu) ? "big-menu" : ""')
       header
         .brand(@click='goHome' @touchstart.passive='goHome')
             .iso.plain-color
@@ -17,9 +17,9 @@
           nav.menu(:class='(menu) ? "enabled":""')
             ul
               template(v-for='menu in menuItems')
-                li(v-if='!menu.menuHide' @click='toggleMenu')
+                li(v-if='menu !== "home" || !isRoute("home")' @click='toggleMenu')
                   router-link(:to='"/" + menu')
-                    icon(v-if='menu.icon' :name='menu.icon')
+                    icon.icon(:name='getIcon(menu)')
                     span {{menu}}
     .main
       template(v-if='connected')
@@ -51,8 +51,10 @@ export default {
   data () {
     return {
       resizeTimeout: null,
+      maxScroll: 100,
       menu: false,
-      menuItems: ['home', 'tokens', 'blocks', 'transactions', 'addresses']
+      menuItems: ['home', 'tokens', 'blocks', 'transactions', 'addresses'],
+      scroll: 0
     }
   },
   created () {
@@ -61,30 +63,50 @@ export default {
   mounted () {
     this.onResize()
     window.addEventListener('resize', this.resizeThrottler, false)
+    window.addEventListener('scroll', this.onScroll, false)
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.resizeThrottler)
+    window.removeEventListener('scroll', this.onScroll)
   },
   computed: {
     ...mapState({
       connected: state => state.socketConnected,
-      errors: state => state.socketErrors
+      errors: state => state.socketErrors,
+      route: state => state.route
     }),
     ...mapGetters({
       appSize: 'getSize'
-    })
+    }),
+    bigMenu () {
+      return this.scroll < this.maxScroll && this.isRoute('home')
+    }
   },
   methods: {
     ...mapActions([
       'setSize'
     ]),
+    ...mapGetters({
+      getEntity: 'dataEntity'
+    }),
+    onScroll (event) {
+      let scroll = document.scrollTop || document.documentElement.scrollTop
+      this.scroll = scroll || 0
+    },
+    isRoute (name) {
+      return name === String(this.route.name).toLowerCase()
+    },
     toggleMenu () {
       this.menu = !this.menu
     },
     goHome (event) {
       this.$router.push({ path: '/Home' })
     },
-
+    getIcon (name) {
+      if (name === 'home') return 'rsk'
+      let entity = this.getEntity()(name)
+      return (entity) ? entity.icon || null : null
+    },
     onResize () {
       let size = {
         w: this.$el.clientWidth,
@@ -94,7 +116,6 @@ export default {
     },
     resizeThrottler () {
       this.menu = false
-      // ignore resize events as long as an actualResizeHandler execution is in the queue
       if (!this.resizeTimeout) {
         let vm = this
         this.resizeTimeout = setTimeout(() => {

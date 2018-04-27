@@ -1,6 +1,7 @@
 <template lang="pug">
   .search
-      //-icon(name='search')
+      button.color1
+        icon(name='search')
       input(name="search" type='search'  id="search" placeholder="Search" @change='search' v-model='searchValue')
 </template>
 <script>
@@ -46,4 +47,11 @@ export default {
   }
 }
 </script>
+<style lang="stylus">
+  .search
+    button 
+      margin 0 .5rem 0 0
+    input
+      text-align center
+</style>
 

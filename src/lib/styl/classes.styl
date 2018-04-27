@@ -48,34 +48,7 @@ ul.inline
 
 
 .pill
-  display flex
-  justify-content center
-  align-items center
-  width auto
-  height 1.5em
-  line-height 1em
-  background $color
-  color white
-  fill white
-  list-style none
-  border-radius 1em
-  margin 0 0 0 .5em
-  & :first-child
-    margin-left 1em
-  & :last-child
-    margin 0 .25em 0 1em
-  svg *
-    fill white  
-  button.clear
-    width 1.5em
-    padding 0
-    display flex
-    justify-content center
-    align-items center
-    font-size .9em
-    height @width
-    border-radius 1em
-    background $color
+  pill()
 
 .text
   margin 0 1rem
