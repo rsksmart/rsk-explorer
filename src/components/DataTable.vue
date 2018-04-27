@@ -199,5 +199,6 @@ export default {
 
   .has-sort
     color inherit
+    padding 0 !important
     position relative
 </style>
