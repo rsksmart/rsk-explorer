@@ -5,7 +5,7 @@
       header
         .brand(@click='goHome' @touchstart.passive='goHome')
             .iso.plain-color
-              include assets/svg/iso-logo-v.svg
+              include assets/svg/logo-alt.svg
             .title
               h1.logo rsk explorer
         .header-content
