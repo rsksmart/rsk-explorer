@@ -22,11 +22,12 @@ export default {
   methods: {
     isBlock (number) {
       number = parseInt(number)
-      return number > -1 && number <= this.lastBlocks[0].number
+      return number > -1
     },
     search (event) {
       let value = this.searchValue
       if (value) {
+        value = String(value).replace(/[\W_]+/g, '')
         let tests = {
           address: (ethUtils.isAddress(value)) ? `/${r.addresses}/` : null,
           tx: (ethUtils.isTx(value)) ? `/${r.transactions}/` : null,
