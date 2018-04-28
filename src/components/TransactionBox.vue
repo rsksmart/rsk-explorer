@@ -1,17 +1,17 @@
 <template lang="pug">
   .transaction.box.row(:style='txBoxStyle')
-    .box-icon
-      router-link(:to='"/transactions/" + tx.hash')
-        icon(name='transaction' :color='blockColor')
+    .box-icons
+      router-link(:to='txLink')
+        icon(:name='entity.icon' :color='blockColor')
     .box-content
       ul.plain.flex
-        li.half(:style='blockStyle')
+        li.half(:style='blockStyle2')
           strong Tx:&nbsp;
-            tool-tip(:value='tx.hash' :trim='8' :options='{trimAt:"center"}')
+            tool-tip(:value='tx.hash' :trim='8' :options='{trimAt:"center"}' :router-link='txLink')
         li.half
-            router-link(:to='"/blocks/" + tx.blockNumber')
-              icon(name='cube' :color='blockColor')
-              small(:style='blockStyle') &nbsp; {{tx.blockNumber}}
+            router-link(:to='blockLink')
+              icon(:name='bField.icon' :color='blockColor')
+              small(:style='blockStyle2') &nbsp; {{blockNumber}}
         li.half(v-if='tx.txType == "normal"')
             tool-tip.from(v-if='tx.from' :value='tx.from' :trim='8' :options='{trimAt:"center"}')
             icon(name='arrow-right' :color='blockColor')
@@ -24,31 +24,50 @@
 import { mapGetters } from 'vuex'
 import ToolTip from './ToolTip.vue'
 import { mSecondsAgo } from '../filters/TimeFilters'
+import dataMixin from '../mixins/dataMixin'
 export default {
   name: 'transaction-box',
   components: {
     ToolTip
   },
+  mixins: [
+    dataMixin
+  ],
   filers: {
     mSecondsAgo
   },
   props: ['tx'],
+  data () {
+    return {
+      type: 'transaction'
+    }
+  },
   computed: {
     ...mapGetters({
-      now: 'getDate',
-      colors: 'getColors',
-      getBlockColor: 'getBlockColor'
+      now: 'getDate'
     }),
     blockColor () {
       return this.getBlockColor(this.tx.blockNumber)
     },
-    blockStyle () {
+    blockStyle2 () {
       let color = this.blockColor
       return { color }
     },
     txBoxStyle () {
       let color = this.blockColor
       return { 'border-color': color }
+    },
+    bField () {
+      return this.fields.block
+    },
+    txLink () {
+      return this.makeLink(this.fields.hash, this.tx)
+    },
+    blockLink () {
+      return this.makeLink(this.bField, this.tx)
+    },
+    blockNumber () {
+      return this.filterFieldValue()(this.bField, this.tx.blockNumber)
     }
   }
 
