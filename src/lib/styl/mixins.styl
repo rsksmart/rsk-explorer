@@ -160,17 +160,20 @@ pill()
   color white
   fill white
   list-style none
-  border-radius 1em
+  border-radius .25em
   margin 0 0 0 .5em
   & :first-child
-    margin-left 1em
+    margin 0 .25em 0 .5em
   & :last-child
-    margin 0 .25em 0 1em
+    margin 0 .25em 0 .5em
   svg *
-    fill white  
-  button.clear
-    width 1.5em
+    fill white
+  .svg-icon
+    margin 0    
+  button, button.close
+    width 1em
     padding 0
+    margin 0
     display flex
     justify-content center
     align-items center
@@ -178,3 +181,5 @@ pill()
     height @width
     border-radius 1em
     background $color
+  & small 
+    color white
