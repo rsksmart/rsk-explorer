@@ -36,8 +36,7 @@
                     button.sort(@click='sortRemove(field.fieldName)')
                       icon.small(name='delete-forever' title='remove sort')
                 template(v-else)
-                  icon(v-if='field.titleIcon && field.icon' :name='field.icon')
-                  span(v-if='!field.hideTitle') {{ field.title }}
+                  field-title(:fieldData='field')
 
               th(v-if='isFrom(fieldName,index)' )
       tbody
@@ -53,12 +52,14 @@
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
-import DataField from '../components/DataField'
+import DataField from './DataField'
+import FieldTitle from './FieldTitle'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'data-table',
   components: {
-    DataField
+    DataField,
+    FieldTitle,
   },
   props: [
     'data',

@@ -8,8 +8,7 @@
       template(v-for='field,fieldName,index in fields')
         template(v-if='!isHidden(fieldName)')
           .item(v-if='!field.renderAs' :class='itemClass(fieldName,index)')
-            icon.field-icon(v-if='field.titleIcon && field.icon' :name='field.icon')
-            span.field-title(v-if='!field.hideTitle') {{ field.title }}:
+            field-title(:field-data='field')
             data-field(:field='field' :row='data' :style='cellStyle(field,value(field,false))')
           //-custom component
           template(v-else) 
@@ -18,8 +17,9 @@
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
-import DataField from '../components/DataField'
-import DataTable from '../components/DataTable'
+import DataField from './DataField'
+import FieldTitle from './FieldTitle'
+import DataTable from './DataTable'
 export default {
   name: 'data-item',
   props: [
@@ -28,7 +28,8 @@ export default {
   ],
   components: {
     DataField,
-    DataTable
+    DataTable,
+    FieldTitle
   },
   mixins: [
     dataMixin
@@ -49,7 +50,6 @@ export default {
 </script>
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
-
 
   .data-item
     .items
@@ -73,12 +73,13 @@ export default {
     .field-title
       text-transform capitalize
       font-weight bold
-      
+
   .item-title
     text-transform capitalize
     display inline-flex
-    div,span
+
+    div, span
       &::before
-        content: '\00a0'
+        content '\00a0'
 </style>
 
