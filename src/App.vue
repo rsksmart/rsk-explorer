@@ -52,7 +52,6 @@ export default {
     return {
       resizeTimeout: null,
       menu: false,
-      menuItems: ['home', 'tokens', 'blocks', 'transactions', 'addresses']
     }
   },
   created () {
@@ -69,7 +68,8 @@ export default {
     ...mapState({
       connected: state => state.socketConnected,
       errors: state => state.socketErrors,
-      route: state => state.route
+      route: state => state.route,
+      menuItems: state => state.menuItems
     }),
     ...mapGetters({
       appSize: 'getSize'
