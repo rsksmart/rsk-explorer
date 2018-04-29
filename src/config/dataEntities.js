@@ -96,6 +96,7 @@ const Block = () => {
     },
     gasLimit: null,
     gasUsed: null,
+    minimumGasPrice: null,
     nonce: null,
     transactions: {
       renderAs: 'data-table',
