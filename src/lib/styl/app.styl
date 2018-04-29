@@ -1,76 +1,78 @@
 .block, .transaction
-  ul 
+  ul
     list-style none
 
- .from
-   margin-right 1em
- td.from, th.from
-   text-align right
- .to
-   margin-left 1em
- td.to, th.to
-    text-align left
+.from
+  margin-right 1em
 
-  .blocks, .block-data
-    ul
-      margin 0
-      padding 0
+td.from, th.from
+  text-align right
 
-      li
-        list-style none
+.to
+  margin-left 1em
 
-  .block
-    display flex
-    flex-flow row
-    border-left solid 3px
+td.to, th.to
+  text-align left
 
-    .block-icon
-      flex 1
+.blocks, .block-data
+  ul
+    margin 0
+    padding 0
 
-      .svg-icon
-        fill brand2
-        width 2em
-        height @width
+    li
+      list-style none
 
-    .block-number
-      color brand2
-      margin-left 0.25rem
-      font-size 1.25em
-      font-weight 400   
+.block
+  display flex
+  flex-flow row
+  border-left solid 3px
 
+  .block-icon
+    flex 1
 
+    .svg-icon
+      fill brand2
+      width 2em
+      height @width
+
+  .block-number
+    color brand2
+    margin-left 0.25rem
+    font-size 1.25em
+    font-weight 400
 
 .centered
   margin 0 auto
 
 // home
 .home
-    display flex
+  display flex
 
-  .last-blocks
-    flex-flow row wrap
+.last-blocks
+  flex-flow row wrap
 
-  .auto-update
-    display flex
-    justify-content center
-    width 100%
-    
+.auto-update
+  display flex
+  justify-content center
+  width 100%
 
-  .hero
-    margin-top 2rem
-    max-width 100%
+.hero
+  margin-top 2rem
+  max-width 100%
 
-  .last-block
-    flex 7
-    width 100%
+.last-block
+  flex 7
+  width 100%
 
-    ul.block-data
-      margin 0
-      padding 0
-      flex-flow column nowrap
+  ul.block-data
+    margin 0
+    padding 0
+    flex-flow column nowrap
 
-    .block-number *
-      font-size 2em
+  .block-number *
+    font-size 2em
 
-  .pending-blocks
-    flex 3
+.pending-blocks
+  flex 3
+
+@import ('./dialogDropArea.styl')
