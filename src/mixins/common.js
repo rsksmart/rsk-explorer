@@ -22,7 +22,9 @@ export default {
     })
   },
   methods: {
-    ...mapGetters(['blockStyle', 'filterFieldValue']),
+    ...mapGetters([
+      'blockStyle',
+      'filterFieldValue']),
     cellStyle (field, value) {
       if (field) {
         let style = {}

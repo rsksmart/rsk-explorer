@@ -51,7 +51,7 @@ export default {
   data () {
     return {
       resizeTimeout: null,
-      menu: false,
+      menu: false
     }
   },
   created () {
