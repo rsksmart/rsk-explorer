@@ -1,7 +1,7 @@
 <template lang="pug">
   .field-title
     icon.field-icon(v-if='showIcon' :name='field.icon')
-    span.field-title(v-if='showTitle') {{ field.title }}:
+    span.field-title(v-if='showTitle') {{ field.title }}
 </template>
 <script>
 export default {
@@ -14,7 +14,7 @@ export default {
     }
   },
   created () {
-    let options = this.options
+    let options = this.options || {}
     this.forceTitle = options.forceTitle || false
     this.forceIcon = options.forceIcon || false
   },

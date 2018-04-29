@@ -8,7 +8,7 @@
       template(v-for='field,fieldName,index in fields')
         template(v-if='!isHidden(fieldName)')
           .item(v-if='!field.renderAs' :class='itemClass(fieldName,index)')
-            field-title(:field-data='field')
+            field-title(:field='field')
             data-field(:field='field' :row='data' :style='cellStyle(field,value(field,false))')
           //-custom component
           template(v-else) 

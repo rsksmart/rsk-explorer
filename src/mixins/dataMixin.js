@@ -76,6 +76,13 @@ export default {
       'dataKey',
       'dataKeyValue'
     ]),
+    fieldFromKey (key) {
+      let entity = this.entity
+      let keys = entity.fieldsKeys
+      if (keys) {
+        return entity.fields[keys[key]]
+      }
+    },
     cbParse (key) {
       let cb = this[key]
       if (this.entity) cb = cb || this.entity[key]

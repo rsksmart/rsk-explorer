@@ -12,9 +12,12 @@ export class EntityParser {
   }
   parseEntity (name, entity) {
     entity.fields = entity.fields || {}
+    entity.fieldsKeys = {}
     for (let f in entity.fields) {
       let field = entity.fields[f] || {}
-      entity.fields[f] = this.parseField(f, field)
+      let parsedField = this.parseField(f, field)
+      entity.fields[f] = parsedField
+      entity.fieldsKeys[parsedField.field] = f
     }
     return entity
   }

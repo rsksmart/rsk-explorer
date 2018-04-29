@@ -5,16 +5,23 @@ apply-colors($colors, $pref = '')
     apply-color($col, $val)
 
 apply-color($col, $val)
+  // backgrounds
   .bg-{$col}
     background $val
 
+  // colors classes
   .{$col}
     color $val
     fill $val
 
+  // borders
   .border-{$col}
     border-color $val
     stroke $val
+  
+  // frames
+  .frame-{$col}
+    frame($val)
 
 small-titles()
   opacity 0.8
@@ -45,13 +52,17 @@ flex-centered()
 
 brand-background()
   background $color
+
   .svg-icon
     fill white
+
   a
     color color1
+
     & .svg-icon
-      margin  0 .5em 0 0
-    &:hover 
+      margin 0 0.5em 0 0
+
+    &:hover
       color color2
       fill color2
 
@@ -74,20 +85,21 @@ badge(size)
 link()
   color $color
   fill $color
+
   :hover
     transition $links-transition
     color color2
+
     & svg
       fill color2
 
 table($c1, $c2)
-
   $bc = $c1
   $bg-color = red
   color $txt-color
   border none
-  $odd = lightness($c1,98%)
-  $even = lightness($c1,96%)
+  $odd = lightness($c1, 98%)
+  $even = lightness($c1, 96%)
 
   tr, th
     .svg-icon, button, button *
@@ -97,6 +109,7 @@ table($c1, $c2)
   th
     color $c1
     border-bottom $bc dashed 1px
+
     padding 1em 2em
       button *
         color $c1
@@ -128,14 +141,14 @@ table($c1, $c2)
   tr > td:last-child, tr > th:last-child
     padding-right 3em
 
-
 setColor(c)
   color c
+
   & svg, .svg-icon
     fill c
 
 borders()
-  border none 
+  border none
   border $border
   border-radius $border-radius
 
@@ -146,7 +159,8 @@ focus()
 defaultsColors()
   color $color
   background $bg-color
-  & .svg-icon * 
+
+  & .svg-icon *
     fill $color
 
 pill()
@@ -157,19 +171,25 @@ pill()
   height 1.5em
   line-height 1em
   background $color
-  color white
-  fill white
   list-style none
-  border-radius .25em
-  margin 0 0 0 .5em
+  border-radius 0.25em
+  margin 0 0 0 0.5em
+  color $darkness
+  
+  button 
+    svg *
+      fill $midlight
+    &:hover svg *
+      fill $darkness
   & :first-child
-    margin 0 .25em 0 .5em
+    margin 0 0.25em 0 0.5em
+
   & :last-child
-    margin 0 .25em 0 .5em
-  svg *
-    fill white
+    margin 0 0.25em 0 0.5em
+
   .svg-icon
-    margin 0    
+    margin 0
+
   button, button.close
     width 1em
     padding 0
@@ -177,9 +197,14 @@ pill()
     display flex
     justify-content center
     align-items center
-    font-size .9em
+    font-size 0.9em
     height @width
     border-radius 1em
     background $color
-  & small 
+
+  & small
     color white
+
+frame($col)
+  border $col dashed 1px
+  padding .5em 1em
