@@ -28,7 +28,7 @@
       button.big.brand(@click='discardSorts')
         icon(name='close') 
     //- Table
-    table.dark(v-if='data')
+    table.dark(v-if='data' ref='table' :class='tableCss')
       thead
         tr
           th
@@ -37,32 +37,32 @@
               th(:class='thClass(field.fieldName)') 
                 template(v-if='sort') 
                   button(@click='sort && sortBy(field.fieldName)')
-                    icon(v-if='field.titleIcon && field.icon' :name='field.icon')
-                    span(v-if='!field.hideTitle') {{ field.title }}
-                    .sort(v-if='isSorted(field.fieldName)')
-                      .icon
-                        icon.small(:name='sortIcon(field.fieldName)')
-                      sub {{sortIndex(field.fieldName)}}
+                    field-title(:field='field')
+                      .sort(v-if='isSorted(field.fieldName)')
+                        .icon
+                          icon.small(:name='sortIcon(field.fieldName)')
+                        sub {{sortIndex(field.fieldName)}}
                 template(v-else)
                   field-title(:field='field')
 
               th(v-if='isFrom(fieldName,index)' )
       tbody
         tr(v-for='row, rowIndex in dataFormatted' :class='rowClass(rowIndex)')
-          td
+          td.row-icon
             router-link(:to='rowLink(row)')
               icon(:name='iconLoad' :style='iconStyle(row)')
           template(v-for='field,fieldName,index in fields') 
-            td(v-if='!isHidden(fieldName)')
+            td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
+              field-title.td-title(:field='field')
               data-field(:field='field' :row='row')  
-            td(v-if='isFrom(fieldName,index)')
+            td.from-to-arrow(v-if='isFrom(fieldName,index)')
               icon(name='arrow-right')
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
 import DataField from './DataField'
 import FieldTitle from './FieldTitle'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 import DialogDrag from 'vue-dialog-drag'
 import DropArea from 'vue-dialog-drag/dist/drop-area'
 export default {
@@ -94,6 +94,7 @@ export default {
       sortFields: {
         isNEW: true
       },
+      tableClasses: [],
       editSorts: false,
       sortChanged: false,
       sortDialog: {
@@ -106,6 +107,12 @@ export default {
   created () {
     this.resetSorts()
   },
+  mounted () {
+    let vm = this
+    this.$nextTick(() => {
+      vm.updateTableClasses()
+    })
+  },
   watch: {
     sortFields (newValue, oldValue) {
       if (oldValue.isNEW) return
@@ -114,6 +121,9 @@ export default {
   },
   computed: {
     ...mapGetters({ req: 'requestedPage' }),
+    ...mapState({
+      size: state => state.size
+    }),
     sortKeys () {
       if (!this.sort) return null
       return Object.keys(this.sort)
@@ -124,6 +134,11 @@ export default {
     },
     showSorts () {
       return this.hasSorts && this.editSorts
+    },
+    tableCss () {
+      let size = this.size
+      this.updateTableClasses(size)
+      return this.tableClasses
     }
   },
   methods: {
@@ -135,6 +150,20 @@ export default {
         icon = (sort === -1) ? icon + 'down' : icon + 'up'
       }
       return icon
+    },
+    updateTableClasses (size) {
+      size = size || this.size
+      let tClass = []
+      if (this.$refs) {
+        let table = this.$refs.table
+        if (table) {
+          let tW = table.clientWidth
+          if (tW > size.w || tW > this.$el.clientWidth) {
+            tClass.push('flex-table')
+          }
+        }
+        this.$set(this, 'tableClasses', tClass)
+      }
     },
     isChanged (oa, ob) {
       let oak = Object.keys(oa)
@@ -226,6 +255,12 @@ export default {
     },
     thClass (field) {
       return (this.isSorted(field)) ? 'has-sort' : ''
+    },
+    tdClass (name) {
+      // let field = this.fields[name]
+      let css = [`field-${name}`]
+      if (this.key === name) css.push('row-header')
+      return css
     }
 
   }
@@ -261,8 +296,8 @@ export default {
 
   .sorts-ctrl
     margin 1em
-    display flex
     flex-centered()
+    flex-flow row wrap
 
   .sort-order-menu
     list-style none

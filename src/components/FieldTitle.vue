@@ -2,6 +2,7 @@
   .field-title
     icon.field-icon(v-if='showIcon' :name='field.icon')
     span.field-title(v-if='showTitle') {{ field.title }}
+    slot
 </template>
 <script>
 export default {
