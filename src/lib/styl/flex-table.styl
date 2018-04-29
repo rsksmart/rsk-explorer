@@ -1,0 +1,22 @@
+@import 'vars.styl'
+@import 'media_queries.styl'
+@import 'mixins.styl'
+
+td
+  .td-title
+    display none
+
+table.flex-table
+  max-width 100%
+  flex-table()
+
+table.responsive-flex-table
+  max-width 100%
+
+  td
+    .td-title
+      display none
+
+@media $media_medium_max
+  table.responsive-flex-table
+    flex-table()

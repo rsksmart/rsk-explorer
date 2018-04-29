@@ -208,3 +208,37 @@ pill()
 frame($col)
   border $col dashed 1px
   padding .5em 1em
+
+
+flex-table()
+  tr
+    display flex
+    flex-flow row wrap
+    max-width 100%
+    margin-bottom 1em
+
+  td, th
+    flex 1 1 5%
+    flex-centered()
+  td
+    flex-flow column wrap
+    .td-title, .data-field 
+      display block
+      flex 0 0 50%
+  
+  td.from-to-arrow
+    display none
+  td.field-from
+    align-self flex-start
+
+  td.row-header
+    flex 1 1 100%
+    padding 0 !important
+    flex-centered()
+  td.row-icon
+    display none
+
+  td.row-header, td.row-icon
+    font-size 1.0625em
+  th
+    display none
