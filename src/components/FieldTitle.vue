@@ -1,12 +1,19 @@
 <template lang="pug">
   .field-title
-    icon.field-icon(v-if='showIcon' :name='field.icon')
-    span.field-title(v-if='showTitle') {{ field.title }}
+    .icon(v-if='showIcon' )
+      tool-tip(v-if='!showTitle' :value='field.name')
+        icon(:name='field.icon')
+      icon(v-else :name='field.icon')  
+    span.title(v-if='showTitle') {{ field.title }}
     slot
 </template>
 <script>
+import ToolTip from './ToolTip'
 export default {
   name: 'field-title',
+  components: {
+    ToolTip
+  },
   props: ['field', 'options'],
   data () {
     return {
@@ -31,8 +38,9 @@ export default {
 }
 </script>
 <style lang="stylus">
-  .field-icon + .field-title
-    margin 0 0 0 .5em
+  .field-title
+    .icon + .title
+      margin 0 0 0 0.5em
 </style>
 
 
