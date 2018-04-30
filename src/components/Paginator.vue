@@ -3,9 +3,11 @@
     button.page-button(v-if='prev' @click='goToPage(prev)')
       icon(name='arrow-left')
     div(v-else)
-    span.page-numbers {{ page }} 
+    .page-numbers 
+     span(v-if='!editPage' @click='editPage=true') {{ page }}
+     input.page(v-else type='text' :value='page' @change='changePage' @blur='editPage=false') 
      small / 
-     small {{ pages }}
+     small.link(@click='goToPage(pages)') {{ pages }}
     button.page-button(v-if='next' @click='goToPage(next)')
       icon(name='arrow-right')
     div(v-else)
@@ -14,7 +16,11 @@
 export default {
   name: 'paginator',
   props: ['options', 'link'],
-
+  data () {
+    return {
+      editPage: false
+    }
+  },
   computed: {
     prev () {
       if (this.page > 1) return this.page - 1
@@ -38,6 +44,11 @@ export default {
     }
   },
   methods: {
+    changePage (event) {
+      this.editPage = false
+      let page = event.target.value
+      if (page) this.goToPage(page)
+    },
     goToPage (page) {
       let query = Object.assign({}, this.$route.query)
       query.page = page
@@ -48,7 +59,9 @@ export default {
 </script>
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
-
+  
+  input.page
+    width 3em
   .pages
     display flex
     padding 1em
