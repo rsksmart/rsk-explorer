@@ -21,6 +21,12 @@ export default {
     titleIcon: true,
     hideTitle: true
   },
+  miner: {
+    icon: 'miner',
+    titleIcon: true,
+    hideTitle: true,
+    link: `/${r.addresses}/`
+  },
   from: {
     link: `/${r.addresses}/`
   },

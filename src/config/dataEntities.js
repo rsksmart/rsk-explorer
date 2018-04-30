@@ -79,7 +79,10 @@ const Blocks = () => {
         type: 'transaction'
       },
       hash: null,
-      miner: null,
+      miner: {
+        field: 'miner',
+        type: 'miner'
+      },
       size: null,
       timestamp: null
     }
@@ -98,7 +101,7 @@ const Block = () => {
     gasLimit: null,
     gasUsed: null,
     minimumGasPrice: null,
-    nonce: null,
+    extraData: null,
     transactions: {
       renderAs: 'data-table',
       renderAsProps: {
