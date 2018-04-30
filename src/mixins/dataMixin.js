@@ -122,8 +122,9 @@ export default {
       let key = this.keyValue(row)
       let linkCb = this.linkCb
       if (linkCb) return linkCb(row, this.parentData, key)
-      link = this.link || this.entity.link
+      link = link || this.entity.link
       link = link || this.$route.path
+      link = String(link).replace(/\/$/, '')
       link = link + '/' + key
       return link
     },
@@ -138,7 +139,7 @@ export default {
     },
     makeLink (field, row) {
       let value = this.getValue(field, row, true)
-      return (value && field.link) ? field.link + value : null
+      return (undefined !== value && field.link) ? field.link + value : null
     }
   }
 }
