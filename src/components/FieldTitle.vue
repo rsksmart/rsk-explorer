@@ -30,4 +30,9 @@ export default {
   }
 }
 </script>
+<style lang="stylus">
+  .field-icon + .field-title
+    margin 0 0 0 .5em
+</style>
+
 
