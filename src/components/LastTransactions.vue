@@ -1,6 +1,9 @@
 <template lang="pug">
   .tx-wrapper
-    h2.title Transactions
+    h2.title 
+      router-link(:to='entity.link') 
+        icon(:name='entity.icon')
+        span &nbsp; {{pageTitle}}
     .transactions(v-for='tx in transactions')
       transaction-box(:tx='tx')
      
@@ -8,10 +11,19 @@
 <script>
 import { mapGetters } from 'vuex'
 import TransactionBox from './TransactionBox.vue'
+import dataMixin from '../mixins/dataMixin'
 export default {
   name: 'last-transactions',
   components: {
     TransactionBox
+  },
+  mixins: [
+    dataMixin
+  ],
+  data () {
+    return {
+      type: 'transactions'
+    }
   },
   computed: {
     ...mapGetters([

@@ -67,6 +67,7 @@ const Blocks = () => {
   return {
     key: 'number',
     icon: 'cube',
+    link: `/${r.blocks}/`,
     singular: 'block',
     plural: 'blocks',
     fields: {
