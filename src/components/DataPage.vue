@@ -1,5 +1,6 @@
 <template lang="pug">
   .data-page.centered
+    paginator(v-if='isTable' :options='pageOptions' :link='0')
     h2(v-if='title') {{ pageContext }} {{pageTitle}}
     spinner(v-if='requestingPageData && !error')
     .error(v-if='error')
@@ -9,7 +10,7 @@
         account-header(v-if='isHeadComponent("AccountHeader")' :data='parentData')
       .page(v-if='data')
         //- Transactions filters
-        tx-filters(v-if='action==="getTransactions"' :q='q' :type='type' :action='action')
+        tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
           
         template(v-if='!isTable')
           ul.prev-next
