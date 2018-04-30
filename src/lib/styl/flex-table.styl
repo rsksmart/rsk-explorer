@@ -9,10 +9,28 @@ td
 table.flex-table
   max-width 100%
   flex-table()
+
   td
     .td-title
       font-weight bold
       color $color
+
+
+  thead, tr
+    width 100%
+    flex-centered()
+    border none
+  th
+    min-height 2em
+    border none
+    padding 0 !important
+    margin 0 !important
+  th.dummy
+    display none
+  thead tr
+    frame($border-color)
+    justify-content space-between
+    margin-bottom 2em
 
 table.responsive-flex-table
   max-width 100%

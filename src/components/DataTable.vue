@@ -1,47 +1,20 @@
 <template lang="pug">
-  .data-table(v-if='data && fields' @click.passive='resetControls')
-    //- Table sorts
-    button.btn.bg-brand(v-if='!editSorts && hasSorts' @click='editSorts=true') Edit sort fields
-    //- sort editor
-    .sorts-ctrl.frame(v-if='showSorts') 
-      span Table sorts:
-      template(v-if='hasSorts' v-for='i,fieldName in sortFields')
-          drop-area(
-            @drop='changeSort($event,fieldName)' 
-            :class='(sortDialog.field) ? "active" : "hidden"')
-            .pill(v-if='sortDialog.field !== fieldName')
-              button(@click.stop='showSortDialog(fieldName,$event)')
-                icon(name='move')
-              field-title(:field='fieldFromKey(fieldName)' :options='{forceTitle:true}')
-              button.clear(@click='sortRemove(fieldName)')
-                icon(name="delete-forever")
-          //- Field dialog
-          template(v-if='sortDialog.field === fieldName')
-            dialog-drag.dialog-pill(:id='fieldName' :options='sortDialogOptions()' @close='showSortDialog()')
-              template(slot='title')
-                field-title(:field='fieldFromKey(fieldName)')
-              //-template(slot='button-close')
-                icon( name='close')
-      //- Sort editor  buttons
-      button.big.info(v-if='sortChanged' @click='applySorts')
-        icon(name='check')
-      button.big.brand(@click='discardSorts')
-        icon(name='close') 
+  .data-table(v-if='data && fields')
     //- Table
-    table.dark(v-if='data' ref='table' :class='tableCss')
+    table.dark(v-if='data' ref='table' :class='tableClass')
       thead
         tr
-          th
+          th.dummy
           template(v-for='field,fieldName,index in fields')
             template(v-if='!isHidden(fieldName)')
               th(:class='thClass(field.fieldName)') 
-                template(v-if='sort') 
-                  button(@click='sort && sortBy(field.fieldName)')
+                .sort(v-if='sort')
+                  button(@click='sortBy(field.fieldName)')
                     field-title(:field='field')
-                      .sort(v-if='isSorted(field.fieldName)')
-                        .icon
-                          icon.small(:name='sortIcon(field.fieldName)')
-                        sub {{sortIndex(field.fieldName)}}
+                      .sort-icon(v-if='isSorted(field.fieldName)')
+                        icon.small(:name='sortIcon(field.fieldName)')
+                  button(v-if='isSorted(field.fieldName)' @click='moveSort(field.fieldName)')
+                    small {{sortIndex(field.fieldName)}}
                 template(v-else)
                   field-title(:field='field')
 
@@ -53,7 +26,7 @@
               icon(:name='iconLoad' :style='iconStyle(row)')
           template(v-for='field,fieldName,index in fields') 
             td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
-              field-title.td-title(:field='field')
+              field-title.td-title(v-if='!bigTable' :field='field')
               data-field(:field='field' :row='row')  
             td.from-to-arrow(v-if='isFrom(fieldName,index)')
               icon(name='arrow-right')
@@ -63,15 +36,11 @@ import dataMixin from '../mixins/dataMixin'
 import DataField from './DataField'
 import FieldTitle from './FieldTitle'
 import { mapGetters, mapActions, mapState } from 'vuex'
-import DialogDrag from 'vue-dialog-drag'
-import DropArea from 'vue-dialog-drag/dist/drop-area'
 export default {
   name: 'data-table',
   components: {
     DataField,
-    FieldTitle,
-    DialogDrag,
-    DropArea
+    FieldTitle
   },
   mixins: [
     dataMixin
@@ -91,10 +60,7 @@ export default {
   ],
   data () {
     return {
-      sortFields: {
-        isNEW: true
-      },
-      tableClasses: [],
+      bigTable: true,
       editSorts: false,
       sortChanged: false,
       sortDialog: {
@@ -104,20 +70,14 @@ export default {
       }
     }
   },
-  created () {
-    this.resetSorts()
-  },
   mounted () {
     let vm = this
     this.$nextTick(() => {
-      vm.updateTableClasses()
+      let table = vm.$refs.table
+      if (table && table.clientWidth > vm.$el.clientWidth) {
+        vm.$set(this, 'bigTable', false)
+      }
     })
-  },
-  watch: {
-    sortFields (newValue, oldValue) {
-      if (oldValue.isNEW) return
-      this.sortChanged = this.isChanged(oldValue, newValue)
-    }
   },
   computed: {
     ...mapGetters({ req: 'requestedPage' }),
@@ -132,13 +92,8 @@ export default {
       if (!this.sortKeys) return false
       return this.sortKeys.length > 1
     },
-    showSorts () {
-      return this.hasSorts && this.editSorts
-    },
-    tableCss () {
-      let size = this.size
-      this.updateTableClasses(size)
-      return this.tableClasses
+    tableClass () {
+      return (!this.bigTable) ? 'flex-table' : ''
     }
   },
   methods: {
@@ -151,103 +106,32 @@ export default {
       }
       return icon
     },
-    updateTableClasses (size) {
-      size = size || this.size
-      let tClass = []
-      if (this.$refs) {
-        let table = this.$refs.table
-        if (table) {
-          let tW = table.clientWidth
-          if (tW > size.w || tW > this.$el.clientWidth) {
-            tClass.push('flex-table')
-          }
-        }
-        this.$set(this, 'tableClasses', tClass)
-      }
-    },
-    isChanged (oa, ob) {
-      let oak = Object.keys(oa)
-      let obk = Object.keys(ob)
-      if (oak.length !== obk.length) return true
-      for (let k in oak) {
-        if (oak[k] !== obk[k]) return true
-      }
-      for (let p in oa) {
-        if (oa[p] !== ob[p]) return true
-      }
-      return false
-    },
     sortIndex (field) {
       return this.sortKeys.indexOf(field) + 1
     },
-    resetControls () {
-      this.closeSortDialog()
+    removeSort (fieldName) {
+      let sort = Object.assign({}, this.sort)
+      delete sort[fieldName]
+      this.getData(sort)
     },
-    closeSortDialog () {
-      if (this.sortDialog.field) {
-        this.sortDialog.field = null
-      }
-    },
-    changeSort (from, to) {
-      let keys = Object.assign([], this.sortKeys)
-      let fromKey = keys.indexOf(from)
-      let toKey = keys.indexOf(to)
-      keys.splice(fromKey, 1)
-      keys.splice(toKey, 0, from)
-      let newSort = {}
-      keys.forEach((k) => { newSort[k] = this.sortFields[k] })
-      this.sortFields = newSort
-      this.closeSortDialog()
-    },
-    showSortOrder (field) {
-      this.sortOrderMenu = field
-    },
-    sortDialogOptions (opts) {
-      let y = this.sortDialog.y
-      let x = this.sortDialog.x
-      return {
-        buttonPin: false,
-        x,
-        y
-      }
-    },
-    showSortDialog (field, event) {
-      let keys = Object.keys(this.sortFields)
-      if (keys.length > 2) {
-        let x = 0
-        let y = 0
-        if (event) {
-          x = event.pageX
-          y = event.pageY
-        }
-        this.sortDialog = { field, x, y }
-      } else { // if 2 fields: switch
-        let newSort = {}
-        keys.reverse()
-          .forEach(v => { newSort[v] = this.sortFields[v] })
-        this.sortFields = newSort
-      }
-    },
-    applySorts () {
-      this.getData(this.sortFields)
-    },
-    resetSorts () {
-      this.sortFields = Object.assign({}, this.sort)
-    },
-    discardSorts () {
-      this.resetSorts()
-      this.editSorts = false
+    moveSort (field) {
+      let keys = this.sortKeys
+      let index = keys.indexOf(field)
+      let to = (index === keys.length - 1) ? 0 : index + 1
+      let sort = {}
+      keys.splice(index, 1)
+      keys.splice(to, 0, field)
+      keys.forEach(k => { sort[k] = this.sort[k] })
+      this.getData(sort)
     },
     getData (sort) {
       this.updateRouterQuery({ sort })
     },
     sortBy (field) {
-      let sort = this.sort
-      sort[field] = (sort[field] || -1) * -1
+      let sort = Object.assign({}, this.sort)
+      if (sort[field] === -1) delete sort[field]
+      else sort[field] = (sort[field]) ? -1 : 1
       this.getData(sort)
-    },
-    sortRemove (field) {
-      this.$delete(this.sortFields, field)
     },
     isSorted (field) {
       let sort = this.sort
@@ -257,7 +141,6 @@ export default {
       return (this.isSorted(field)) ? 'has-sort' : ''
     },
     tdClass (name) {
-      // let field = this.fields[name]
       let css = [`field-${name}`]
       if (this.key === name) css.push('row-header')
       return css
@@ -266,71 +149,21 @@ export default {
   }
 }
 </script>
-<style src="vue-dialog-drag/dist/vue-dialog-drag.css"></style>
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
 
-  .dialog-drag.dialog-pill
-    font-size 14px
-    pill()
-
-    .dialog-body
-      display none
-
-    .dialog-header
-      padding-top 0
-      padding-bottom 0
-
-    button.close
-      .title *
-        font-size 1 em
-
-    .dialog-header, .dialog-header .title
-      border none
-      margin 0
-      background none
-
-      & *
-        color white
-
-  .sorts-ctrl
-    margin 1em
-    flex-centered()
-    flex-flow row wrap
-
-  .sort-order-menu
-    list-style none
-    display inline-flex
-    flex-flow column nowrap
-    position absolute
-    bottom 1em
-    margin 0 0 0 1em
-    padding 0
-
-    li
-      font-size 0.9em
-      width 2em
-
-      button:hover
-        padding 0 0.125em
-        borders()
-        color white
-
-      &:hover
-        background $quasi-bg
-        color white
-
-    li.selected
-      button
-        color white
-        font-weight bold
-
   .sort
-    margin 0 0 0 0.5em
-    display inline-flex
+    flex-centered()
+
+    div
+      display flex
 
     .icon
+      margin 0 0.5em 0 0
+
+    .sort-icon
+      margin 0 0.25em 0 0
       display flex
       justify-content center
       align-items center
@@ -339,9 +172,9 @@ export default {
       height @width
       border-radius 50%
 
-    svg.svg-icon *
-      fill white
-      display flex
+      svg.svg-icon *
+        fill $bg-color
+        display flex
 
   sub
     color white
@@ -350,24 +183,4 @@ export default {
     color inherit
     padding 0 !important
     position relative
-
-  .drop-area
-    min-width 4em
-    min-height 1.5em
-    margin 0
-
-    .over
-      border-style solid
-      border-color color2
-      border-width 0 10px 0 0
-
-  .drop-area:first-child
-    .over
-      border-width 0 0 0 10px
-
-  .drop-area.active
-    border-width 1px
-
-  .drop-area.hidden
-    border-width 0
 </style>
