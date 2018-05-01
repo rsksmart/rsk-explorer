@@ -11,7 +11,7 @@ export default {
   data () {
     return {
       ttOpts: { trimAt: 'center' },
-      trim: 8
+      trim: 4
     }
   },
   computed: {
