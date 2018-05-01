@@ -1,8 +1,12 @@
 <template lang="pug">
   .data-table(v-if='data && fields')
     //- Table
+    .full-w(v-if='!bigTable' @click='showSort = !showSort')
+      button.btn.bg-brand.full-w(:style='sortCtrlStyle')
+        span(v-if='!showSort') Sort By
+        icon(v-else name='close')
     table.dark(v-if='data' ref='table' :class='tableClass')
-      thead
+      thead(:class='theadClass')
         tr
           th.dummy
           template(v-for='field,fieldName,index in fields')
@@ -63,6 +67,7 @@ export default {
       bigTable: true,
       editSorts: false,
       sortChanged: false,
+      showSort: false,
       sortDialog: {
         field: null,
         x: 0,
@@ -94,6 +99,12 @@ export default {
     },
     tableClass () {
       return (!this.bigTable) ? 'flex-table' : ''
+    },
+    theadClass () {
+      return (this.showSort && !this.bigTable) ? 'show' : ''
+    },
+    sortCtrlStyle () {
+      return (!this.showSort) ? 'margin-bottom:.5em' : 'justify-content:flex-end'
     }
   },
   methods: {
@@ -145,7 +156,6 @@ export default {
       if (this.key === name) css.push('row-header')
       return css
     }
-
   }
 }
 </script>
@@ -156,6 +166,9 @@ export default {
   .sort
     flex-centered()
 
+    .field-title
+      flex-centered()
+
     div
       display flex
 
@@ -163,7 +176,7 @@ export default {
       margin 0 0.5em 0 0
 
     .sort-icon
-      margin 0 0.25em 0 0
+      margin 0 0.25em
       display flex
       justify-content center
       align-items center
@@ -180,7 +193,5 @@ export default {
     color white
 
   .has-sort
-    color inherit
     padding 0 !important
-    position relative
 </style>

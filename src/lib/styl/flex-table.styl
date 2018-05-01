@@ -16,7 +16,7 @@ table.flex-table
       color $color
 
 
-  thead, tr
+  thead.show, thead.show tr
     width 100%
     flex-centered()
     border none
@@ -27,10 +27,13 @@ table.flex-table
     margin 0 !important
   th.dummy
     display none
-  thead tr
-    frame($border-color)
-    justify-content space-between
-    margin-bottom 2em
+  thead.show 
+    tr
+      frame($border-color)
+      justify-content space-between
+      margin-bottom 2em
+    th
+      margin 0 .5em !important  
 
 table.responsive-flex-table
   max-width 100%

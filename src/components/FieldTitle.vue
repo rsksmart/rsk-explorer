@@ -38,9 +38,15 @@ export default {
 }
 </script>
 <style lang="stylus">
+  @import '../lib/styl/vars.styl'
+  @import '../lib/styl/mixins.styl'
   .field-title
+    flex-centered()
+    .icon
+      display inline-flex
     .icon + .title
       margin 0 0 0 0.5em
+      
 </style>
 
 

@@ -37,6 +37,12 @@ export default {
   }
 }
 </script>
+<style lang="stylus">
+  @import '../lib/styl/vars.styl'
+  @import '../lib/styl/mixins.styl'
+    .data-field
+      position relative
+</style>
 
 
 
