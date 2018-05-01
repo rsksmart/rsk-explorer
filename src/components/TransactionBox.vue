@@ -6,29 +6,33 @@
     .box-content
       ul.plain.flex
         li.half(:style='blockStyle2')
-          strong Tx:&nbsp;
-            tool-tip(:value='tx.hash' :trim='8' :options='{trimAt:"center"}' :router-link='txLink')
+          data-field(:field='fields.hash' :row='tx')
         li.half
             router-link(:to='blockLink')
               icon(:name='bField.icon' :color='blockColor')
               small(:style='blockStyle2') &nbsp; {{blockNumber}}
         li.half(v-if='tx.txType == "normal"')
-            tool-tip.from(v-if='tx.from' :value='tx.from' :trim='8' :options='{trimAt:"center"}')
+            data-field(:field='fields.from' :row='tx')
             icon(name='arrow-right' :color='blockColor')
-            tool-tip.to(v-if='tx.to' :value='tx.to' :trim='8' :options='{trimAt:"center"}')
+            data-field(:field='fields.to' :row='tx')
         li.half(v-else)
           span {{tx.txType}}
-        li.half.soft {{ (now - tx.timestamp * 1000) | m-seconds-ago }} ago
+        li.half.soft
+          field-title.small(:field='fields.time')
+          data-field(:field='fields.time' :row='tx')
+
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import ToolTip from './ToolTip.vue'
 import { mSecondsAgo } from '../filters/TimeFilters'
 import dataMixin from '../mixins/dataMixin'
+import DataField from './DataField'
+import FieldTitle from './FieldTitle'
 export default {
   name: 'transaction-box',
   components: {
-    ToolTip
+    DataField,
+    FieldTitle
   },
   mixins: [
     dataMixin

@@ -3,41 +3,50 @@
     .block-box
       .block.box(v-if='block' :style='blockBoxStyle')
         .block-icon.box-icon
-          router-link(:to='"/blocks/" + block.number')
-            icon(name='cube' :color='blockColor')
+          router-link(:to='blockLink')
+            icon(:name='entity.icon' :color='blockColor')
         .box-content
           .block-title(v-if='title')
             h4.title {{title}}
           ul.block-data.flex
             li.half
-              router-link(:to='"/blocks/" + block.number')
+              router-link(:to='blockLink')
                 .block-number(:style='bStyle' )
-                  span {{block.number | locale}}
+                  span {{ blockNumber }}
             li.half 
-              small by 
-                tool-tip(:value='block.miner' :trim='4' :options='{trimAt:"center"}')
+              field-title.small(:field='fields.miner')
+              data-field.small(:field='fields.miner' :row='block')
             li.half.soft(:style='bStyle')
-              icon(name='transaction' :style='bStyle')
-              strong &nbsp;{{block.txs}}
-            li.half.soft 
-              icon(name='stopwatch')
-              small {{ (now - block.timestamp * 1000) | m-seconds-ago }} ago
+              field-title(:field='fields.txs')
+              data-field(:field='fields.txs' :row='block')
+            li.half.soft
+              field-title.small(:field='fields.timestamp')
+              data-field.small(:field='fields.timestamp' :row='block')
 </template>
 <script>
-import ToolTip from './ToolTip.vue'
-import common from '../mixins/common'
-import { mSecondsAgo } from '../filters/TimeFilters'
+import DataField from './DataField'
+import FieldTitle from './FieldTitle'
+import dataMixin from '../mixins/dataMixin'
 export default {
   name: 'block-box',
-  mixins: [common],
+  mixins: [dataMixin],
   components: {
-    ToolTip
-  },
-  filers: {
-    mSecondsAgo
+    DataField,
+    FieldTitle
   },
   props: ['block', 'title'],
+  data () {
+    return {
+      type: 'blocks'
+    }
+  },
   computed: {
+    blockLink () {
+      return this.makeLink(this.fields.number, this.block)
+    },
+    blockNumber () {
+      return this.filterFieldValue()(this.fields.number, this.block.number)
+    },
     blockColor () {
       return this.getBlockColor(this.block.number)
     },
@@ -56,6 +65,7 @@ export default {
   .block-box
     display block
     will-change opacity
+
     .title
       padding 0
       margin 0
