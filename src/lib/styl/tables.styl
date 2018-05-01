@@ -21,11 +21,15 @@
 
     td
      font-size 0.8em
-     line-height 2em
+     // line-height 2em
      padding .125em 1em
      white-space nowrap
+     word-break break-all
      text-align center
      border-bottom $color solid 1px
+     // prevents tooltip overflow
+     .tooltip .value
+       white-space normal !important
 
 $head-bg = $color
 $row-odd-bg = $darkness-odd

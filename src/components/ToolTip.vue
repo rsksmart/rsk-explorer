@@ -162,7 +162,7 @@ export default {
 
   .tooltip, .trim
     position relative
-    display inline-block
+    display inline-flex
     overflow visible
     z-index 1000
 
