@@ -6,7 +6,7 @@
     .error(v-if='error')
       h1 {{error.error || 'ERROR'}}
     template(v-else) 
-      .page-header(v-if='headComponent')
+      .page-header.frame(v-if='headComponent')
         account-header(v-if='isHeadComponent("AccountHeader")' :data='parentData')
       .page(v-if='data')
         //- Transactions filters

@@ -27,6 +27,25 @@ dl.data
   dt 
     font-weight bold
 
+ul.data
+  list-style none
+  display flex
+  flex-flow column wrap
+  align-items flex-start
+  max-width 100%
+  li  
+    flex 1
+    display flex
+    flex-flow row wrap
+    justify-content center
+    .field-title
+      font-weight bold
+      text-transform capitalize
+      &:after 
+        content ':'
+    .field-title, .data-field
+      flex 1
+
 ul.prev-next
   list-style none
   display flex

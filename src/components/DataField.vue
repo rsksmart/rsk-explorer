@@ -5,7 +5,7 @@
       ul(v-for='v in value')
         li {{v}}
     template(v-else)
-      template(v-if='value.length > 24')
+      template(v-if='value.length > 24 && !options.noTrim')
         tool-tip(:value='value' :trim='trim' :options='ttOpts' :router-link='link')
       template(v-else)
         router-link(v-if='link' :to='link')
@@ -20,7 +20,20 @@ import { getType } from '../lib/js/utils'
 export default {
   name: 'data-field',
   mixins: [common, dataMixin],
-  props: ['field', 'row'],
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    row: {
+      type: Object,
+      required: true
+    },
+    options: {
+      type: Object,
+      default: Object
+    }
+  },
   computed: {
     filteredValue () {
       return this.filterFieldValue()(this.field, this.value)
@@ -40,8 +53,13 @@ export default {
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
-    .data-field
-      position relative
+
+  .data-field, .data-field > a, .data-field > .tooltip
+    max-width 100%
+    display flex
+    position relative
+    word-wrap break-word
+    overflow-wrap break-word
 </style>
 
 
