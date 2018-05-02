@@ -17,7 +17,7 @@
                     field-title(:field='field')
                       .sort-icon(v-if='isSorted(field.fieldName)')
                         icon.small(:name='sortIcon(field.fieldName)')
-                  button(v-if='isSorted(field.fieldName)' @click='moveSort(field.fieldName)')
+                  template(v-if='isSorted(field.fieldName) && sortKeys.length > 1')
                     small {{sortIndex(field.fieldName)}}
                 template(v-else)
                   field-title(:field='field')
@@ -139,7 +139,8 @@ export default {
       this.updateRouterQuery({ sort })
     },
     sortBy (field) {
-      let sort = Object.assign({}, this.sort)
+      let sort = {}
+      sort[field] = this.sort[field]
       if (sort[field] === -1) delete sort[field]
       else sort[field] = (sort[field]) ? -1 : 1
       this.getData(sort)
