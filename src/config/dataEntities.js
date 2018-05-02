@@ -99,7 +99,9 @@ const Block = () => {
       type: 'bigNumber'
     },
     gasLimit: null,
-    gasUsed: null,
+    gasUsed: {
+      default: 0
+    },
     minimumGasPrice: null,
     extraData: null,
     transactions: {
