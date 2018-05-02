@@ -1,11 +1,11 @@
 
 export const ROUTES = {
+  home: 'home',
   block: 'block',
   blocks: 'blocks',
   transaction: 'transaction',
   transactions: 'transactions',
-  address: 'address',
-  addresses: 'addresses',
+  addresses: 'address',
   tokens: 'tokens'
 }
 

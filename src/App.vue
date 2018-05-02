@@ -16,9 +16,9 @@
               icon(:name='(!menu) ? "menu" : "close"')
           nav.menu(:class='(menu) ? "enabled":""')
             ul
-              template(v-for='menu in menuItems')
+                template(v-for='path,menu in menuItems')
                 li(v-if='menu !== "home" || !isRoute("home")' @click='toggleMenu')
-                  router-link(:to='"/" + menu')
+                    router-link(:to='"/" + path')
                     icon.icon(:name='getIcon(menu)')
                     span {{menu}}
     .main

@@ -1,6 +1,6 @@
 import { colors, blocksColors } from '../lib/js/colors.js'
-import config from '../config/config.json'
-const menuItems = config.menuItems
+import menuItems from '../lib/js/menuItems.js'
+
 export default function () {
   return {
     APP: process.env.APP,
