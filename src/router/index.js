@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Tokens from '@/components/Tokens'
 import DataPage from '@/components/DataPage'
 import { ROUTES as r } from '../config/types'
+import config from '../config/config.json'
 // import Transactions from '@/components/Transactions'
 Vue.use(Router)
 
@@ -21,6 +22,13 @@ export default new Router({
     {
       path: '/home',
       redirect: '/'
+    },
+    {
+      path: `/${r.stats}`,
+      name: 'stats',
+      beforeEnter (t, f) {
+        window.location.href = config.rskStatsUrl
+      }
     },
     {
       path: `/${r.tokens}`,

@@ -6,7 +6,8 @@ export const ROUTES = {
   transaction: 'transaction',
   transactions: 'transactions',
   addresses: 'address',
-  tokens: 'tokens'
+  tokens: 'tokens',
+  stats: 'stats'
 }
 
 export const THIS_ADDRESS = 'This Address'

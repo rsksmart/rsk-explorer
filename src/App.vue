@@ -98,7 +98,7 @@ export default {
     getIcon (name) {
       if (name === 'home') return 'rsk'
       let entity = this.getEntity()(name)
-      return (entity) ? entity.icon || null : null
+      return (entity) ? entity.icon || null : name
     },
     onResize () {
       let size = {
