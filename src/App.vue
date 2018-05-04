@@ -2,25 +2,26 @@
 <template lang="pug">
   .wrapper
     .header(:class='(bigMenu) ? "big-menu" : ""')
-      header
-        .brand(@click='goHome' @touchstart.passive='goHome')
-            .iso.plain-color
-              include assets/svg/logo-alt.svg
-            .title
-              h1.logo rsk explorer
-        .header-content
-          search-box
-        .nav(:class='(menu) ? "open":""')
-          .burger
-            button(@click='toggleMenu')
-              icon(:name='(!menu) ? "menu" : "close"')
-          nav.menu(:class='(menu) ? "enabled":""')
-            ul
+      transition(name='head-trans')
+        header.w-trans
+          .brand(@click='goHome' @touchstart.passive='goHome')
+              .iso.plain-color
+                include assets/svg/logo-alt.svg
+              .title
+                h1.logo rsk explorer
+          .header-content
+            search-box
+          .nav(:class='(menu) ? "open":""')
+            .burger
+              button(@click='toggleMenu')
+                icon(:name='(!menu) ? "menu" : "close"')
+            nav.menu(:class='(menu) ? "enabled":""')
+              ul
                 template(v-for='path,menu in menuItems')
-                li(v-if='menu !== "home" || !isRoute("home")' @click='toggleMenu')
+                  li(v-if='menu !== "home" || !isRoute("home")' @click='toggleMenu')
                     router-link(:to='"/" + path')
-                    icon.icon(:name='getIcon(menu)')
-                    span {{menu}}
+                      icon.icon(:name='getIcon(menu)')
+                      span {{menu}}
     .main
       template(v-if='connected')
         router-view
@@ -125,6 +126,13 @@ export default {
 
   .brand
     cursor pointer
+
+  .w-trans
+    transition opacity 1s ease
+    opacity 1
+
+  .head-trans-enter-active
+    opacity 0
 </style>
 
 
