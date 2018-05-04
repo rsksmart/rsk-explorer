@@ -30,8 +30,6 @@ $nav-margin = 1em
   z-index 1000
   min-width 100%
 
-.header
-  transition all 1s ease
 
 header
   background $head-bg
@@ -54,6 +52,7 @@ header
 
     .logo
       color color1
+      margin 0 0 0 .5em
 
   .search
     order 3
@@ -70,7 +69,7 @@ header
       margin 0 0 1em 1em
 
   .iso
-    width 50px
+    width 36px
     height @width
     display inline-block
 
@@ -93,19 +92,15 @@ header
     z-index 2000
     margin 0 $nav-margin 0 0
     padding 0
-    will-change transform
-    transition all 1s ease
 
     ul
       opacity 0
-      transform translateX(100%)
       list-style none
       display flex
       min-height 3em
       padding 0
       margin 0
       flex-flow column nowrap
-      transition all 1s ease
 
       li, li a
         min-height 2em
@@ -125,7 +120,6 @@ header
 
     ul
       opacity 1
-      transform translateX(0)
 
     li:last-child
       a
@@ -149,7 +143,6 @@ header
   header
     .header-content
       flex 1
-
       .hc
         margin 0 0 0 0.5em
 
@@ -171,7 +164,6 @@ header
 
       ul
         opacity 1
-        transform translateX(0)
         flex-flow row wrap
 
         li

@@ -7,41 +7,46 @@
 
 ::-webkit-search-cancel-button
   /* Remove default */
-  -webkit-appearance: none
-  height: .75em
-  width: .75em
-  background: $dark
+  -webkit-appearance none
+  height 0.75em
+  width 0.75em
+  background $dark
 
-
-label 
-  margin-top .5em
+label
+  margin-top 0.5em
 
 label + input[type='range']
-  display block  
+  display block
 
-input 
+input
   defaultsColors()
   borders()
+
   &:focus
     focus()
+
+input[placehoder], ::-moz-placeholder, input::-moz-placeholder
+  text-overflow ellipsis
 
 input.big
   font-size 1.125em
 
 input[type='checkbox']
   appearance none
-  border $color solid .1em
+  border $color solid 0.1em
   width 1.1em
   height @width
   display inline-flex
   justify-content center
   align-items center
+
   &::after
-      width .4em
-      height @width
-      content ''
-      display block
-      background trasparent
+    width 0.4em
+    height @width
+    content ''
+    display block
+    background trasparent
+
   &:checked
     &::after
       background $color
