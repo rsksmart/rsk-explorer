@@ -190,7 +190,7 @@ const Address = () => {
       },
       balance: {
         filters: ['tx-value', 'sbtc'],
-        default: '0'
+        default: 0
       }
     }
   }
