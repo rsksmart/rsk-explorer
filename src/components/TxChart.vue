@@ -22,31 +22,18 @@ export default {
       },
       options: {
         fontSize: 12,
-        margin: 10,
-        curve: {
-          type: 'Step',
-          gradient: {
-            fill: false,
-            stroke: false
-          },
-          style: {
-            stroke: colors.green
-          }
-        },
-        bars: false,
+        margin: 0,
+        curve: false,
+        bars: true,
+        padding: 0.25,
+        colors: [colors.green, colors.green],
         axis: {
           valuesY: true,
           valuesX: true,
-          linesY: true,
-          linesX: true
+          linesY: false,
+          linesX: false
         },
-        marks: {
-          type: 'square',
-          style: {
-            fill: colors.green
-          },
-          size: 6
-        },
+        marks: false,
         getX (d) {
           return d
         },
