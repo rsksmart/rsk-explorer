@@ -150,7 +150,7 @@ const Txs = () => {
         default: THIS_ADDRESS
       },
       value: {
-        filters: ['tx-value']
+        filters: ['tx-value', 'sbtc']
       },
       gas: {
         field: 'gas',
