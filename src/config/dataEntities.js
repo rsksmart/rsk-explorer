@@ -180,6 +180,29 @@ const Tx = () => {
   return tx
 }
 
+const Address = () => {
+  return {
+    icon: 'credit-card',
+    key: 'address',
+    fields: {
+      address: {
+        link: `/${r.addresses}/`
+      },
+      balance: {
+        filters: ['tx-value', 'sbtc'],
+        default: '0'
+      }
+    }
+  }
+}
+
+const Addresses = () => {
+  let addresses = Address()
+  addresses.fields = Object.assign(addresses.fields, {})
+  addresses.fields.balance.filters = ['tx-value', 'round', 'sbtc']
+  return addresses
+}
+
 export default {
   blocks: Blocks(),
   block: Block(),
@@ -228,33 +251,8 @@ export default {
       }
     }
   },
-  addresses: {
-    key: '_id',
-    icon: 'credit-card',
-    type: 'addresses',
-    fields: {
-      _id: {
-        title: 'id'
-      },
-      balance: {
-        filters: ['tx-value'],
-        default: '0'
-      }
-    }
-  },
-  address: {
-    icon: 'credit-card',
-    key: 'address',
-    fields: {
-      address: {
-        link: `/${r.addresses}/`
-      },
-      balance: {
-        filters: ['tx-value'],
-        default: '0'
-      }
-    }
-  },
+  address: Address(),
+  addresses: Addresses(),
   tokens: {
     icon: 'ellipsis'
   }

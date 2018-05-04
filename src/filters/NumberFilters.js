@@ -47,6 +47,15 @@ export const wei = Vue.filter('wei', (value) => {
   return locale(value) + 'wei'
 })
 
+export const sbtc = Vue.filter('sbtc', (value) => {
+  return value + ' sbtc'
+})
+
+export const round = Vue.filter('round', (value, digits) => {
+  digits = digits || 2
+  return d3.format(`.${digits}f`)(value)
+})
+
 export const isDigits = Vue.filter('is-digits', (value) => {
   return /^-?\d+\.?\d*$/.test(value) // true for digits and '.'
 })

@@ -99,7 +99,7 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
-        dataType: 'address',
+        dataType: 'addresses',
         action: 'getAddresses',
         title: 'Addresses'
       }

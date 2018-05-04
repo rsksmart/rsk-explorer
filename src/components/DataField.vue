@@ -54,6 +54,9 @@ export default {
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
 
+  .data-field
+    white-space nowrap
+   
   .data-field, .data-field > a, .data-field > .tooltip
     max-width 100%
     display flex
