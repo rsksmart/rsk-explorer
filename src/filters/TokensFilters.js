@@ -17,7 +17,7 @@ export const tokenValue = Vue.filter('token-value', amount => {
 
 export const txValue = Vue.filter('tx-value', value => {
   value = bignumberObjtoBigNumber(value)
-  if (value) return etherUnits.toEther(value, 'wei')
+  return (value) ? etherUnits.toEther(value, 'wei') : 0
 })
 
 export const bignumber = Vue.filter('big-number', value => {
