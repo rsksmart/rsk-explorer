@@ -149,8 +149,7 @@ export default {
       return this.getSavedSort()(this.type, this.action)
     },
     q () {
-      let query = this.query
-      return (query && query.q) ? query.q : this.getSavedQ()(this.type, this.action)
+      return this.getSavedQ()(this.type, this.action)
     }
   },
   methods: {

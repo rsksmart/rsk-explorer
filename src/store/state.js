@@ -3,6 +3,7 @@ import menuItems from '../lib/js/menuItems.js'
 
 export default function () {
   return {
+    loadingConfig: null,
     APP: process.env.APP,
     menuItems,
     date: Date.now(),

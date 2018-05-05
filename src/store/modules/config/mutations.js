@@ -1,7 +1,11 @@
 import Vue from 'vue'
 
 export const SET_CONFIG = (state, payload) => {
-  Vue.set(state, payload[0], payload[1])
+  let key = payload[0]
+  let value = payload[1]
+  if (undefined !== state[key]) {
+    Vue.set(state, key, value)
+  }
 }
 
 export const SET_CONFIG_KEY = (state, payload) => {
@@ -11,18 +15,18 @@ export const SET_CONFIG_KEY = (state, payload) => {
   let value = payload.value || null
 
   if (type && action && key && value) {
-    if (!state[key]) Vue.set(state, key, {})
-    if (!state[key][type]) Vue.set(state[key], type, {})
+    if (undefined === state[key]) Vue.set(state, key, {})
+    if (undefined === state[key][type]) Vue.set(state[key], type, {})
     Vue.set(state[key][type], action, value)
   }
 }
 
-export const SET_SORT = (state, payload) => {
+export const SET_CONFIG_SORT = (state, payload) => {
   payload.key = 'sort'
   SET_CONFIG_KEY(state, payload)
 }
 
-export const SET_Q = (state, payload) => {
+export const SET_CONFIG_Q = (state, payload) => {
   payload.key = 'q'
   SET_CONFIG_KEY(state, payload)
 }

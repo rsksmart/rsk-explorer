@@ -10,6 +10,7 @@ import config from './modules/config/'
 import routes from './modules/routes/'
 import socket from '../socket.js'
 import socketPlugin from './plugins/socketPlugin'
+import storagePlugin from './plugins/localStorage'
 import { sync } from 'vuex-router-sync'
 import router from '../router'
 const wsPlugin = socketPlugin(socket)
@@ -24,7 +25,8 @@ const store = new Vuex.Store({
   actions,
   mutations,
   plugins: [
-    wsPlugin
+    wsPlugin,
+    storagePlugin
   ],
   modules: {
     backend,

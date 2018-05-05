@@ -70,8 +70,8 @@ export const socketPageData = ({ state, commit }, res) => {
       commit('SET_PAGE_PREV', prev)
       commit('SET_PAGE_NEXT', next)
       commit('SET_PAGE_SORT', sort)
-      commit('SET_Q', { type, action, value: q })
-      commit('SET_SORT', { type, action, value: sort })
+      commit('SET_CONFIG_Q', { type, action, value: q })
+      commit('SET_CONFIG_SORT', { type, action, value: sort })
       commit('SET_PAGE_PARENTDATA', parentdata)
     }
   }

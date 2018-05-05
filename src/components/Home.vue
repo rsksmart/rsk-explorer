@@ -7,7 +7,7 @@
             block-box(:block='lastBlocks[0]' title='Last Block')
           pending-blocks(v-if='pending')
           .auto-update
-            ctrl-switch(label='Auto update' :value='aUpdate' @change='setAupdate')
+            ctrl-switch(label='Auto update' :value='autoUpdate' @change='setAupdate')
       .col-b
         .box
           .chart-c
@@ -50,21 +50,13 @@ export default {
   },
   computed: {
     ...mapState({
-      lastBlocks: state => state.backend.lastBlocks
+      lastBlocks: state => state.backend.lastBlocks,
+      autoUpdate: state => state.config.autoUpdateBlocks
     }),
     ...mapGetters({
       pending: 'pendingBlocks',
-      appSize: 'getSize',
-      autoUpdate: 'autoUpdate'
-    }),
-    aUpdate: {
-      get () {
-        return this.autoUpdate
-      },
-      set (value) {
-        this.setAupdate(value)
-      }
-    }
+      appSize: 'getSize'
+    })
   },
   methods: {
     ...mapActions([

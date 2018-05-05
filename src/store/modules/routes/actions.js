@@ -4,7 +4,7 @@ import router from '../../../router'
 export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
   let routerQuery = getters.getRouterQuery
   let query = routerQuery.q || getters.getSavedQ(req.type, req.action) || null
-  req.sort = routerQuery.sort || null
+  req.sort = routerQuery.sort || getters.getSavedSort(req.type, req.action) || null
   req.page = routerQuery.page || 1
   if (query) query = getters.parseQuery(query, true)
   req.query = query

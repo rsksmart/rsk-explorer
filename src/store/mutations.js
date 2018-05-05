@@ -20,3 +20,12 @@ export const SET_SIZE = (state, size) => {
   Vue.set(state.size, 'w', size.w)
   Vue.set(state.size, 'h', size.h)
 }
+
+export const CONFIG_LOAD_DONE = (state) => {
+  state.loadingConfig = false
+}
+
+// dummy mutation for localStorage plugin
+export const CONFIG_LOAD = (state) => {
+  state.loadingConfig = true
+}

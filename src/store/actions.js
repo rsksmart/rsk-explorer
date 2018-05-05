@@ -5,6 +5,7 @@ export const socketError = ({ commit, dispatch }, error) => {
 
 export const init = ({ dispatch, commit }) => {
   dispatch('setDateInterval')
+  commit('CONFIG_LOAD')
 }
 
 export const setSize = ({ commit }, size) => {
