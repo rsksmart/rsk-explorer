@@ -28,6 +28,11 @@ export default new Router({
       name: 'stats',
       beforeEnter (t, f) {
         let url = config.statsUrl
+        if (!url) {
+          let host = window.location.host.split('.')
+          host[0] = 'stats'
+          url = window.location.protocol + '//' + host.join('.')
+        }
         window.location.href = url
       }
     },
