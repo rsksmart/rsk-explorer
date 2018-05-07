@@ -27,7 +27,8 @@ export default new Router({
       path: `/${r.stats}`,
       name: 'stats',
       beforeEnter (t, f) {
-        window.location.href = config.rskStatsUrl
+        let url = config.statsUrl
+        window.location.href = url
       }
     },
     {
