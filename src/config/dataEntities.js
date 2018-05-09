@@ -204,6 +204,17 @@ const Addresses = () => {
 }
 
 export default {
+  accounts: {
+    key: '_id',
+    icon: 'credit-card',
+    type: 'addresses',
+    fields: {
+      _id: {
+        title: 'id'
+      },
+      balance: ['tx-value']
+    }
+  },
   blocks: Blocks(),
   block: Block(),
   transactions: Txs(),

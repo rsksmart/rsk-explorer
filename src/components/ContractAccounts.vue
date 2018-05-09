@@ -12,7 +12,12 @@ export default {
   props: ['data', 'token'],
   methods: {
     formatFields (fields) {
-      fields.balance.suffix = this.token.shortName
+      let token = this.token
+      let uri = token.baseUri + 'accounts/'
+      let def = 'This Account'
+      fields.link = uri
+      fields.default = def
+      fields.amount.suffix = token.shortName
       return fields
     }
   }
