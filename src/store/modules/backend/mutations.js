@@ -74,6 +74,6 @@ export const SET_PAGE_SORT = (state, sort) => {
   Vue.set(state.page, 'sort', sort)
 }
 
-export const SET_STATS = (state, data) => {
-  Vue.set(state, 'stats', data)
+export const SET_DB_STATUS = (state, data) => {
+  Vue.set(state, 'dbStatus', data)
 }

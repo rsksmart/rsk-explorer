@@ -15,7 +15,7 @@ export default function () {
     },
     blocks: [],
     lastBlocks: [],
-    stats: {},
+    dbStatus: {},
     lastBlocksTime: 0,
     transactions: [],
     lastTransactions: [],

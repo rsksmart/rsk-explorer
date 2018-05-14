@@ -77,9 +77,8 @@ export const socketPageData = ({ state, commit }, res) => {
   }
 }
 
-export const socketStats = ({ state, commit }, data) => {
-  // console.log('data', data)
-  commit('SET_STATS', data)
+export const socketDbStatus = ({ state, commit }, data) => {
+  commit('SET_DB_STATUS', data)
 }
 
 export const fetchPageData = ({ commit, getters }, req) => {
