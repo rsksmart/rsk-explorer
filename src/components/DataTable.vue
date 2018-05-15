@@ -12,17 +12,17 @@
           template(v-for='field,fieldName,index in fields')
             template(v-if='!isHidden(fieldName)')
               th(:class='thClass(field.fieldName)') 
-                .sort(v-if='sort')
+                .sort(v-if='sort && isSortable(field.fieldName)')
                   button(@click='sortBy(field.fieldName)')
                     field-title(:field='field')
-                      .sort-icon(v-if='isSorted(field.fieldName)')
+                      .sort-icon(v-if='isSorted(field.fieldName) && !isDefaultSort')
                         icon.small(:name='sortIcon(field.fieldName)')
-                  template(v-if='isSorted(field.fieldName) && sortKeys.length > 1')
+                  //-template(v-if='isSorted(field.fieldName) && sortKeys.length > 1')
                     small {{sortIndex(field.fieldName)}}
                 template(v-else)
                   field-title(:field='field')
 
-              th(v-if='isFrom(fieldName,index)' )
+              th.from-to-arrow.unsortable(v-if='isFrom(fieldName,index)' )
       tbody
         tr(v-for='row, rowIndex in dataFormatted' :class='rowClass(rowIndex)')
           td.row-icon
@@ -85,13 +85,32 @@ export default {
     })
   },
   computed: {
-    ...mapGetters({ req: 'requestedPage' }),
+    ...mapGetters({ page: 'getPage' }),
     ...mapState({
       size: state => state.size
     }),
+    requestedPage () {
+      return this.page.req
+    },
     sortKeys () {
       if (!this.sort) return null
       return Object.keys(this.sort)
+    },
+    defKeys () {
+      return Object.keys(this.defaultSort)
+    },
+    defaultSort () {
+      return this.page.pages.defaultSort || {}
+    },
+    isDefaultSort () {
+      let sortKeys = this.sortKeys
+      let defSort = this.defaultSort
+      let sort = this.sort
+      if (sortKeys.length !== this.defKeys.length) return false
+      return (undefined !== sortKeys.find(k => defSort[k] === sort[k]))
+    },
+    sortableFields () {
+      return this.page.pages.sortable
     },
     hasSorts () {
       if (!this.sortKeys) return false
@@ -141,16 +160,29 @@ export default {
     sortBy (field) {
       let sort = {}
       sort[field] = this.sort[field]
-      if (sort[field] === -1) delete sort[field]
-      else sort[field] = (sort[field]) ? -1 : 1
+      if (!this.isDefaultSort) {
+        if (sort[field] === -1) delete sort[field]
+        else sort[field] = (sort[field]) ? -1 : 1
+      } else {
+        let defSort = this.defaultSort[field]
+        sort[field] = -defSort
+      }
+
       this.getData(sort)
     },
     isSorted (field) {
       let sort = this.sort
       return (sort && sort[field])
     },
+    isSortable (field) {
+      return (undefined !== this.sortableFields[field])
+    },
     thClass (field) {
-      return (this.isSorted(field)) ? 'has-sort' : ''
+      let css = []
+      if (this.isSorted(field)) css.push('has-sort')
+      if (!this.isSortable(field)) css.push('unsortable')
+      console.log(css)
+      return css
     },
     tdClass (name) {
       let css = [`field-${name}`]
@@ -163,6 +195,12 @@ export default {
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
+
+  .unsortable
+    color gray
+
+    .icon svg
+      fill gray !important
 
   .sort
     flex-centered()
