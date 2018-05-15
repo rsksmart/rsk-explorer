@@ -1,7 +1,7 @@
 export class EntityParser {
   constructor (entities, fields) {
     this.entities = entities
-    this.fields = fields
+    this.fieldsTypes = fields
   }
   parse () {
     let res = {}
@@ -38,7 +38,7 @@ export class EntityParser {
     field.titleIcon = field.titleIcon || false
     field.hideTitle = field.hideTitle || false
     field.title = field.title || name
-    let fieldDef = this.fields[field.type]
+    let fieldDef = this.fieldsTypes[field.type]
     if (fieldDef) {
       if (fieldDef.filters) {
         let filters = field.filters || []

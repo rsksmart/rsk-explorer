@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     showTitle () {
-      return !this.field.hideTitle || this.forceTitle
+      return this.field.showTitle || !this.field.hideTitle || this.forceTitle
     },
     showIcon () {
       let field = this.field

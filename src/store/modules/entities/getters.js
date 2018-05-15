@@ -70,9 +70,10 @@ export const applyFilters = state => (filters, value) => {
 
 const filter = (filterName, value, args) => {
   let filter = Vue.filter(filterName)
+  args = args || []
+  args = Array.isArray(args) ? args : [args]
   if (filter) {
-    if (args) value = filter(value, ...args)
-    else value = filter(value)
+    value = filter(value, ...args)
   } else {
     console.info('Unknown filter ' + filterName)
   }
