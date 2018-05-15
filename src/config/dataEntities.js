@@ -150,7 +150,7 @@ const Txs = () => {
         default: THIS_ADDRESS
       },
       value: {
-        filters: ['tx-value', 'sbtc']
+        filters: ['tx-value', { name: 'round', args: 4 }, 'sbtc']
       },
       gas: {
         field: 'gas',
@@ -172,6 +172,15 @@ const Tx = () => {
     block: {
       field: 'blockNumber',
       type: 'block'
+    },
+    nonce: {
+      field: 'nonce',
+      type: 'block',
+      showTitle: true
+    },
+    value: {
+      filters: ['tx-value', 'sbtc'],
+      default: 0
     },
     input: {
       field: 'input'
