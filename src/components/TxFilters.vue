@@ -8,24 +8,27 @@
           small {{name}}
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   name: 'tx-filters',
   props: ['q', 'type', 'action'],
   data () {
     return {
-      txFilters: {
-        remasc: false,
-        bridge: false,
-        normal: true
-      },
+      txFilters: {},
       filterValues: []
     }
   },
   created () {
     this.filterValues = this.q.txType || []
+    let filters = this.txFilters
+    let types = this.txTypes
+    Object.keys(types).forEach(v => { filters[types[v]] = (v === 'default') })
   },
-
+  computed: {
+    ...mapState({
+      txTypes: state => state.backend.systemSettings.txTypes
+    })
+  },
   methods: {
     ...mapActions(['updateRouterQuery']),
     update () {
