@@ -2,14 +2,14 @@
   .home
     .hero
       .col-a
-        .box.row.last-blocks
+        .box.row.last-blocks(ref='last-blocks-box' :style='topBoxStyle')
           .last-block
             block-box(:block='lastBlocks[0]' title='Last Block')
           pending-blocks(v-if='pending')
           .auto-update
             ctrl-switch(label='Auto update' :value='autoUpdate' @change='setAupdate')
       .col-b
-        .box
+        .box(ref='chart-box' :style='topBoxStyle')
           .chart-c
             tx-chart(:asize='appSize.w + appSize.h')
     .cols
@@ -45,8 +45,15 @@ export default {
   },
   data () {
     return {
+      topBoxHeight: 0,
       r
     }
+  },
+  mounted () {
+    let vm = this
+    this.$nextTick(() => {
+      vm.resizeBox()
+    })
   },
   computed: {
     ...mapState({
@@ -56,13 +63,25 @@ export default {
     ...mapGetters({
       pending: 'pendingBlocks',
       appSize: 'getSize'
-    })
+    }),
+    topBoxStyle () {
+      let style = {}
+      if (this.topBoxHeight) {
+        style.height = this.topBoxHeight + 'px'
+      }
+      return style
+    }
   },
   methods: {
     ...mapActions([
       'updateBlocks',
       'setAutoUpdate'
     ]),
+    resizeBox () {
+      let lastBlocks = this.$refs['last-blocks-box']
+      let chart = this.$refs['chart-box']
+      this.topBoxHeight = Math.max(lastBlocks.clientHeight, chart.clientHeight)
+    },
     setAupdate (value) {
       this.updateBlocks()
       this.setAutoUpdate(value)
