@@ -117,8 +117,48 @@ const Block = () => {
   block.itemTitle = true
   return block
 }
-
+const TxFields = () => {
+  return {
+    hash: {
+      field: 'hash',
+      type: 'hash',
+      link: `/${r.transactions}/`
+    },
+    block: {
+      field: 'blockNumber',
+      type: 'block'
+    },
+    index: {
+      field: 'transactionIndex',
+      default: 0
+    },
+    from: {
+      type: 'from',
+      default: THIS_ADDRESS
+    },
+    to: {
+      type: 'to',
+      default: THIS_ADDRESS
+    },
+    value: {
+      filters: ['tx-value', { name: 'round', args: 4 }, 'sbtc']
+    },
+    gas: {
+      field: 'gas',
+      default: 0
+    },
+    time: {
+      field: 'timestamp',
+      type: 'timestamp'
+    },
+    type: {
+      field: 'txType'
+    }
+  }
+}
 const Txs = () => {
+  let fields = TxFields()
+  delete (fields.index)
   return {
     key: 'hash',
     icon: 'transaction',
@@ -127,48 +167,12 @@ const Txs = () => {
     link: `/${r.transactions}`,
     formatRow: transactionFormatRow,
     formatFields: transactionFormatFields,
-    fields: {
-      hash: {
-        field: 'hash',
-        type: 'hash',
-        link: `/${r.transactions}/`
-      },
-      txi: {
-        field: 'transactionIndex',
-        default: 0
-      },
-      block: {
-        field: 'blockNumber',
-        type: 'block'
-      },
-      from: {
-        type: 'from',
-        default: THIS_ADDRESS
-      },
-      to: {
-        type: 'to',
-        default: THIS_ADDRESS
-      },
-      value: {
-        filters: ['tx-value', { name: 'round', args: 4 }, 'sbtc']
-      },
-      gas: {
-        field: 'gas',
-        default: 0
-      },
-      time: {
-        field: 'timestamp',
-        type: 'timestamp'
-      },
-      type: {
-        field: 'txType'
-      }
-    }
+    fields
   }
 }
 const Tx = () => {
   let tx = Txs()
-  tx.fields = Object.assign(tx.fields, {
+  tx.fields = Object.assign(TxFields(), {
     block: {
       field: 'blockNumber',
       type: 'block'
