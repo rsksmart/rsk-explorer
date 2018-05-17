@@ -1,10 +1,11 @@
 <template lang="pug">
   .data-table(v-if='data && fields')
     //- Table
-    .full-w(v-if='!bigTable' @click='showSort = !showSort')
-      button.btn.bg-brand.full-w(:style='sortCtrlStyle')
-        span(v-if='!showSort') Sort By
-        icon(v-else name='close')
+    .table-ctrls
+      button.switch(@click='switchTableGrid(false)' :disabled='!bigTable')
+        icon(name='grid')
+      button.switch(@click='switchTableGrid(true)' :disabled='bigTable')
+        icon(name='table')
     table.dark(v-if='data' ref='table' :class='tableClass')
       thead(:class='theadClass')
         tr
@@ -13,7 +14,7 @@
             template(v-if='!isHidden(fieldName)')
               th(:class='thClass(field.fieldName)') 
                 .sort(v-if='sort && isSortable(field.fieldName)')
-                  button(@click='sortBy(field.fieldName)')
+                  button.link(@click='sortBy(field.fieldName)')
                     field-title(:field='field')
                       .sort-icon(v-if='isSorted(field.fieldName) && !isDefaultSort')
                         icon.small(:name='sortIcon(field.fieldName)')
@@ -21,8 +22,7 @@
                     small {{sortIndex(field.fieldName)}}
                 template(v-else)
                   field-title(:field='field')
-
-              th.from-to-arrow.unsortable(v-if='isFrom(fieldName,index)' )
+              th.dummy(v-if='isFrom(fieldName,index)' )
       tbody
         tr(v-for='row, rowIndex in dataFormatted' :class='rowClass(rowIndex)')
           td.row-icon
@@ -30,7 +30,13 @@
               icon(:name='iconLoad' :style='iconStyle(row)')
           template(v-for='field,fieldName,index in fields') 
             td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
-              field-title.td-title(v-if='!bigTable' :field='field')
+              template(v-if='!bigTable')
+                .sort.td-title(v-if='sort && isSortable(field.fieldName)')
+                  button.link(@click='sortBy(field.fieldName)')
+                    field-title(:field='field')
+                      .sort-icon(v-if='isSorted(field.fieldName) && !isDefaultSort')
+                        icon.small(:name='sortIcon(field.fieldName)')
+                field-title.td-title(v-else :field='field')
               data-field(:field='field' :row='row')  
             td.from-to-arrow(v-if='isFrom(fieldName,index)')
               icon(name='arrow-right')
@@ -67,7 +73,6 @@ export default {
       bigTable: true,
       editSorts: false,
       sortChanged: false,
-      showSort: false,
       sortDialog: {
         field: null,
         x: 0,
@@ -123,9 +128,6 @@ export default {
     },
     theadClass () {
       return (this.showSort && !this.bigTable) ? 'show' : ''
-    },
-    sortCtrlStyle () {
-      return (!this.showSort) ? 'margin-bottom:.5em' : 'justify-content:flex-end'
     }
   },
   methods: {
@@ -179,6 +181,10 @@ export default {
     isSortable (field) {
       return (undefined !== this.sortableFields[field])
     },
+    switchTableGrid (bigTable) {
+      bigTable = bigTable || !this.bigTable
+      this.bigTable = bigTable
+    },
     thClass (field) {
       let css = []
       if (this.isSorted(field)) css.push('has-sort')
@@ -196,6 +202,10 @@ export default {
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
+
+  .table-ctrls
+    display flex
+    justify-content flex-end
 
   .unsortable
     color gray
