@@ -2,9 +2,9 @@
   .data-table(v-if='data && fields')
     //- Table
     .table-ctrls
-      button.switch(@click='switchTableGrid(false)' :disabled='!bigTable')
+      button.switch(@click='switchTableGrid(false)' :disabled='!renderTable')
         icon(name='grid')
-      button.switch(@click='switchTableGrid(true)' :disabled='bigTable')
+      button.switch(@click='switchTableGrid(true)' :disabled='renderTable')
         icon(name='table')
     table.dark(v-if='data' ref='table' :class='tableClass')
       thead(:class='theadClass')
@@ -30,7 +30,7 @@
               icon(:name='iconLoad' :style='iconStyle(row)')
           template(v-for='field,fieldName,index in fields') 
             td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
-              template(v-if='!bigTable')
+              template(v-if='!renderTable')
                 .sort.td-title(v-if='sort && isSortable(field.fieldName)')
                   button.link(@click='sortBy(field.fieldName)')
                     field-title(:field='field')
@@ -70,7 +70,7 @@ export default {
   ],
   data () {
     return {
-      bigTable: true,
+      renderTable: true,
       editSorts: false,
       sortChanged: false,
       sortDialog: {
@@ -85,7 +85,7 @@ export default {
     this.$nextTick(() => {
       let table = vm.$refs.table
       if (table && table.clientWidth > vm.$el.clientWidth) {
-        vm.$set(this, 'bigTable', false)
+        vm.$set(this, 'renderTable', false)
       }
     })
   },
@@ -124,10 +124,10 @@ export default {
       return this.sortKeys.length > 1
     },
     tableClass () {
-      return (!this.bigTable) ? 'flex-table' : ''
+      return (!this.renderTable) ? 'flex-table' : ''
     },
     theadClass () {
-      return (this.showSort && !this.bigTable) ? 'show' : ''
+      return (this.showSort && !this.renderTable) ? 'show' : ''
     }
   },
   methods: {
@@ -181,9 +181,9 @@ export default {
     isSortable (field) {
       return (undefined !== this.sortableFields[field])
     },
-    switchTableGrid (bigTable) {
-      bigTable = bigTable || !this.bigTable
-      this.bigTable = bigTable
+    switchTableGrid (renderTable) {
+      renderTable = renderTable || !this.renderTable
+      this.renderTable = renderTable
     },
     thClass (field) {
       let css = []
