@@ -63,7 +63,8 @@ export default {
 </script>
 <style lang="stylus">
   .block-box
-    display block
+    display flex
+    flex 1 1 100%
     will-change opacity
 
     .title

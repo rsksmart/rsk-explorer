@@ -1,15 +1,15 @@
 <template lang="pug">
   .home
     .hero
-      .col-a
-        .box.row.last-blocks(ref='last-blocks-box' :style='topBoxStyle')
+      .col-a(ref='last-blocks-box')
+        .box.row.last-blocks
           .last-block
             block-box(:block='lastBlocks[0]' title='Last Block')
           pending-blocks(v-if='pending')
           .auto-update
             ctrl-switch(label='Auto update' :value='autoUpdate' @change='setAupdate')
-      .col-b
-        .box(ref='chart-box' :style='topBoxStyle')
+      .col-b(ref='chart-box')
+        .box
           .chart-c
             tx-chart(:asize='appSize.w + appSize.h')
     .cols
@@ -49,12 +49,6 @@ export default {
       r
     }
   },
-  mounted () {
-    let vm = this
-    this.$nextTick(() => {
-      vm.resizeBox()
-    })
-  },
   computed: {
     ...mapState({
       lastBlocks: state => state.backend.lastBlocks,
@@ -63,25 +57,13 @@ export default {
     ...mapGetters({
       pending: 'pendingBlocks',
       appSize: 'getSize'
-    }),
-    topBoxStyle () {
-      let style = {}
-      if (this.topBoxHeight) {
-        style.height = this.topBoxHeight + 'px'
-      }
-      return style
-    }
+    })
   },
   methods: {
     ...mapActions([
       'updateBlocks',
       'setAutoUpdate'
     ]),
-    resizeBox () {
-      let lastBlocks = this.$refs['last-blocks-box']
-      let chart = this.$refs['chart-box']
-      this.topBoxHeight = Math.max(lastBlocks.clientHeight, chart.clientHeight)
-    },
     setAupdate (value) {
       this.updateBlocks()
       this.setAutoUpdate(value)
@@ -91,6 +73,7 @@ export default {
 }
 </script>
 <style lang="stylus">
+@import('../lib/styl/vars.styl')
   .home
     max-width 100%
 
