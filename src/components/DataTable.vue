@@ -110,7 +110,9 @@ export default {
       return (undefined !== sortKeys.find(k => defSort[k] === sort[k]))
     },
     sortableFields () {
-      return this.page.pages.sortable
+      let page = this.page
+      let pages = page.pages
+      return (pages && pages.sortable) ? pages.sortable : {}
     },
     hasSorts () {
       if (!this.sortKeys) return false
@@ -181,7 +183,6 @@ export default {
       let css = []
       if (this.isSorted(field)) css.push('has-sort')
       if (!this.isSortable(field)) css.push('unsortable')
-      console.log(css)
       return css
     },
     tdClass (name) {
