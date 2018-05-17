@@ -8,9 +8,10 @@ body, .wrapper
   border 0
   display flex
   flex-direction column
+  max-width 100%
   //overflow-x hidden
 
-.wrapper
+.wrapper, .main
   min-height 100vh
   max-width 100%
 
@@ -20,7 +21,6 @@ body, .wrapper
 .main, .cols, .home
   display flex
   flex 1 1 100%
-  min-height 100vh
   flex-flow row wrap
 .main
   margin 0 1rem
@@ -39,7 +39,7 @@ body, .wrapper
 .col-b
   order 2
 
-@media $media_small
+@media $media_medium
   .main
     margin 0 2rem
   .col-a, .col-b

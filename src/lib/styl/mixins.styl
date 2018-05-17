@@ -84,14 +84,15 @@ badge(size)
 
 link()
   color $color
-  fill $color
   cursor pointer
+  .svg-icon , svg
+    fill $color !important
+  
   :hover
     transition $links-transition
-    color color2
-
-    & svg
-      fill color2
+    color color2 
+    & .svg-icon, svg
+      fill color2 !important
 
 table($c1, $c2)
   $bc = $c1
