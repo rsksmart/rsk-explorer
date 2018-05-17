@@ -120,7 +120,7 @@ export default {
       if (this.isErc20) return this.token.name
     },
     isTable () {
-      return (this.data) ? this.data.length : null
+      return (this.data) ? this.isArray(this.data) : false
     },
     tableFields () {
       if (this.isTable) {
