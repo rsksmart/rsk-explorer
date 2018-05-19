@@ -140,6 +140,12 @@ export default {
     makeLink (field, row) {
       let value = this.getValue(field, row, true)
       return (undefined !== value && field.link) ? field.link + value : null
+    },
+    computeTrim (field, value) {
+      if (field.trim === 0) return 0
+      if (String(value.length) > this.trimIf) {
+        return field.trim || this.defaultTrim
+      }
     }
   }
 }

@@ -5,12 +5,12 @@
       ul(v-for='v in value')
         li {{v}}
     template(v-else)
-      template(v-if='value.length > 24 && !options.noTrim')
+      template(v-if='trim && !options.noTrim')
         tool-tip(:value='value' :trim='trim' :options='ttOpts' :router-link='link')
       template(v-else)
         router-link(v-if='link' :to='link')
-          span {{ filteredValue || field.default }}
-        span(v-else) {{ filteredValue || field.default }}   
+          .field-value {{ filteredValue || field.default }}
+        .field-value(v-else) {{ filteredValue || field.default }}   
       span(v-if='field.suffix') &nbsp; {{field.suffix}}
 </template>
 <script>
@@ -46,6 +46,9 @@ export default {
     },
     link () {
       return this.makeLink(this.field, this.row)
+    },
+    trim () {
+      return this.computeTrim(this.field, this.value)
     }
   }
 }
@@ -54,15 +57,30 @@ export default {
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
 
-  .data-field
-    white-space nowrap
+  //.data-field > .tooltip
+    // white-space nowrap
    
-  .data-field, .data-field > a, .data-field > .tooltip
+  .data-field, 
+  .data-field > a, 
+  .data-field > .tooltip, 
     max-width 100%
     display flex
     position relative
     word-wrap break-word
     overflow-wrap break-word
+    word-break break-word
+  
+  .field-value 
+    overflow-wrap break-word
+    word-wrap break-word
+    -ms-word-break break-all
+    word-break break-all
+    word-break break-word
+    -ms-hyphens auto
+    -moz-hyphens auto
+    -webkit-hyphens auto
+    hyphens auto
+
 </style>
 
 
