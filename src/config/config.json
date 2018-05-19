@@ -7,11 +7,25 @@
     "tokens",
     "stats"
   ],
+  "content": {
+    "footer": [
+      "Copyright © 2015-2017 RSK Labs. All rights reserved.",
+      "RSK Public Key (1310 29B2 D95E 815A 48DA B443 FD4F DAFD 7D17 4BB2)"
+    ]
+  },
+  "messages": {
+    "dbOutdated": {
+      "title": "Warning:",
+      "txt": "The database is not up to date",
+      "type": "error",
+      "icon": "warning"
+    }
+  },
   "statsUrl": "https://stats.rsk.co",
   "prod": {
     "WS_URL": "ws://explorer.2tst.me:3003"
   },
   "dev": {
-    "WS_URL": "ws://192.168.56.103:3003"
+    "WS_URL": "ws://localhost:3003"
   }
 }
