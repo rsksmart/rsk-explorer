@@ -1,7 +1,7 @@
 @import 'vars.styl'
 @import 'media_queries.styl'
 @import 'mixins.styl'
-@import ('big-header.styl')
+@import 'big-header.styl'
 
 $head-h = 3.25em
 $head-margin = 3em
@@ -11,7 +11,8 @@ $nav-margin = 1em
 .logo
   svg
     height 3em
-
+.header
+  position relative
 .burger
   height 100%
   min-height $head-h
@@ -29,7 +30,6 @@ $nav-margin = 1em
   position fixed
   z-index 1000
   min-width 100%
-
 
 header
   background $head-bg
@@ -52,17 +52,18 @@ header
 
     .logo
       color color1
-      margin 0 0 0 .5em
+      margin 0 0 0 0.5em
 
   .search
     order 3
 
   .header-content
-    font-family $title-font
-    flex 1 1 100%
-    display flex
-    justify-content flex-start
-    margin-left $head-margin * 1.5
+      font-family $title-font
+      flex 1 1 100%
+      justify-content flex-start
+      margin 0
+      margin-left $head-margin * 1.5
+      display none
 
     .hc
       display inline-flex
@@ -101,13 +102,13 @@ header
       padding 0
       margin 0
       flex-flow column nowrap
-
+      li
+        margin 0 1em
       li, li a
         min-height 2em
         display flex
         justify-content center
         align-items center
-        padding 0 1em
         background $head-bg
 
         &.active, &.router-link-active
@@ -139,6 +140,11 @@ header
     display flex
     flex 1
 
+@media $media_xsmall
+  header
+    .header-content
+      display flex
+
 @media $media_small
   header
     .header-content
@@ -165,10 +171,11 @@ header
       ul
         opacity 1
         flex-flow row wrap
+        justify-content space-between
 
         li
           &:first-child
-            padding-left 2em
+            margin-left 2em
 
           &:last-child
             margin-right 1em
@@ -192,3 +199,5 @@ header
 
     .nav
       flex 0 1 auto
+    .nav, .search
+      margin-left auto
