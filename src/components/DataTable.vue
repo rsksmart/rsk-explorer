@@ -57,6 +57,7 @@ export default {
   ],
   props: [
     'data',
+    'tableName',
     'type',
     'action',
     'title',
@@ -70,7 +71,6 @@ export default {
   ],
   data () {
     return {
-      renderTable: true,
       editSorts: false,
       sortChanged: false,
       sortDialog: {
@@ -84,16 +84,29 @@ export default {
     let vm = this
     this.$nextTick(() => {
       let table = vm.$refs.table
+      let tw = vm.tableConfig.w
+      let size = vm.size
       if (table && table.clientWidth > vm.$el.clientWidth) {
-        vm.$set(this, 'renderTable', false)
+        if (!tw || size.w < tw) vm.$set(this, 'renderTable', false)
       }
     })
   },
   computed: {
-    ...mapGetters({ page: 'getPage' }),
+    ...mapGetters({
+      page: 'getPage'
+    }),
     ...mapState({
       size: state => state.size
     }),
+    renderTable: {
+      get () {
+        let r = this.tableConfig.renderTable
+        return (undefined === r) ? true : r
+      },
+      set (renderTable) {
+        this.updateTableConfig([this.tableId, { renderTable }])
+      }
+    },
     requestedPage () {
       return this.page.req
     },
@@ -128,10 +141,23 @@ export default {
     },
     theadClass () {
       return (this.showSort && !this.renderTable) ? 'show' : ''
+    },
+    tableId () {
+      return this.getTableId()(this.tableName)
+    },
+    tableConfig () {
+      return this.getTableConfig()(this.tableId)
     }
   },
   methods: {
-    ...mapActions(['updateRouterQuery']),
+    ...mapActions([
+      'updateRouterQuery',
+      'updateTableConfig'
+    ]),
+    ...mapGetters([
+      'getTableId',
+      'getTableConfig'
+    ]),
     sortIcon (fieldName) {
       let sort = this.sort[fieldName]
       let icon = 'triangle-arrow-'
@@ -171,7 +197,6 @@ export default {
         let defSort = this.defaultSort[field]
         sort[field] = -defSort
       }
-
       this.getData(sort)
     },
     isSorted (field) {

@@ -7,3 +7,12 @@ export const updateConfig = ({ state, commit }, config) => {
   }
   commit('CONFIG_LOAD_DONE')
 }
+
+export const updateTableConfig = ({ state, commit, rootState }, payload) => {
+  let id = payload[0]
+  let config = payload[1]
+  if (id && config) {
+    config.w = rootState.size.w
+    commit('SET_TABLE', [id, config])
+  }
+}

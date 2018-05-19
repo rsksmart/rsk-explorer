@@ -35,3 +35,10 @@ export const blockStyle = (state, getters) => blockNumber => {
   let color = getters.getBlockColor(blockNumber)
   return { color, fill: color, 'border-color': color }
 }
+
+export const getTableId = (state) => tableName => {
+  // if (!tableName) console.warn('missing table name')
+  tableName = tableName || 'Table'
+  let routeName = state.route.name || 'unNamedRoute'
+  return `${routeName}-${tableName}`
+}

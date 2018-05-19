@@ -17,3 +17,7 @@ export const getSavedSort = (state, getters) => (type, action) => {
 export const getSavedQ = (state, getters) => (type, action) => {
   return getters.getConfig(type, action, 'q')
 }
+
+export const getTableConfig = (state) => (tableId) => {
+  return state.tables[tableId] || {}
+}

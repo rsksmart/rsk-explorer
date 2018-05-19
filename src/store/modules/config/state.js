@@ -1,8 +1,8 @@
 export default function () {
   return {
     autoUpdateBlocks: false,
-    sort: {
-    },
+    sort: {},
+    tables: {},
     q: {
       blocks: {
         getTransactions: {

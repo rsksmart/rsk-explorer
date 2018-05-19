@@ -30,3 +30,14 @@ export const SET_CONFIG_Q = (state, payload) => {
   payload.key = 'q'
   SET_CONFIG_KEY(state, payload)
 }
+
+export const SET_CONFIG_TABLES = (state, payload) => {
+  payload.key = 'tables'
+  SET_CONFIG_KEY(state, payload)
+}
+
+export const SET_TABLE = (state, payload) => {
+  let tableId = payload[0]
+  let config = payload[1]
+  Vue.set(state.tables, tableId, config)
+}

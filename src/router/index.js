@@ -110,6 +110,7 @@ export default new Router({
     },
     {
       path: `/${r.addresses}`,
+      name: 'Addresses',
       component: DataPage,
       props: {
         type: 'blocks',
@@ -120,6 +121,7 @@ export default new Router({
     },
     {
       path: `/${r.addresses}/:address`,
+      name: 'Address',
       component: DataPage,
       props: {
         type: 'blocks',

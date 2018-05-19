@@ -13,7 +13,7 @@
           //-custom component
           template(v-else) 
             .field-title(v-if='!field.hideTitle') {{ field.title }}
-            data-table(v-if='field.renderAs === "data-table"' :data='data[fieldName]' v-bind='field.renderAsProps')
+            data-table(v-if='field.renderAs === "data-table"' :data='data[fieldName]' :tableName='`field-${fieldName}`' v-bind='field.renderAsProps')
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
