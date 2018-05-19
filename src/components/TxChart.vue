@@ -2,7 +2,7 @@
   .tx-chart.chart
     strong.title Last blocks transactions
     .chart-container(v-if='blocks.length' :style='boxStyle')
-      d3-bar-chart(:data='blocks',:options='chartOptions')
+      d3-bar-chart(:data='blocks' :options='chartOptions')
 </template>
 <script>
 import D3BarChart from 'vue-d3-barchart'
@@ -21,6 +21,10 @@ export default {
         h: 100
       },
       options: {
+        domain: {
+          min: 0,
+          max: null
+        },
         fontSize: 12,
         margin: 0,
         curve: false,
