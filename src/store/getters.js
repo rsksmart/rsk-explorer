@@ -42,3 +42,10 @@ export const getTableId = (state) => tableName => {
   let routeName = state.route.name || 'unNamedRoute'
   return `${routeName}-${tableName}`
 }
+
+export const dbIsOutdated = (state) => {
+  let status = state.backend.dbStatus
+  let missing = status.dbMissingBlocks || 0
+  let requesting = status.requestingBlocks
+  if (missing > requesting) return true
+}

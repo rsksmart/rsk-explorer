@@ -1,6 +1,11 @@
 
 <template lang="pug">
   .wrapper
+    .top-page(v-if='topMsg')
+      .top-msg(:class='topMsg.type')
+        icon(v-if='topMsg.icon' :name='topMsg.icon')
+        span.title(v-if='topMsg.title') {{topMsg.title}}
+        small.txt {{topMsg.txt}} 
     .header(:class='(bigMenu) ? "big-menu" : ""')
       transition(name='head-trans')
         header.w-trans
@@ -33,8 +38,7 @@
           .iso.plain-color
             include assets/svg/iso-logo-v.svg
         .text
-          p Copyright © 2015-2017 RSK Labs. All rights reserved.
-          p RSK Public Key (1310 29B2 D95E 815A 48DA B443 FD4F DAFD 7D17 4BB2)
+          p(v-for='txt in content.footer') {{txt}}
 </template>
 
 
@@ -70,13 +74,19 @@ export default {
       connected: state => state.socketConnected,
       errors: state => state.socketErrors,
       route: state => state.route,
-      menuItems: state => state.menuItems
+      menuItems: state => state.menuItems,
+      content: state => state.content,
+      messages: state => state.messages
     }),
     ...mapGetters({
-      appSize: 'getSize'
+      appSize: 'getSize',
+      dbIsOutdated: 'dbIsOutdated'
     }),
     bigMenu () {
       return this.isRoute('home')
+    },
+    topMsg () {
+      return (this.dbIsOutdated) ? this.messages.dbOutdated || null : null
     }
   },
   methods: {
@@ -123,6 +133,7 @@ export default {
 <style lang="stylus">
 
   @import 'lib/styl/style.styl'
+  @import 'lib/styl/mixins.styl'
 
   .brand
     cursor pointer
@@ -133,6 +144,17 @@ export default {
 
   .head-trans-enter-active
     opacity 0
+
+  .top-page
+    flex-centered()
+    font-size 0.9em
+    text-shadow $txt-sh
+    background $darkness-odd
+    border-bottom 1px solid $darkness-even
+  .top-msg
+    .title
+      font-weight bold
+      margin 0 .5em 0 .25em
 </style>
 
 
