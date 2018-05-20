@@ -5,6 +5,7 @@
         field: null | object: {
                         field: key of data source, field name as default
                         type: field name as default
+                        trim: Number
                         filters: [Array] of vue filters names
                         suffix:
                         renderTitle:{
@@ -86,9 +87,9 @@ const Blocks = () => {
       size: null,
       timestamp: {
         default: 0
+      }
     }
   }
-}
 }
 
 const Block = () => {
@@ -181,7 +182,6 @@ const Tx = () => {
     },
     nonce: {
       field: 'nonce',
-      type: 'block',
       showTitle: true
     },
     value: {
@@ -189,7 +189,13 @@ const Tx = () => {
       default: 0
     },
     input: {
-      field: 'input'
+      field: 'input',
+      trim: 0
+    },
+    contract: {
+      field: 'receipt.contract',
+      type: 'address',
+      hideIfEmpty: true
     }
   })
   return tx
@@ -213,7 +219,7 @@ const Address = () => {
 
 const Addresses = () => {
   let addresses = Address()
-  addresses.fields = Object.assign(addresses.fields, {})
+  addresses.fields = Object.assign(addresses.fields, { type: null })
   addresses.fields.balance.filters = ['tx-value', 'round', 'sbtc']
   return addresses
 }
@@ -268,6 +274,21 @@ export default {
   },
   address: Address(),
   addresses: Addresses(),
+  token: {
+    icon: 'ellipsis',
+    key: 'address',
+    link: '/tokens',
+    itemTitle: true,
+    titleField: 'name',
+    fields: {
+      name: null,
+      shortName: null,
+      address: null,
+      Events: {
+        default: 0
+      }
+    }
+  },
   tokens: {
     icon: 'ellipsis'
   }
