@@ -3,11 +3,13 @@
     h2 erc20 tokens
     template(v-if='tokens.length')
       template(v-for='token in tokens')
-        .box.token
-          ul.plain
+        .token.box 
+          data-item(type='token' :data='token' )
+          //-ul.plain
             li 
               h2 {{ token.name }}
             //-li {{ token.shortName }}
+            li {{token.address}}
             li 
               router-link(:to='"/tokens/" + token._id + "/events"') 
                 span Events: {{token.Events}}
@@ -18,8 +20,16 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import dataMixin from '../mixins/dataMixin'
+import DataItem from '../components/DataItem'
 export default {
   name: 'Tokens',
+  components: {
+    DataItem
+  },
+  mixins: [
+    dataMixin
+  ],
   computed: {
     ...mapState({
       tokens: state => state.backend.tokens
@@ -32,10 +42,14 @@ export default {
   @import '../lib/styl/vars.styl'
 
   .token
-    display inline-flex
+    display flex
     min-width 18em
     flex 1
-    padding 0em 3em 3em
+    h2, .items.box
+      margin 0
+    .items.box
+      padding .5em
+      box-shadow none
 </style>
 
 
