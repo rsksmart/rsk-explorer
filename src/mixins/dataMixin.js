@@ -65,6 +65,9 @@ export default {
       let icon = 'load'
       if (entity) icon = entity.icon || icon
       return icon
+    },
+    titleField () {
+      return this.entity.titleField || this.key
     }
   },
   methods: {
@@ -116,6 +119,14 @@ export default {
       }
 
       return style
+    },
+    showField (field, data) {
+      let fieldName = field.fieldName
+      let hidden = this.isHidden(fieldName)
+      let entity = this.entity
+      let isTitleField = (fieldName === entity.titleField)
+      let isNotEmpty = (field.hideIfEmpty) ? this.getValue(field, data) : true
+      return !hidden && !isTitleField && isNotEmpty
     },
     rowLink (row) {
       let link

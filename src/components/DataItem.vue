@@ -3,10 +3,10 @@
     h2.item-title(v-if='entity.itemTitle') 
       icon.medium(v-if='entity.icon' :name='entity.icon')
       span {{ entity.singular }}
-      data-field(:field='fields[key]' :row='data')
+      data-field(:field='fields[titleField]' :row='data')
     .items.box(v-if='data && fields')
       template(v-for='field,fieldName,index in fields')
-        template(v-if='!isHidden(fieldName)')
+        template(v-if='showField(field,data)')
           .item(v-if='!field.renderAs' :class='itemClass(fieldName,index)')
             field-title(:field='field')
             data-field(:field='field' :row='data' :style='cellStyle(field,value(field,false))')
@@ -52,6 +52,9 @@ export default {
   @import '../lib/styl/vars.styl'
 
   .data-item
+    min-width 100%
+    width 100%
+
     .items
       list-style none
       display flex
@@ -63,20 +66,27 @@ export default {
       font-size 1.125em
       display flex
       align-items center
-      justify-content space
       margin-bottom 0.5em
 
-    .field-icon, .field-title
-      margin-right 0.5em
-      color $color
+      .field-icon, .field-title
+        margin-right 0.5em
+        color $color
 
-    .field-title
-      text-transform capitalize
-      font-weight bold
+      .field-title
+        flex 1
+        justify-content flex-start
+        text-transform capitalize
+        font-weight bold
+
+      .data-field
+        flex 9
 
   .item-title
     text-transform capitalize
     display inline-flex
+
+    .field-value
+      display inline-flex
 
     div, span
       &::before
