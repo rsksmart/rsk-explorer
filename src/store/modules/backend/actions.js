@@ -25,6 +25,7 @@ export const socketNewBlocks = ({ state, commit, getters }, data) => {
       commit('SET_BLOCKS', blocks.slice())
       commit('SET_TRANSACTIONS', transactions.slice())
     }
+    if (!autoUpdate) commit('SET_PENDING_BLOCKS', blocks)
   }
 }
 

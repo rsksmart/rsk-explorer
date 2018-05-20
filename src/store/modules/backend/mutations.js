@@ -15,6 +15,7 @@ export const SET_CLIENT_TIME = (state, time) => {
 }
 
 export const LAST_BLOCKS = (state, blocks) => {
+  blocks = blocks || []
   state.lastBlocks = blocks
 }
 
@@ -27,6 +28,7 @@ export const SET_BLOCKS = (state, blocks) => {
 }
 
 export const LAST_TRANSACTIONS = (state, transactions) => {
+  transactions = transactions || []
   state.lastTransactions = transactions
 }
 
@@ -76,4 +78,19 @@ export const SET_PAGE_SORT = (state, sort) => {
 
 export const SET_DB_STATUS = (state, data) => {
   Vue.set(state, 'dbStatus', data)
+}
+
+export const SET_PENDING_BLOCKS = (state, blocks) => {
+  let list = state.blocks.slice()
+  if (list.length) {
+    blocks.map(block => {
+      if (!list.find(b => b.number === block.number)) {
+        Vue.set(state.pendingBlocks, block.number, true)
+      }
+    })
+  }
+}
+
+export const CLEAR_PENDING_BLOCKS = (state) => {
+  state.pendingBlocks = {}
 }

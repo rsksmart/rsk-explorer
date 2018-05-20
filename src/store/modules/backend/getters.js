@@ -11,10 +11,7 @@ export const transactions = state => {
 }
 
 export const pendingBlocks = state => {
-  if (state.lastBlocks.length && state.blocks.length) {
-    // rewrite this
-    return state.lastBlocks[0].number - state.blocks[0].number
-  }
+  return Object.keys(state.pendingBlocks).length
 }
 
 export const requestingPageData = state => {

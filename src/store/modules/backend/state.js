@@ -15,6 +15,7 @@ export default function () {
     },
     blocks: [],
     lastBlocks: [],
+    pendingBlocks: {},
     dbStatus: {},
     lastBlocksTime: 0,
     transactions: [],
