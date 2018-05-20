@@ -84,9 +84,11 @@ const Blocks = () => {
         type: 'miner'
       },
       size: null,
-      timestamp: null
+      timestamp: {
+        default: 0
     }
   }
+}
 }
 
 const Block = () => {

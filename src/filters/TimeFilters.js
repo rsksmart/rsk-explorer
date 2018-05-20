@@ -8,11 +8,13 @@ export const tSecondsAgo = Vue.filter('t-seconds-ago', timestamp => {
 })
 
 export const mSecondsAgo = Vue.filter('m-seconds-ago', miliseconds => {
+  if (!miliseconds) return 0
   let seconds = mToSeconds(miliseconds)
   return sAgo(seconds)
 })
 
 export const addAgo = Vue.filter('add-ago', value => {
+  if (!value) return value
   return value + ' ago'
 })
 

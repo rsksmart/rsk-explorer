@@ -34,7 +34,7 @@ export const getFieldFilteredValue = (state, getters) => (field, data, raw) => {
 export const filterFieldValue = (state, getters) => (field, value) => {
   let type = field.type
   let now = getters.getDate
-  if (type === 'timestamp') value = now - value * 1000
+  if (type === 'timestamp' && value) value = now - value * 1000
   let filters = field.filters
   if (filters) {
     value = getters.applyFilters(filters, value)
