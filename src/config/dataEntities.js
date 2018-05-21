@@ -140,7 +140,6 @@ const TxFields = () => {
     hash: {
       field: 'hash',
       type: 'hash',
-      trim: 'auto',
       link: `/${r.transaction}/`
     },
     block: {
@@ -240,7 +239,8 @@ const Address = () => {
       balance: {
         filters: ['tx-value', 'sbtc'],
         default: 0
-      }
+      },
+      type: null
     }
   }
 }

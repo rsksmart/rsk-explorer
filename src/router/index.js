@@ -130,7 +130,7 @@ export default new Router({
       component: DataPage,
       props: {
         type: 'blocks',
-        title: 'Address',
+        title: (data, parentData) => parentData.type || '',
         headComponent: 'AccountHeader',
         dataType: 'transactions',
         action: 'getAddressTransactions'

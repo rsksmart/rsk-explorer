@@ -1,11 +1,11 @@
 <template lang="pug">
   .data-page.centered
     paginator(v-if='isTable' :options='pageOptions' :link='0')
-    h2(v-if='title') {{ pageContext }} {{pageTitle}}
     spinner(v-if='requestingPageData && !error')
     .error(v-if='error')
       h1 {{error.error || 'ERROR'}}
     template(v-else) 
+      h2.title(v-if='pageTitle && data') {{ pageContext }} {{pageTitle}}
       .page-header.frame(v-if='headComponent')
         component(:is='headComponent' :data='parentData')
       .page(v-if='data')
@@ -114,8 +114,13 @@ export default {
       return this.page.total
     },
     pageTitle () {
-      if (undefined !== this.title) return this.title
-      return this.$route.name
+      if (undefined === this.title) return this.$route.name
+      let title = this.title
+      if (title) {
+        let data = this.data || {}
+        let parentData = this.parentData || {}
+        return (typeof (title) === 'function') ? title(data, parentData) : title
+      }
     },
     pageContext () {
       if (this.isErc20) return this.token.name
@@ -191,6 +196,11 @@ export default {
 <style lang="stylus">
   .page-header
     width 100%
+
+  .data-page h2.title
+    text-transform  capitalize
+    // align-self flex-start
+
   .page
     will-change opacity
     animation-name page-anim

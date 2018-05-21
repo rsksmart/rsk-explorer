@@ -20,7 +20,7 @@ export default {
   data () {
     return {
       type: 'address',
-      items: ['address', 'balance'],
+      items: ['address', 'type', 'balance'],
       options: {
         noTrim: true,
         forceIcon: true
