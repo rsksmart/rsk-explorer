@@ -6,7 +6,7 @@
         li {{v}}
     template(v-else)
       template(v-if='trim && !options.noTrim')
-        tool-tip(:value='value' :trim='trim' :options='ttOpts' :router-link='link')
+        tool-tip.field-value(:value='value' :trim='trim' :options='ttOpts' :router-link='link')
       template(v-else)
         router-link(v-if='link' :to='link')
           .field-value {{ filteredValue || field.default }}
