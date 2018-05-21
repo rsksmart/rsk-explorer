@@ -1,6 +1,6 @@
 <template lang="pug">
   .filters
-    small Show only transactions of type:&nbsp;
+    small Filter by type:&nbsp;
     ul.inline.dark
       li.col( v-for='val,name in txFilters')
         input(type='checkbox' v-model='filterValues' :value='name' :id='name' @change='update')
