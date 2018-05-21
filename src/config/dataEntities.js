@@ -190,7 +190,9 @@ const Tx = () => {
     },
     input: {
       field: 'input',
-      trim: 0
+      hideIfEmpty: true,
+      trim: 0,
+      renderAs: 'big-field'
     },
     contract: {
       field: 'receipt.contract',
