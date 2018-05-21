@@ -95,9 +95,18 @@ const Blocks = () => {
 const Block = () => {
   let block = Blocks()
   block.fields = Object.assign(block.fields, {
-    parentHash: null,
-    sha3Uncles: null,
-    miner: null,
+    hash: {
+      trim: 0
+    },
+    parentHash: {
+      trim: 0
+    },
+    sha3Uncles: {
+      trim: 0
+    },
+    miner: {
+      trim: 0
+    },
     difficulty: {
       type: 'bigNumber'
     },
@@ -176,6 +185,15 @@ const Txs = () => {
 const Tx = () => {
   let tx = Txs()
   tx.fields = Object.assign(TxFields(), {
+    hash: {
+      trim: 0
+    },
+    to: {
+      trim: 0
+    },
+    from: {
+      trim: 0
+    },
     block: {
       field: 'blockNumber',
       type: 'block'
