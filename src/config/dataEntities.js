@@ -212,16 +212,17 @@ const Tx = () => {
       filters: ['tx-value', 'sbtc'],
       default: 0
     },
+    contractAddress: {
+      field: 'receipt.contractAddress',
+      type: 'address',
+      trim: 0,
+      hideIfEmpty: true
+    },
     input: {
       field: 'input',
       hideIfEmpty: true,
       trim: 0,
       renderAs: 'big-field'
-    },
-    contract: {
-      field: 'receipt.contract',
-      type: 'address',
-      hideIfEmpty: true
     }
   })
   return tx
