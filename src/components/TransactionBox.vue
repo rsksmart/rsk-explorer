@@ -43,7 +43,7 @@ export default {
   props: ['tx'],
   data () {
     return {
-      type: 'transaction'
+      type: 'transactions'
     }
   },
   computed: {
