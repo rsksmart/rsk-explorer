@@ -82,13 +82,15 @@ export default {
   },
   mounted () {
     let vm = this
+    let table = this.$refs.table
+    let tw = this.tableConfig.w
+    let size = this.size
+    let parent = vm.$parent.$el
     this.$nextTick(() => {
-      let table = vm.$refs.table
-      let tw = vm.tableConfig.w
-      let size = vm.size
-      if (table && table.clientWidth > size.w) {
+      let tcw = table.clientWidth
+      if (table && (tcw > size.w || tcw > parent.clientWidth)) {
         if (!tw || size.w < tw) {
-          vm.$set(this, 'renderTable', false)
+          vm.$set(vm, 'renderTable', false)
         }
       }
     })
