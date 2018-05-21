@@ -127,7 +127,7 @@ const Block = () => {
       renderAsProps: {
         type: 'transactions',
         hideFields: ['block'],
-        link: `/${r.transactions}/`,
+        link: `/${r.transaction}/`,
         sort: null
       }
     }
@@ -141,6 +141,7 @@ const TxFields = () => {
       field: 'hash',
       type: 'hash',
       trim: 'auto',
+      link: `/${r.transaction}/`
     },
     block: {
       field: 'blockNumber',
@@ -182,7 +183,7 @@ const Txs = () => {
     icon: 'transaction',
     singular: 'transaction',
     plural: 'transactions',
-    link: `/${r.transactions}`,
+    link: `/${r.transaction}`,
     formatRow: transactionFormatRow,
     formatFields: transactionFormatFields,
     fields
@@ -234,7 +235,7 @@ const Address = () => {
     key: 'address',
     fields: {
       address: {
-        link: `/${r.addresses}/`
+        link: `/${r.address}/`
       },
       balance: {
         filters: ['tx-value', 'sbtc'],

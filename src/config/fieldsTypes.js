@@ -4,7 +4,7 @@ export default {
     icon: 'cube',
     titleIcon: true,
     hideTitle: true,
-    link: `/${r.blocks}/`,
+    link: `/${r.block}/`,
     filters: ['locale']
   },
   bigNumber: {
@@ -28,13 +28,13 @@ export default {
     icon: 'miner',
     titleIcon: true,
     hideTitle: true,
-    link: `/${r.addresses}/`
+    link: `/${r.address}/`
   },
   from: {
-    link: `/${r.addresses}/`
+    link: `/${r.address}/`
   },
   to: {
-    link: `/${r.addresses}/`
+    link: `/${r.address}/`
   },
   hash: {
     icon: 'hash',

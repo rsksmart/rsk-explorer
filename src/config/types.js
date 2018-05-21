@@ -3,9 +3,12 @@ export const ROUTES = {
   home: 'home',
   block: 'block',
   blocks: 'blocks',
-  transaction: 'transaction',
-  transactions: 'tx',
-  addresses: 'address',
+  transaction: 'tx',
+  transactions: 'txs',
+  addresses: 'addresses',
+  address: 'address',
+  account: 'account',
+  accounts: 'accounts',
   tokens: 'tokens',
   stats: 'stats'
 }

@@ -24,6 +24,11 @@ export default new Router({
       redirect: '/'
     },
     {
+      path: `/${r.accounts}`,
+      redirect: `/${r.addresses}`
+
+    },
+    {
       path: `/${r.stats}`,
       name: 'stats',
       beforeEnter (t, f) {
@@ -98,7 +103,7 @@ export default new Router({
       }
     },
     {
-      path: `/${r.blocks}/:number`,
+      path: `/${r.block}/:number`,
       name: 'Block',
       component: DataPage,
       props: {
@@ -120,7 +125,7 @@ export default new Router({
       }
     },
     {
-      path: `/${r.addresses}/:address`,
+      path: `/${r.address}/:address`,
       name: 'Address',
       component: DataPage,
       props: {
@@ -143,7 +148,7 @@ export default new Router({
       }
     },
     {
-      path: `/${r.transactions}/:hash`,
+      path: `/${r.transaction}/:hash`,
       name: 'Transaction',
       component: DataPage,
       props: {
