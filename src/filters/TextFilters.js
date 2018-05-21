@@ -24,3 +24,7 @@ export const msSuffix = Vue.filter('ms-suffix', (value) => {
   if (!isDigits(value)) return value
   return value + 'ms'
 })
+
+export const camelCaseTo = Vue.filter('camel-case-to', (value, to = ' ') => {
+  return value.replace(/([a-z])([A-Z])/g, '$1' + to + '$2').toLowerCase()
+})
