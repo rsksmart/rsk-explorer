@@ -12,7 +12,10 @@
             span {{trimed[0]}}
         span(v-else) {{trimed[0]}}
     slot(v-else)
-      span {{value}}
+      template(v-if='routerLink')
+        router-link(:to='routerLink')
+          span {{value}}
+      span(v-else) {{value}}
     .points(v-if='trimLen' :class='pointsClass')
         button(v-if='!show') 
           span.icon {{ opts.trimTxt }}
