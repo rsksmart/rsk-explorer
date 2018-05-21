@@ -32,7 +32,7 @@ npm run build --report
 
   Edit src/config/config.json and sets **WS_URL** to rsk-explorer-api url
 
-- 3 Buid for production
+- 3 Build for production
 
   ``` bash
   # build for production 
