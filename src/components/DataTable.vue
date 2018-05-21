@@ -86,8 +86,10 @@ export default {
       let table = vm.$refs.table
       let tw = vm.tableConfig.w
       let size = vm.size
-      if (table && table.clientWidth > vm.$el.clientWidth) {
-        if (!tw || size.w < tw) vm.$set(this, 'renderTable', false)
+      if (table && table.clientWidth > size.w) {
+        if (!tw || size.w < tw) {
+          vm.$set(this, 'renderTable', false)
+        }
       }
     })
   },
