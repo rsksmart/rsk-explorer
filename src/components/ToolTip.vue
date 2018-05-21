@@ -1,14 +1,19 @@
 
 <template lang="pug">
-  .tooltip(@mouseleave.passive='show=false' @mouseenter.passive='show=true' @touchend.passive='touch')
-    .trim(v-if='trim')
+  .tooltip(@mouseleave.passive='showTip(false)'
+    @mouseenter.passive='showTip(true)'
+    @touchend.passive='touch'
+    :style='elStyle'
+    )
+    .trim(v-if='trimLen')
       slot(name='trim-1')
         template(v-if='routerLink')
           router-link(:to='routerLink')
             span {{trimed[0]}}
         span(v-else) {{trimed[0]}}
     slot(v-else)
-    .points(v-if='trim' :class='pointsClass')
+      span {{value}}
+    .points(v-if='trimLen' :class='pointsClass')
         button(v-if='!show') 
           span.icon {{ opts.trimTxt }}
         button.copy(v-if='show  && opts.copy' @click='copyText' @touchend.stop='copyText')
@@ -23,7 +28,7 @@
       //- value
       .value(:class=' (clicked) ? "clicked" : ""' )
         .msg(v-if='show && opts.copyMsg' :class='(anim) ? "anim" : ""') copied!
-        .copy-txt(@touchend.stop='show = !show' @click.stop='show = !show')
+        .copy-txt(@touchend.stop='show = !show' @click.stop='showTip()')
           .tip-txt(:class='tipClass') {{value}}
           textarea(ref='cptxt' rows='1' :cols='value.length') {{ value }}
 </template>
@@ -53,6 +58,13 @@ export default {
       clicked: false,
       anim: false,
       closer: null,
+      autoTrimLen: 0,
+      elStyle: {
+        'max-width': 'inherit !important',
+        'overflow-x': 'hidden !important',
+        'display': 'block',
+        'position': 'absolute'
+      },
       opts: {
         pos: 'top',
         trimAt: 'start',
@@ -63,28 +75,57 @@ export default {
     }
   },
   created () {
+    if (this.trim !== 'auto') this.elStyle = null
     if (this.options) {
       for (let op in this.options) {
         this.$set(this.opts, op, this.options[op])
       }
     }
   },
+  mounted () {
+    if (this.trim === 'auto') {
+      let vm = this
+
+      this.$nextTick(() => {
+        let parent = vm.$parent.$el
+        let parentWidth = parent.offsetWidth
+        let width = vm.$el.clientWidth
+        if (width > parentWidth) {
+          let style = window.getComputedStyle(parent)
+          let fontSize = parseInt(style.fontSize.match(/(\d+)px/)[1] || 16)
+          let chars = vm.value.length + vm.opts.trimTxt.length
+          let fs = ((width / chars) + fontSize) / 2
+          let nChars = (parentWidth / fs)
+          let trimLen = nChars / 2
+          let max = chars / 3
+          trimLen = (trimLen > 4) ? trimLen : 4
+          trimLen = (trimLen < max) ? trimLen : max
+          vm.autoTrimLen = parseInt(trimLen)
+        }
+        vm.elStyle = ''
+      })
+    }
+  },
   computed: {
+    trimLen () {
+      let trim = this.trim
+      return (trim !== 'auto') ? this.trim : this.autoTrimLen
+    },
     trimed () {
       let trimed = [this.value]
       let value = this.value
       let trimAt = this.opts.trimAt
       let len = this.value.length
-      if (this.trim) {
+      if (this.trimLen) {
         switch (trimAt) {
           case 'end':
-            trimed = [value.substring(len - this.trim, len)]
+            trimed = [value.substring(len - this.trimLen, len)]
             break
           case 'center':
-            trimed = [value.slice(0, this.trim), value.slice(-this.trim)]
+            trimed = [value.slice(0, this.trimLen), value.slice(-this.trimLen)]
             break
           default:
-            trimed = [value.substring(0, this.trim)]
+            trimed = [value.substring(0, this.trimLen)]
             break
         }
       }
@@ -123,7 +164,7 @@ export default {
       this.clicked = value
       this.show = !this.show
       // timeout to close tip after, not for trimmeds
-      if (this.show && !this.trim) {
+      if (this.show && !this.trimLen) {
         if (!this.closer) {
           let vm = this
           this.closer = setTimeout(() => {
@@ -149,12 +190,15 @@ export default {
         console.info('Unable to copy')
       }
       this.$emit('copy', this.value)
+    },
+    showTip (show) {
+      show = show || !this.show
+      if (this.trimLen) this.show = show
     }
   }
 }
 </script>
 <style lang="stylus">
-
 
   $tip-arrow-size = 5px
   $tip-bg = white
@@ -249,6 +293,7 @@ export default {
         line-height 1em
         width @height
         color @color
+
         .icon
           color @color
 
@@ -269,7 +314,6 @@ export default {
         opacity 0
         width 1px
         heigth 1px
-
 
     button.close
       line-height 1em
