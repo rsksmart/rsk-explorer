@@ -135,6 +135,8 @@ export default {
   .field-title.big-field
     justify-content flex-start
     margin-bottom 0.5em
+  .field-title.big-field, .big-field.custom  
+    margin 0 1em 0em 2em 
 
   .field-title.data-table
     margin 0 !important
