@@ -96,16 +96,16 @@ const Block = () => {
   let block = Blocks()
   block.fields = Object.assign(block.fields, {
     hash: {
-      trim: 0
+      trim: 'auto'
     },
     parentHash: {
-      trim: 0
+      trim: 'auto'
     },
     sha3Uncles: {
-      trim: 0
+      trim: 'auto'
     },
     miner: {
-      trim: 0
+      trim: 'auto'
     },
     difficulty: {
       type: 'difficulty'
@@ -140,7 +140,7 @@ const TxFields = () => {
     hash: {
       field: 'hash',
       type: 'hash',
-      link: `/${r.transactions}/`
+      trim: 'auto',
     },
     block: {
       field: 'blockNumber',
@@ -192,13 +192,13 @@ const Tx = () => {
   let tx = Txs()
   tx.fields = Object.assign(TxFields(), {
     hash: {
-      trim: 0
+      trim: 'auto'
     },
     to: {
-      trim: 0
+      trim: 'auto'
     },
     from: {
-      trim: 0
+      trim: 'auto'
     },
     block: {
       field: 'blockNumber',
@@ -215,7 +215,7 @@ const Tx = () => {
     contractAddress: {
       field: 'receipt.contractAddress',
       type: 'address',
-      trim: 0,
+      trim: 'auto',
       hideIfEmpty: true
     },
     input: {
