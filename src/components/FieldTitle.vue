@@ -4,17 +4,19 @@
       tool-tip(v-if='!showTitle' :value='field.name')
         icon(:name='field.icon')
       icon(v-else :name='field.icon')  
-    span.title(v-if='showTitle') {{ field.title }}
+    span.title(v-if='showTitle') {{ field.title | camel-case-to }}
     slot
 </template>
 <script>
 import ToolTip from './ToolTip'
+import { camelCaseTo } from '../filters/TextFilters'
 export default {
   name: 'field-title',
   components: {
     ToolTip
   },
   props: ['field', 'options'],
+  filters: { camelCaseTo },
   data () {
     return {
       forceTitle: false,
@@ -40,13 +42,15 @@ export default {
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
+
   .field-title
     flex-centered()
+
     .icon
       display inline-flex
+
     .icon + .title
       margin 0 0 0 0.5em
-      
 </style>
 
 
