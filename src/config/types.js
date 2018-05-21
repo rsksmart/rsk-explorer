@@ -4,7 +4,7 @@ export const ROUTES = {
   block: 'block',
   blocks: 'blocks',
   transaction: 'transaction',
-  transactions: 'transactions',
+  transactions: 'tx',
   addresses: 'address',
   tokens: 'tokens',
   stats: 'stats'
