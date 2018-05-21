@@ -81,6 +81,10 @@ export default {
     -webkit-hyphens auto
     hyphens auto
 
+  .flex-table 
+    & td .data-field
+      width 100%
+
 </style>
 
 
