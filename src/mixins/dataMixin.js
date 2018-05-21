@@ -150,7 +150,7 @@ export default {
     },
     makeLink (field, row) {
       let value = this.getValue(field, row, true)
-      return (undefined !== value && field.link) ? field.link + value : null
+      return ((value || value === 0) && field.link) ? field.link + value : null
     },
     computeTrim (field, value) {
       if (field.trim === 0) return 0
