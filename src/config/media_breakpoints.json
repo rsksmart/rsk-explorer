@@ -2,5 +2,6 @@
   "xsmall": 480,
   "small": 600,
   "medium": 900,
-  "large": 1200
+  "large": 1200,
+  "xlarge": 1600
 }
