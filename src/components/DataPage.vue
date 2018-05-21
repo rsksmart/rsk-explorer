@@ -7,7 +7,7 @@
       h1 {{error.error || 'ERROR'}}
     template(v-else) 
       .page-header.frame(v-if='headComponent')
-        account-header(v-if='isHeadComponent("AccountHeader")' :data='parentData')
+        component(:is='headComponent' :data='parentData')
       .page(v-if='data')
         //- Transactions filters
         tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
@@ -28,9 +28,10 @@
         //- Component
         template(v-if='component')
             //- Event
-            contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
-            contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
-            account(v-if='isComponent("Account")' :data='data' :token='token')
+            //-contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
+            //-contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
+            //-account(v-if='isComponent("Account")' :data='data' :token='token')
+            component(:is='component' :data='data' :token='token')
         //- Generic render
         template(v-else)
             template(v-if='isTable')
@@ -188,6 +189,8 @@ export default {
 }
 </script>
 <style lang="stylus">
+  .page-header
+    width 100%
   .page
     will-change opacity
     animation-name page-anim

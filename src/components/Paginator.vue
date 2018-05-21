@@ -63,6 +63,7 @@ export default {
   input.page
     width 3em
   .pages
+    width 100%
     display flex
     padding 1em
     margin 1em

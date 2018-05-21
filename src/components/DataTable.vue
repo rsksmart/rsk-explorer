@@ -230,9 +230,15 @@ export default {
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
 
+  .data-table
+    display flex
+    flex-flow column nowrap
+    justify-content center
+
   .table-ctrls
     display flex
     justify-content flex-end
+    margin 0 1em
 
   .unsortable
     color gray
