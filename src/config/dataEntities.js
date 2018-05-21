@@ -108,10 +108,16 @@ const Block = () => {
       trim: 0
     },
     difficulty: {
-      type: 'bigNumber'
+      type: 'difficulty'
     },
-    gasLimit: null,
+    totalDifficulty: {
+      type: 'difficulty'
+    },
+    gasLimit: {
+      type: 'gas'
+    },
     gasUsed: {
+      type: 'gas',
       default: 0
     },
     minimumGasPrice: null,
@@ -156,7 +162,7 @@ const TxFields = () => {
       filters: ['tx-value', { name: 'round', args: 4 }, 'sbtc']
     },
     gas: {
-      field: 'gas',
+      type: 'gas',
       default: 0
     },
     time: {

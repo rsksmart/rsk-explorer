@@ -10,6 +10,9 @@ export default {
   bigNumber: {
     filters: ['big-number']
   },
+  difficulty: {
+    filters: ['big-number', 'H']
+  },
   timestamp: {
     icon: 'stopwatch',
     filters: ['m-seconds-ago', 'add-ago'],
@@ -37,5 +40,8 @@ export default {
     icon: 'hash',
     titleIcon: true,
     hideTitle: true
+  },
+  gas: {
+    filters: ['locale']
   }
 }
