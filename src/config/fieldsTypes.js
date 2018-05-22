@@ -43,5 +43,8 @@ export default {
   },
   gas: {
     filters: ['locale']
+  },
+  address: {
+    link: `/${r.address}/`
   }
 }

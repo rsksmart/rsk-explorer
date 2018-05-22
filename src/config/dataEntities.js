@@ -233,9 +233,7 @@ const Address = () => {
     icon: 'credit-card',
     key: 'address',
     fields: {
-      address: {
-        link: `/${r.address}/`
-      },
+      address: null,
       balance: {
         filters: ['tx-value', 'sbtc'],
         default: 0
