@@ -61,9 +61,9 @@ export default {
       if (value) {
         value = String(value).replace(/[\W_]+/g, '')
         let tests = {
-          address: (ethUtils.isAddress(value)) ? `/${r.addresses}/` : null,
-          tx: (ethUtils.isTx(value)) ? `/${r.transactions}/` : null,
-          block: (this.isBlock(value)) ? `/${r.blocks}/` : null
+          address: (ethUtils.isAddress(value)) ? `/${r.address}/` : null,
+          tx: (ethUtils.isTx(value)) ? `/${r.transaction}/` : null,
+          block: (this.isBlock(value)) ? `/${r.block}/` : null
         }
         let links = Object.values(tests).filter(l => l)
         // fix to show all posible matches:
