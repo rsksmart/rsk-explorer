@@ -59,13 +59,11 @@ export default {
 </script>
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
+  @import '../lib/styl/media_queries.styl'
 
   .data-item
     min-width 100%
     width 100%
-
-    .big-field.custom
-      min-width 20em
 
     .items
       min-width 100%
@@ -114,7 +112,6 @@ export default {
   
   .data-field
     flex 5
-    margin 0 !important
     justify-content flex-start
  
     .field-value
@@ -142,6 +139,13 @@ export default {
     margin 0 !important
     justify-content center !important
     margin-top 1em !important
+
+@media $media_medium
+  .data-item
+    .big-field.custom
+      min-width 20em
+
+
 
 </style>
 
