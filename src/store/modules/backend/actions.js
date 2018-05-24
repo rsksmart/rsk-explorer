@@ -2,10 +2,8 @@ const pageDataKeyPrefix = 'PageData_'
 
 export const init = ({ commit }, data) => {
   if (data) {
-    let serverTime = data.time
-    let systemSettings = data.settings
-    if (serverTime) commit('SET_SERVER_TIME', serverTime)
-    commit('SET_SYSTEM_SETTINGS', systemSettings)
+    commit('SET_SERVER_TIME', data.time)
+    commit('SET_SYSTEM_SETTINGS', data.settings)
   }
 }
 
@@ -74,6 +72,7 @@ export const socketPageData = ({ state, commit }, res) => {
       commit('SET_CONFIG_Q', { type, action, value: q })
       commit('SET_CONFIG_SORT', { type, action, value: sort })
       commit('SET_PAGE_PARENTDATA', parentdata)
+      commit('SET_SERVER_TIME', data.time)
     }
   }
 }

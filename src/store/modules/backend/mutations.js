@@ -3,7 +3,7 @@ import Vue from 'vue'
 export const SOCKET_EMIT = payload => { }
 
 export const SET_SERVER_TIME = (state, time) => {
-  state.serverTime = time
+  if (time) state.serverTime = time
 }
 
 export const SET_SYSTEM_SETTINGS = (state, payload) => {
