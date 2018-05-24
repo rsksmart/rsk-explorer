@@ -182,7 +182,7 @@ const Txs = () => {
     icon: 'transaction',
     singular: 'transaction',
     plural: 'transactions',
-    link: `/${r.transaction}`,
+    link: `/${r.transactions}`,
     formatRow: transactionFormatRow,
     formatFields: transactionFormatFields,
     fields
