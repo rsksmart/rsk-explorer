@@ -1,7 +1,7 @@
 <template lang="pug">
   .tx-wrapper
     h2.title 
-      router-link(:to='entity.link') 
+      router-link(:to='entity.listLink') 
         icon(:name='entity.icon')
         span &nbsp; {{pageTitle}}
     .transactions(v-for='tx in transactions')

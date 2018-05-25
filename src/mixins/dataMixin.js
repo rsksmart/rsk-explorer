@@ -134,7 +134,8 @@ export default {
       let linkCb = this.linkCb
       if (linkCb) return linkCb(row, this.parentData, key)
       link = link || this.entity.link
-      link = link || this.$route.path
+      // link = link || this.$route.path
+      link = link || ''
       link = String(link).replace(/\/$/, '')
       link = link + '/' + key
       return link

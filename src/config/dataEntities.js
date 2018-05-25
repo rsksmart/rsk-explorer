@@ -68,7 +68,8 @@ const Blocks = () => {
   return {
     key: 'number',
     icon: 'cube',
-    link: `/${r.blocks}/`,
+    link: `/${r.block}/`,
+    listLink: `/${r.blocks}/`,
     singular: 'block',
     plural: 'blocks',
     fields: {
@@ -182,7 +183,8 @@ const Txs = () => {
     icon: 'transaction',
     singular: 'transaction',
     plural: 'transactions',
-    link: `/${r.transactions}`,
+    link: `/${r.transaction}`,
+    listLink: `/${r.transactions}`,
     formatRow: transactionFormatRow,
     formatFields: transactionFormatFields,
     fields
@@ -232,6 +234,8 @@ const Address = () => {
   return {
     icon: 'credit-card',
     key: 'address',
+    link: `/${r.address}`,
+    listLink: `/${r.addresses}`,
     fields: {
       address: null,
       balance: {
@@ -303,7 +307,7 @@ export default {
   token: {
     icon: 'ellipsis',
     key: 'address',
-    link: '/tokens',
+    link: `/${r.tokens}/`,
     itemTitle: true,
     titleField: 'name',
     fields: {

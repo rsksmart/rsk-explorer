@@ -1,7 +1,7 @@
 <template lang="pug">
   .blocks-wrapper
     h2.title 
-      router-link(:to='entity.link') 
+      router-link(:to='entity.listLink') 
         icon(:name='entity.icon')
         span &nbsp; {{pageTitle}}
     .blocks(v-if='blocks.length')
