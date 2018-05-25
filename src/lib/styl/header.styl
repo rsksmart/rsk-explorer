@@ -11,8 +11,10 @@ $nav-margin = 1em
 .logo
   svg
     height 3em
+
 .header
   position relative
+
 .burger
   height 100%
   min-height $head-h
@@ -58,16 +60,16 @@ header
     order 3
 
   .header-content
-      font-family $title-font
-      flex 1 1 100%
-      justify-content flex-start
-      margin 0
-      margin-left $head-margin * 1.5
-      display none
+    font-family $title-font
+    flex 1 1 100%
+    justify-content flex-start
+    margin 0
+    margin-left $head-margin * 1.5
+    display none
 
-    .hc
-      display inline-flex
-      margin 0 0 1em 1em
+  .hc
+    display inline-flex
+    margin 0 0 1em 1em
 
   .iso
     width 36px
@@ -102,8 +104,10 @@ header
       padding 0
       margin 0
       flex-flow column nowrap
+
       li
         margin 0 1em
+
       li, li a
         min-height 2em
         display flex
@@ -113,11 +117,6 @@ header
 
         &.active, &.router-link-active
           border-bottom solid 2px color1
-
-  .nav.open
-    border-left $color 2px solid
-    padding 0 $nav-margin 0 0
-    margin 0
 
     ul
       opacity 1
@@ -129,8 +128,10 @@ header
   .menu
     flex-centered()
     display none
+
     ul
       background $bg-color
+
       li
         display flex
 
@@ -150,6 +151,7 @@ header
   header
     .header-content
       flex 1
+
       .hc
         margin 0 0 0 0.5em
 
@@ -181,8 +183,9 @@ header
           &:last-child
             margin-right 1em
 
-    .nav.open
-      border none
+    .nav
+      .open
+        border none
 
       ul
         li:last-child
@@ -200,5 +203,11 @@ header
 
     .nav
       flex 0 1 auto
+
+      .open
+        border-left $color 2px solid
+        padding 0 $nav-margin 0 0
+        margin 0
+
     .nav, .search
       margin-left auto
