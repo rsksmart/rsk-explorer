@@ -46,7 +46,7 @@ export const getFieldValue = state => (field, data) => {
   if (field) {
     let value = data
     for (let f of field) {
-      value = (value && value[f]) ? value[f] : null
+      value = (value && (value[f] || value[f] === 0)) ? value[f] : null
     }
     return value
   }

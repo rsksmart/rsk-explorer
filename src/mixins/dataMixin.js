@@ -97,7 +97,7 @@ export default {
     },
     getValue (field, data, raw) {
       let value = this.getFieldFilteredValue()(field, data, raw)
-      return value || ''
+      return value
     },
     isFrom (fieldName, index) {
       let next = this.fieldsKeys[index + 1]
