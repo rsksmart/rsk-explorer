@@ -93,7 +93,7 @@ export default {
       
       .data-field
         margin 0 2em 0 0em !important
-          
+        flex 5  
 
   .custom-item
     flex 1
@@ -111,7 +111,6 @@ export default {
     justify-selft flex-end
   
   .data-field
-    flex 5
     justify-content flex-start
  
     .field-value
