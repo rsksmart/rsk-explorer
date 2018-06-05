@@ -37,8 +37,8 @@ export default new Router({
           let host = window.location.host.split('.')
           host[0] = 'stats'
           url = window.location.protocol + '//' + host.join('.')
-        }
-        window.location.href = url
+        }        
+        window.open(url, '_blank');
       }
     },
     {
