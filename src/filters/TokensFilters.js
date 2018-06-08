@@ -20,6 +20,11 @@ export const txValue = Vue.filter('tx-value', value => {
   return (value) ? etherUnits.toEther(value, 'wei') : 0
 })
 
+export const txGasPrice = Vue.filter('tx-gas-price', value => {
+  value = bignumberObjtoBigNumber(value)
+  return (value) ? etherUnits.toEther(value, 'wei') : 0
+})
+
 export const bignumber = Vue.filter('big-number', value => {
   return bignumberObjtoBigNumber(value)
 })

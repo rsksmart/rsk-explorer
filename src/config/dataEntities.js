@@ -151,9 +151,6 @@ const TxFields = () => {
       field: 'transactionIndex',
       default: 0
     },
-    status: {
-      field: 'receipt.status'
-    },
     from: {
       type: 'from',
       default: THIS_ADDRESS
@@ -221,6 +218,19 @@ const Tx = () => {
     },
     value: {
       filters: ['tx-value', 'sbtc'],
+      default: 0
+    },
+    gasLimit: {
+      field: 'gas',
+      default: 0
+    },
+    gasUsedByTx: {
+      field: 'receipt.gasUsed',
+      default: 0
+    },
+    gasPrice: {
+      field: 'gasPrice',
+      filters: ['tx-gas-price', 'wei'],
       default: 0
     },
     contractAddress: {
