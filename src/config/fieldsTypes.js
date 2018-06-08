@@ -5,7 +5,8 @@ export default {
     titleIcon: true,
     hideTitle: true,
     link: `/${r.block}/`,
-    filters: ['locale']
+    filters: ['locale'],
+    default: 0
   },
   bigNumber: {
     filters: ['big-number']
@@ -21,6 +22,7 @@ export default {
   },
   transaction: {
     icon: 'transaction',
+    filters: ['count'],
     titleIcon: true,
     hideTitle: true
   },

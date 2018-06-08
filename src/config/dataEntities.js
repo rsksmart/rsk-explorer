@@ -74,10 +74,11 @@ const Blocks = () => {
     plural: 'blocks',
     fields: {
       number: {
-        type: 'block'
+        type: 'block',
+        default: 0
       },
       txs: {
-        field: 'txs',
+        field: 'transactions',
         type: 'transaction'
       },
       hash: null,
@@ -128,8 +129,7 @@ const Block = () => {
       renderAsProps: {
         type: 'transactions',
         hideFields: ['block'],
-        link: `/${r.transaction}/`,
-        sort: null
+        link: `/${r.transaction}/`
       }
     }
   })

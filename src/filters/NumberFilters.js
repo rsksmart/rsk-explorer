@@ -59,3 +59,7 @@ export const round = Vue.filter('round', (value, digits) => {
 export const isDigits = Vue.filter('is-digits', (value) => {
   return /^-?\d+\.?\d*$/.test(value) // true for digits and '.'
 })
+
+export const count = Vue.filter('count', (value) => {
+  return value.length || 0
+})
