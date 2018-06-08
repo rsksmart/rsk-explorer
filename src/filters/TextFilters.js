@@ -28,3 +28,9 @@ export const msSuffix = Vue.filter('ms-suffix', (value) => {
 export const camelCaseTo = Vue.filter('camel-case-to', (value, to = ' ') => {
   return value.replace(/([a-z])([A-Z])/g, '$1' + to + '$2').toLowerCase()
 })
+
+export const txStatus = Vue.filter('tx-status', (value, len) => {
+  if (value === '0x01') value = 'SUCCESSFUL'
+  else value = 'FAILED'
+  return value
+})

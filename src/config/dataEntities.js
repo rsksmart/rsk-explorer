@@ -151,6 +151,9 @@ const TxFields = () => {
       field: 'transactionIndex',
       default: 0
     },
+    status: {
+      field: 'receipt.status'
+    },
     from: {
       type: 'from',
       default: THIS_ADDRESS
@@ -193,6 +196,12 @@ const Txs = () => {
 const Tx = () => {
   let tx = Txs()
   tx.fields = Object.assign(TxFields(), {
+    status: {
+      field: 'receipt.status',
+      filters: ['tx-status'],
+      trim: 'auto',
+      hideIfEmpty: true
+    },
     hash: {
       trim: 'auto'
     },
