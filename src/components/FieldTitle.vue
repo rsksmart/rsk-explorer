@@ -4,7 +4,7 @@
       tool-tip(v-if='!showTitle' :value='field.name')
         icon(:name='field.icon')
       icon(v-else :name='field.icon')  
-    span.title(v-if='showTitle') {{ field.title | camel-case-to }}
+    span.title(v-if='showTitle && field.title') {{ field.title | camel-case-to }}
     slot
 </template>
 <script>
@@ -30,10 +30,12 @@ export default {
   },
   computed: {
     showTitle () {
-      return this.field.showTitle || !this.field.hideTitle || this.forceTitle
+      let field = this.field || {}
+      return field.showTitle || !field.hideTitle || this.forceTitle
     },
     showIcon () {
       let field = this.field
+      if (!field) return false
       return (field.titleIcon || this.forceIcon) && field.icon
     }
   }
