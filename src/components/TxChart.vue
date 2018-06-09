@@ -42,12 +42,12 @@ export default {
           return d
         },
         getY (d) {
-          return d.txs
+          return d.transactions.length
         },
         formatLabel (bar) {
           let label = []
           label.push('#' + bar.d.number)
-          label.push('tx:' + bar.d.txs)
+          label.push('txs:' + bar.d.transactions.length)
           return label
         }
       }
