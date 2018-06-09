@@ -273,6 +273,27 @@ const Addresses = () => {
   return addresses
 }
 
+const Tokens = () => {
+  return {
+    icon: 'ellipsis',
+    key: 'address',
+    link: `/${r.token}/`,
+    listLink: `/${r.tokens}/`,
+    fields: {
+      symbol: null,
+      name: {
+        field: 'name',
+        default: ''
+      },
+      address: null,
+      balance: {
+        filters: ['tx-value', 'sbtc'],
+        default: 0
+      }
+    }
+  }
+}
+
 export default {
   blocks: Blocks(),
   block: Block(),
@@ -338,7 +359,5 @@ export default {
       }
     }
   },
-  tokens: {
-    icon: 'ellipsis'
-  }
+  tokens: Tokens()
 }

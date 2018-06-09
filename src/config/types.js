@@ -9,6 +9,7 @@ export const ROUTES = {
   address: 'address',
   account: 'account',
   accounts: 'accounts',
+  token: 'token',
   tokens: 'tokens',
   stats: 'stats'
 }

@@ -154,6 +154,8 @@ export default {
       return ((value || value === 0) && field.link) ? field.link + value : null
     },
     computeTrim (field, value) {
+      field = field || {}
+      value = value || ''
       if (field.trim === 0) return 0
       if (String(value.length) > this.trimIf) {
         return field.trim || this.defaultTrim

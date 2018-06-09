@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import Tokens from '@/components/Tokens'
 import DataPage from '@/components/DataPage'
 import { ROUTES as r } from '../config/types'
 import config from '../config/config.json'
@@ -44,14 +43,31 @@ export default new Router({
     {
       path: `/${r.tokens}`,
       name: 'Tokens',
-      component: Tokens
+      component: DataPage,
+      props: {
+        type: 'blocks',
+        dataType: 'tokens',
+        action: 'getTokens',
+        title: 'Tokens'
+      }
     },
     {
-      path: `/${r.tokens}/:address/events`,
+      path: `/${r.token}/:address`,
+      name: 'Token',
+      component: DataPage,
+      props: {
+        type: 'blocks',
+        dataType: 'events',
+        action: 'getEvents',
+        title: 'Token'
+      }
+    },
+    {
+      path: `/${r.token}/:address/events`,
       name: 'Events',
       component: DataPage,
       props: {
-        type: 'erc20',
+        type: 'blocks',
         title: 'Events',
         component: 'ContractEvents',
         dataType: 'events',
@@ -59,34 +75,34 @@ export default new Router({
       }
     },
     {
-      path: `/${r.tokens}/:address/events/:_id`,
+      path: `/${r.token}/:address/events/:_id`,
       name: 'Event',
       component: DataPage,
       props: {
         title: 'Event',
-        type: 'erc20',
+        type: 'blocks',
         dataType: 'event',
         action: 'getEvent'
       }
     },
     {
-      path: `/${r.tokens}/:address/accounts`,
+      path: `/${r.token}/:address/accounts`,
       name: 'Accounts',
       component: DataPage,
       props: {
         title: 'Accounts',
-        type: 'erc20',
+        type: 'blocks',
         component: 'ContractAccounts',
         dataType: 'accounts',
         action: 'getAccounts'
       }
     },
     {
-      path: `/${r.tokens}/:address/accounts/:account`,
+      path: `/${r.token}/:address/accounts/:account`,
       name: 'Account',
       component: DataPage,
       props: {
-        type: 'erc20',
+        type: 'blocks',
         action: 'getAccount',
         component: 'Account'
       }

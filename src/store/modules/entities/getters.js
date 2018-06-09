@@ -22,7 +22,7 @@ export const dataKeyValue = (state, getters) => (type, data) => {
 }
 
 export const getFieldFilteredValue = (state, getters) => (field, data, raw) => {
-  if (field.field) {
+  if (field && field.field) {
     let value = getters.getFieldValue(field.field, data)
     if (value && !raw) {
       value = getters.filterFieldValue(field, value)
@@ -32,6 +32,7 @@ export const getFieldFilteredValue = (state, getters) => (field, data, raw) => {
 }
 
 export const filterFieldValue = (state, getters) => (field, value) => {
+  field = field || {}
   let type = field.type
   let now = getters.getDate
   if (type === 'timestamp' && value) value = now - value * 1000
