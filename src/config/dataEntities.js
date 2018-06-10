@@ -1,6 +1,9 @@
 /**
  * type:{
  *    key: item key field
+ *    formatRow(data,parentData)
+ *    formatFields(fields,data,parentData)
+ *    formatLink(data,parentData,link,key)
       fields:{
         field: null | object: {
                         field: key of data source, field name as default
@@ -19,7 +22,7 @@
  * }
  */
 
-import { ROUTES as r, THIS_ADDRESS } from './types'
+import { ROUTES as r, THIS_ADDRESS, CONTRACT_UNKNOWN_NAME } from './types'
 
 const eventFormatRow = (event, parentData) => {
   let args = event.args
@@ -36,12 +39,13 @@ const eventFormatRow = (event, parentData) => {
     return event
   }
 }
-const eventFormatFields = (fields, parentData) => {
+const eventFormatFields = (fields, data, parentData) => {
   let token = parentData
-  let uri = token.baseUri + r.addresses + '/'
-  fields.to.link = uri
-  fields.from.link = uri
-  fields.amount.suffix = token.shortName
+  if (token) {
+    // fields.to.link = uri
+    // fields.from.link = uri
+    fields.amount.suffix = token.symbol || ''
+  }
   return fields
 }
 
@@ -49,7 +53,7 @@ const clearIfMatch = (val, match) => {
   return val !== match ? val : null
 }
 
-const transactionFormatFields = (fields, parentData) => {
+const transactionFormatFields = (fields, data, parentData) => {
   // fields.timestamp = parentData.timestamp
   return fields
 }
@@ -79,7 +83,8 @@ const Blocks = () => {
       },
       txs: {
         field: 'transactions',
-        type: 'transaction'
+        type: 'transaction',
+        filters: ['count']
       },
       hash: null,
       miner: {
@@ -256,7 +261,9 @@ const Address = () => {
     link: `/${r.address}`,
     listLink: `/${r.addresses}`,
     fields: {
-      address: null,
+      address: {
+        trim: 'auto'
+      },
       balance: {
         filters: ['tx-value', 'sbtc'],
         default: 0
@@ -280,12 +287,16 @@ const Tokens = () => {
     link: `/${r.token}/`,
     listLink: `/${r.tokens}/`,
     fields: {
-      symbol: null,
       name: {
         field: 'name',
-        default: ''
+        default: CONTRACT_UNKNOWN_NAME,
+        link: (data, value) => {
+          return `/${r.token}/${data.address}`
+        }
       },
-      address: null,
+      address: {
+        field: 'address'
+      },
       balance: {
         filters: ['tx-value', 'sbtc'],
         default: 0
@@ -302,6 +313,14 @@ export default {
   events: {
     key: '_id',
     icon: 'zap',
+    link: `/ ${r.token} /:address/event / `,
+    formatRow: eventFormatRow,
+    formatFields: eventFormatFields,
+    formatLink: (data, parentData, link, key) => {
+      parentData = parentData || {}
+      let address = parentData.address || data.address || ''
+      return link.replace(':address', address) + key
+    },
     fields: {
       event: null,
       from: null,
@@ -324,13 +343,26 @@ export default {
     fields: {
       event: null,
       timestamp: null,
-      address: null,
-      transactionHash: null,
+      token: {
+        field: 'address',
+        trim: 'auto',
+        type: 'token'
+      },
+      contract: {
+        field: 'address',
+        trim: 'auto',
+        type: 'address'
+      },
+      transaction: {
+        field: 'transactionHash',
+        trim: 'auto',
+        type: 'transaction'
+      },
       from: {
-        default: THIS_ADDRESS
+        trim: 'auto'
       },
       to: {
-        default: THIS_ADDRESS
+        trim: 'auto'
       },
       amount: {
         field: 'args._value',
@@ -347,15 +379,19 @@ export default {
   token: {
     icon: 'ellipsis',
     key: 'address',
-    link: `/${r.tokens}/`,
+    link: `/ ${r.tokens} /`,
     itemTitle: true,
     titleField: 'name',
     fields: {
-      name: null,
-      shortName: null,
-      address: null,
-      Events: {
-        default: 0
+      name: {
+        default: CONTRACT_UNKNOWN_NAME
+      },
+      symbol: null,
+      contractType: null,
+      address: { trim: 'auto' },
+      decimals: {
+        filters: ['big-number'],
+        default: ''
       }
     }
   },

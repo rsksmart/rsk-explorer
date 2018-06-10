@@ -22,7 +22,7 @@ export default {
   },
   transaction: {
     icon: 'transaction',
-    filters: ['count'],
+    link: `/${r.transaction}/`,
     titleIcon: true,
     hideTitle: true
   },
@@ -48,5 +48,8 @@ export default {
   },
   address: {
     link: `/${r.address}/`
+  },
+  token: {
+    link: `/${r.token}/`
   }
 }

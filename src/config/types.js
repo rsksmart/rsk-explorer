@@ -11,7 +11,10 @@ export const ROUTES = {
   accounts: 'accounts',
   token: 'token',
   tokens: 'tokens',
-  stats: 'stats'
+  stats: 'stats',
+  event: 'event',
+  events: 'events'
 }
 
 export const THIS_ADDRESS = 'This Address'
+export const CONTRACT_UNKNOWN_NAME = 'Unknown'
