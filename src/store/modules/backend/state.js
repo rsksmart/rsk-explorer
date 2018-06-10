@@ -19,7 +19,6 @@ export default function () {
     dbStatus: {},
     lastBlocksTime: 0,
     transactions: [],
-    lastTransactions: [],
-    tokens: []
+    lastTransactions: []
   }
 }

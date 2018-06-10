@@ -35,9 +35,6 @@ export const LAST_TRANSACTIONS = (state, transactions) => {
 export const SET_TRANSACTIONS = (state, transactions) => {
   state.transactions = transactions
 }
-export const SET_TOKENS = (state, tokens) => {
-  state.tokens = tokens
-}
 
 export const SET_PAGE_REQUEST = (state, requesting) => {
   Vue.set(state.page, 'requesting', requesting)
