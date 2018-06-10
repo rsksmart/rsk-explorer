@@ -26,6 +26,11 @@ import { ROUTES as r, THIS_ADDRESS, CONTRACT_UNKNOWN_NAME } from './types'
 
 const eventFormatRow = (event, parentData) => {
   let args = event.args
+  let tokenAddress = parentData.address
+  let token = parentData.name || event.address
+  event._tokenAddress = tokenAddress
+  event._tokenRef = token
+
   if (args) {
     let to = args._to
     let from = args._from
@@ -39,6 +44,7 @@ const eventFormatRow = (event, parentData) => {
     return event
   }
 }
+
 const eventFormatFields = (fields, data, parentData) => {
   let token = parentData
   if (token) {
@@ -298,8 +304,7 @@ const Tokens = () => {
         field: 'address'
       },
       balance: {
-        filters: ['tx-value', 'sbtc'],
-        default: 0
+        type: 'balance'
       }
     }
   }
@@ -313,7 +318,7 @@ export default {
   events: {
     key: '_id',
     icon: 'zap',
-    link: `/ ${r.token} /:address/event / `,
+    link: `/${r.token}/:address/event/`,
     formatRow: eventFormatRow,
     formatFields: eventFormatFields,
     formatLink: (data, parentData, link, key) => {
@@ -344,9 +349,13 @@ export default {
       event: null,
       timestamp: null,
       token: {
-        field: 'address',
+        field: '_tokenRef',
         trim: 'auto',
-        type: 'token'
+        type: 'token',
+        link: (data, value) => {
+          let address = data._tokenAddress
+          return `/${r.token}/${address}`
+        }
       },
       contract: {
         field: 'address',
@@ -392,8 +401,39 @@ export default {
       decimals: {
         filters: ['big-number'],
         default: ''
+      },
+      totalSupply: {
+        filters: ['big-number'],
+        default: ''
+      },
+      balance: {
+        type: 'balance'
       }
     }
   },
-  tokens: Tokens()
+  tokens: Tokens(),
+  tokenAccount: {
+    fields: {
+      address: null,
+      balance: null,
+      contract: null
+    }
+  },
+  tokenAccounts: {
+    key: 'address',
+    link: `/${r.token}/:contract/${r.account}/:address`,
+    formatLink: (data, parentData, link, key) => {
+      const address = data.address || ''
+      const contract = data.contract || ''
+      return link
+        .replace(':contract', contract)
+        .replace(':address', address)
+    },
+    itemTitle: true,
+    titleField: 'name',
+    fields: {
+      address: null,
+      balance: null
+    }
+  }
 }

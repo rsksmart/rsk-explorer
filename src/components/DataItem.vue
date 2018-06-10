@@ -25,7 +25,8 @@ export default {
   name: 'data-item',
   props: [
     'data',
-    'type'
+    'type',
+    'parentData'
   ],
   components: {
     DataField,
@@ -69,17 +70,15 @@ export default {
       min-width 100%
       display flex
       flex-flow row wrap
-      padding .5em 0em
+      padding 0.5em 0em
 
     .item
       display flex
       flex 1 1 100%
       align-items center
-      padding .5em 0em
+      padding 0.5em 0em
       overflow visible
-    
-    //.item.from, .item.to
-      // flex 1
+
     .item
       font-size 1em
 
@@ -88,17 +87,17 @@ export default {
 
       .field-title, .custom
         flex 1
-        margin 0 1em 0 2em 
+        margin 0 1em 0 2em
         justify-content flex-start
-      
+
       .data-field
         margin 0 2em 0 0em !important
-        flex 5  
+        flex 5
 
   .custom-item
     flex 1
     flex-centered()
-    
+
     .field-title, .custom
       flex 1
 
@@ -109,10 +108,10 @@ export default {
     text-transform capitalize
     font-weight bold
     justify-selft flex-end
-  
+
   .data-field
     justify-content flex-start
- 
+
     .field-value
       display inline-flex
 
@@ -123,7 +122,6 @@ export default {
     .field-value
       display inline-flex
 
-
     div, span
       &::before
         content '\00a0'
@@ -131,20 +129,18 @@ export default {
   .field-title.big-field
     justify-content flex-start
     margin-bottom 0.5em
-  .field-title.big-field, .big-field.custom  
-    margin 0 1em 0em 2em 
+
+  .field-title.big-field, .big-field.custom
+    margin 0 1em 0em 2em
 
   .field-title.data-table
     margin 0 !important
     justify-content center !important
     margin-top 1em !important
 
-@media $media_medium
-  .data-item
-    .big-field.custom
-      min-width 20em
-
-
-
+  @media $media_medium
+    .data-item
+      .big-field.custom
+        min-width 20em
 </style>
 

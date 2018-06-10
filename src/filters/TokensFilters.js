@@ -3,11 +3,11 @@ import BigNumber from 'bignumber.js'
 import etherUnits from '../lib/js/EtherUnits'
 // const Ether = new BigNumber(10e17)
 
-export const tokenAmount = amount => {
+export const tokenAmount = (amount, decimals = 18) => {
   if (!amount) return
-  let ret = new BigNumber(amount.toString())
-  let divisor = new BigNumber(10).toPower(18)
-  return ret.dividedBy(divisor)
+  let ret = bignumberObjtoBigNumber(amount)
+  let divisor = new BigNumber(10).toPower(decimals)
+  return ret.dividedBy(divisor).toString()
 }
 
 export const tokenValue = Vue.filter('token-value', amount => {
@@ -26,7 +26,8 @@ export const txGasPrice = Vue.filter('tx-gas-price', value => {
 })
 
 export const bignumber = Vue.filter('big-number', value => {
-  return bignumberObjtoBigNumber(value)
+  if (!value) return
+  return bignumberObjtoBigNumber(value).toString()
 })
 
 export const bignumberObjtoBigNumber = value => {

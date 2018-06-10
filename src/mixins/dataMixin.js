@@ -24,9 +24,10 @@ export default {
       if (this.entity) {
         let fields = this.entity.fields
         let parentData = this.parentData
+        let data = this.data
         if (fields) {
           if (this.fieldsCb) {
-            fields = this.fieldsCb(fields, parentData)
+            fields = this.fieldsCb(fields, data, parentData)
           }
         }
         return fields || this.dataKeys
@@ -40,8 +41,8 @@ export default {
       return this.dataKey()(this.type)
     },
     dataFormatted () {
-      let data = this.data
-      let parentData = this.parentData
+      let data = this.data || {}
+      let parentData = this.parentData || {}
       if (this.rowCb) {
         if (Array.isArray(data)) {
           data = data.map(row => {
@@ -132,7 +133,7 @@ export default {
       let link
       let key = this.keyValue(row)
       let linkCb = this.linkCb
-      if (linkCb) return linkCb(row, this.parentData, key)
+      if (linkCb) return linkCb(row, this.parentData, this.entity.link, key)
       link = link || this.entity.link
       // link = link || this.$route.path
       link = link || ''
@@ -150,8 +151,10 @@ export default {
       return false
     },
     makeLink (field, row) {
+      let link = field.link
       let value = this.getValue(field, row, true)
-      return ((value || value === 0) && field.link) ? field.link + value : null
+      if (typeof link === 'function') return link(row, value)
+      return ((value || value === 0) && link) ? link + value : null
     },
     computeTrim (field, value) {
       field = field || {}

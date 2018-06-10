@@ -51,5 +51,9 @@ export default {
   },
   token: {
     link: `/${r.token}/`
+  },
+  balance: {
+    filters: ['tx-value', 'sbtc'],
+    default: 0
   }
 }

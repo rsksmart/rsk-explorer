@@ -1,13 +1,15 @@
 <template lang="pug">
   .data-page.centered
-    paginator(v-if='isTable' :options='pageOptions' :link='0')
+    paginator(v-if='isTable && !headComponent' :options='pageOptions' :link='0')
     spinner(v-if='requestingPageData && !error')
     .error(v-if='error')
       h1 {{error.error || 'ERROR'}}
     template(v-else) 
       h2.title(v-if='pageTitle && data') {{ pageContext }} {{pageTitle}}
-      .page-header.frame(v-if='headComponent')
-        component(:is='headComponent' :data='parentData')
+      //- Header
+      .page-header(v-if='headComponent')
+        component(:is='headComponent' :data='parentData' :type='headType')
+        paginator(v-if='isTable' :options='pageOptions' :link='0')
       .page(v-if='data')
         //- Transactions filters
         tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
@@ -27,10 +29,6 @@
                
         //- Component
         template(v-if='component')
-            //- Event
-            //-contract-events(v-if='isComponent("ContractEvents")' :data='data' :token='token')
-            //-contract-accounts(v-if='isComponent("ContractAccounts")' :data='data' :token='token')
-            //-account(v-if='isComponent("Account")' :data='data' :token='token')
             component(:is='component' :data='data' :token='token')
         //- Generic render
         template(v-else)
@@ -47,14 +45,10 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Spinner from './Spinner.vue'
-import ContractEvents from './ContractEvents.vue'
-import ContractAccounts from './ContractAccounts.vue'
-import Account from './Account.vue'
 import Paginator from './Paginator.vue'
 import ToolTip from './ToolTip.vue'
 import DataTable from './DataTable.vue'
 import DataItem from './DataItem.vue'
-import AccountHeader from './AccountHeader.vue'
 import TxFilters from './TxFilters.vue'
 export default {
   name: 'data-page',
@@ -62,12 +56,8 @@ export default {
     Spinner,
     DataTable,
     DataItem,
-    ContractEvents,
-    ContractAccounts,
-    Account,
     Paginator,
     ToolTip,
-    AccountHeader,
     TxFilters
   },
   props: [
@@ -77,7 +67,8 @@ export default {
     'component',
     'title',
     'keyData',
-    'headComponent'
+    'headComponent',
+    'headType'
   ],
   created () {
     this.getData()
@@ -91,7 +82,6 @@ export default {
       requestingPageData: 'requestingPageData',
       page: 'getPage',
       error: 'pageError',
-      getTokenData: 'getTokenData',
       query: 'getQuery'
     }),
     data () {
@@ -100,9 +90,7 @@ export default {
       if (data) return (key) ? data[key] : data
     },
     parentData () {
-      let data = this.page.parentData
-      if (this.isErc20) return this.token
-      return data
+      return this.page.parentData
     },
     prev () {
       return this.page.prev
@@ -123,7 +111,8 @@ export default {
       }
     },
     pageContext () {
-      if (this.isErc20) return this.token.name
+      let name = this.data.name || null
+      return name
     },
     isTable () {
       return (this.data) ? this.isArray(this.data) : false
@@ -133,18 +122,7 @@ export default {
         return this.fields || Object.keys(this.data[0])
       }
     },
-    isErc20 () {
-      return (this.type === 'erc20')
-    },
-    token () {
-      let token = null
-      let address = this.$route.params.address
-      if (this.isErc20 && address) {
-        token = this.getTokenData(address)
-        if (token) token.baseUri = '/tokens/' + address + '/'
-      }
-      return token
-    },
+
     pageOptions () {
       return this.page.pages
     },
@@ -175,12 +153,6 @@ export default {
       let action = this.action
       return this.fetchRouteData({ action, type })
     },
-    isComponent (c) {
-      return (this.component === c)
-    },
-    isHeadComponent (c) {
-      return (this.headComponent === c)
-    },
     routeParams (data) {
       let params = Object.assign({}, this.$route.params)
       let key = this.key
@@ -198,7 +170,7 @@ export default {
     width 100%
 
   .data-page h2.title
-    text-transform  capitalize
+    text-transform capitalize
     // align-self flex-start
 
   .page
