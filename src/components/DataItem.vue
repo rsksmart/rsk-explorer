@@ -1,15 +1,15 @@
 <template lang="pug">
   .data-item
-    h2.item-title(v-if='entity.itemTitle') 
+    h2.item-title(v-if='entity.itemTitle && data')
       icon.medium(v-if='entity.icon' :name='entity.icon')
       span {{ entity.singular }}
-      data-field(:field='fields[titleField]' :row='data')
+      data-field(v-if='fields[titleField]' :field='fields[titleField]' :row='data')
     .items(v-if='data && fields')
       template(v-for='field,fieldName,index in fields')
         template(v-if='showField(field,data)')
           .item(v-if='!field.renderAs' :class='itemClass(fieldName,index)')
             field-title(:field='field')
-            data-field(:field='field' :row='data' :style='cellStyle(field,value(field,false))')
+            data-field(:field='field' :row='dataFormatted' :style='cellStyle(field,value(field,false))')
           //-custom component
           .custom-item(v-else :class='itemClass(fieldName,index)') 
             //-.field-title(v-if='!field.hideTitle') {{ field.title }}
@@ -143,4 +143,3 @@ export default {
       .big-field.custom
         min-width 20em
 </style>
-
