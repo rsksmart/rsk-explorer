@@ -1,4 +1,4 @@
-import { ROUTES as r, THIS_ADDRESS } from '../types'
+import { ROUTES as r, THIS_ADDRESS, STATUS } from '../types'
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
 }
@@ -17,6 +17,14 @@ const transactionFormatRow = (tx, parentData) => {
   return tx
 }
 
+const txStatusCss = (status) => {
+  const css = {
+    FAIL: 'error',
+    SUCCESS: 'brand'
+  }
+  let key = Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
+  return css[key] || ''
+}
 const TxFields = () => {
   return {
     hash: {
@@ -79,6 +87,7 @@ const Tx = () => {
       field: 'receipt.status',
       filters: ['tx-status'],
       trim: 'auto',
+      css: (value, filtered, data) => txStatusCss(filtered),
       hideIfEmpty: true
     },
     hash: {
