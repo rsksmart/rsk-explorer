@@ -7,11 +7,11 @@
     .items(v-if='data && fields')
       template(v-for='field,fieldName,index in fields')
         template(v-if='showField(field,data)')
-          .item(v-if='!field.renderAs' :class='itemClass(fieldName,index)')
+          .item(v-if='!field.renderAs' :class='itemClass(field)')
             field-title(:field='field')
             data-field(:field='field' :row='dataFormatted' :style='cellStyle(field,value(field,false))')
           //-custom component
-          .custom-item(v-else :class='itemClass(fieldName,index)') 
+          .custom-item(v-else :class='itemClass(field)') 
             //-.field-title(v-if='!field.hideTitle') {{ field.title }}
             field-title(:field='field' v-if='!field.hideTitle' :class='field.renderAs')
             component.custom(:is='field.renderAs' :data='data[fieldName]' v-bind='componentProps(field)' )
@@ -41,11 +41,13 @@ export default {
       let raw = !format
       return this.getValue(field, this.data, raw)
     },
-    itemClass (fieldName, index) {
+    itemClass (field) {
       let css = []
-      if (this.isFrom(fieldName, index)) css.push('from')
-      if (this.isTo(fieldName, index)) css.push('to')
-      let row = (index % 2) ? 'odd' : 'even'
+      let fieldName = field.fieldName
+      let pos = this.fieldPos(field)
+      if (this.isFrom(fieldName, pos)) css.push('from')
+      if (this.isTo(fieldName, pos)) css.push('to')
+      let row = (pos % 2) ? 'odd' : 'even'
       css.push(row)
       return css
     },

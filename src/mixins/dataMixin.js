@@ -18,7 +18,12 @@ export default {
       return this.cbParse('formatLink')
     },
     entity () {
-      if (this.type) return this.dataEntity()(this.type)
+      let type = this.type
+      if (type) {
+        let entity = this.dataEntity()(type)
+        if (!entity) console.warn(`Warning, unknown entity: ${type}`)
+        return entity
+      }
     },
     fields () {
       if (this.entity) {
@@ -33,6 +38,11 @@ export default {
         return fields || this.dataKeys
       }
       return this.dataKeys
+    },
+    visibleFields () {
+      return Object.values(this.fields)
+        .filter(f => this.showField(f, this.data))
+        .map(f => f.name)
     },
     fieldsKeys () {
       return Object.keys(this.fields)
@@ -101,12 +111,15 @@ export default {
       return value
     },
     isFrom (fieldName, index) {
-      let next = this.fieldsKeys[index + 1]
+      let next = this.visibleFields[index + 1]
       return fieldName === 'from' && next === 'to'
     },
     isTo (fieldName, index) {
-      let prev = this.fieldsKeys[index - 1]
+      let prev = this.visibleFields[index - 1]
       return fieldName === 'to' && prev === 'from'
+    },
+    fieldPos (field) {
+      return this.visibleFields.indexOf(field.name)
     },
     keyValue (data) {
       return this.dataKeyValue()(this.type, data)
@@ -127,7 +140,7 @@ export default {
       let entity = this.entity
       let isTitleField = (fieldName === entity.titleField)
       let isNotEmpty = (field.hideIfEmpty) ? this.getValue(field, data) : true
-      return !hidden && !isTitleField && isNotEmpty
+      return Boolean(!hidden && !isTitleField && isNotEmpty)
     },
     rowLink (row) {
       let link
