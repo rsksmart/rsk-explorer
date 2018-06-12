@@ -16,5 +16,10 @@ export const ROUTES = {
   events: 'events'
 }
 
+export const STATUS = {
+  SUCCESS: 'SUCCESSFUL',
+  FAIL: 'FAILED'
+}
+
 export const THIS_ADDRESS = 'This Address'
 export const CONTRACT_UNKNOWN_NAME = 'Unknown'

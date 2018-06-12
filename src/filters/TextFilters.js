@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { isDigits } from './NumberFilters.js'
+import { STATUS } from '../config/types'
 
 export const nodeType = Vue.filter('node-type', (text) => {
   if (text) return text.replace(/\//g, ' ')
@@ -30,7 +31,7 @@ export const camelCaseTo = Vue.filter('camel-case-to', (value, to = ' ') => {
 })
 
 export const txStatus = Vue.filter('tx-status', (value, len) => {
-  if (value === '0x01') value = 'SUCCESSFUL'
-  else value = 'FAILED'
+  if (value === '0x01') value = STATUS.SUCCESS
+  else value = STATUS.FAIL
   return value
 })
