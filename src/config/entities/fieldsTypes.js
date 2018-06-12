@@ -1,4 +1,4 @@
-import { ROUTES as r } from './types'
+import { ROUTES as r } from '../types'
 export default {
   block: {
     icon: 'cube',
@@ -51,9 +51,5 @@ export default {
   },
   token: {
     link: `/${r.token}/`
-  },
-  balance: {
-    filters: ['tx-value', 'sbtc'],
-    default: 0
   }
 }

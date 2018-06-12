@@ -1,5 +1,5 @@
-import entities from '../../../config/dataEntities'
-import fieldsTypes from '../../../config/fieldsTypes'
+import entities from '../../../config/entities'
+import fieldsTypes from '../../../config/entities/fieldsTypes'
 import { EntityParser } from '../../../lib/js/EntityParser'
 const parser = new EntityParser(entities, fieldsTypes)
 const dataEntities = parser.parse()
