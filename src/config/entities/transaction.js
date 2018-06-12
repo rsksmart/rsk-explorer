@@ -1,6 +1,5 @@
 import { ROUTES as r, THIS_ADDRESS } from '../types'
 const transactionFormatFields = (fields, data, parentData) => {
-  // fields.timestamp = parentData.timestamp
   return fields
 }
 

@@ -33,20 +33,24 @@ export default {
     link: `/${r.address}/`
   },
   from: {
-    link: `/${r.address}/`
+    link: `/${r.address}/`,
+    trim: 'auto'
   },
   to: {
-    link: `/${r.address}/`
+    link: `/${r.address}/`,
+    trim: 'auto'
   },
   hash: {
     icon: 'hash',
     titleIcon: true,
-    hideTitle: true
+    hideTitle: true,
+    trim: 'auto'
   },
   gas: {
     filters: ['locale']
   },
   address: {
+    trim: 'auto',
     link: `/${r.address}/`
   },
   token: {
