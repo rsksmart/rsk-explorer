@@ -1,5 +1,5 @@
 <template lang="pug">
-  .data-field(:style='cellStyle(field,value)')
+  .data-field(:style='cellStyle(field,value)' :class='fieldClass')
     //- arrays (uncomplete)
     template(v-if='filteredType==="array"')
       ul(v-for='v in value')
@@ -49,6 +49,9 @@ export default {
     },
     trim () {
       return this.computeTrim(this.field, this.value)
+    },
+    fieldClass () {
+      return this.fieldCss(this.field, this.value, this.filteredValue)
     }
   }
 }
@@ -57,20 +60,14 @@ export default {
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
 
-  //.data-field > .tooltip
-    // white-space nowrap
-   
-  .data-field, 
-  .data-field > a, 
-  .data-field > .tooltip, 
-    max-width 100%
+  .data-field, .data-field > a, .data-field > .tooltip, max-width 100%
     display flex
     position relative
     word-wrap break-word
     overflow-wrap break-word
     word-break break-word
-  
-  .field-value 
+
+  .field-value
     overflow-wrap break-word
     word-wrap break-word
     -ms-word-break break-all
@@ -81,10 +78,9 @@ export default {
     -webkit-hyphens auto
     hyphens auto
 
-  .flex-table 
+  .flex-table
     & td .data-field
       width 100%
-
 </style>
 
 

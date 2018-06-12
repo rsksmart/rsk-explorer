@@ -134,6 +134,15 @@ export default {
 
       return style
     },
+    fieldCss (field, value, filteredValue) {
+      if (undefined === value) value = this.getValue(field, this.data, true)
+      if (undefined === filteredValue) filteredValue = this.filterFieldValue()(field, value)
+      let css = field.css
+      if (typeof css === 'function') {
+        return css(value, filteredValue, this.data)
+      }
+      return css
+    },
     showField (field, data) {
       let fieldName = field.fieldName
       let hidden = this.isHidden(fieldName)
