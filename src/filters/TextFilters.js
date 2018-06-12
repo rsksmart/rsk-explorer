@@ -31,7 +31,7 @@ export const camelCaseTo = Vue.filter('camel-case-to', (value, to = ' ') => {
 })
 
 export const txStatus = Vue.filter('tx-status', (value, len) => {
-  if (value === '0x01') value = STATUS.SUCCESS
+  if (parseInt(value) === 1) value = STATUS.SUCCESS
   else value = STATUS.FAIL
   return value
 })
