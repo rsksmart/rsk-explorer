@@ -29,8 +29,6 @@ import { token, tokens } from './token'
 import { event, events } from './event'
 import { tokenAccount, tokenAccounts } from './tokenAccount'
 
-// import links from './links'
-// console.log(links)
 export default {
   block,
   blocks,
