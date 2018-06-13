@@ -15,7 +15,7 @@ const Blocks = () => {
       },
       txs: {
         field: 'transactions',
-        type: 'transaction',
+        type: 'transactions',
         filters: ['count']
       },
       hash: null,
