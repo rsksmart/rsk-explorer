@@ -55,5 +55,11 @@ export default {
   },
   token: {
     link: `/${r.token}/`
+  },
+  date: {
+    icon: 'calendar',
+    filters: ['date-from-unix-ts'],
+    titleIcon: true,
+    hideTitle: true
   }
 }
