@@ -61,5 +61,8 @@ export default {
     filters: ['date-from-unix-ts'],
     titleIcon: true,
     hideTitle: true
+  },
+  tokenBalance: {
+    filters: ['big-number', 'sbtc']
   }
 }
