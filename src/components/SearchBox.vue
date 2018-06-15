@@ -69,6 +69,7 @@ export default {
         // fix to show all posible matches:
         let link = (links.length) ? links[0] + value : null
         if (link) {
+          this.searchValue = ''
           this.$router.push(link)
         } else {
           this.searchValue = ''
