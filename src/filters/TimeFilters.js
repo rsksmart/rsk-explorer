@@ -98,6 +98,11 @@ export const dateFromTs = Vue.filter('date-from-ts', timestamp => {
   return datetime
 })
 
+export const dateFromUnixTs = Vue.filter('date-from-unix-ts', time => {
+  const date = new Date(time * 1000)
+  return dateFromTs(date)
+})
+
 export const miliseconds = Vue.filter('miliseconds', time => {
   time = parseInt(time)
   if (time === 0) return time
