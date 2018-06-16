@@ -4,8 +4,8 @@
       router-link(:to='entity.listLink') 
         icon(:name='entity.icon')
         span &nbsp; {{pageTitle}}
-    .transactions(v-for='tx in transactions')
-      transaction-box(:tx='tx')
+    .transactions(v-for='tx,index in transactions')
+      transaction-box(v-if='index <= 13' :tx='tx')
      
 </template>
 <script>

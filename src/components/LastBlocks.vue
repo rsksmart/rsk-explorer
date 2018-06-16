@@ -10,9 +10,8 @@
           em there are 
             strong.badge {{ pending }} 
           em new blocks, click  here to update the list
-      ul(v-for='block in blocks')
-        li 
-          block-box(:block='block')
+      template(v-for='block,index in blocks')
+        block-box(v-if='index <= 10' :block='block')
     .msg(v-else)
       h2 Requesting blocks      
 </template>
@@ -49,4 +48,11 @@ export default {
   }
 }
 </script>
+<style lang="stylus">
+  .blocks-wrapper
+    .blocks
+      .block-box
+        .block:first-child
+          margin-top 0 !important
+</style>
 
