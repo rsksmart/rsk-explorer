@@ -1,0 +1,28 @@
+
+.tabs
+  justify-content flex-start
+  min-width 100%
+.tabs-titles
+  display flex
+  flex 1 0 100%
+  min-width 100%
+  flex-flow row nowrap
+  justify-content flex-start
+
+
+.tab-title
+  display flex
+  flex-flow column wrap
+  margin 0 .5em 0 0 
+  .title
+    margin 0 1em
+    text-transform capitalize
+.tab-title.active
+  background $color
+  font-weight bold
+  color white
+
+.tab-content
+  min-width 100%
+  display block 
+  flex 1

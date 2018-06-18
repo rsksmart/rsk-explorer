@@ -14,28 +14,21 @@ export const pendingBlocks = state => {
   return Object.keys(state.pendingBlocks).length
 }
 
-export const requestingPageData = state => {
-  return state.page.requesting
+export const requestingPageData = state => (key) => {
+  return state.requesting[key]
 }
 
-export const requestedPage = state => {
-  return state.page.req
+export const pageError = state => key => {
+  return state.responses[key].error
+}
+export const getPage = state => key => {
+  return state.responses[key]
 }
 
-export const pageError = state => {
-  return state.page.error
-}
-export const getPage = state => {
-  return state.page
-}
-
-export const getPageAccount = (state, getters) => {
-  let page = getters.getPage
-  if (page && page.req && page.req.options) {
-    return page.req.options.account
-  }
-}
-
-export const lastBlocksTime = (state) => {
+export const lastBlocksTime = state => {
   return state.lastBlocksTime
+}
+
+export const getPageTotal = (state, getters) => key => {
+  return getters.getPage(key).data.length || 0
 }

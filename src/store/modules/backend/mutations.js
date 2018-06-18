@@ -36,47 +36,21 @@ export const SET_TRANSACTIONS = (state, transactions) => {
   state.transactions = transactions
 }
 
-export const SET_PAGE_REQUEST = (state, requesting) => {
-  Vue.set(state.page, 'requesting', requesting)
+export const SET_REQUESTING = (state, payload) => {
+  let key = payload[0]
+  let value = payload[1]
+  if (key) {
+    Vue.set(state.requesting, key, value)
+  }
 }
 
-export const SET_PAGE_DATA = (state, data) => {
-  Vue.set(state.page, 'data', data)
-}
-
-export const SET_PAGE_PREV = (state, data) => {
-  Vue.set(state.page, 'prev', data)
-}
-
-export const SET_PAGE_NEXT = (state, data) => {
-  Vue.set(state.page, 'next', data)
-}
-
-export const SET_PAGE_PAGES = (state, pages) => {
-  Vue.set(state.page, 'pages', pages)
-}
-
-export const SET_PAGE_ERROR = (state, error) => {
-  Vue.set(state.page, 'error', error)
-}
-
-export const SET_PAGE_REQ = (state, req) => {
-  Vue.set(state.page, 'req', req)
-}
-
-export const SET_PAGE_PARENTDATA = (state, data) => {
-  Vue.set(state.page, 'parentData', data)
-}
-
-export const SET_PAGE_SORT = (state, sort) => {
-  sort = sort || {}
-  Vue.set(state.page, 'sort', sort)
-}
-
-export const SET_PAGE = (state, payload) => {
-  payload.sort = payload.sort || {}
-  for (let p in payload) {
-    Vue.set(state.page, p, payload[p])
+export const SET_RESPONSE = (state, payload) => {
+  let key = payload[0]
+  let data = payload[1] || {}
+  data.sort = data.sort || {}
+  if (!state.responses[key]) Vue.set(state.responses, key, {})
+  for (let p in data) {
+    Vue.set(state.responses[key], p, data[p])
   }
 }
 

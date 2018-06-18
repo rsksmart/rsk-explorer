@@ -1,6 +1,6 @@
 export const socketError = ({ commit, dispatch }, error) => {
   commit('SOCKET_ERROR', error)
-  dispatch('socketPageData', error)
+  dispatch('socketData', error)
 }
 
 export const init = ({ dispatch, commit }) => {

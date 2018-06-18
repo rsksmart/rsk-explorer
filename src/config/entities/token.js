@@ -15,14 +15,14 @@ const Tokens = () => {
   return {
     icon: 'ellipsis',
     key: 'address',
-    link: `/${r.token}/`,
+    link: `/${r.address}/`,
     listLink: `/${r.tokens}/`,
     fields: {
       name: {
         field: 'name',
         default: CONTRACT_UNKNOWN_NAME,
         link: (data, value) => {
-          return `/${r.token}/${data.address}`
+          return `/${r.address}/${data.address}`
         }
       },
       address: {

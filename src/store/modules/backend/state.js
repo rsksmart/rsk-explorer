@@ -3,16 +3,8 @@ export default function () {
     serverTime: Date.now(),
     clientTime: Date.now(),
     systemSettings: {},
-    page: {
-      requesting: false,
-      error: null,
-      req: {},
-      pages: {},
-      prev: {},
-      next: {},
-      sort: null,
-      data: []
-    },
+    requesting: {},
+    responses: {},
     blocks: [],
     lastBlocks: [],
     pendingBlocks: {},

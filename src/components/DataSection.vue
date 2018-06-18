@@ -1,43 +1,47 @@
 <template lang="pug">
-  .page(v-if='data || !data')
-    //- Transactions filters
-    tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
-    paginator(v-if='isTable' :options='pageOptions' :link='0')  
-    template(v-if='!isTable')
-      ul.prev-next
-        li.prev(v-if='prev') 
-          router-link(:to='routeParams(prev)')
-            icon(name='triangle-arrow-left')
-            small previous
-        li.total(v-if='total')
-          span {{total}}  
-        li.next(v-if='next')
-          router-link(:to='routeParams(next)')
-            small next
-            icon(name='triangle-arrow-right')
+  .section
+    spinner(v-if='requesting && !error')
+    .error(v-if='error')
+      h2 {{error.error || 'ERROR'}}
+    template(v-else) 
+      //- Transactions filters
+      tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
+      paginator(v-if='isTable' :options='pageOptions' :link='0')  
+      template(v-if='!isTable')
+        ul.prev-next
+          li.prev(v-if='prev') 
+            router-link(:to='routeParams(prev)')
+              icon(name='triangle-arrow-left')
+              small previous
+          li.total(v-if='total')
+            span {{total}}  
+          li.next(v-if='next')
+            router-link(:to='routeParams(next)')
+              small next
+              icon(name='triangle-arrow-right')
             
     //- Component
-    template(v-if='component')
-        component(:is='component' :data='data' :token='token')
+    template(v-if='component && data')
+        component(:is='component' :data='data' :type='dataType' :parentData='parentData')
     //- Generic render
     template(v-else)
         template(v-if='isTable')
-          data-table(:data='data' :type='dataType' :sort='sort' :parentData='parentData')
+          data-table(:page='page' :type='dataType' :sort='sort' :parentData='parentData')
         template(v-else)
           data-item(:data='data' :type='dataType' :parentData='parentData')
 
     template(v-if='isTable')
       paginator(:options='pageOptions' :link='0')
 
-
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import ToolTip from './ToolTip.vue'
-import DataTable from './DataTable.vue'
-import DataItem from './DataItem.vue'
-import Paginator from './Paginator.vue'
-import TxFilters from './TxFilters.vue'
+import ToolTip from './ToolTip'
+import DataTable from './DataTable'
+import DataItem from './DataItem'
+import Paginator from './Paginator'
+import TxFilters from './TxFilters'
+import Spinner from './Spinner'
 export default {
   name: 'data-section',
   components: {
@@ -45,38 +49,33 @@ export default {
     DataItem,
     ToolTip,
     Paginator,
-    TxFilters
+    TxFilters,
+    Spinner
   },
   props: [
-    'type', 'dataType', 'action', 'component', 'keyData', 'data'
+    'type', 'dataType', 'component', 'action', 'reqKey'
   ],
   computed: {
-    ...mapGetters({
-      requestingPageData: 'requestingPageData',
-      page: 'getPage',
-      error: 'pageError',
-      query: 'getQuery'
-    }),
+    page () {
+      return this.getPage()(this.reqKey)
+    },
+    data () {
+      return (this.page) ? this.page.data : null
+    },
+    parentPage () {
+      return this.getPage()('parentData')
+    },
     parentData () {
-      return this.page.parentData
+      return (this.parentPage) ? this.parentPage.data : {}
     },
     prev () {
-      return this.page.prev
+      return (this.page) ? this.page.prev : null
     },
     next () {
-      return this.page.next
+      return (this.page) ? this.page.next : null
     },
     total () {
-      return this.page.total
-    },
-    pageTitle () {
-      if (undefined === this.title) return this.$route.name
-      let title = this.title
-      if (title) {
-        let data = this.data || {}
-        let parentData = this.parentData || {}
-        return (typeof (title) === 'function') ? title(data, parentData) : title
-      }
+      return (this.page) ? this.page.total : null
     },
     isTable () {
       return (this.data) ? this.isArray(this.data) : false
@@ -97,6 +96,12 @@ export default {
     },
     q () {
       return this.getSavedQ()(this.type, this.action)
+    },
+    requesting () {
+      return this.requestingPageData()(this.reqKey)
+    },
+    error () {
+      return (this.page) ? this.page.error : null
     }
   },
   methods: {
@@ -106,7 +111,10 @@ export default {
     ...mapGetters([
       'dataKey',
       'getSavedSort',
-      'getSavedQ'
+      'getSavedQ',
+      'getPage',
+      'requestingPageData',
+      'pageError'
     ]),
     isArray (val) {
       return Array.isArray(val)
@@ -124,27 +132,5 @@ export default {
 }
 </script>
 <style lang="stylus">
-  .page-header
-    width 100%
-
-  .data-page h2.title
-    text-transform capitalize
-    // align-self flex-start
-
-  .page
-    will-change opacity
-    animation-name page-anim
-    animation-duration 0.3s
-    animation-timing-function ease-in
-
-    @keyframes page-anim
-      0%
-        opacity 0
-
-      100%
-        opacity 1
-
-  .page-header
-    margin-bottom 2em
 </style>
 

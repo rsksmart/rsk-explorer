@@ -1,5 +1,5 @@
 <template lang="pug">
-  .data-item
+  .data-item(v-if='entity')
     h2.item-title(v-if='entity.itemTitle && data')
       icon.medium(v-if='entity.icon' :name='entity.icon')
       span {{ entity.singular }}

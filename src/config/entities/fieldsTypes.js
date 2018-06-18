@@ -64,5 +64,8 @@ export default {
   },
   tokenBalance: {
     filters: ['big-number', 'sbtc']
+  },
+  tokenAddress: {
+    trim: 'auto'
   }
 }

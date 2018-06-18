@@ -1,5 +1,5 @@
 <template lang="pug">
-  .data-table(v-if='data && fields')
+  .data-table(v-if='data.length && fields')
     //- Table
     .table-ctrls
       button.switch(@click='switchTableGrid(false)' :disabled='!renderTable')
@@ -56,7 +56,6 @@ export default {
     dataMixin
   ],
   props: [
-    'data',
     'tableName',
     'type',
     'action',
@@ -67,7 +66,8 @@ export default {
     'formatFields',
     'formatLink',
     'parentData',
-    'sort'
+    'sort',
+    'page'
   ],
   data () {
     return {
@@ -87,18 +87,17 @@ export default {
     let size = this.size
     let parent = vm.$parent.$el
     this.$nextTick(() => {
-      let tcw = table.clientWidth
-      if (table && (tcw > size.w || tcw > parent.clientWidth)) {
-        if (!tw || size.w < tw) {
-          vm.$set(vm, 'renderTable', false)
+      if (table) {
+        let tcw = table.clientWidth
+        if (table && (tcw > size.w || tcw > parent.clientWidth)) {
+          if (!tw || size.w < tw) {
+            vm.$set(vm, 'renderTable', false)
+          }
         }
       }
     })
   },
   computed: {
-    ...mapGetters({
-      page: 'getPage'
-    }),
     ...mapState({
       size: state => state.size
     }),
@@ -110,6 +109,9 @@ export default {
       set (renderTable) {
         this.updateTableConfig([this.tableId, { renderTable }])
       }
+    },
+    data () {
+      return this.page.data
     },
     requestedPage () {
       return this.page.req
@@ -176,16 +178,6 @@ export default {
     removeSort (fieldName) {
       let sort = Object.assign({}, this.sort)
       delete sort[fieldName]
-      this.getData(sort)
-    },
-    moveSort (field) {
-      let keys = this.sortKeys
-      let index = keys.indexOf(field)
-      let to = (index === keys.length - 1) ? 0 : index + 1
-      let sort = {}
-      keys.splice(index, 1)
-      keys.splice(to, 0, field)
-      keys.forEach(k => { sort[k] = this.sort[k] })
       this.getData(sort)
     },
     getData (sort) {

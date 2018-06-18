@@ -46,7 +46,7 @@ export default [
       type: 'blocks',
       dataType: 'tokenAccount',
       action: 'getTokenAccount',
-      headComponent: DataItem,
+      headComponent: null,
       headType: 'token'
     }
   },

@@ -50,3 +50,7 @@ export const getRouterQuery = (state, getters, rootState) => {
 export const getRouterParams = (state, getters, rootState) => {
   return rootState.route.params
 }
+
+export const getActiveTab = (state, getters, rootState) => {
+  return rootState.route.query.tab
+}

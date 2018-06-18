@@ -2,29 +2,43 @@
 import { ROUTES as r } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
 
+const accountLink = `/${r.token}/:contract/${r.account}/:address`
+
+const formatLink = (data, parentData, link, key) => {
+  const address = data.address || ''
+  const contract = data.contract || ''
+  return link
+    .replace(':contract', contract)
+    .replace(':address', address)
+}
+
 const accountFormatRow = (data, parentData) => {
   let balance = data.balance
-  let decimals = data.decimals
+  const contractData = data.contractData || {}
+  let decimals = contractData.decimals
   if (balance) data.balanceParsed = tokenAmount(balance, decimals)
   return data
+}
+
+const accountFormatFields = (fields, data, parentData) => {
+  fields.address.link = formatLink({ contract: parentData.address }, null, accountLink)
+  return fields
 }
 
 export const TokenAccounts = () => {
   return {
     key: 'address',
-    link: `/${r.token}/:contract/${r.account}/:address`,
+    link: accountLink,
     formatRow: accountFormatRow,
-    formatLink: (data, parentData, link, key) => {
-      const address = data.address || ''
-      const contract = data.contract || ''
-      return link
-        .replace(':contract', contract)
-        .replace(':address', address)
-    },
+    formatFields: accountFormatFields,
+    formatLink,
     itemTitle: true,
     titleField: 'name',
     fields: {
-      address: null,
+      address: {
+        type: 'tokenAddress',
+        trim: 'auto'
+      },
       balance: {
         field: 'balanceParsed',
         filters: ['big-number']
@@ -34,11 +48,11 @@ export const TokenAccounts = () => {
 }
 
 const TokenAccount = () => {
-  return {
-    fields: Object.assign(TokenAccounts().fields, {
-      contract: null
-    })
-  }
+  let tokenAccount = TokenAccounts()
+  tokenAccount.fields = Object.assign(TokenAccounts().fields, {
+    contract: null
+  })
+  return tokenAccount
 }
 
 export const tokenAccount = TokenAccount()

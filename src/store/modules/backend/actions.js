@@ -37,34 +37,29 @@ export const socketTokens = ({ commit }, data) => {
   commit('SET_TOKENS', data)
 }
 
-export const socketPageData = ({ state, commit }, res) => {
+export const socketData = ({ state, commit }, res) => {
   let req = res.req
-  if (!req) {
-    commit('SET_PAGE_ERROR', (res.error || { error: 'error' }))
-    return
-  }
   let key = res.req.key
-  let data = res.data
   let pages = res.pages
   let error = res.error
   let next = res.next
   let prev = res.prev
-  let parentData = res.parentData
   let sort = (res.pages) ? res.pages.sort : null
   let q = (req.params && req.params.query) ? req.params.query : null
-  let requesting = state.page.requesting
+  let requested = state.requesting[key]
   let type = req.type || null
   let action = req.action || null
-  if (key && requesting && key === requesting) {
-    commit('SET_PAGE_REQUEST', false)
 
+  if (key && requested && requested === req.time) {
+    commit('SET_REQUESTING', [key, null])
+    let data = { req, pages, prev, next, sort, data: res.data }
     if (error) {
-      commit('SET_PAGE_ERROR', error)
+      commit('SET_RESPONSE', [key, { error }])
     } else {
-      commit('SET_PAGE', { req, pages, data, prev, next, sort, parentData })
+      commit('SET_RESPONSE', [key, data])
       commit('SET_CONFIG_Q', { type, action, value: q })
       commit('SET_CONFIG_SORT', { type, action, value: sort })
-      commit('SET_SERVER_TIME', data.time)
+      commit('SET_SERVER_TIME', res.data.time)
     }
   }
 }
@@ -73,7 +68,7 @@ export const socketDbStatus = ({ state, commit }, data) => {
   commit('SET_DB_STATUS', data)
 }
 
-export const fetchPageData = ({ commit, getters }, req) => {
+export const fetchData = ({ commit, getters }, req) => {
   req.params = req.params || {}
   let page = req.page || 1
   let query = req.query || null
@@ -81,10 +76,11 @@ export const fetchPageData = ({ commit, getters }, req) => {
   let type = req.type || null
   let action = req.action || null
 
-  const key = (req.key || 'page') + '_' + Date.now()
+  const key = (req.key || 'data')
+  const time = Date.now()
   let params = Object.assign(req.params, { page, query, sort })
-  const sData = { type, action, params, key }
-  commit('SET_PAGE_REQUEST', key)
-  commit('SET_PAGE', { data: null, error: null, req: null, sort: null })
-  commit('SOCKET_EMIT', { event: 'data', data: sData })
+  const data = { type, action, params, key, time }
+  commit('SET_REQUESTING', [key, time])
+  commit('SET_RESPONSE', [key, { data: null, error: null, req: null, sort: null }])
+  commit('SOCKET_EMIT', { event: 'data', data })
 }

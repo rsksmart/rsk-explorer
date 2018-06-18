@@ -10,7 +10,7 @@ export default function (socket) {
             store.dispatch(action, data)
           } else {
             if (res.req && res.req.key) {
-              store.dispatch('socketPageData', res)
+              store.dispatch('socketData', res)
             } else {
               console.info('Unknown action received: ' + action)
             }

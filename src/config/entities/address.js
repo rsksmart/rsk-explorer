@@ -1,4 +1,14 @@
 import { ROUTES as r } from '../types'
+import { tokenAmount } from '../../filters/TokensFilters'
+
+const addressFormatRow = (data, parentData) => {
+  let totalSupply = data.totalSupply
+  let decimals = data.decimals
+  if (undefined !== totalSupply && decimals) {
+    data.totalSupplyParsed = tokenAmount(totalSupply, decimals)
+  }
+  return data
+}
 
 const Addresses = () => {
   return {
@@ -22,7 +32,11 @@ const Addresses = () => {
 
 const Address = () => {
   let address = Addresses()
+  address.formatRow = addressFormatRow
   address.fields = Object.assign(address.fields, {
+    contractType: {
+      hideIfEmpty: true
+    },
     creationDate: {
       field: 'createdByTx.timestamp',
       type: 'date',
@@ -36,8 +50,21 @@ const Address = () => {
     tx: {
       field: 'createdByTx.hash',
       type: 'transaction',
+      hideIfEmpty: true,
+      trim: 'auto'
+    },
+    decimals: {
+      filters: ['big-number'],
+      default: '',
+      hideIfEmpty: true
+    },
+    totalSupply: {
+      field: 'totalSupplyParsed',
+      filters: ['big-number'],
+      default: '',
       hideIfEmpty: true
     }
+
   })
   address.fields.balance.filters = ['tx-value', 'sbtc']
   return address

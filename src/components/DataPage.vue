@@ -1,16 +1,31 @@
 <template lang="pug">
   .data-page.centered
-    spinner(v-if='requestingPageData && !error')
+    spinner(v-if='requesting && !error')
     .error(v-if='error')
       h1 {{error.error || 'ERROR'}}
     template(v-else) 
-      h2.title(v-if='pageTitle') {{ pageContext }} {{pageTitle}}
+      h2.title(v-if='pageTitle') {{pageTitle}}
       //- Header
       .page-header(v-if='headComponent')
-        component(:is='headComponent' :data='parentData' :type='headType')
-        //-paginator(v-if='isTable' :options='pageOptions' :link='0')
+        data-section(:component='headComponent' :reqKey='reqKey' :type='type' :dataType='headType || dataType' :action='action')
       .page(v-if='data')
-        data-section(:type='type' :dataType='dataType' :action='action' :component='component' :data='data')
+        data-section(v-if='!tabs' :type='type' :dataType='dataType' :reqKey='reqKey' :component='component' :action='action')
+        .tabs(v-if='tabs && data')
+          .tabs-titles
+            template(v-for='tab in tabs')
+              template(v-if='renderTab(tab)')
+                template(v-if='requestingPageData()(tab.name)')
+                  //- Change it by tab spinner
+                  button.btn.tab-title.link
+                    span.title {{tab.name}} ...
+                template(v-else)
+                  button.btn.tab-title.link(@click='setTab(tab.name)' :class='tabTitleCss(tab)') 
+                    span.title {{tab.name}} 
+                      small.small ({{ getPageTotal()(tab.name) }})
+          
+          template(v-for='tab in tabs')
+            data-section.tab-content(v-if='isActiveTab(tab)' 
+              :type='type' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action')
 
 </template>
 <script>
@@ -29,9 +44,10 @@ export default {
     'action',
     'component',
     'title',
-    'keyData',
     'headComponent',
-    'headType'
+    'headType',
+    'tabs',
+    'rKey'
   ],
   created () {
     this.getData()
@@ -42,62 +58,36 @@ export default {
   },
   computed: {
     ...mapGetters({
-      requestingPageData: 'requestingPageData',
-      page: 'getPage',
-      error: 'pageError',
-      query: 'getQuery'
+      query: 'getQuery',
+      getActiveTab: 'getActiveTab'
     }),
+    error () {
+      return this.pageError()(this.reqKey)
+    },
+    page () {
+      return this.getPage()(this.reqKey) || {}
+    },
     data () {
-      let key = this.keyData
-      let data = this.page.data
-      if (data) return (key) ? data[key] : data
-    },
-    parentData () {
-      return this.page.parentData
-    },
-    prev () {
-      return this.page.prev
-    },
-    next () {
-      return this.page.next
-    },
-    total () {
-      return this.page.total
+      return this.page.data
     },
     pageTitle () {
       if (undefined === this.title) return this.$route.name
       let title = this.title
       if (title) {
         let data = this.data || {}
-        let parentData = this.parentData || {}
-        return (typeof (title) === 'function') ? title(data, parentData) : title
+        return (typeof title === 'function') ? title(data) : title
       }
     },
-    pageContext () {
-      let data = this.data
-      let name = (data) ? data.name : null
-      return name
+    reqKey () {
+      if (this.rKey) return this.rKey
+      return (this.tabs) ? 'parentData' : 'data'
     },
-    isTable () {
-      return (this.data) ? this.isArray(this.data) : false
+    requesting () {
+      return this.requestingPageData()(this.reqKey)
     },
-    tableFields () {
-      if (this.isTable) {
-        return this.fields || Object.keys(this.data[0])
-      }
-    },
-
-    pageOptions () {
-      return this.page.pages
-    },
-    key () {
-      return this.dataKey()(this.dataType)
-    },
-    sort () {
-      return this.getSavedSort()(this.type, this.action)
-    },
-    q () {
-      return this.getSavedQ()(this.type, this.action)
+    activeTab () {
+      let tab = (this.tabs.length) ? this.tabs[0].name : null
+      return this.getActiveTab || tab
     }
   },
   methods: {
@@ -105,17 +95,43 @@ export default {
       'fetchRouteData'
     ]),
     ...mapGetters([
-      'dataKey',
-      'getSavedSort',
-      'getSavedQ'
+      'requestingPageData',
+      'getPage',
+      'getPageTotal',
+      'pageError'
     ]),
-    isArray (val) {
-      return Array.isArray(val)
+    setTab (tab) {
+      let query = Object.assign({}, this.$route.query)
+      query.tab = tab
+      this.$router.push({ query })
+    },
+    renderTab (tab) {
+      const render = tab.render
+      if (typeof render === 'function') return render(this.data)
+      return (undefined === render) ? true : render
     },
     getData () {
       let type = this.type
+      let tabs = this.tabs
       let action = this.action
-      return this.fetchRouteData({ action, type })
+      let key = this.reqKey
+      if (type && action) {
+        this.fetchRouteData({ action, type, key }).then(() => {
+          if (tabs) {
+            for (let tab of tabs) {
+              tab.type = type
+              tab.key = tab.key || tab.name
+              this.fetchRouteData(tab)
+            }
+          }
+        })
+      }
+    },
+    isActiveTab (tab) {
+      return this.activeTab === tab.name
+    },
+    tabTitleCss (tab) {
+      return (this.isActiveTab(tab)) ? ['active'] : []
     }
   }
 }
@@ -128,11 +144,12 @@ export default {
     text-transform capitalize
     // align-self flex-start
 
-  .page
+  .page, .section
     will-change opacity
     animation-name page-anim
-    animation-duration 0.3s
+    animation-duration 0.5s
     animation-timing-function ease-in
+    opacity 1
 
     @keyframes page-anim
       0%

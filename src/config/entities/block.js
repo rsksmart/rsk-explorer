@@ -60,15 +60,7 @@ const Block = () => {
       default: 0
     },
     minimumGasPrice: null,
-    extraData: null,
-    transactions: {
-      renderAs: 'data-table',
-      renderAsProps: {
-        type: 'transactions',
-        hideFields: ['block'],
-        link: `/${r.transaction}/`
-      }
-    }
+    extraData: null
   })
   block.itemTitle = true
   return block

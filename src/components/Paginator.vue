@@ -1,5 +1,5 @@
 <template lang="pug">
-  .pages 
+  .pages(v-if='pages && pages > 1')
     button.page-button(v-if='prev' @click='goToPage(prev)')
       icon(name='arrow-left')
     div(v-else)
@@ -13,9 +13,10 @@
     div(v-else)
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'paginator',
-  props: ['options', 'link'],
+  props: ['options', 'link', 'tab'],
   data () {
     return {
       editPage: false
@@ -44,6 +45,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['updateRouterQuery']),
     changePage (event) {
       this.editPage = false
       let page = event.target.value
@@ -51,7 +53,9 @@ export default {
     },
     goToPage (page) {
       let query = Object.assign({}, this.$route.query)
+      let tab = this.tab
       query.page = page
+      if (tab) query.tab = tab
       this.$router.push({ query })
     }
   }
@@ -59,9 +63,10 @@ export default {
 </script>
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
-  
+
   input.page
     width 3em
+
   .pages
     width 100%
     display flex

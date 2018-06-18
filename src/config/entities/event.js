@@ -68,11 +68,7 @@ export const event = {
     token: {
       field: '_tokenRef',
       trim: 'auto',
-      type: 'token',
-      link: (data, value) => {
-        let address = data._tokenAddress
-        return `/${r.token}/${address}`
-      }
+      type: 'token'
     },
     contract: {
       field: 'address',

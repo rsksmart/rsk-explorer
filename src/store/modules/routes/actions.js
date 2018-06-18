@@ -8,8 +8,9 @@ export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
   req.page = routerQuery.page || 1
   if (query) query = getters.parseQuery(query, true)
   req.query = query
-  if (!req.params) req.params = getters.getRouterParams
-  dispatch('fetchPageData', req)
+  req.params = req.params || {}
+  req.params = Object.assign(req.params, getters.getRouterParams)
+  dispatch('fetchData', req)
 }
 
 export const updateRouterQuery = ({ state, getters, dispatch }, update) => {
