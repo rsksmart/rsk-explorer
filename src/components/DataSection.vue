@@ -1,45 +1,55 @@
 <template lang="pug">
-  .data-page.centered
-    spinner(v-if='requestingPageData && !error')
-    .error(v-if='error')
-      h1 {{error.error || 'ERROR'}}
-    template(v-else) 
-      h2.title(v-if='pageTitle') {{ pageContext }} {{pageTitle}}
-      //- Header
-      .page-header(v-if='headComponent')
-        component(:is='headComponent' :data='parentData' :type='headType')
-        //-paginator(v-if='isTable' :options='pageOptions' :link='0')
-      .page(v-if='data')
-        data-section(:type='type' :dataType='dataType' :action='action' :component='component' :data='data')
+  .page(v-if='data || !data')
+    //- Transactions filters
+    tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
+    paginator(v-if='isTable' :options='pageOptions' :link='0')  
+    template(v-if='!isTable')
+      ul.prev-next
+        li.prev(v-if='prev') 
+          router-link(:to='routeParams(prev)')
+            icon(name='triangle-arrow-left')
+            small previous
+        li.total(v-if='total')
+          span {{total}}  
+        li.next(v-if='next')
+          router-link(:to='routeParams(next)')
+            small next
+            icon(name='triangle-arrow-right')
+            
+    //- Component
+    template(v-if='component')
+        component(:is='component' :data='data' :token='token')
+    //- Generic render
+    template(v-else)
+        template(v-if='isTable')
+          data-table(:data='data' :type='dataType' :sort='sort' :parentData='parentData')
+        template(v-else)
+          data-item(:data='data' :type='dataType' :parentData='parentData')
+
+    template(v-if='isTable')
+      paginator(:options='pageOptions' :link='0')
+
 
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import Spinner from './Spinner.vue'
-import DataSection from './DataSection'
+import ToolTip from './ToolTip.vue'
+import DataTable from './DataTable.vue'
+import DataItem from './DataItem.vue'
+import Paginator from './Paginator.vue'
+import TxFilters from './TxFilters.vue'
 export default {
-  name: 'data-page',
+  name: 'data-section',
   components: {
-    Spinner,
-    DataSection
+    DataTable,
+    DataItem,
+    ToolTip,
+    Paginator,
+    TxFilters
   },
   props: [
-    'type',
-    'dataType',
-    'action',
-    'component',
-    'title',
-    'keyData',
-    'headComponent',
-    'headType'
+    'type', 'dataType', 'action', 'component', 'keyData', 'data'
   ],
-  created () {
-    this.getData()
-  },
-  watch: {
-    // call again the method if the route changes
-    '$route': 'getData'
-  },
   computed: {
     ...mapGetters({
       requestingPageData: 'requestingPageData',
@@ -47,11 +57,6 @@ export default {
       error: 'pageError',
       query: 'getQuery'
     }),
-    data () {
-      let key = this.keyData
-      let data = this.page.data
-      if (data) return (key) ? data[key] : data
-    },
     parentData () {
       return this.page.parentData
     },
@@ -73,11 +78,6 @@ export default {
         return (typeof (title) === 'function') ? title(data, parentData) : title
       }
     },
-    pageContext () {
-      let data = this.data
-      let name = (data) ? data.name : null
-      return name
-    },
     isTable () {
       return (this.data) ? this.isArray(this.data) : false
     },
@@ -86,7 +86,6 @@ export default {
         return this.fields || Object.keys(this.data[0])
       }
     },
-
     pageOptions () {
       return this.page.pages
     },
@@ -112,10 +111,14 @@ export default {
     isArray (val) {
       return Array.isArray(val)
     },
-    getData () {
-      let type = this.type
-      let action = this.action
-      return this.fetchRouteData({ action, type })
+    routeParams (data) {
+      let params = Object.assign({}, this.$route.params)
+      let key = this.key
+      let name = this.$route.name
+      if (data && key && params) {
+        params[key] = data[key]
+        return { params, name }
+      }
     }
   }
 }

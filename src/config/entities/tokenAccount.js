@@ -41,7 +41,5 @@ const TokenAccount = () => {
   }
 }
 
-console.log(TokenAccount())
-
 export const tokenAccount = TokenAccount()
 export const tokenAccounts = TokenAccounts()

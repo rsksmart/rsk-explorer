@@ -1,5 +1,6 @@
 import Home from '@/components/Home'
 import DataPage from '@/components/DataPage'
+import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
 import config from '../config/config.json'
 import tokens from './tokens'
@@ -72,7 +73,7 @@ export default [
     props: {
       type: 'blocks',
       title: (data, parentData) => parentData.type || '',
-      headComponent: 'DataItem',
+      headComponent: DataItem,
       headType: 'address',
       dataType: 'transactions',
       action: 'getAddressTransactions'

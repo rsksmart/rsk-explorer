@@ -1,4 +1,5 @@
 import DataPage from '@/components/DataPage'
+import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
 
 export default [
@@ -21,7 +22,7 @@ export default [
       type: 'blocks',
       dataType: 'events',
       action: 'getEvents',
-      headComponent: 'DataItem',
+      headComponent: DataItem,
       headType: 'token'
     }
   },
@@ -45,7 +46,7 @@ export default [
       type: 'blocks',
       dataType: 'tokenAccount',
       action: 'getTokenAccount',
-      headComponent: 'DataItem',
+      headComponent: DataItem,
       headType: 'token'
     }
   },
