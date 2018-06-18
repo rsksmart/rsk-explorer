@@ -9,19 +9,19 @@
           .auto-update
             ctrl-switch(label='Auto update' :value='autoUpdate' @change='setAupdate')
       .col-b(ref='chart-box')
-        .box
-          .chart-c
-            tx-chart(:asize='appSize.w + appSize.h')
+          .box
+            .chart-c
+              tx-chart(:asize='appSize.w + appSize.h')
     .cols
       .col-a
         last-blocks
-        .center
-          router-link.btn.color1(:to='`/${r.blocks}/`')
+        .center.full-w
+          router-link.btn.txt-color.small(:to='`/${r.blocks}/`')
             span Show all 
       .col-b
         last-transactions
-        .center
-          router-link.btn.color1(:to='`/${r.transactions}/`')
+        .center.full-w
+          router-link.btn.txt-color.small(:to='`/${r.transactions}/`')
             span Show all  
 </template>
 <script>
@@ -74,11 +74,18 @@ export default {
 </script>
 <style lang="stylus">
 @import('../lib/styl/vars.styl')
+  .hero
+    .col-b
+      .box
+        min-height 100%
+        padding 0
   .home
     max-width 100%
 
   .chart-c
     margin 0.5em 1em
     max-width 100%
+  .auto-update
+    margin .5em 0  0 0
 </style>
 

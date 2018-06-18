@@ -35,6 +35,9 @@ body, .wrapper
   display flex
   flex 1 1 100%
   flex-flow row wrap
+  .col-a,.col-b
+    .box
+      margin .5em
 
 .col-a, .col-b
   flex 0 1 100%
@@ -49,22 +52,24 @@ body, .wrapper
 @media $media_small
   .main
     margin 0 2rem
-  .col-a, .col-b
-    margin 0
-    flex 1 1 50%
-    max-width 50%
 
-  .hero 
-    flex-flow row nowrap
-    .col-a, .col-b
-      flex 0 1 50%
-      align-items flex-start
+
 
 // Medium
 @media $media_medium
   .main
     margin 0 5rem
-
+  .col-a, .col-b
+    margin 0
+    flex 1 1 50%
+    max-width 50%
+  .hero 
+    flex-flow row nowrap
+    .col-a, .col-b
+      flex 0 1 50%
+      align-items flex-start
+      .box
+        margin 0 .5em
 
 
 // Large
