@@ -1,5 +1,3 @@
-const pageDataKeyPrefix = 'PageData_'
-
 export const init = ({ commit }, data) => {
   if (data) {
     commit('SET_SERVER_TIME', data.time)
@@ -51,7 +49,7 @@ export const socketPageData = ({ state, commit }, res) => {
   let error = res.error
   let next = res.next
   let prev = res.prev
-  let parentdata = res.parentData
+  let parentData = res.parentData
   let sort = (res.pages) ? res.pages.sort : null
   let q = (req.params && req.params.query) ? req.params.query : null
   let requesting = state.page.requesting
@@ -63,15 +61,9 @@ export const socketPageData = ({ state, commit }, res) => {
     if (error) {
       commit('SET_PAGE_ERROR', error)
     } else {
-      commit('SET_PAGE_REQ', req)
-      commit('SET_PAGE_PAGES', pages)
-      commit('SET_PAGE_DATA', data)
-      commit('SET_PAGE_PREV', prev)
-      commit('SET_PAGE_NEXT', next)
-      commit('SET_PAGE_SORT', sort)
+      commit('SET_PAGE', { req, pages, data, prev, next, sort, parentData })
       commit('SET_CONFIG_Q', { type, action, value: q })
       commit('SET_CONFIG_SORT', { type, action, value: sort })
-      commit('SET_PAGE_PARENTDATA', parentdata)
       commit('SET_SERVER_TIME', data.time)
     }
   }
@@ -89,13 +81,10 @@ export const fetchPageData = ({ commit, getters }, req) => {
   let type = req.type || null
   let action = req.action || null
 
-  let key = pageDataKeyPrefix + Date.now()
+  const key = (req.key || 'page') + '_' + Date.now()
   let params = Object.assign(req.params, { page, query, sort })
-  let data = { type, action, params, key }
+  const sData = { type, action, params, key }
   commit('SET_PAGE_REQUEST', key)
-  commit('SET_PAGE_DATA', null)
-  commit('SET_PAGE_ERROR', null)
-  commit('SET_PAGE_REQ', null)
-  commit('SET_PAGE_SORT', null)
-  commit('SOCKET_EMIT', { event: 'data', data })
+  commit('SET_PAGE', { data: null, error: null, req: null, sort: null })
+  commit('SOCKET_EMIT', { event: 'data', data: sData })
 }

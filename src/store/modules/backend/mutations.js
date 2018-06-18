@@ -73,6 +73,13 @@ export const SET_PAGE_SORT = (state, sort) => {
   Vue.set(state.page, 'sort', sort)
 }
 
+export const SET_PAGE = (state, payload) => {
+  payload.sort = payload.sort || {}
+  for (let p in payload) {
+    Vue.set(state.page, p, payload[p])
+  }
+}
+
 export const SET_DB_STATUS = (state, data) => {
   Vue.set(state, 'dbStatus', data)
 }
