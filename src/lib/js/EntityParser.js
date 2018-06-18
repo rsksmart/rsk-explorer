@@ -31,6 +31,7 @@ export class EntityParser {
   parseField (name, field) {
     field.name = name
     field.field = field.field || name
+    field.path = field.field
     field.field = field.field.split('.')
     field.fieldName = field.field[0] || null
     field.type = field.type || name
