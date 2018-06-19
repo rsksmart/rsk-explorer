@@ -81,6 +81,6 @@ export const fetchData = ({ commit, getters }, req) => {
   let params = Object.assign(req.params, { page, query, sort })
   const data = { type, action, params, key, time }
   commit('SET_REQUESTING', [key, time])
-  commit('SET_RESPONSE', [key, { data: null, error: null, req: null, sort: null }])
+  commit('SET_RESPONSE', [key, { data: null, parentData: null, error: null, req: null, sort: null }])
   commit('SOCKET_EMIT', { event: 'data', data })
 }
