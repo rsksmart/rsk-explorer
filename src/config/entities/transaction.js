@@ -74,7 +74,6 @@ const Txs = () => {
     plural: 'transactions',
     link: `/${r.transaction}`,
     listLink: `/${r.transactions}`,
-    formatRow: transactionFormatRow,
     formatFields: transactionFormatFields,
     fields
   }
@@ -140,5 +139,5 @@ const Tx = () => {
   return tx
 }
 
+export const transactions = Object.assign(Txs(), { formatRow: transactionFormatRow })
 export const transaction = Tx()
-export const transactions = Txs()
