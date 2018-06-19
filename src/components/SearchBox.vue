@@ -58,6 +58,7 @@ export default {
     },
     search (event) {
       let value = this.searchValue
+      value = value.toLowerCase()
       if (value) {
         value = String(value).replace(/[\W_]+/g, '')
         let tests = {
