@@ -33,7 +33,7 @@ const Addresses = () => {
 const Address = () => {
   let address = Addresses()
   address.formatRow = addressFormatRow
-  address.fields = Object.assign(address.fields, {
+  let fields = Object.assign(address.fields, {
     contractType: {
       hideIfEmpty: true
     },
@@ -66,6 +66,15 @@ const Address = () => {
     }
 
   })
+  address.fields = Object.assign({
+    name: {
+      type: 'tokenName',
+      hideIfEmpty: true
+    },
+    symbol: {
+      hideIfEmpty: true
+    }
+  }, fields)
   address.fields.balance.filters = ['tx-value', 'sbtc']
   return address
 }

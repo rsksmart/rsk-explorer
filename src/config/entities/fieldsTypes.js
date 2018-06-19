@@ -1,4 +1,4 @@
-import { ROUTES as r } from '../types'
+import { ROUTES as r, CONTRACT_UNKNOWN_NAME } from '../types'
 export default {
   block: {
     icon: 'cube',
@@ -67,5 +67,11 @@ export default {
   },
   tokenAddress: {
     trim: 'auto'
+  },
+  tokenName: {
+    default: CONTRACT_UNKNOWN_NAME,
+    link: (data, value) => {
+      return `/${r.address}/${data.address}`
+    }
   }
 }

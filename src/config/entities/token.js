@@ -1,5 +1,5 @@
 
-import { ROUTES as r, CONTRACT_UNKNOWN_NAME } from '../types'
+import { ROUTES as r } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
 
 const tokenFormatRow = (data, parentData) => {
@@ -20,10 +20,7 @@ const Tokens = () => {
     fields: {
       name: {
         field: 'name',
-        default: CONTRACT_UNKNOWN_NAME,
-        link: (data, value) => {
-          return `/${r.address}/${data.address}`
-        }
+        type: 'tokenName'
       },
       address: {
         field: 'address'

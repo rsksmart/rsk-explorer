@@ -50,7 +50,10 @@ export const TokenAccounts = () => {
 const TokenAccount = () => {
   let tokenAccount = TokenAccounts()
   tokenAccount.fields = Object.assign(TokenAccounts().fields, {
-    contract: null
+    contract: {
+      type: 'address',
+      trim: 'auto'
+    }
   })
   return tokenAccount
 }

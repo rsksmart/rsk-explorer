@@ -5,9 +5,6 @@ import { ROUTES as r } from '../config/types'
 import config from '../config/config.json'
 import tokens from './tokens'
 
-const tokenTabRender = (data) => (data ? data.contractType === 'ERC20' : false)
-const contractTabRender = (data) => (data ? data.type === 'contract' : false)
-
 export default [
   {
     path: '/',
@@ -83,10 +80,10 @@ export default [
     component: DataPage,
     props: {
       type: 'blocks',
-      title: (parentData) => {
-        const type = parentData.contractType
-        if (type === 'ERC20') return 'token'
-        return parentData.type || ''
+      title: (data) => {
+        let title = (data.contractType === 'ERC20') ? 'token' : ''
+        title = (data.name) ? `${data.name} ${title}` : title
+        return title || data.type || ''
       },
       headComponent: DataItem,
       dataType: 'address',
@@ -100,17 +97,15 @@ export default [
         {
           name: 'events',
           dataType: 'events',
-          action: 'getEventsByAddress',
-          render: contractTabRender
+          action: 'getEventsByAddress'
         },
         {
           name: 'accounts',
           dataType: 'tokenAccounts',
           action: 'getTokenAccounts',
-          render: tokenTabRender
+          render: data => (data ? data.contractType === 'ERC20' : false)
         }
       ]
-
     }
   },
   {
