@@ -54,7 +54,7 @@ export default {
     link: `/${r.address}/`
   },
   token: {
-    link: `/${r.token}/`
+    link: `/${r.address}/`
   },
   date: {
     icon: 'calendar',

@@ -5,7 +5,7 @@ const addressFormatRow = (data, parentData) => {
   let totalSupply = data.totalSupply
   let decimals = data.decimals
   if (undefined !== totalSupply && decimals) {
-    data.totalSupplyParsed = tokenAmount(totalSupply, decimals)
+    data._totalSupplyResult = tokenAmount(totalSupply, decimals)
   }
   return data
 }
@@ -59,7 +59,7 @@ const Address = () => {
       hideIfEmpty: true
     },
     totalSupply: {
-      field: 'totalSupplyParsed',
+      field: '_totalSupplyResult',
       filters: ['big-number'],
       default: '',
       hideIfEmpty: true

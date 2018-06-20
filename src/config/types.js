@@ -21,5 +21,10 @@ export const STATUS = {
   FAIL: 'FAILED'
 }
 
+export const EVENTS = {
+  approval: 'Approval',
+  transfer: 'Transfer'
+}
+
 export const THIS_ADDRESS = 'This Address'
 export const CONTRACT_UNKNOWN_NAME = 'Unknown'

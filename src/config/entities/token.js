@@ -27,6 +27,11 @@ const Tokens = () => {
       },
       balance: {
         type: 'tokenBalance'
+      },
+      created: {
+        field: 'createdByTx.timestamp',
+        type: 'timestamp',
+        hideIfEmpty: true
       }
     }
   }

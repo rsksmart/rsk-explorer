@@ -1,5 +1,4 @@
 import DataPage from '@/components/DataPage'
-import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
 
 export default [
@@ -12,18 +11,6 @@ export default [
       dataType: 'tokens',
       action: 'getTokens',
       title: 'Tokens'
-    }
-  },
-  {
-    path: `/${r.token}/:address`,
-    name: 'Token',
-    component: DataPage,
-    props: {
-      type: 'blocks',
-      dataType: 'events',
-      action: 'getEvents',
-      headComponent: DataItem,
-      headType: 'token'
     }
   },
   {
@@ -51,7 +38,7 @@ export default [
     }
   },
   {
-    path: `/${r.token}/:address/${r.event}/:id`,
+    path: `/${r.event}/:id`,
     name: 'Event',
     component: DataPage,
     props: {

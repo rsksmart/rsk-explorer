@@ -1,17 +1,21 @@
-import { ROUTES as r } from '../types'
+import { ROUTES as r, EVENTS } from '../types'
+import { tokenAmount } from '../../filters/TokensFilters'
 
 const eventFormatRow = (event, parentData) => {
   let args = event.args
-  let tokenAddress = parentData.address
-  let token = parentData.name || event.address
+  const addressData = (parentData.address) ? parentData : event._addressData
+  let tokenAddress = addressData.address
+  let token = addressData.name || event.address
+  const decimals = addressData.decimals
+
   event._tokenAddress = tokenAddress
   event._tokenRef = token
 
   if (args) {
+    event._value = tokenAmount(args._value, decimals)
     let to = args._to
     let from = args._from
-
-    if (event.event === 'Aproval') {
+    if (event.event === EVENTS.approval) {
       to = args._spender
       from = args._owner
     }
@@ -31,44 +35,40 @@ const eventFormatFields = (fields, data, parentData) => {
   return fields
 }
 
-export const events = {
-  key: '_id',
-  icon: 'zap',
-  link: `/${r.token}/:address/event/`,
-  formatRow: eventFormatRow,
-  formatFields: eventFormatFields,
-  formatLink: (data, parentData, link, key) => {
-    parentData = parentData || {}
-    let address = parentData.address || data.address || ''
-    return link.replace(':address', address) + key
-  },
-  fields: {
-    event: null,
-    from: null,
-    to: null,
-    amount: {
-      field: 'args._value',
-      filters: ['token-value']
-    },
-    timestamp: null,
-    blockNumber: {
-      type: 'block'
+export const Events = () => {
+  return {
+    key: '_id',
+    icon: 'zap',
+    link: `/${r.event}/`,
+    formatRow: eventFormatRow,
+    formatFields: eventFormatFields,
+    fields: {
+      event: null,
+      from: null,
+      to: null,
+      amount: {
+        field: '_value',
+        filters: ['token-value']
+      },
+      timestamp: null,
+      blockNumber: {
+        type: 'block'
+      }
     }
   }
 }
 
-export const event = {
-  key: '_id',
-  icon: 'zap',
-  formatRow: eventFormatRow,
-  formatFields: eventFormatFields,
-  fields: {
-    event: null,
-    timestamp: null,
+export const Event = () => {
+  let event = Events()
+  let fields = Object.assign(event.fields, {
+    created: {
+      field: 'timestamp',
+      type: 'date'
+    },
     token: {
       field: '_tokenRef',
       trim: 'auto',
-      type: 'token'
+      type: 'tokenName'
     },
     contract: {
       field: 'address',
@@ -85,14 +85,11 @@ export const event = {
     },
     to: {
       trim: 'auto'
-    },
-    amount: {
-      field: 'args._value',
-      filters: ['token-value']
-    },
-    block: {
-      field: 'blockNumber',
-      type: 'block'
     }
-  }
+  })
+  event.fields = fields
+  return event
 }
+
+export const events = Events()
+export const event = Event()

@@ -14,7 +14,7 @@ const formatLink = (data, parentData, link, key) => {
 
 const accountFormatRow = (data, parentData) => {
   let balance = data.balance
-  const contractData = data.contractData || {}
+  const contractData = (parentData.decimals) ? parentData : data._contractData
   let decimals = contractData.decimals
   if (balance) data.balanceParsed = tokenAmount(balance, decimals)
   return data
