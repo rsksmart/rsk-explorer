@@ -66,6 +66,7 @@ export default {
     word-wrap break-word
     overflow-wrap break-word
     word-break break-word
+    justify-content center
 
   .field-value
     overflow-wrap break-word
