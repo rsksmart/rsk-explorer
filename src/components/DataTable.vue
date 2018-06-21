@@ -234,7 +234,7 @@ export default {
     justify-content flex-end
     margin 0 1em
 
-  .unsortable
+  .unsortable > .field-title
     color gray
 
     .icon svg
