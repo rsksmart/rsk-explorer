@@ -60,11 +60,7 @@ export const Events = () => {
 
 export const Event = () => {
   let event = Events()
-  let fields = Object.assign(event.fields, {
-    created: {
-      field: 'timestamp',
-      type: 'date'
-    },
+  event.fields = {
     token: {
       field: '_tokenRef',
       trim: 'auto',
@@ -75,19 +71,27 @@ export const Event = () => {
       trim: 'auto',
       type: 'address'
     },
+    event: null,
+    from: { trim: 'auto' },
+    to: { trim: 'auto' },
+    amount: {
+      field: '_value',
+      filters: ['token-value']
+    },
+    timestamp: null,
+    created: {
+      field: 'timestamp',
+      type: 'date'
+    },
     transaction: {
       field: 'transactionHash',
       trim: 'auto',
       type: 'transaction'
     },
-    from: {
-      trim: 'auto'
-    },
-    to: {
-      trim: 'auto'
+    blockNumber: {
+      type: 'block'
     }
-  })
-  event.fields = fields
+  }
   return event
 }
 
