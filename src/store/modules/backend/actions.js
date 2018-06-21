@@ -33,10 +33,6 @@ export const socketTransactions = ({ commit }, data) => {
   commit('SET_TRANSACTIONS', data)
 }
 
-export const socketTokens = ({ commit }, data) => {
-  commit('SET_TOKENS', data)
-}
-
 export const socketData = ({ state, commit }, res) => {
   let req = res.req
   let key = res.req.key
