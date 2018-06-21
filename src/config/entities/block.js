@@ -38,7 +38,8 @@ const Block = () => {
       trim: 'auto'
     },
     parentHash: {
-      trim: 'auto'
+      trim: 'auto',
+      link: `/${r.block}/`
     },
     sha3Uncles: {
       trim: 'auto'
