@@ -135,9 +135,6 @@ export default {
   @import 'lib/styl/style.styl'
   @import 'lib/styl/mixins.styl'
 
-  .brand
-    cursor pointer
-
   .w-trans
     transition opacity 1s ease
     opacity 1
