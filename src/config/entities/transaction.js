@@ -81,7 +81,11 @@ const Txs = () => {
 
 const Tx = () => {
   let tx = Txs()
-  tx.fields = Object.assign(TxFields(), {
+  let fields = TxFields()
+  const time = fields.time
+  delete (fields.gas)
+  delete (fields.time)
+  tx.fields = Object.assign(fields, {
     status: {
       field: 'receipt.status',
       filters: ['tx-status'],
@@ -104,18 +108,25 @@ const Tx = () => {
     },
     nonce: {
       field: 'nonce',
-      showTitle: true
+      showTitle: true,
+      default: 0
     },
     value: {
       filters: ['tx-value', 'sbtc'],
       default: 0
     },
-    gasLimit: {
+    time,
+    date: {
+      field: 'timestamp',
+      type: 'date'
+    },
+    gas: {
       field: 'gas',
       default: 0
     },
     gasUsedByTx: {
       field: 'receipt.gasUsed',
+      type: 'gas',
       default: 0
     },
     gasPrice: {
