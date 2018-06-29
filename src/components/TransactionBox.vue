@@ -12,14 +12,16 @@
               icon(:name='bField.icon' :color='blockColor')
               small(:style='blockStyle2') &nbsp; {{blockNumber}}
         li.half(v-if='tx.txType == "normal"')
-            data-field(:field='fields.from' :row='tx')
-            icon(name='arrow-right' :color='blockColor')
-            data-field(:field='fields.to' :row='tx')
+            data-field.small(:field='fields.from' :row='tx')
+            icon.from-to(name='arrow-right' :color='blockColor')
+            data-field.small(:field='fields.to' :row='tx')
         li.half(v-else)
           span {{tx.txType}}
         li.half.soft
           field-title.small(:field='fields.time')
           data-field(:field='fields.time' :row='tx')
+        li.half(v-if='tx.txType == "normal"')
+          data-field(:field='fields.value' :row='tx')  
 
 </template>
 <script>
@@ -81,4 +83,10 @@ export default {
   .transaction
     font-size 0.8em
     border-left solid 1px
+    ul
+      li
+        margin 0 0 .125em 0
+
+  .from-to
+    margin 0 .5em
 </style>
