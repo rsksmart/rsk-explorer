@@ -73,7 +73,10 @@ export default {
         trimAt: 'start',
         copy: true,
         copyMsg: true,
-        trimTxt: '...'
+        trimTxt: '...',
+        trimMin: 2,
+        trimMax: 0,
+        forceTrim: false
       }
     }
   },
@@ -90,22 +93,7 @@ export default {
       let vm = this
 
       this.$nextTick(() => {
-        let parent = vm.$parent.$el
-        let parentWidth = parent.offsetWidth
-        let width = vm.$el.clientWidth
-        if (width > parentWidth) {
-          let style = window.getComputedStyle(parent)
-          let fontSize = parseInt(style.fontSize.match(/(\d+)px/)[1] || 16)
-          let chars = vm.value.length + vm.opts.trimTxt.length
-          let fs = ((width / chars) + fontSize) / 2
-          let nChars = (parentWidth / fs)
-          let trimLen = nChars / 2
-          let max = chars / 3
-          trimLen = (trimLen > 4) ? trimLen : 4
-          trimLen = (trimLen < max) ? trimLen : max
-          vm.autoTrimLen = parseInt(trimLen)
-        }
-        vm.elStyle = ''
+        vm.autoSize()
       })
     }
   },
@@ -162,6 +150,35 @@ export default {
     }
   },
   methods: {
+    autoSize () {
+      const txt = this.value
+      const parent = this.$parent.$el
+      const parentWidth = parent.offsetWidth
+      const style = window.getComputedStyle(parent)
+      const font = `${style.fontSize} ${style.fontFamily}`
+      const size = this.getTexWidth(txt, font)
+      const fontSize = parseInt(style.fontSize.match(/(\d+)px/)[1] || 16)
+      if (size > parentWidth || this.opts.forceTrim) {
+        let trimLen = parentWidth / fontSize / 2
+        let max = txt.length / 3
+        let trimMin = this.opts.trimMin
+        let trimMax = this.opts.trimMax
+        trimLen = (trimLen > trimMin) ? trimLen : trimMin
+        if (trimMax) {
+          if (trimLen > trimMax || !trimLen) trimLen = trimMax
+        }
+        trimLen = (trimLen < max) ? trimLen : max
+        this.autoTrimLen = parseInt(trimLen)
+      }
+      this.elStyle = ''
+    },
+    getTexWidth (txt, font) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      ctx.font = font
+      let size = ctx.measureText(txt)
+      return size.width
+    },
     touch (value) {
       if (!value) value = !this.clicked
       this.clicked = value
