@@ -37,7 +37,7 @@ export default {
   props: ['block', 'title'],
   data () {
     return {
-      type: 'blocks'
+      type: 'blockBox'
     }
   },
   computed: {

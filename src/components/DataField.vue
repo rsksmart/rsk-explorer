@@ -6,7 +6,7 @@
         li {{v}}
     template(v-else)
       template(v-if='trim && !options.noTrim')
-        tool-tip.field-value(:value='value' :trim='trim' :options='ttOpts' :router-link='link')
+        tool-tip.field-value(:value='value' :trim='trim' :options='trimOptions' :router-link='link')
       template(v-else)
         router-link(v-if='link' :to='link')
           .field-value {{ filteredValue || field.default }}
@@ -49,6 +49,12 @@ export default {
     },
     trim () {
       return this.computeTrim(this.field, this.value)
+    },
+    trimOptions () {
+      let options = this.ttOpts
+      let fieldOptions = this.field.trimOptions
+      if (fieldOptions) options = Object.assign(options, fieldOptions)
+      return options
     },
     fieldClass () {
       return this.fieldCss(this.field, this.value, this.filteredValue)

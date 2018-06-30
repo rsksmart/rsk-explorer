@@ -22,8 +22,8 @@
  * }
  */
 
-import { block, blocks } from './block'
-import { transaction, transactions } from './transaction'
+import { block, blocks, blockBox } from './block'
+import { transaction, transactions, transactionsBox } from './transaction'
 import { address, addresses } from './address'
 import { token, tokens } from './token'
 import { event, events } from './event'
@@ -32,8 +32,10 @@ import { tokenAccount, tokenAccounts } from './tokenAccount'
 export default {
   block,
   blocks,
+  blockBox,
   transaction,
   transactions,
+  transactionsBox,
   address,
   addresses,
   token,

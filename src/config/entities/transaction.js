@@ -150,5 +150,19 @@ const Tx = () => {
   return tx
 }
 
+const TxBox = () => {
+  let txs = Txs()
+  txs.fields = Object.assign(txs.fields, {
+    to: {
+      trim: 'auto'
+    },
+    from: {
+      trim: 'auto'
+    }
+  })
+  return txs
+}
+
+export const transactionsBox = TxBox()
 export const transactions = Object.assign(Txs(), { formatRow: transactionFormatRow })
 export const transaction = Tx()

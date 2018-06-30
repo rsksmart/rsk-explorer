@@ -11,10 +11,10 @@
             router-link(:to='blockLink')
               icon(:name='bField.icon' :color='blockColor')
               small(:style='blockStyle2') &nbsp; {{blockNumber}}
-        li.half(v-if='tx.txType == "normal"')
-            data-field.small(:field='fields.from' :row='tx')
-            icon.from-to(name='arrow-right' :color='blockColor')
-            data-field.small(:field='fields.to' :row='tx')
+        li.half.from-to(v-if='tx.txType == "normal"')
+            data-field.small.from(:field='fields.from' :row='tx')
+            icon.from-to-arrow(name='arrow-right' :color='blockColor')
+            data-field.small.to(:field='fields.to' :row='tx')
         li.half(v-else)
           span {{tx.txType}}
         li.half.soft
@@ -45,7 +45,7 @@ export default {
   props: ['tx'],
   data () {
     return {
-      type: 'transactions'
+      type: 'transactionsBox'
     }
   },
   computed: {
@@ -76,17 +76,26 @@ export default {
       return this.filterFieldValue()(this.bField, this.tx.blockNumber)
     }
   }
-
 }
 </script>
 <style lang="stylus">
   .transaction
     font-size 0.8em
     border-left solid 1px
+
     ul
       li
-        margin 0 0 .125em 0
+        margin 0 0 0.125em 0
+
+  .from-to-arrow
+    margin 0 0.25em
 
   .from-to
-    margin 0 .5em
+    display flex
+    flex-flow row nowrap
+    justify-content space-between
+    .from, .to
+      max-width 50% !important
+      flex 1
+
 </style>

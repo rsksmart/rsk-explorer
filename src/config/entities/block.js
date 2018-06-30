@@ -67,5 +67,20 @@ const Block = () => {
   return block
 }
 
+const BlockBox = () => {
+  let blocks = Blocks()
+  blocks.fields = Object.assign(blocks.fields, {
+    miner: {
+      trim: 'auto',
+      trimOptions: {
+        trimMax: 6,
+        forceTrim: true
+      }
+    }
+  })
+  return blocks
+}
+
+export const blockBox = BlockBox()
 export const block = Block()
 export const blocks = Blocks()
