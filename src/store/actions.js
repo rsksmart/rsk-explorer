@@ -13,12 +13,12 @@ export const setSize = ({ commit }, size) => {
 }
 export const setDateInterval = ({ state, commit }) => {
   // update date every second
-  if (!state.dateInterval) {
-    let interval = setInterval(() => {
-      commit('SET_DATE')
-    }, 1000)
-    commit('SET_DATE_INTERVAL', interval)
-  }
+  let interval = state.dateInterval
+  if (interval) clearInterval(interval)
+  interval = setInterval(() => {
+    commit('SET_DATE')
+  }, 1000)
+  commit('SET_DATE_INTERVAL', interval)
 }
 
 export const updateBlocks = ({ state, commit }) => {

@@ -65,9 +65,11 @@ export default {
   mounted () {
     this.onResize()
     window.addEventListener('resize', this.resizeThrottler, false)
+    window.addEventListener('focus', this.onFocus, false)
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.resizeThrottler)
+    window.removeEventListener('focus', this.onFocus)
   },
   computed: {
     ...mapState({
@@ -126,6 +128,9 @@ export default {
           vm.onResize()
         }, 66)
       }
+    },
+    onFocus () {
+      this.$store.dispatch('setDateInterval')
     }
   }
 }
@@ -148,10 +153,11 @@ export default {
     text-shadow $txt-sh
     background $darkness-odd
     border-bottom 1px solid $darkness-even
+
   .top-msg
     .title
       font-weight bold
-      margin 0 .5em 0 .25em
+      margin 0 0.5em 0 0.25em
 </style>
 
 
