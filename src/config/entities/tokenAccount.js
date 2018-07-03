@@ -21,7 +21,7 @@ const accountFormatRow = (data, parentData) => {
 }
 
 const accountFormatFields = (fields, data, parentData) => {
-  fields.address.link = formatLink({ contract: parentData.address }, null, accountLink)
+  fields.address.link = formatLink({ contract: data.address }, null, accountLink)
   return fields
 }
 
