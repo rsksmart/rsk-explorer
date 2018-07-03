@@ -17,9 +17,7 @@ const Addresses = () => {
     link: `/${r.address}`,
     listLink: `/${r.addresses}`,
     fields: {
-      address: {
-        trim: 'auto'
-      },
+      address: null,
       balance: {
         filters: ['tx-value', 'round', 'sbtc'],
         default: 0
@@ -34,6 +32,9 @@ const Address = () => {
   let address = Addresses()
   address.formatRow = addressFormatRow
   let fields = Object.assign(address.fields, {
+    address: {
+      trim: 'auto'
+    },
     contractType: {
       hideIfEmpty: true
     },
