@@ -21,26 +21,34 @@ npm run build --report
 
 ## Deployment
 
-- 1 Install dependencies
+### Install dependencies
 
   ``` bash
 
   npm install
+
   ```
 
-- 2 Set api server
+### Settings
+  
+  The build settings are in src/config/config.json, under 'prod' property.
+  You can override these settings using enviroment variables
 
-  Edit src/config/config.json and sets **WS_URL** to rsk-explorer-api url
+E.g. *to change prod.WS_URL:*
+    ``` bash
+      export WS_URL=wss://backend.rsk.co
+    ```
 
-- 3 Build for production
+### Build for production
 
   ``` bash
-  # build for production 
   npm run build
   ```
-- 4 Serve ./dist folder on web server
 
-- 5 Server configuration
+
+Serve ./dist folder on web server
+
+### Server configuration
 
   The client uses [vue-router HTML 5 History mode](https://router.vuejs.org/en/essentials/history-mode.html), this requires a special configuration of the web server:
  

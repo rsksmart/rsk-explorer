@@ -1,7 +1,7 @@
 import { ROUTES as r } from '../../config/types'
-import config from '../../config/config.json'
+import items from '../../config/menu.js'
 const menuItems = {}
-for (let item of config.menuItems) {
+for (let item of items) {
   menuItems[item] = r[item]
 }
 

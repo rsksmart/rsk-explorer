@@ -2,8 +2,8 @@ import Home from '@/components/Home'
 import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
-import config from '../config/config.json'
 import tokens from './tokens'
+const statsUrl = process.env.STATS_URL
 
 export default [
   {
@@ -24,7 +24,7 @@ export default [
     path: `/${r.stats}`,
     name: 'stats',
     beforeEnter (t, f) {
-      let url = config.statsUrl
+      let url = statsUrl
       if (!url) {
         let host = window.location.host.split('.')
         host[0] = 'stats'
