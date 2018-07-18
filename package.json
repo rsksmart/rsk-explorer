@@ -1,6 +1,6 @@
 {
   "name": "rsk-explorer",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Rsk explorer client",
   "author": "emilio <emiliorizzo@gmail.com>",
   "private": true,
