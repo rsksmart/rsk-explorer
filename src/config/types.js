@@ -27,4 +27,4 @@ export const EVENTS = {
 }
 
 export const THIS_ADDRESS = 'This Address'
-export const CONTRACT_UNKNOWN_NAME = 'Unknown'
+export const CONTRACT_UNKNOWN_NAME = '(Not provided)'
