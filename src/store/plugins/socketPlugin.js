@@ -8,6 +8,7 @@ export default function (socket) {
           action = 'socket' + action.charAt(0).toUpperCase() + action.slice(1)
           if (store._actions[action]) {
             store.dispatch(action, data)
+            store.dispatch('setDateInterval')
           } else {
             if (res.req && res.req.key) {
               store.dispatch('socketData', res)
