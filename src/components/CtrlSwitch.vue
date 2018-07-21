@@ -4,7 +4,7 @@
       input(type='checkbox' :checked='value' @change='updateValue')
       span.slider(:class='ctrlClass')
     span.label(v-if='label' :class='labelClass') {{ label }}
-    
+
 </template>
 <script>
 export default {
@@ -37,7 +37,7 @@ export default {
   .switch
     display flex
     align-items center
-    
+
     label
       display inline-block
       position relative
@@ -76,7 +76,6 @@ export default {
       box-shadow $tip-sh
       transition 0.4s
 
-
     input:checked + .slider
       background-color $color
 
@@ -92,4 +91,3 @@ export default {
     .slider.round:before
       border-radius 50%
 </style>
-

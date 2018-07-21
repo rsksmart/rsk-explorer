@@ -21,7 +21,7 @@
           field-title.small(:field='fields.time')
           data-field(:field='fields.time' :row='tx')
         li.half(v-if='tx.txType == "normal"')
-          data-field(:field='fields.value' :row='tx')  
+          data-field(:field='fields.value' :row='tx')
 
 </template>
 <script>

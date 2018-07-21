@@ -71,4 +71,3 @@ export default {
         stroke brand3
         overflow visible
 </style>
-

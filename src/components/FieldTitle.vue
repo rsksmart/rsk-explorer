@@ -3,7 +3,7 @@
     .icon(v-if='showIcon' )
       tool-tip(v-if='!showTitle' :value='field.name')
         icon(:name='field.icon')
-      icon(v-else :name='field.icon')  
+      icon(v-else :name='field.icon')
     span.title(v-if='showTitle && field.title') {{ field.title | camel-case-to }}
     slot
 </template>
@@ -54,5 +54,3 @@ export default {
     .icon + .title
       margin 0 0 0 0.5em
 </style>
-
-

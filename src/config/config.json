@@ -1,9 +1,9 @@
 {
-  "prod": {
+  "production": {
     "WS_URL": "wss://backend.explorer.rsk.co:3003",
     "STATS_URL": "https://stats.rsk.co"
   },
-  "dev": {
+  "development": {
     "WS_URL": "ws://localhost:3003"
   }
 }

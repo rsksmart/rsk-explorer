@@ -108,4 +108,3 @@ export default {
       stroke brand2
       stroke-width 1
 </style>
-

@@ -3,10 +3,10 @@
     button.page-button(v-if='prev' @click='goToPage(prev)')
       icon(name='arrow-left')
     div(v-else)
-    .page-numbers 
+    .page-numbers
      span(v-if='!editPage' @click='editPage=true') {{ page }}
-     input.page(v-else type='text' :value='page' @change='changePage' @blur='editPage=false') 
-     small / 
+     input.page(v-else type='text' :value='page' @change='changePage' @blur='editPage=false')
+     small /
      small.link(@click='goToPage(pages)') {{ pages }}
     button.page-button(v-if='next' @click='goToPage(next)')
       icon(name='arrow-right')

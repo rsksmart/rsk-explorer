@@ -11,7 +11,7 @@
             field-title(:field='field')
             data-field(:field='field' :row='dataFormatted' :style='cellStyle(field,value(field,false))')
           //-custom component
-          .custom-item(v-else :class='itemClass(field)') 
+          .custom-item(v-else :class='itemClass(field)')
             //-.field-title(v-if='!field.hideTitle') {{ field.title }}
             field-title(:field='field' v-if='!field.hideTitle' :class='field.renderAs')
             component.custom(:is='field.renderAs' :data='data[fieldName]' v-bind='componentProps(field)' )
@@ -55,7 +55,7 @@ export default {
       return Object.assign({
         tableName: `field-${field.fieldName}`
       },
-        field.renderAsProps)
+      field.renderAsProps)
     }
   }
 }

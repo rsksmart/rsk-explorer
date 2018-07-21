@@ -3,23 +3,23 @@
     spinner(v-if='requesting && !error')
     .error(v-if='error')
       h2 {{error.error || 'ERROR'}}
-    template(v-else) 
+    template(v-else)
       //- Transactions filters
       tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
-      paginator(v-if='isTable' :options='pageOptions' :link='0')  
+      paginator(v-if='isTable' :options='pageOptions' :link='0')
       template(v-if='!isTable')
         ul.prev-next
-          li.prev(v-if='prev') 
+          li.prev(v-if='prev')
             router-link(:to='routeParams(prev)')
               icon(name='triangle-arrow-left')
               small previous
           li.total(v-if='total')
-            span {{total}}  
+            span {{total}}
           li.next(v-if='next')
             router-link(:to='routeParams(next)')
               small next
               icon(name='triangle-arrow-right')
-            
+
     //- Component
     template(v-if='component && data')
         component(:is='component' :data='data' :type='dataType' :parentData='parentData')
@@ -133,4 +133,3 @@ export default {
 </script>
 <style lang="stylus">
 </style>
-

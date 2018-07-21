@@ -17,7 +17,7 @@
           span {{value}}
       span(v-else) {{value}}
     .points(v-if='trimLen' :class='pointsClass')
-        button(v-if='!show') 
+        button(v-if='!show')
           span.icon {{ opts.trimTxt }}
         button.copy(v-if='show  && opts.copy' @click='copyText' @touchend.stop='copyText')
           icon(name='copy')
@@ -207,6 +207,7 @@ export default {
           vm.anim = false
         }, 600)
       } catch (err) {
+        // eslint-disable-next-line
         console.info('Unable to copy')
       }
       this.$emit('copy', this.value)
@@ -391,5 +392,4 @@ export default {
 
     100%
       color inherit
-</style>  
-
+</style>

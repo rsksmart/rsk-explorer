@@ -2,16 +2,16 @@
   .search
     button.color1
       icon(name='search')
-    
-    input(name="search" 
+
+    input(name="search"
       type='search'
       id="search"
       :placeholder="placeholder"
-      @change='search' 
+      @change='search'
       v-model='searchValue'
       :class='searchBoxClass'
       )
-    
+
     //-transition(name='msgtrans')
       .search-msg(v-if='msg')
         .small
@@ -116,4 +116,3 @@ export default {
     transform translateY(-1em)
     opacity 0
 </style>
-
