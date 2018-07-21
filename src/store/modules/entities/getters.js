@@ -76,6 +76,7 @@ const filter = (filterName, value, args) => {
   if (filter) {
     value = filter(value, ...args)
   } else {
+    // eslint-disable-next-line
     console.info('Unknown filter ' + filterName)
   }
   return value

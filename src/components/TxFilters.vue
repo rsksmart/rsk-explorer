@@ -4,7 +4,7 @@
     ul.inline.dark
       li.col( v-for='val,name in txFilters')
         input(type='checkbox' v-model='filterValues' :value='name' :id='name' @change='update')
-        label(:for='name') 
+        label(:for='name')
           small {{name}}
 </template>
 <script>
@@ -39,4 +39,3 @@ export default {
   }
 }
 </script>
-

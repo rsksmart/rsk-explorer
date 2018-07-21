@@ -2,7 +2,7 @@
 
   Client for rsk-explorer-api
 
-## Build Setup
+## Tasks
 
 ``` bash
 # install dependencies
@@ -14,8 +14,6 @@ npm run dev
 # build for production with minification
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
 
@@ -30,11 +28,11 @@ npm run build --report
   ```
 
 ### Settings
-  
-  The build settings are in src/config/config.json, under 'prod' property.
-  You can override these settings using enviroment variables
 
-E.g. *to change prod.WS_URL:*
+WS_URL: ws backend url
+STATS_URL : rsk stats web  
+
+E.g. *to change WS_URL:*
     ``` bash
       export WS_URL=wss://backend.rsk.co
     ```

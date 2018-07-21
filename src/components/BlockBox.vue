@@ -13,7 +13,7 @@
               router-link(:to='blockLink')
                 .block-number(:style='bStyle' )
                   span {{ blockNumber }}
-            li.half 
+            li.half
               field-title.small(:field='fields.miner')
               data-field.small(:field='fields.miner' :row='block')
             li.half.soft(:style='bStyle')
@@ -78,7 +78,3 @@ export default {
   .blockbox-enter, .block-box-leave-to
     opacity 0
 </style>
-
-
-
-

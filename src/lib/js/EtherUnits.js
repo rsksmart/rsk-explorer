@@ -34,6 +34,7 @@ export class EtherUnits {
     unit = unit ? unit.toLowerCase() : 'ether'
     let unitValue = this.unitMap[unit]
     if (unitValue === undefined) {
+      // eslint-disable-next-line
       console.log('ERROR')
     }
     return new BigNumber(unitValue, 10)

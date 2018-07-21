@@ -10,7 +10,7 @@
       template(v-else)
         router-link(v-if='link' :to='link')
           .field-value {{ filteredValue || field.default }}
-        .field-value(v-else) {{ filteredValue || field.default }}   
+        .field-value(v-else) {{ filteredValue || field.default }}
       span(v-if='field.suffix') &nbsp; {{field.suffix}}
 </template>
 <script>
@@ -89,6 +89,3 @@ export default {
     & td .data-field
       width 100%
 </style>
-
-
-

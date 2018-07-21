@@ -17,12 +17,12 @@
         last-blocks
         .center.full-w
           router-link.btn.txt-color.small(:to='`/${r.blocks}/`')
-            span Show all 
+            span Show all
       .col-b
         last-transactions
         .center.full-w
           router-link.btn.txt-color.small(:to='`/${r.transactions}/`')
-            span Show all  
+            span Show all
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
@@ -88,4 +88,3 @@ export default {
   .auto-update
     margin .5em 0  0 0
 </style>
-

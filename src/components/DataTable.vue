@@ -12,7 +12,7 @@
           th.dummy
           template(v-for='field,fieldName,index in fields')
             template(v-if='!isHidden(fieldName)')
-              th(:class='thClass(field.fieldName)') 
+              th(:class='thClass(field.fieldName)')
                 .sort(v-if='sort && isSortable(field.fieldName)')
                   button.link(@click='sortBy(field.fieldName)')
                     field-title(:field='field')
@@ -28,7 +28,7 @@
           td.row-icon
             router-link(:to='rowLink(row)')
               icon(:name='iconLoad' :style='iconStyle(row)')
-          template(v-for='field,fieldName,index in fields') 
+          template(v-for='field,fieldName,index in fields')
             td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
               template(v-if='!renderTable')
                 .sort.td-title(v-if='sort && isSortable(field.fieldName)')
@@ -37,7 +37,7 @@
                       .sort-icon(v-if='isSorted(field.fieldName) && !isDefaultSort')
                         icon.small(:name='sortIcon(field.fieldName)')
                 field-title.td-title(v-else :field='field')
-              data-field(:field='field' :row='row')  
+              data-field(:field='field' :row='row')
             td.from-to-arrow(v-if='isFrom(fieldName,index)')
               icon(name='arrow-right')
 </template>

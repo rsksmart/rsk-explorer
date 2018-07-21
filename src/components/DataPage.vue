@@ -3,7 +3,7 @@
     spinner(v-if='requesting && !error')
     .error(v-if='error')
       h1 {{error.error || 'ERROR'}}
-    template(v-else) 
+    template(v-else)
       h2.title(v-if='pageTitle') {{pageTitle}}
       //- Header
       .page-header(v-if='headComponent')
@@ -19,12 +19,12 @@
                   button.btn.tab-title.link
                     span.title {{tab.name}} ...
                 template(v-else)
-                  button.btn.tab-title.link(@click='setTab(tab.name)' :class='tabTitleCss(tab)') 
-                    span.title {{tab.name}} 
+                  button.btn.tab-title.link(@click='setTab(tab.name)' :class='tabTitleCss(tab)')
+                    span.title {{tab.name}}
                       small.small ({{ getPageTotal()(tab.name) }})
-          
+
           template(v-for='tab in tabs')
-            data-section.tab-content(v-if='isActiveTab(tab)' 
+            data-section.tab-content(v-if='isActiveTab(tab)'
               :type='type' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action')
 
 </template>
@@ -161,4 +161,3 @@ export default {
   .page-header
     margin-bottom 2em
 </style>
-

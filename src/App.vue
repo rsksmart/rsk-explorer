@@ -5,7 +5,7 @@
       .top-msg(:class='topMsg.type')
         icon(v-if='topMsg.icon' :name='topMsg.icon')
         span.title(v-if='topMsg.title') {{topMsg.title}}
-        small.txt {{topMsg.txt}} 
+        small.txt {{topMsg.txt}}
     .header(:class='(bigMenu) ? "big-menu" : ""')
       transition(name='head-trans')
         header.w-trans
@@ -31,7 +31,7 @@
       template(v-if='connected')
         router-view
       template(v-else)
-        h1 connecting to server  
+        h1 connecting to server
     .footer
       footer
         .logo
@@ -40,7 +40,6 @@
         .text
           p(v-for='txt in content.footer') {{txt}}
 </template>
-
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
@@ -159,6 +158,3 @@ export default {
       font-weight bold
       margin 0 0.5em 0 0.25em
 </style>
-
-
-

@@ -4,9 +4,9 @@
       cube-of-cubes.cubes( v-if='step && mod' :mod='mod' :step='step' :size='size' :cubeStyleCb='cubeStyle')
       .w-badge
         .badge(:style='badgeStyle') {{ pending }}
-    small 
-     strong {{ pending }} new blocks 
-    small 
+    small
+     strong {{ pending }} new blocks
+    small
      //-em.soft in last {{ (now - firstListBlock.timestamp * 1000) | abbr-time }}
      em.soft in last  {{ now - lastBlocksTime | abbr-time }}
 </template>
@@ -129,4 +129,3 @@ export default {
         border $border
         background none
 </style>
-
