@@ -18,7 +18,6 @@ export default [
   {
     path: `/${r.accounts}`,
     redirect: `/${r.addresses}`
-
   },
   {
     path: `/${r.stats}`,
@@ -107,6 +106,10 @@ export default [
         }
       ]
     }
+  },
+  {
+    path: `/${r.address}/:address`,
+    redirect: `/${r.addr}/:address`
   },
   {
     path: `/${r.transactions}`,
