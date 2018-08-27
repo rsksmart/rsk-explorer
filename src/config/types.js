@@ -7,6 +7,7 @@ export const ROUTES = {
   transactions: 'txs',
   addresses: 'addresses',
   address: 'address',
+  addr: 'addr',
   account: 'account',
   accounts: 'accounts',
   token: 'token',
