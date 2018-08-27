@@ -75,6 +75,10 @@ export default [
     }
   },
   {
+    path: '/addr/:address',
+    redirect: `/${r.address}/:address`
+  },
+  {
     path: `/${r.address}/:address`,
     name: 'Address',
     component: DataPage,
