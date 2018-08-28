@@ -1,8 +1,7 @@
 <template lang="pug">
   .data-page.centered
     spinner(v-if='requesting && !error')
-    .error(v-if='error')
-      h1 {{error.error || 'ERROR'}}
+    error-page(v-if='error' :error='error')
     template(v-else)
       h2.title(v-if='pageTitle') {{pageTitle}}
       //- Header
@@ -32,11 +31,13 @@
 import { mapActions, mapGetters } from 'vuex'
 import Spinner from './Spinner.vue'
 import DataSection from './DataSection'
+import ErrorPage from './ErrorPage'
 export default {
   name: 'data-page',
   components: {
     Spinner,
-    DataSection
+    DataSection,
+    ErrorPage
   },
   props: [
     'type',
