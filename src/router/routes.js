@@ -1,7 +1,8 @@
 import Home from '@/components/Home'
 import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
-import { ROUTES as r } from '../config/types'
+import ErrorPage from '@/components/ErrorPage'
+import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
 import tokens from './tokens'
 const statsUrl = process.env.STATS_URL
 
@@ -134,4 +135,12 @@ export default [
       action: 'getTransaction'
     }
   },
-  ...tokens]
+  ...tokens,
+  {
+    path: '*',
+    name: 'Error',
+    component: ErrorPage,
+    props: {
+      error: { code: 'PAGE_NOT_FOUND', error: PAGE_NOT_FOUND }
+    }
+  }]
