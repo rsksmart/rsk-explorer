@@ -131,7 +131,7 @@ const Tx = () => {
     },
     gasPrice: {
       field: 'gasPrice',
-      filters: ['tx-gas-price', 'wei'],
+      filters: ['tx-gas-price', 'sbtc'],
       default: 0
     },
     contractAddress: {
