@@ -2,10 +2,7 @@
 <template lang="pug">
   .wrapper
     .top-page(v-if='topMsg')
-      .top-msg(:class='topMsg.type')
-        icon(v-if='topMsg.icon' :name='topMsg.icon')
-        span.title(v-if='topMsg.title') {{topMsg.title}}
-        small.txt {{topMsg.txt}}
+      message.top-msg(:message='topMsg')
     .header(:class='(bigMenu) ? "big-menu" : ""')
       transition(name='head-trans')
         header.w-trans
@@ -45,12 +42,14 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import ToolTip from './components/ToolTip.vue'
 import SearchBox from './components/SearchBox.vue'
+import Message from './components/Message.vue'
 import './icons'
 export default {
   name: 'app',
   components: {
     SearchBox,
-    ToolTip
+    ToolTip,
+    Message
   },
   data () {
     return {
@@ -76,8 +75,7 @@ export default {
       errors: state => state.socketErrors,
       route: state => state.route,
       menuItems: state => state.menuItems,
-      content: state => state.content,
-      messages: state => state.messages
+      content: state => state.content
     }),
     ...mapGetters({
       appSize: 'getSize',
@@ -87,7 +85,7 @@ export default {
       return this.isRoute('home')
     },
     topMsg () {
-      return (this.dbIsOutdated) ? this.messages.dbOutdated || null : null
+      return (this.dbIsOutdated) ? 'DB_OUTDATED' || null : null
     }
   },
   methods: {
@@ -152,9 +150,4 @@ export default {
     text-shadow $txt-sh
     background $darkness-odd
     border-bottom 1px solid $darkness-even
-
-  .top-msg
-    .title
-      font-weight bold
-      margin 0 0.5em 0 0.25em
 </style>
