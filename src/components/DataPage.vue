@@ -4,6 +4,9 @@
     error-page(v-if='error' :error='error')
     template(v-else)
       h2.title(v-if='pageTitle') {{pageTitle}}
+      .messages(v-if='msgs')
+        message(v-for='msg,key in msgs' :message='msg' :key='key')
+
       //- Header
       .page-header(v-if='headComponent')
         data-section(:component='headComponent' :reqKey='reqKey' :type='type' :dataType='headType || dataType' :action='action')
@@ -32,12 +35,14 @@ import { mapActions, mapGetters } from 'vuex'
 import Spinner from './Spinner.vue'
 import DataSection from './DataSection'
 import ErrorPage from './ErrorPage'
+import Message from './Message'
 export default {
   name: 'data-page',
   components: {
     Spinner,
     DataSection,
-    ErrorPage
+    ErrorPage,
+    Message
   },
   props: [
     'type',
@@ -48,7 +53,8 @@ export default {
     'headComponent',
     'headType',
     'tabs',
-    'rKey'
+    'rKey',
+    'msgs'
   ],
   created () {
     this.getData()
