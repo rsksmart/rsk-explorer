@@ -5,7 +5,8 @@ import etherUnits from '../lib/js/EtherUnits'
 
 export const tokenAmount = (amount, decimals = 18) => {
   if (!amount) return
-  if (!decimals === 0) return amount
+  decimals = decimals || 0
+  if (decimals === 0) return amount
   decimals = newBigNumber(decimals)
   let ret = newBigNumber(amount)
   let divisor = new BigNumber(10).exponentiatedBy(decimals.toNumber())
