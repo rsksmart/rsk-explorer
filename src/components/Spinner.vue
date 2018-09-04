@@ -6,13 +6,26 @@
 import CubeOfCubes from './CubeOfCubes.vue'
 export default {
   name: 'spinner',
+  props: {
+    mod: {
+      type: Number,
+      default: 3
+    },
+    delay: {
+      type: Number,
+      default: 500
+    },
+    speed: {
+      type: Number,
+      default: 30
+    }
+  },
   components: {
     CubeOfCubes
   },
   data () {
     return {
       step: 5,
-      mod: 3,
       dir: 1,
       limit: 0,
       show: false,
@@ -24,7 +37,7 @@ export default {
     let mod = this.mod
     this.limit = mod * mod * mod
     let vm = this
-    this.interval = setInterval(vm.animate, mod * 30)
+    this.interval = setInterval(vm.animate, mod * this.speed)
   },
   mounted () {
     this.startTime = Date.now()
@@ -35,7 +48,7 @@ export default {
   methods: {
     animate () {
       let date = Date.now()
-      this.show = (date - this.startTime >= 500)
+      this.show = (date - this.startTime >= this.delay)
       let step = this.step
       if (step < this.limit) {
         step += this.dir
