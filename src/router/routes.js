@@ -97,7 +97,8 @@ export default [
         {
           name: 'transactions',
           dataType: 'transactions',
-          action: 'getTransactionsByAddress'
+          action: 'getTransactionsByAddress',
+          msgs: ['INTERNAL_TX_WARN']
         },
         {
           name: 'events',
