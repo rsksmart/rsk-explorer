@@ -22,13 +22,13 @@
 
     //- Component
     template(v-if='component && data')
-        component(:is='component' :data='data' :type='dataType' :parentData='parentData')
+        component(:is='component' :data='data' :type='dataType' :parentData='parentData' :delayed='delayed')
     //- Generic render
     template(v-else)
         template(v-if='isTable')
           data-table(:page='page' :type='dataType' :sort='sort' :parentData='parentData')
         template(v-else)
-          data-item(:data='data' :type='dataType' :parentData='parentData')
+          data-item(:data='data' :type='dataType' :parentData='parentData' :delayed='delayed')
 
     template(v-if='isTable')
       paginator(:options='pageOptions' :link='0')
@@ -58,6 +58,9 @@ export default {
   computed: {
     page () {
       return this.getPage()(this.reqKey)
+    },
+    delayed () {
+      return this.page.delayed
     },
     data () {
       return (this.page) ? this.page.data : null

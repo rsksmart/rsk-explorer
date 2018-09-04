@@ -12,13 +12,18 @@
           .field-value {{ filteredValue || field.default }}
         .field-value(v-else) {{ filteredValue || field.default }}
       span(v-if='field.suffix') &nbsp; {{field.suffix}}
+      progress-bar(v-if='delayed')
 </template>
 <script>
 import common from '../mixins/common'
 import dataMixin from '../mixins/dataMixin'
 import { getType } from '../lib/js/utils'
+import ProgressBar from './ProgressBar'
 export default {
   name: 'data-field',
+  components: {
+    ProgressBar
+  },
   mixins: [common, dataMixin],
   props: {
     field: {
@@ -32,6 +37,10 @@ export default {
     options: {
       type: Object,
       default: Object
+    },
+    delayed: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

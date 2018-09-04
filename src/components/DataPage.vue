@@ -1,12 +1,15 @@
 <template lang="pug">
   .data-page.centered
-    spinner(v-if='requesting && !error')
+    h2.title(v-if='pageTitle') {{pageTitle}}
+    spinner(v-if='(requesting && !error && !delayed.fields) || delayed.registry')
     error-page(v-if='error' :error='error')
-    template(v-else)
-      h2.title(v-if='pageTitle') {{pageTitle}}
+    .update-error(v-if='updateError')
+      h3
+        span Update Error:&nbsp;
+        small {{updateError.error}}
+    template(v-if='!error')
       .messages(v-if='msgs')
         message(v-for='msg,key in msgs' :message='msg' :key='key')
-
       //- Header
       .page-header(v-if='headComponent')
         data-section(:component='headComponent' :reqKey='reqKey' :type='type' :dataType='headType || dataType' :action='action')
@@ -27,7 +30,7 @@
 
           template(v-for='tab in tabs')
             data-section.tab-content(v-if='isActiveTab(tab)'
-              :type='type' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action')
+              :type='type' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
 
 </template>
 <script>
@@ -71,8 +74,14 @@ export default {
     error () {
       return this.pageError()(this.reqKey)
     },
+    updateError () {
+      return this.page.updateError
+    },
     page () {
       return this.getPage()(this.reqKey) || {}
+    },
+    delayed () {
+      return this.page.delayed || {}
     },
     data () {
       return this.page.data
@@ -167,4 +176,7 @@ export default {
 
   .page-header
     margin-bottom 2em
+  .messages
+    font-size .9em
+    text-align center
 </style>

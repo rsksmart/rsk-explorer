@@ -9,7 +9,11 @@
         template(v-if='showField(field,data)')
           .item(v-if='!field.renderAs' :class='itemClass(field)')
             field-title(:field='field')
-            data-field(:field='field' :row='dataFormatted' :style='cellStyle(field,value(field,false))')
+            data-field(
+              :field='field'
+              :row='dataFormatted'
+              :style='cellStyle(field,value(field,false))'
+              :delayed='isDelayed(field.fieldName)')
           //-custom component
           .custom-item(v-else :class='itemClass(field)')
             //-.field-title(v-if='!field.hideTitle') {{ field.title }}
@@ -26,7 +30,8 @@ export default {
   props: [
     'data',
     'type',
-    'parentData'
+    'parentData',
+    'delayed'
   ],
   components: {
     DataField,
@@ -36,10 +41,20 @@ export default {
   mixins: [
     dataMixin
   ],
+  computed: {
+    delayedFields () {
+      let delayed = this.delayed || {}
+      return delayed.fields || []
+    }
+  },
   methods: {
     value (field, format) {
       let raw = !format
       return this.getValue(field, this.data, raw)
+    },
+    isDelayed (field) {
+      let fields = this.delayedFields
+      return fields.indexOf(field) > -1
     },
     itemClass (field) {
       let css = []
@@ -52,10 +67,7 @@ export default {
       return css
     },
     componentProps (field) {
-      return Object.assign({
-        tableName: `field-${field.fieldName}`
-      },
-      field.renderAsProps)
+      return Object.assign({ tableName: `field-${field.fieldName}` }, field.renderAsProps)
     }
   }
 }
