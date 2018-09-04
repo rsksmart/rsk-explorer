@@ -40,3 +40,15 @@ export const dbIsOutdated = (state) => {
   let requesting = status.requestingBlocks
   if (missing > requesting) return true
 }
+
+export const getVersion = state => version => {
+  if (undefined === version) version = state.APP.version
+  version = String(version).split('.')
+  return (version.length === 3) ? version : [0, 0, 0]
+}
+
+export const checkVersion = (state, getters) => test => {
+  const version = getters.getVersion()
+  const testVersion = getters.getVersion(test)
+  return version[1] === testVersion[1]
+}
