@@ -1,9 +1,10 @@
 <template lang="pug">
   .section
-    spinner(v-if='requesting && !error')
     .error(v-if='error')
       h2 {{error.error || 'ERROR'}}
-    template(v-else)
+    template(v-if='!error')
+      .messages(v-if='msgs')
+        message(v-for='msg,key in msgs' :message='msg' :key='key')
       //- Transactions filters
       tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
       paginator(v-if='isTable' :options='pageOptions' :link='0')
@@ -42,6 +43,7 @@ import DataItem from './DataItem'
 import Paginator from './Paginator'
 import TxFilters from './TxFilters'
 import Spinner from './Spinner'
+import Message from './Message'
 export default {
   name: 'data-section',
   components: {
@@ -50,10 +52,11 @@ export default {
     ToolTip,
     Paginator,
     TxFilters,
-    Spinner
+    Spinner,
+    Message
   },
   props: [
-    'type', 'dataType', 'component', 'action', 'reqKey'
+    'type', 'dataType', 'component', 'action', 'reqKey', 'msgs'
   ],
   computed: {
     page () {
