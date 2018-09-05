@@ -3,16 +3,16 @@ const transactionFormatFields = (fields, data, parentData) => {
   return fields
 }
 
-const clearIfMatch = (val, match) => {
-  return val !== match ? val : null
+const setThisAddress = (val, match) => {
+  return val !== match ? val : THIS_ADDRESS
 }
 
 const transactionFormatRow = (tx, parentData) => {
   let address
   if (parentData) address = parentData.address
   if (address) {
-    tx.from = clearIfMatch(tx.from, address)
-    tx.to = clearIfMatch(tx.to, address)
+    tx.from = setThisAddress(tx.from, address)
+    tx.to = setThisAddress(tx.to, address)
   }
   return tx
 }
@@ -41,12 +41,10 @@ const TxFields = () => {
       default: 0
     },
     from: {
-      type: 'from',
-      default: THIS_ADDRESS
+      type: 'txAddress'
     },
     to: {
-      type: 'to',
-      default: THIS_ADDRESS
+      type: 'txAddress'
     },
     value: {
       filters: ['tx-value', { name: 'round', args: 4 }, 'sbtc']
