@@ -45,7 +45,7 @@ export const socketData = ({ state, commit, dispatch }, res) => {
   if (key && requested && requested === req.time) {
     const response = Object.assign({}, state.responses[key])
     let updating = Object.assign(delayedObject(), state.responses[key].delayed)
-    let isUpdating = !updating.registry && !updating.fields.length
+    let isUpdating = Boolean(!updating.registry && updating.fields.length)
     if (!delayed) {
       commit('SET_REQUESTING', [key, null])
       commit('SET_RESPONSE', [key, { delayed: delayedObject() }])
@@ -67,6 +67,11 @@ export const socketData = ({ state, commit, dispatch }, res) => {
         let dFields = Object.keys(data.data)
         let fields = updating.fields.filter(f => dFields.indexOf(f) < 0)
         if (!delayed) commit('SET_RESPONSE', [key, { delayed: delayedObject({ fields }) }])
+        const sData = response.data || {}
+        for (let f in res.data) {
+          sData[f] = res.data[f]
+        }
+        data.data = sData
       }
       commit('SET_RESPONSE', [key, data])
       commit('SET_CONFIG_Q', { type, action, value: q })
