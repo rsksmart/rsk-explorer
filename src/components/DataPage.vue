@@ -9,7 +9,7 @@
         small {{updateError.error}}
     template(v-if='!error')
       .messages(v-if='msgs')
-        message(v-for='msg,key in msgs' :message='msg' :key='key')
+        message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data')
       //- Header
       .page-header(v-if='headComponent')
         data-section(:component='headComponent' :reqKey='reqKey' :type='type' :dataType='headType || dataType' :action='action')

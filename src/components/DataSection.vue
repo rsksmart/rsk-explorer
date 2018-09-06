@@ -4,7 +4,7 @@
       h2 {{error.error || 'ERROR'}}
     template(v-if='!error')
       .messages(v-if='msgs')
-        message(v-for='msg,key in msgs' :message='msg' :key='key')
+        message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data' :parentData='parentData')
       //- Transactions filters
       tx-filters.frame(v-if='action === "getTransactions"' :q='q' :type='type' :action='action')
       paginator(v-if='isTable' :options='pageOptions' :link='0')

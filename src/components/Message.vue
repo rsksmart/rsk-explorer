@@ -9,13 +9,14 @@
 import { mapState } from 'vuex'
 export default {
   name: 'message',
-  props: ['message'],
+  props: ['message', 'data', 'parentData'],
   computed: {
     ...mapState({
       messages: state => state.messages
     }),
     msg () {
       let m = this.message
+      if (typeof m === 'function') m = m(this.data, this.parentData)
       return this.messages[m] || m
     }
   }
