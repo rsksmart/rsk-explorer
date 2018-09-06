@@ -35,9 +35,10 @@ export default {
   },
   txAddress: {
     link: (data, value) => {
-      return (value === THIS_ADDRESS) ? null : `/${r.address}/${value}`
+      return (!value || value === THIS_ADDRESS) ? null : `/${r.address}/${value}`
     },
-    trim: 'auto'
+    trim: 'auto',
+    default: 'null'
   },
   hash: {
     icon: 'hash',
