@@ -3,6 +3,7 @@ import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
 import ErrorPage from '@/components/ErrorPage'
 import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
+import { bignumber } from '../filters/TokensFilters'
 import tokens from './tokens'
 const statsUrl = process.env.STATS_URL
 
@@ -98,7 +99,13 @@ export default [
           name: 'transactions',
           dataType: 'transactions',
           action: 'getTransactionsByAddress',
-          msgs: ['INTERNAL_TX_WARN']
+          msgs: [(data, parenData) => {
+            const msgs = []
+            let balance = bignumber(parenData.balance)
+            let txBalance = bignumber(parenData.txBalance)
+            if (txBalance !== balance) msgs.push('INTERNAL_TX_WARN')
+            return msgs
+          }]
         },
         {
           name: 'events',
