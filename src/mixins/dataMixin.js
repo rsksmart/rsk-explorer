@@ -21,7 +21,7 @@ export default {
       let type = this.type
       if (type) {
         let entity = this.dataEntity()(type)
-        if (!entity) console.warn(`Warning, unknown entity: ${type}`)
+        // if (!entity) console.warn(`Warning, unknown entity: ${type}`)
         return entity
       }
     },
