@@ -1,4 +1,4 @@
-import { ROUTES as r, THIS_ADDRESS, STATUS } from '../types'
+import { ROUTES as r, THIS_ADDRESS, STATUS, CONTRACT_CREATED } from '../types'
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
 }
@@ -9,12 +9,18 @@ const setThisAddress = (val, match) => {
 
 const transactionFormatRow = (tx, parentData) => {
   let address
+  let contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
   if (parentData) address = parentData.address
   if (address) {
     tx.from = setThisAddress(tx.from, address)
     tx.to = setThisAddress(tx.to, address)
   }
+  if (contractAddress) tx.to = CONTRACT_CREATED
   return tx
+}
+
+const txLink = (value) => {
+  return (value === THIS_ADDRESS) ? null : `/${r.address}/${value}`
 }
 
 const txStatusCss = (status) => {
@@ -41,10 +47,13 @@ const TxFields = () => {
       default: 0
     },
     from: {
-      type: 'txAddress'
+      link: (data, value) => txLink(value)
     },
     to: {
-      type: 'txAddress'
+      link: (tx, value) => {
+        let contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
+        return txLink(contractAddress || value)
+      }
     },
     value: {
       filters: ['tx-value', { name: 'round', args: 4 }, 'sbtc']
@@ -83,6 +92,9 @@ const Tx = () => {
   const time = fields.time
   delete (fields.gas)
   delete (fields.time)
+  fields.to.trim = 'auto'
+  fields.from.trim = 'auto'
+  tx.formatRow = transactionFormatRow
   tx.fields = Object.assign(fields, {
     status: {
       field: 'receipt.status',
@@ -92,12 +104,6 @@ const Tx = () => {
       hideIfEmpty: true
     },
     hash: {
-      trim: 'auto'
-    },
-    to: {
-      trim: 'auto'
-    },
-    from: {
       trim: 'auto'
     },
     block: {
@@ -150,14 +156,8 @@ const Tx = () => {
 
 const TxBox = () => {
   let txs = Txs()
-  txs.fields = Object.assign(txs.fields, {
-    to: {
-      trim: 'auto'
-    },
-    from: {
-      trim: 'auto'
-    }
-  })
+  txs.fields.to.trim = 'auto'
+  txs.fields.from.trim = 'auto'
   return txs
 }
 

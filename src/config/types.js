@@ -29,5 +29,6 @@ export const EVENTS = {
 export const THIS_ADDRESS = 'This Address'
 
 export const CONTRACT_UNKNOWN_NAME = '(Not provided)'
+export const CONTRACT_CREATED = 'contract created'
 
 export const PAGE_NOT_FOUND = 'Page not found'

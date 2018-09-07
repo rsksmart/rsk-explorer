@@ -1,4 +1,4 @@
-import { ROUTES as r, THIS_ADDRESS, CONTRACT_UNKNOWN_NAME } from '../types'
+import { ROUTES as r, CONTRACT_UNKNOWN_NAME } from '../types'
 
 export default {
   block: {
@@ -32,13 +32,6 @@ export default {
     titleIcon: true,
     hideTitle: true,
     link: `/${r.address}/`
-  },
-  txAddress: {
-    link: (data, value) => {
-      return (!value || value === THIS_ADDRESS) ? null : `/${r.address}/${value}`
-    },
-    trim: 'auto',
-    default: 'null'
   },
   hash: {
     icon: 'hash',
