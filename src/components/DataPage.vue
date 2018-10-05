@@ -12,9 +12,9 @@
         message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data')
       //- Header
       .page-header(v-if='headComponent')
-        data-section(:component='headComponent' :reqKey='reqKey' :type='type' :dataType='headType || dataType' :action='action')
+        data-section(:component='headComponent' :reqKey='reqKey' :module='module' :dataType='headType || dataType' :action='action')
       .page(v-if='data')
-        data-section(v-if='!tabs' :type='type' :dataType='dataType' :reqKey='reqKey' :component='component' :action='action')
+        data-section(v-if='!tabs' :module='module' :dataType='dataType' :reqKey='reqKey' :component='component' :action='action')
         .tabs(v-if='tabs && data')
           .tabs-titles
             template(v-for='tab in tabs')
@@ -30,7 +30,7 @@
 
           template(v-for='tab in tabs')
             data-section.tab-content(v-if='isActiveTab(tab)'
-              :type='type' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
+              :module='module' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
 
 </template>
 <script>
@@ -48,7 +48,7 @@ export default {
     Message
   },
   props: [
-    'type',
+    'module',
     'dataType',
     'action',
     'component',
@@ -127,15 +127,15 @@ export default {
       return (undefined === render) ? true : render
     },
     getData () {
-      let type = this.type
+      let module = this.module
       let tabs = this.tabs
       let action = this.action
       let key = this.reqKey
-      if (type && action) {
-        this.fetchRouteData({ action, type, key }).then(() => {
+      if (module && action) {
+        this.fetchRouteData({ action, module, key }).then(() => {
           if (tabs) {
             for (let tab of tabs) {
-              tab.type = type
+              tab.module = tab.module || module
               tab.key = tab.key || tab.name
               this.fetchRouteData(tab)
             }

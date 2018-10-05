@@ -9,15 +9,15 @@ export const SET_CONFIG = (state, payload) => {
 }
 
 export const SET_CONFIG_KEY = (state, payload) => {
-  let type = payload.type || null
+  let module = payload.module || null
   let action = payload.action || null
   let key = payload.key || null
   let value = payload.value || null
 
-  if (type && action && key && value) {
+  if (module && action && key && value) {
     if (undefined === state[key]) Vue.set(state, key, {})
-    if (undefined === state[key][type]) Vue.set(state[key], type, {})
-    Vue.set(state[key][type], action, value)
+    if (undefined === state[key][module]) Vue.set(state[key], module, {})
+    Vue.set(state[key][module], action, value)
   }
 }
 

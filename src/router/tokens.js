@@ -7,8 +7,8 @@ export default [
     name: 'Tokens',
     component: DataPage,
     props: {
-      type: 'blocks',
       dataType: 'tokens',
+      module: 'addresses',
       action: 'getTokens',
       title: 'Tokens'
     }
@@ -19,7 +19,7 @@ export default [
     component: DataPage,
     props: {
       title: 'Token Accounts',
-      type: 'blocks',
+      module: 'tokens',
       dataType: 'tokenAccounts',
       action: 'getTokenAccounts'
     }
@@ -30,7 +30,7 @@ export default [
     component: DataPage,
     props: {
       title: 'Token Account',
-      type: 'blocks',
+      module: 'tokens',
       dataType: 'tokenAccount',
       action: 'getTokenAccount',
       headComponent: null,
@@ -43,7 +43,7 @@ export default [
     component: DataPage,
     props: {
       title: 'Event',
-      type: 'blocks',
+      module: 'events',
       dataType: 'event',
       action: 'getEvent'
     }

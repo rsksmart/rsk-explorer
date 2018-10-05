@@ -10,8 +10,8 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 export default {
-  name: 'tx-filters',
-  props: ['q', 'type', 'action'],
+  name: 'tx-filters', 
+  props: ['q', 'module', 'action'],
   data () {
     return {
       txFilters: {},

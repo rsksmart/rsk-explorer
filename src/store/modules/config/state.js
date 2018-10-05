@@ -4,7 +4,7 @@ export default function () {
     sort: {},
     tables: {},
     q: {
-      blocks: {
+      txs: {
         getTransactions: {
           txType: ['normal']
         }

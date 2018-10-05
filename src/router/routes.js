@@ -40,7 +40,7 @@ export default [
     name: 'Blocks',
     component: DataPage,
     props: {
-      module: 'block',
+      module: 'blocks',
       dataType: 'blocks',
       action: 'getBlocks',
       title: 'Blocks'
@@ -51,7 +51,7 @@ export default [
     name: 'Block',
     component: DataPage,
     props: {
-      module: 'block',
+      module: 'blocks',
       dataType: 'block',
       action: 'getBlock',
       headComponent: DataItem,
@@ -60,6 +60,7 @@ export default [
         {
           name: 'transactions',
           dataType: 'transactions',
+          module: 'txs',
           action: 'getTransactionsByBlock'
         }
       ]
@@ -70,7 +71,7 @@ export default [
     name: 'Addresses',
     component: DataPage,
     props: {
-      module: 'address',
+      module: 'addresses',
       dataType: 'addresses',
       action: 'getAddresses',
       title: 'Addresses'
@@ -85,7 +86,8 @@ export default [
     name: 'Address',
     component: DataPage,
     props: {
-      module: 'address',
+      module: 'addresses',
+      action: 'getAddress',
       title: (data) => {
         let title = (data.contractType === 'ERC20') ? 'token' : ''
         title = (data.name) ? `${data.name} ${title}` : title
@@ -93,12 +95,12 @@ export default [
       },
       headComponent: DataItem,
       dataType: 'address',
-      action: 'getAddress',
       tabs: [
         {
           name: 'transactions',
           dataType: 'transactions',
           action: 'getTransactionsByAddress',
+          module: 'txs',
           msgs: [(data, parenData) => {
             const msgs = []
             let balance = bignumber(parenData.balance)
@@ -110,11 +112,13 @@ export default [
         {
           name: 'events',
           dataType: 'events',
+          module: 'events',
           action: 'getEventsByAddress'
         },
         {
           name: 'accounts',
           dataType: 'tokenAccounts',
+          module: 'tokens',
           action: 'getTokenAccounts',
           render: data => (data ? data.contractType === 'ERC20' : false)
         }
@@ -137,7 +141,7 @@ export default [
     name: 'Transaction',
     component: DataPage,
     props: {
-      module: 'txs  ',
+      module: 'txs',
       title: 'Transaction',
       dataType: 'transaction',
       action: 'getTransaction'

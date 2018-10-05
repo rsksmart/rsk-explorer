@@ -40,7 +40,7 @@ export const socketData = ({ state, commit, dispatch }, res) => {
   let sort = (pages) ? pages.sort : null
   let q = (req.params && req.params.query) ? req.params.query : null
   let requested = state.requesting[key]
-  let type = req.type || null
+  let module = req.module || null
   let action = req.action || null
   if (key && requested && requested === req.time) {
     const response = Object.assign({}, state.responses[key])
@@ -74,8 +74,8 @@ export const socketData = ({ state, commit, dispatch }, res) => {
         data.data = sData
       }
       commit('SET_RESPONSE', [key, data])
-      commit('SET_CONFIG_Q', { type, action, value: q })
-      commit('SET_CONFIG_SORT', { type, action, value: sort })
+      commit('SET_CONFIG_Q', { module, action, value: q })
+      commit('SET_CONFIG_SORT', { module, action, value: sort })
       commit('SET_SERVER_TIME', res.data.time)
     }
   }
@@ -89,12 +89,12 @@ export const fetchData = ({ commit, getters }, req) => {
   req.params = req.params || {}
   let page, query, sort, action
   ({ page, query, sort, action } = req)
-  let type = req.type || null
+  let module = req.module || null
 
   const key = (req.key || 'data')
   const time = Date.now()
   let params = Object.assign(req.params, { page, query, sort })
-  const data = { type, action, params, key, time, getDelayed: true }
+  const data = { module, action, params, key, time, getDelayed: true }
   commit('SET_REQUESTING', [key, time])
   // Fix next 2 lines
   commit('SET_RESPONSE', ['data', { data: null }])
@@ -109,8 +109,9 @@ const delayedObject = (payload = {}) => {
   return { registry, fields }
 }
 
-const responseObject = (res) => {
-  res = res || {}
-  const ret = { data: null, parentData: null, error: null, req: null, sort: null, delayed: null }
+const responseObject = (res = {}) => {
+  let ret = {}
+  let keys = ['data', 'parentData', 'error', 'req', 'sort', 'delayed', 'updateError']
+  keys.forEach(v => { ret[v] = null })
   return Object.assign(ret, res)
 }
