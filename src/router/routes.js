@@ -40,7 +40,7 @@ export default [
     name: 'Blocks',
     component: DataPage,
     props: {
-      type: 'blocks',
+      module: 'block',
       dataType: 'blocks',
       action: 'getBlocks',
       title: 'Blocks'
@@ -51,7 +51,7 @@ export default [
     name: 'Block',
     component: DataPage,
     props: {
-      type: 'blocks',
+      module: 'block',
       dataType: 'block',
       action: 'getBlock',
       headComponent: DataItem,
@@ -70,7 +70,7 @@ export default [
     name: 'Addresses',
     component: DataPage,
     props: {
-      type: 'blocks',
+      module: 'address',
       dataType: 'addresses',
       action: 'getAddresses',
       title: 'Addresses'
@@ -85,7 +85,7 @@ export default [
     name: 'Address',
     component: DataPage,
     props: {
-      type: 'blocks',
+      module: 'address',
       title: (data) => {
         let title = (data.contractType === 'ERC20') ? 'token' : ''
         title = (data.name) ? `${data.name} ${title}` : title
@@ -126,7 +126,7 @@ export default [
     name: 'Transactions',
     component: DataPage,
     props: {
-      type: 'blocks',
+      module: 'txs',
       title: 'Transactions',
       dataType: 'transactions',
       action: 'getTransactions'
@@ -137,7 +137,7 @@ export default [
     name: 'Transaction',
     component: DataPage,
     props: {
-      type: 'blocks',
+      module: 'txs  ',
       title: 'Transaction',
       dataType: 'transaction',
       action: 'getTransaction'
