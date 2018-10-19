@@ -56,7 +56,7 @@ export default {
     hideTitle: true
   },
   tokenBalance: {
-    filters: ['big-number', 'sbtc']
+    filters: ['big-number', 'rbtc']
   },
   tokenAddress: {
     trim: 'auto'

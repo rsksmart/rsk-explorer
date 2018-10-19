@@ -56,7 +56,7 @@ const TxFields = () => {
       }
     },
     value: {
-      filters: ['tx-value', { name: 'round', args: 4 }, 'sbtc']
+      filters: ['tx-value', { name: 'round', args: 4 }, 'rbtc']
     },
     gas: {
       type: 'gas',
@@ -116,7 +116,7 @@ const Tx = () => {
       default: 0
     },
     value: {
-      filters: ['tx-value', 'sbtc'],
+      filters: ['tx-value', 'rbtc'],
       default: 0
     },
     time,
@@ -135,7 +135,7 @@ const Tx = () => {
     },
     gasPrice: {
       field: 'gasPrice',
-      filters: ['tx-gas-price', 'sbtc'],
+      filters: ['tx-gas-price', 'rbtc'],
       default: 0
     },
     contractAddress: {
