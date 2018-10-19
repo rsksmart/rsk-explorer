@@ -47,8 +47,8 @@ export const wei = Vue.filter('wei', (value) => {
   return locale(value) + 'wei'
 })
 
-export const sbtc = Vue.filter('sbtc', (value) => {
-  return value + ' SBTC'
+export const rbtc = Vue.filter('rbtc', (value) => {
+  return value + ' RBTC'
 })
 
 export const round = Vue.filter('round', (value, digits) => {

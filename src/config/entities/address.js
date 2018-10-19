@@ -19,7 +19,7 @@ const Addresses = () => {
     fields: {
       address: null,
       balance: {
-        filters: ['tx-value', 'round', 'sbtc'],
+        filters: ['tx-value', 'round', 'rbtc'],
         default: 0
       },
       type: null
@@ -76,7 +76,7 @@ const Address = () => {
       hideIfEmpty: true
     }
   }, fields)
-  address.fields.balance.filters = ['tx-value', 'sbtc']
+  address.fields.balance.filters = ['tx-value', 'rbtc']
   return address
 }
 
