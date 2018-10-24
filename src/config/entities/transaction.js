@@ -1,10 +1,19 @@
 import { ROUTES as r, THIS_ADDRESS, STATUS, CONTRACT_CREATED } from '../types'
+import { BigNumber } from 'bignumber.js'
+import { txGasPrice } from '../../filters/TokensFilters'
+
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
 }
 
 const setThisAddress = (val, match) => {
   return val !== match ? val : THIS_ADDRESS
+}
+
+const transactionFee = tx => {
+  const gas = new BigNumber(tx.gas)
+  const gasPrice = txGasPrice(tx.gasPrice)
+  return gas.multipliedBy(gasPrice).toString()
 }
 
 const transactionFormatRow = (tx, parentData) => {
@@ -16,6 +25,7 @@ const transactionFormatRow = (tx, parentData) => {
     tx.to = setThisAddress(tx.to, address)
   }
   if (contractAddress) tx.to = CONTRACT_CREATED
+  tx._fee = transactionFee(tx)
   return tx
 }
 
@@ -118,6 +128,10 @@ const Tx = () => {
     value: {
       filters: ['tx-value', 'rbtc'],
       default: 0
+    },
+    fee: {
+      field: '_fee',
+      filters: ['big-number', 'rbtc']
     },
     time,
     date: {
