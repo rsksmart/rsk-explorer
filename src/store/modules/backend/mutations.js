@@ -56,6 +56,10 @@ export const SET_RESPONSE = (state, payload) => {
 
 export const SET_DB_STATUS = (state, data) => {
   Vue.set(state, 'dbStatus', data)
+  let missing = state.missingBlocks
+  if (!missing.blocks) missing.time = Date.now()
+  missing.blocks = data.dbMissingBlocks
+  Vue.set(state, 'missingBlocks', missing)
 }
 
 export const SET_PENDING_BLOCKS = (state, blocks) => {

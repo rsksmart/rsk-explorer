@@ -9,6 +9,10 @@ export default function () {
     lastBlocks: [],
     pendingBlocks: {},
     dbStatus: {},
+    missingBlocks: {
+      blocks: 1,
+      time: 0
+    },
     lastBlocksTime: 0,
     transactions: [],
     lastTransactions: []

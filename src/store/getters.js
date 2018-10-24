@@ -35,10 +35,10 @@ export const getTableId = (state) => tableName => {
 }
 
 export const dbIsOutdated = (state) => {
-  let status = state.backend.dbStatus
-  let missing = status.dbMissingBlocks || 0
-  let requesting = status.requestingBlocks
-  if (missing > requesting) return true
+  let missing = state.backend.missingBlocks
+  let now = Date.now()
+  let time = missing.time
+  return (missing.blocks > 1) && (now - time > 5000)
 }
 
 export const getVersion = state => version => {
