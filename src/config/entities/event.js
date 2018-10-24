@@ -43,7 +43,10 @@ export const Events = () => {
     formatRow: eventFormatRow,
     formatFields: eventFormatFields,
     fields: {
-      event: null,
+      event: {
+        field: 'event',
+        link: (data, value) => `/${r.event}/${data._id}`
+      },
       from: null,
       to: null,
       amount: {
