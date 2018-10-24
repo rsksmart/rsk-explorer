@@ -2,11 +2,7 @@ import { ROUTES as r } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
 
 const addressFormatRow = (data, parentData) => {
-  let totalSupply = data.totalSupply
-  let decimals = data.decimals
-  if (undefined !== totalSupply && decimals) {
-    data._totalSupplyResult = tokenAmount(totalSupply, decimals)
-  }
+  data._totalSupplyResult = totalSupplyField(data)
   return data
 }
 
@@ -82,3 +78,12 @@ const Address = () => {
 
 export const address = Address()
 export const addresses = Addresses()
+
+export const totalSupplyField = data => {
+  let totalSupply = data.totalSupply
+  let decimals = data.decimals
+  if ((totalSupply || totalSupply === 0) && decimals) {
+    return tokenAmount(totalSupply, decimals)
+  }
+  return null
+}

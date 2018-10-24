@@ -1,13 +1,9 @@
 
 import { ROUTES as r } from '../types'
-import { tokenAmount } from '../../filters/TokensFilters'
+import { totalSupplyField } from './address'
 
 const tokenFormatRow = (data, parentData) => {
-  let totalSupply = data.totalSupply
-  let decimals = data.decimals
-  if (undefined !== totalSupply && decimals) {
-    data.totalSupplyParsed = tokenAmount(totalSupply, decimals)
-  }
+  data._totalSupplyResult = totalSupplyField(data)
   return data
 }
 
@@ -53,7 +49,7 @@ export const token = {
       default: ''
     },
     totalSupply: {
-      field: 'totalSupplyParsed',
+      field: '_totalSupplyResult',
       filters: ['big-number'],
       default: ''
     }
