@@ -1,6 +1,7 @@
-import { ROUTES as r, THIS_ADDRESS, STATUS, CONTRACT_CREATED } from '../types'
+import { ROUTES as r, THIS_ADDRESS, STATUS, CONTRACT_CREATED, CONTRACT_FAILED } from '../types'
 import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
+import { txStatus } from '../../filters/TextFilters'
 
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
@@ -24,7 +25,9 @@ const transactionFormatRow = (tx, parentData) => {
     tx.from = setThisAddress(tx.from, address)
     tx.to = setThisAddress(tx.to, address)
   }
-  if (contractAddress) tx.to = CONTRACT_CREATED
+  if (contractAddress) {
+    tx.to = (txStatus(tx.receipt.status) === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
+  }
   tx._fee = transactionFee(tx)
   return tx
 }
@@ -60,6 +63,7 @@ const TxFields = () => {
       link: (data, value) => txLink(value)
     },
     to: {
+      css: (value, filtered, data) => txStatusCss(txStatus(data.receipt.status)),
       link: (tx, value) => {
         let contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
         return txLink(contractAddress || value)

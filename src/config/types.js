@@ -30,5 +30,6 @@ export const THIS_ADDRESS = 'This Address'
 
 export const CONTRACT_UNKNOWN_NAME = '(Not provided)'
 export const CONTRACT_CREATED = 'contract created'
+export const CONTRACT_FAILED = 'creation failed'
 
 export const PAGE_NOT_FOUND = 'Page not found'

@@ -81,6 +81,11 @@ export const Event = () => {
       field: '_value',
       filters: ['token-value']
     },
+    data: {
+      field: 'args._data',
+      hideIfEmpty: true,
+      trim: 0
+    },
     timestamp: null,
     created: {
       field: 'timestamp',
