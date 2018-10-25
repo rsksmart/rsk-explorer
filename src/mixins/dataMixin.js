@@ -134,12 +134,12 @@ export default {
 
       return style
     },
-    fieldCss (field, value, filteredValue) {
+    fieldCss (field, value, filteredValue, row) {
       if (undefined === value) value = this.getValue(field, this.data, true)
       if (undefined === filteredValue) filteredValue = this.filterFieldValue()(field, value)
       let css = field.css
       if (typeof css === 'function') {
-        return css(value, filteredValue, this.data)
+        return css(value, filteredValue, row)
       }
       return css
     },

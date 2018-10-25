@@ -66,7 +66,7 @@ export default {
       return options
     },
     fieldClass () {
-      return this.fieldCss(this.field, this.value, this.filteredValue)
+      return this.fieldCss(this.field, this.value, this.filteredValue, this.row)
     }
   }
 }
