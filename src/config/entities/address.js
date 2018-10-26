@@ -31,7 +31,7 @@ const Address = () => {
     address: {
       trim: 'auto'
     },
-    contractType: {
+    contractInterfaces: {
       hideIfEmpty: true
     },
     creationDate: {

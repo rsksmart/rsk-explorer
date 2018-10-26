@@ -42,7 +42,7 @@ export const token = {
   formatRow: tokenFormatRow,
   fields: Object.assign(Tokens().fields, {
     symbol: null,
-    contractType: null,
+    contractInterfaces: null,
     address: { trim: 'auto' },
     decimals: {
       filters: ['big-number'],
