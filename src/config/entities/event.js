@@ -37,7 +37,7 @@ const eventFormatFields = (fields, data, parentData) => {
 
 export const Events = () => {
   return {
-    key: '_id',
+    key: 'eventId',
     icon: 'zap',
     link: `/${r.event}/`,
     formatRow: eventFormatRow,
@@ -45,7 +45,7 @@ export const Events = () => {
     fields: {
       event: {
         field: 'event',
-        link: (data, value) => `/${r.event}/${data._id}`
+        link: (data, value) => `/${r.event}/${data.eventId}`
       },
       from: null,
       to: null,
