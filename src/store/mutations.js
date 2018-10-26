@@ -12,8 +12,9 @@ export const SET_DATE_INTERVAL = (state, interval) => {
   state.dateInterval = interval
 }
 
-export const SET_DATE = state => {
-  state.date = Date.now()
+export const SET_DATE = (state, date) => {
+  date = date || Date.now()
+  Vue.set(state, 'date', date)
 }
 
 export const SET_SIZE = (state, size) => {

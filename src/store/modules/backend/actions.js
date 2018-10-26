@@ -1,6 +1,6 @@
 export const init = ({ commit }, data) => {
   if (data) {
-    commit('SET_SERVER_TIME', data.time)
+    commit('SET_TIME', { server: data.time })
     commit('SET_SYSTEM_SETTINGS', data.settings)
   }
 }
@@ -25,8 +25,9 @@ export const socketNewBlocks = ({ state, commit, getters }, data) => {
   }
 }
 
-export const socketBlocks = ({ commit }, data) => {
+export const socketBlocks = ({ commit, dispatch }, data) => {
   commit('SET_BLOCKS', data)
+  dispatch('setDateInterval')
 }
 
 export const socketTransactions = ({ commit }, data) => {
@@ -76,7 +77,7 @@ export const socketData = ({ state, commit, dispatch }, res) => {
       commit('SET_RESPONSE', [key, data])
       commit('SET_CONFIG_Q', { module, action, value: q })
       commit('SET_CONFIG_SORT', { module, action, value: sort })
-      commit('SET_SERVER_TIME', res.data.time)
+      commit('SET_TIME', { server: res.data.time })
     }
   }
 }

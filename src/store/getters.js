@@ -1,6 +1,7 @@
 export const getDate = (state, getters) => {
   let date = state.date
-  date += getters.timeDifference
+  let diff = getters.timeDifference
+  date += diff
   return date
 }
 
