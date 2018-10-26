@@ -7,8 +7,8 @@
     .blocks(v-if='blocks.length')
       .pending-msg.box(v-if='pending')
         button.txt-center.info(@click='updateBlocks')
-          em there are
-            strong.badge {{ pending }}
+          em there are&nbsp;
+            strong.badge {{ pending }}&nbsp;
           em new blocks, click  here to update the list
       template(v-for='block,index in blocks')
         block-box(v-if='index <= 10' :block='block')
