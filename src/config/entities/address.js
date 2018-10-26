@@ -32,7 +32,8 @@ const Address = () => {
       trim: 'auto'
     },
     contractInterfaces: {
-      hideIfEmpty: true
+      hideIfEmpty: true,
+      css: ['items-list', 'small', 'soft']
     },
     creationDate: {
       field: 'createdByTx.timestamp',

@@ -74,6 +74,7 @@ export default {
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
+  @import '../lib/styl/lists.styl'
 
   .data-field, .data-field > a, .data-field > .tooltip, max-width 100%
     display flex
@@ -97,4 +98,9 @@ export default {
   .flex-table
     & td .data-field
       width 100%
+
+  .data-field.items-list ul
+    list-style none
+    margin 0
+    padding 0
 </style>
