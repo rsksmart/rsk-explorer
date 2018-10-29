@@ -29,7 +29,7 @@ export const txGasPrice = Vue.filter('tx-gas-price', value => {
 })
 
 export const bignumber = Vue.filter('big-number', value => {
-  if (!value) return
+  if (!value) return 0
   const bn = (value._isBigNumber === true) ? value : newBigNumber(value)
   if (bn._isBigNumber === true) return bn.toString(10)
   return value
