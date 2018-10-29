@@ -53,7 +53,7 @@ export const rbtc = Vue.filter('rbtc', (value) => {
 
 export const round = Vue.filter('round', (value, digits) => {
   digits = digits || 2
-  return d3.format(`.${digits}f`)(value)
+  return (value) ? d3.format(`.${digits}f`)(value) : 0
 })
 
 export const isDigits = Vue.filter('is-digits', (value) => {
