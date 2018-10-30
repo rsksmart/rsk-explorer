@@ -3,6 +3,8 @@ import { tokenAmount } from '../../filters/TokensFilters'
 
 const addressFormatRow = (data, parentData) => {
   data._totalSupplyResult = totalSupplyField(data)
+  let decimals = data.decimals
+  data.decimals = (decimals && decimals !== '0x0') ? decimals : null
   return data
 }
 
@@ -83,7 +85,7 @@ export const addresses = Addresses()
 export const totalSupplyField = data => {
   let totalSupply = data.totalSupply
   let decimals = data.decimals
-  if ((totalSupply || totalSupply === 0) && decimals) {
+  if ((totalSupply && totalSupply !== '0x0') && decimals) {
     return tokenAmount(totalSupply, decimals)
   }
   return null
