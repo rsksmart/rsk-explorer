@@ -38,7 +38,7 @@ export default [
     }
   },
   {
-    path: `/${r.event}/:id`,
+    path: `/${r.event}/:eventId`,
     name: 'Event',
     component: DataPage,
     props: {
