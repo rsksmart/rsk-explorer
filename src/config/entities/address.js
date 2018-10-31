@@ -34,8 +34,11 @@ const Address = () => {
       trim: 'auto'
     },
     contractInterfaces: {
+      icon: 'link-external',
       hideIfEmpty: true,
-      css: ['items-list', 'small', 'soft']
+      css: ['items-list', 'small', 'soft'],
+      titleIcon: true,
+      hideTitle: true
     },
     creationDate: {
       field: 'createdByTx.timestamp',
