@@ -2,8 +2,8 @@
   .data-field(:style='cellStyle(field,value)' :class='fieldClass')
     //- arrays (uncomplete)
     template(v-if='filteredType==="array"')
-      ul(v-for='v in value')
-        li {{v}}
+      ul
+        li(v-for='v in value') {{v}} 
     template(v-else)
       template(v-if='trim && !options.noTrim')
         tool-tip.field-value(:value='value' :trim='trim' :options='trimOptions' :router-link='link')
@@ -103,4 +103,10 @@ export default {
     list-style none
     margin 0
     padding 0
+    display flex
+
+    li
+      margin 0 0 0 1em
+    :first-child
+      margin 0
 </style>
