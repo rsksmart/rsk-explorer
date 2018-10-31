@@ -14,8 +14,7 @@ export const tokenAmount = (amount, decimals = 18) => {
 }
 
 export const tokenValue = Vue.filter('token-value', amount => {
-  let res = tokenAmount(amount)
-  if (res) return res.toString(10)
+  return amount.toString(10)
 })
 
 export const txValue = Vue.filter('tx-value', value => {

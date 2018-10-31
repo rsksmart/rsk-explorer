@@ -6,8 +6,7 @@ const eventFormatRow = (event, parentData) => {
   const addressData = (parentData.address) ? parentData : event._addressData
   let tokenAddress = addressData.address
   let token = addressData.name || event.address
-  const decimals = addressData.decimals
-
+  const decimals = parseInt(addressData.decimals)
   event._tokenAddress = tokenAddress
   event._tokenRef = token
 
@@ -26,12 +25,8 @@ const eventFormatRow = (event, parentData) => {
 }
 
 const eventFormatFields = (fields, data, parentData) => {
-  let token = parentData
-  if (token) {
-    // fields.to.link = uri
-    // fields.from.link = uri
-    fields.amount.suffix = token.symbol || ''
-  }
+  let token = data._addressData || parentData || {}
+  fields.amount.suffix = token.symbol || ''
   return fields
 }
 

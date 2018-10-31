@@ -14,14 +14,17 @@ const formatLink = (data, parentData, link, key) => {
 
 const accountFormatRow = (data, parentData) => {
   let balance = data.balance
-  const contractData = (parentData.decimals) ? parentData : data._contractData
-  let decimals = contractData.decimals
-  if (balance) data.balanceParsed = tokenAmount(balance, decimals)
+  const contractData = data._contractData || parentData || {}
+  let decimals = contractData.decimals || 18
+  decimals = parseInt(decimals)
+  if (balance && decimals) data.balanceParsed = tokenAmount(balance, decimals)
   return data
 }
 
 const accountFormatFields = (fields, data, parentData) => {
   const contract = data.address || parentData.address
+  const contractData = data._contractData || parentData || {}
+  fields.balance.suffix = contractData.symbol || ''
   fields.address.link = formatLink({ contract }, null, accountLink)
   return fields
 }
