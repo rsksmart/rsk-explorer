@@ -120,7 +120,10 @@ export default [
           dataType: 'tokenAccounts',
           module: 'tokens',
           action: 'getTokenAccounts',
-          render: data => (data ? data.contractType === 'ERC20' : false)
+          render: data => {
+            let methods = data.contractMethods || []
+            return methods.indexOf('balanceOf') > -1
+          }
         }
       ]
     }
