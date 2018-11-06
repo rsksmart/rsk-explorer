@@ -72,8 +72,9 @@ const TxFields = () => {
     value: {
       filters: ['tx-value', { name: 'round', args: 4 }, 'rbtc']
     },
-    gas: {
+    gasUsed: {
       type: 'gas',
+      field: 'receipt.gasUsed',
       default: 0
     },
     time: {
@@ -104,8 +105,7 @@ const Tx = () => {
   let tx = Txs()
   let fields = TxFields()
   const time = fields.time
-  delete (fields.gas)
-  delete (fields.time)
+  delete fields.gasUsed
   fields.to.trim = 'auto'
   fields.from.trim = 'auto'
   tx.formatRow = transactionFormatRow
@@ -146,7 +146,7 @@ const Tx = () => {
       field: 'gas',
       default: 0
     },
-    gasUsedByTx: {
+    gasUsed: {
       field: 'receipt.gasUsed',
       type: 'gas',
       default: 0
