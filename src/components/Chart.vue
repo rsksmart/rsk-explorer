@@ -1,26 +1,27 @@
 <template lang="pug">
-  .tx-chart.chart
-    strong.title Last blocks transactions
-    .chart-container(v-if='blocks.length' :style='boxStyle')
-      d3-bar-chart(:data='blocks' :options='chartOptions')
+  .chart(v-if='data')
+    strong.title(v-if='title') {{title}}
+    .chart-container(v-if='data.length' :style='boxStyle')
+      d3-bar-chart(:data='data' :options='chartOptions')
+
 </template>
 <script>
 import D3BarChart from 'vue-d3-barchart'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import colors from '../config/colors.json'
 export default {
-  name: 'tx-chart',
-  props: ['asize'],
+  name: 'chart',
   components: {
     D3BarChart
   },
+  props: ['data', 'options', 'title','heightRatio'],
   data () {
     return {
       size: {
         w: 300,
         h: 100
       },
-      options: {
+      defaultOptions: {
         domain: {
           min: 0,
           max: null
@@ -37,20 +38,15 @@ export default {
           linesY: false,
           linesX: false
         },
-        marks: false,
-        getX (d) {
-          return d
-        },
-        getY (d) {
-          return d.transactions.length
-        },
-        formatLabel (bar) {
-          let label = []
-          label.push('#' + bar.d.number)
-          label.push('txs:' + bar.d.transactions.length)
-          return label
-        }
+        marks: false
       }
+    }
+  },
+  created () {
+    let options = this.options
+    if (options) {
+      let defaultOptions = this.defaultOptions
+      this.defaultOptions = Object.assign(defaultOptions, options)
     }
   },
   mounted () {
@@ -68,21 +64,27 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      blocks: state => state.backend.lastBlocks
+    ...mapGetters({
+      appSize: 'getSize'
     }),
-
+    asize () {
+      return this.appSize.w + this.appSize.h
+    },
     boxStyle () {
       return { width: this.size.w + 'px' }
     },
     chartOptions () {
-      return Object.assign({ size: this.size }, this.options)
+      return Object.assign({ size: this.size }, this.defaultOptions)
+    },
+    hRatio(){
+      let hr = this.heightRatio 
+      return (undefined !== hr) ? hr :3.5
     }
   },
   methods: {
     onResize () {
       let w = this.$el.parentElement.offsetWidth
-      let h = w / 3.5
+      let h = w / this.hRatio
       this.size = Object.assign({}, { w, h })
     }
   }
@@ -100,10 +102,15 @@ export default {
     max-height 100%
     height auto
 
-    svg
-      overflow visible
+  svg
+    overflow visible
 
-    .curve path
-      stroke brand2
-      stroke-width 1
+  .curve path
+    stroke brand2
+    stroke-width 1
+  
+  .curve-back
+    path
+      opacity .2
+      stroke none  
 </style>

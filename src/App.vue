@@ -132,6 +132,7 @@ export default {
   }
 }
 </script>
+<style src="vue-d3-barchart/dist/vue-d3-barchart.css"></style>
 <style lang="stylus">
 
   @import 'lib/styl/style.styl'
