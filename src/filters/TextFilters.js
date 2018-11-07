@@ -31,7 +31,12 @@ export const camelCaseTo = Vue.filter('camel-case-to', (value, to = ' ') => {
 })
 
 export const txStatus = Vue.filter('tx-status', (value, len) => {
-  if (parseInt(value) === 1) value = STATUS.SUCCESS
-  else value = STATUS.FAIL
+  let intValue = parseInt(value)
+  if (!isNaN(intValue)) {
+    if (intValue === 1) value = STATUS.SUCCESS
+    else value = STATUS.FAIL
+  } else {
+    value = STATUS[value] || value
+  }
   return value
 })
