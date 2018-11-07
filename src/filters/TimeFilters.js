@@ -80,27 +80,21 @@ export const sSeconds = Vue.filter('s-seconds', time => {
   return moment.duration(Math.round(time), 's').humanize()
 })
 
-export const dateFromTs = Vue.filter('date-from-ts', timestamp => {
+export const formatDate = Vue.filter('format-date', (timestamp, format = 'YYYY/MM/DD hh:mm:ss') => {
   timestamp = Number(timestamp)
   let date = new Date(timestamp)
-  let datetime =
-    date.getDate() +
-    '/' +
-    (date.getMonth() + 1) +
-    '/' +
-    date.getFullYear() +
-    '-' +
-    date.getHours() +
-    ':' +
-    date.getMinutes() +
-    ':' +
-    date.getSeconds()
-  return datetime
+  return moment(String(date.toISOString())).format(format)
 })
+
+export const dateFromTs = Vue.filter('date-from-ts', timestamp => formatDate(timestamp))
+
+export const timeFromTs = Vue.filter('time-from-ts', timestamp => formatDate(timestamp, 'hh:mm:ss'))
+
+export const dayFromTs = Vue.filter('day-from-ts', timestamp => formatDate(timestamp, 'YYYY/MM/DD'))
 
 export const dateFromUnixTs = Vue.filter('date-from-unix-ts', time => {
   const date = new Date(time * 1000)
-  return dateFromTs(date)
+  return formatDate(date)
 })
 
 export const miliseconds = Vue.filter('miliseconds', time => {
