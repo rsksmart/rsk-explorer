@@ -34,3 +34,16 @@ export const getPageTotal = (state, getters) => key => {
   const total = (pages && pages.total) ? pages.total : 0
   return total
 }
+
+export const getTxPoolQueued = (state) => {
+  return state.txPool.queued
+}
+
+export const getTxPoolPending = (state) => {
+  return state.txPool.pending
+}
+
+export const getTxPoolTxs = (state) => status => {
+  let txs = state.txPool.txs || []
+  return (status) ? txs.filter(tx => tx.status === status) : txs
+}

@@ -13,12 +13,15 @@ export const ROUTES = {
   tokens: 'tokens',
   stats: 'stats',
   event: 'event',
-  events: 'events'
+  events: 'events',
+  txPool: 'txpool'
 }
 
 export const STATUS = {
   SUCCESS: 'SUCCESSFUL',
-  FAIL: 'FAILED'
+  FAIL: 'FAILED',
+  QUEUED: 'QUEUED',
+  PENDING: 'PENDING'
 }
 
 export const EVENTS = {

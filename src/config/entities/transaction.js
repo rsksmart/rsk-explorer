@@ -25,8 +25,9 @@ const transactionFormatRow = (tx, parentData) => {
     tx.from = setThisAddress(tx.from, address)
     tx.to = setThisAddress(tx.to, address)
   }
+  tx.status = (tx.receipt) ? tx.receipt.status : tx.status
   if (contractAddress) {
-    tx.to = (txStatus(tx.receipt.status) === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
+    tx.to = (txStatus(tx.status) === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
   }
   tx._fee = transactionFee(tx)
   return tx
@@ -36,10 +37,12 @@ const txLink = (value) => {
   return (value === THIS_ADDRESS) ? null : `/${r.address}/${value}`
 }
 
-const txStatusCss = (status) => {
+export const txStatusCss = (status) => {
   const css = {
     FAIL: 'error',
-    SUCCESS: 'brand'
+    SUCCESS: 'brand',
+    QUEUED: 'blue',
+    PENDING: 'yellow'
   }
   let key = Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
   return css[key] || ''
@@ -63,7 +66,7 @@ const TxFields = () => {
       link: (data, value) => txLink(value)
     },
     to: {
-      css: (value, filtered, data) => txStatusCss(txStatus(data.receipt.status)),
+      css: (value, filtered, data) => txStatusCss(txStatus((data.receipt) ? data.receipt.status : data.status || '')),
       link: (tx, value) => {
         let contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
         return txLink(contractAddress || value)
@@ -101,17 +104,19 @@ const Txs = () => {
   }
 }
 
-const Tx = () => {
+export const Tx = () => {
   let tx = Txs()
   let fields = TxFields()
   const time = fields.time
+  delete fields.gas
+  delete fields.time
   delete fields.gasUsed
   fields.to.trim = 'auto'
   fields.from.trim = 'auto'
   tx.formatRow = transactionFormatRow
   tx.fields = Object.assign(fields, {
     status: {
-      field: 'receipt.status',
+      field: 'status',
       filters: ['tx-status'],
       trim: 'auto',
       css: (value, filtered, data) => txStatusCss(filtered),
@@ -179,6 +184,8 @@ const TxBox = () => {
   return txs
 }
 
+export const Transactions = () => Object.assign(Txs(), { formatRow: transactionFormatRow })
+
 export const transactionsBox = TxBox()
-export const transactions = Object.assign(Txs(), { formatRow: transactionFormatRow })
+export const transactions = Transactions()
 export const transaction = Tx()

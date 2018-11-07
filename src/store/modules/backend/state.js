@@ -15,6 +15,13 @@ export default function () {
     },
     lastBlocksTime: 0,
     transactions: [],
-    lastTransactions: []
+    lastTransactions: [],
+    txPool: {
+      pending: 0,
+      queued: 0,
+      txs: [],
+      timestamp: 0
+    },
+    txPoolChart: []
   }
 }

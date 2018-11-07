@@ -28,6 +28,7 @@ import { address, addresses } from './address'
 import { token, tokens } from './token'
 import { event, events } from './event'
 import { tokenAccount, tokenAccounts } from './tokenAccount'
+import { txPool } from './txPool'
 
 export default {
   block,
@@ -43,5 +44,6 @@ export default {
   event,
   events,
   tokenAccount,
-  tokenAccounts
+  tokenAccounts,
+  txPool
 }

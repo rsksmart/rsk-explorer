@@ -76,3 +76,11 @@ export const SET_PENDING_BLOCKS = (state, blocks) => {
 export const CLEAR_PENDING_BLOCKS = (state) => {
   state.pendingBlocks = {}
 }
+
+export const SET_TX_POOL = (state, data) => {
+  Vue.set(state, 'txPool', data)
+}
+
+export const SET_TX_POOL_CHART = (state, data) => {
+  Vue.set(state, 'txPoolChart', data)
+}
