@@ -1,4 +1,4 @@
-import { colors, blocksColors } from '../lib/js/colors.js'
+import { colors, blocksColors, blocksColors2 } from '../lib/js/colors.js'
 import menuItems from '../lib/js/menuItems.js'
 import messages from '../config/messages'
 import content from '../config/content'
@@ -21,6 +21,7 @@ export default function () {
     socketConnected: false,
     socketErrors: [],
     colors,
-    blocksColors
+    blocksColors,
+    blocksColors2
   }
 }

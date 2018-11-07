@@ -17,10 +17,14 @@ export const getColors = state => {
   return state.colors
 }
 
-export const getBlockColor = state => blockNumber => {
-  let colors = state.blocksColors
+export const getBlockColor = state => (blockNumber, cKey = 'blocksColors') => {
+  let colors = state[cKey]
   let c = blockNumber % 10
   return colors[c]
+}
+
+export const getBlockColor2 = (state, getters) => blockNumber => {
+  return getters.getBlockColor(blockNumber, 'blocksColors2')
 }
 
 export const blockStyle = (state, getters) => blockNumber => {
