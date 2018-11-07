@@ -2,6 +2,7 @@ import Home from '@/components/Home'
 import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
 import ErrorPage from '@/components/ErrorPage'
+import TxPool from '@/components/TxPool'
 import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
 import { bignumber } from '../filters/TokensFilters'
 import tokens from './tokens'
@@ -149,6 +150,11 @@ export default [
       dataType: 'transaction',
       action: 'getTransaction'
     }
+  },
+  {
+    path: `/${r.txPool}`,
+    name: 'txPool',
+    component: TxPool
   },
   ...tokens,
   {

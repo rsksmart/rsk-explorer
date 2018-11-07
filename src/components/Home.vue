@@ -73,18 +73,21 @@ export default {
 }
 </script>
 <style lang="stylus">
-@import('../lib/styl/vars.styl')
+  @import ('../lib/styl/vars.styl')
+
   .hero
     .col-b
       .box
         min-height 100%
         padding 0
+
   .home
     max-width 100%
 
   .chart-c
     margin 0.5em 1em
     max-width 100%
+
   .auto-update
-    margin .5em 0  0 0
+    margin 0.5em 0 0 0
 </style>

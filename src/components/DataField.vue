@@ -1,9 +1,9 @@
 <template lang="pug">
   .data-field(:style='cellStyle(field,value)' :class='fieldClass')
     //- arrays (uncomplete)
-    template(v-if='filteredType==="array"')
+    template(v-if='filteredType === "array"')
       ul
-        li(v-for='v in value') {{v}} 
+        li(v-for='v in value') {{v}}
     template(v-else)
       template(v-if='trim && !options.noTrim')
         tool-tip.field-value(:value='value' :trim='trim' :options='trimOptions' :router-link='link')
