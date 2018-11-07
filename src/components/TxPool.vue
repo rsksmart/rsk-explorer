@@ -6,7 +6,7 @@
         //-chart(:data='chart' :options='blocksChartOptions')
     h3 Tx pool
     template(v-if='!txs')
-      .info.txt-center 
+      .info.txt-center
         span Tx pool is empty
     template(v-else)
       data-table(:type='type' :page='txs')
@@ -34,7 +34,7 @@ export default {
           type: 'Carnidal',
           gradient: {
             fill: false,
-            stroke: true,
+            stroke: true
           }
         },
         curveBack: {

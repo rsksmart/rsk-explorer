@@ -14,7 +14,7 @@ export default {
   components: {
     D3BarChart
   },
-  props: ['data', 'options', 'title','heightRatio'],
+  props: ['data', 'options', 'title', 'heightRatio'],
   data () {
     return {
       size: {
@@ -76,9 +76,9 @@ export default {
     chartOptions () {
       return Object.assign({ size: this.size }, this.defaultOptions)
     },
-    hRatio(){
-      let hr = this.heightRatio 
-      return (undefined !== hr) ? hr :3.5
+    hRatio () {
+      let hr = this.heightRatio
+      return (undefined !== hr) ? hr : 3.5
     }
   },
   methods: {
@@ -108,9 +108,9 @@ export default {
   .curve path
     stroke brand2
     stroke-width 1
-  
+
   .curve-back
     path
       opacity .2
-      stroke none  
+      stroke none
 </style>
