@@ -1,4 +1,5 @@
 <template lang="pug">
+
   .chart(v-if='data')
     strong.title(v-if='title') {{title}}
     .chart-container(v-if='data.length' :style='boxStyle')
@@ -8,7 +9,7 @@
 <script>
 import D3BarChart from 'vue-d3-barchart'
 import { mapGetters } from 'vuex'
-import colors from '../config/colors.json'
+import chartsDefaults from '../config/chartsDefaults'
 export default {
   name: 'chart',
   components: {
@@ -20,33 +21,7 @@ export default {
       size: {
         w: 300,
         h: 100
-      },
-      defaultOptions: {
-        domain: {
-          min: 0,
-          max: null
-        },
-        fontSize: 12,
-        margin: 0,
-        curve: false,
-        bars: true,
-        padding: 0.25,
-        colors: [colors.green, colors.green],
-        axis: {
-          valuesY: true,
-          valuesX: true,
-          linesY: false,
-          linesX: false
-        },
-        marks: false
       }
-    }
-  },
-  created () {
-    let options = this.options
-    if (options) {
-      let defaultOptions = this.defaultOptions
-      this.defaultOptions = Object.assign(defaultOptions, options)
     }
   },
   mounted () {
@@ -67,6 +42,9 @@ export default {
     ...mapGetters({
       appSize: 'getSize'
     }),
+    opts () {
+      return this.options || chartsDefaults
+    },
     asize () {
       return this.appSize.w + this.appSize.h
     },
@@ -74,7 +52,7 @@ export default {
       return { width: this.size.w + 'px' }
     },
     chartOptions () {
-      return Object.assign({ size: this.size }, this.defaultOptions)
+      return Object.assign({ size: this.size }, this.opts)
     },
     hRatio () {
       let hr = this.heightRatio
@@ -111,6 +89,6 @@ export default {
 
   .curve-back
     path
-      opacity .2
+      opacity 0.2
       stroke none
 </style>
