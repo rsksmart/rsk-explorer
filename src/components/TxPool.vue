@@ -2,7 +2,7 @@
   .pending-txs
     h2 Pending transactions
     .tx-pool-chart(v-if='chart')
-      chart(:data='chart' :options='chartOptions', title='Pending Txs Log')
+      chart(:data='chart' :options='options', title='Pending Txs Log')
         //-chart(:data='chart' :options='blocksChartOptions')
     h3 Tx pool
     template(v-if='!txs')
@@ -16,6 +16,7 @@ import { mapState, mapGetters } from 'vuex'
 import DataTable from './DataTable'
 import Chart from './Chart'
 import { dayFromTs, timeFromTs } from '../filters/TimeFilters'
+import chartsDefaults from '../config/chartsDefaults'
 export default {
   name: 'tx-pool',
   components: {
@@ -26,12 +27,16 @@ export default {
     return {
       type: 'txPool',
       chartOptions: {
+        domain: {
+          max: null,
+          min: 0
+        },
         getY (d) {
           return d.pending
         },
         bars: false,
         curve: {
-          type: 'Carnidal',
+          type: 'Linear',
           gradient: {
             fill: false,
             stroke: true
@@ -57,7 +62,11 @@ export default {
           label.push(`${dayFromTs(bar.d.timestamp)}`)
           label.push(`${timeFromTs(bar.d.timestamp)}`)
           return label
-        }
+        },
+        marks: {
+          type: 'circle',
+          size: 3
+        },
       },
       blocksChartOptions: {
         getY (d) {
@@ -84,6 +93,9 @@ export default {
     txs () {
       let data = this.txPool.txs || []
       return (data.length) ? { data } : null
+    },
+    options () {
+      return Object.assign(chartsDefaults, this.chartOptions)
     }
   },
   methods: {
@@ -101,8 +113,4 @@ export default {
 <style lang="stylus">
   .pending-txs
     min-width 100%
-
-    svg
-      path
-        direction
 </style>
