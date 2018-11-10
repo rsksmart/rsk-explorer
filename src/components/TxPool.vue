@@ -1,7 +1,7 @@
 <template lang="pug">
   .pending-txs
     h2 Pending transactions
-    .tx-pool-chart(v-if='chart')
+    .tx-pool-chart(v-if='chart.length')
       chart(:data='chart' :options='options', title='Pending Txs Log')
         //-chart(:data='chart' :options='blocksChartOptions')
     h3 Tx pool
@@ -66,7 +66,7 @@ export default {
         marks: {
           type: 'circle',
           size: 3
-        },
+        }
       },
       blocksChartOptions: {
         getY (d) {
