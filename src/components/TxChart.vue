@@ -2,12 +2,13 @@
   .tx-chart.chart
     strong.title Last blocks transactions
     .chart-container(v-if='blocks.length' :style='boxStyle')
-      d3-bar-chart(:data='blocks' :options='chartOptions')
+      d3-bar-chart(:data='blocks' :options='chartOptions' @barClick='barClick')
 </template>
 <script>
 import D3BarChart from 'vue-d3-barchart'
 import { mapState } from 'vuex'
 import colors from '../config/colors.json'
+import { ROUTES } from '../config/types'
 export default {
   name: 'tx-chart',
   props: ['asize'],
@@ -84,6 +85,11 @@ export default {
       let w = this.$el.parentElement.offsetWidth
       let h = w / 3.5
       this.size = Object.assign({}, { w, h })
+    },
+    barClick (event) {
+      let bar = event.bar || {}
+      let blockNumber = (bar.d) ? bar.d.number : null
+      if (blockNumber) this.$router.push({ path: `${ROUTES.block}/${blockNumber}` })
     }
   }
 }
@@ -99,7 +105,8 @@ export default {
   .tx-chart
     max-height 100%
     height auto
-
+    .dummy-bar:hover
+      cursor pointer
     svg
       overflow visible
 
