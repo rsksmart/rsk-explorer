@@ -19,6 +19,7 @@
 </template>
 <script>
 import * as ethUtils from '../lib/js/ethUtils'
+import { add0x } from '../lib/js/utils'
 import { mapState } from 'vuex'
 import { ROUTES as r } from '../config/types'
 export default {
@@ -58,9 +59,10 @@ export default {
     },
     search (event) {
       let value = this.searchValue
-      value = value.toLowerCase()
+      value = (parseInt(value).toString() === Number(value).toString()) ? value : add0x(value.toLowerCase())
       if (value) {
         value = String(value).replace(/[\W_]+/g, '')
+
         let tests = {
           address: (ethUtils.isAddress(value)) ? `/${r.address}/` : null,
           tx: (ethUtils.isTx(value)) ? `/${r.transaction}/` : null,
