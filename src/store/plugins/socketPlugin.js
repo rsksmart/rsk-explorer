@@ -29,7 +29,7 @@ export default function (socket) {
       store.dispatch('connectionUpdate', socket.connected)
     })
 
-    socket.on('error', error => {
+    socket.on('Error', error => {
       store.dispatch('socketError', error)
     })
     // emits from client -> commit('SOCKET_EMIT',{event, data} )
