@@ -54,14 +54,16 @@ export default {
           return color
         },
         formatLabel: bar => {
-          let label = []
+          let time = bar.d.timestamp
           let fill = this.blockColor(bar.d.blockNumber)
-          label.push({ style: { fill }, txt: `#${bar.d.blockNumber}` })
-          label.push(`pending: ${bar.d.pending}`)
-          label.push(`queued: ${bar.d.queued}`)
-          label.push(`${dayFromTs(bar.d.timestamp)}`)
-          label.push(`${timeFromTs(bar.d.timestamp)}`)
-          return label
+
+          return [
+            ({ style: { fill }, txt: `#${bar.d.blockNumber}` }),
+            (`pending: ${bar.d.pending}`),
+            (`queued: ${bar.d.queued}`),
+            (`${dayFromTs(time)}`),
+            (`${timeFromTs(time)}`)
+          ]
         },
         marks: {
           type: 'circle',
