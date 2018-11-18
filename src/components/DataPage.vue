@@ -11,8 +11,9 @@
       .messages(v-if='msgs')
         message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data')
       //- Header
-      .page-header(v-if='headComponent')
-        data-section(:component='headComponent' :reqKey='reqKey' :module='module' :dataType='headType || dataType' :action='action')
+      .page-header(v-if='mainContent')
+        template(v-for='tab in mainContent')
+          data-section(:component='tab.component' :reqKey='reqKey' :module='module' :dataType='headType || dataType' :action='action')
       .page(v-if='data')
         data-section(v-if='!tabs' :module='module' :dataType='dataType' :reqKey='reqKey' :component='component' :action='action')
         .tabs(v-if='tabs && data')
@@ -53,7 +54,7 @@ export default {
     'action',
     'component',
     'title',
-    'headComponent',
+    'mainContent',
     'headType',
     'tabs',
     'rKey',

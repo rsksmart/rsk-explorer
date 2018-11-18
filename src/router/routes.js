@@ -55,7 +55,9 @@ export default [
       module: 'blocks',
       dataType: 'block',
       action: 'getBlock',
-      headComponent: DataItem,
+      mainContent: [
+        { component: DataItem }
+      ],
       title: '',
       tabs: [
         {
@@ -94,7 +96,9 @@ export default [
         title = (data.name) ? `${data.name} ${title}` : title
         return title || data.type || ''
       },
-      headComponent: DataItem,
+      mainContent: [
+        { component: DataItem }
+      ],
       dataType: 'address',
       tabs: [
         {

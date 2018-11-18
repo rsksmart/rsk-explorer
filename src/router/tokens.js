@@ -33,7 +33,7 @@ export default [
       module: 'tokens',
       dataType: 'tokenAccount',
       action: 'getTokenAccount',
-      headComponent: null,
+      mainContent: null,
       headType: 'token'
     }
   },
