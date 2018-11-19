@@ -12,10 +12,15 @@
         message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data')
       //- Header
       .page-header(v-if='mainContent')
-        template(v-for='tab in mainContent')
-          data-section(:component='tab.component' :reqKey='reqKey' :module='module' :dataType='headType || dataType' :action='action')
+        .tabs
+          .tabs-titles
+            template(v-for='tab in mainContent')
+              button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name)')
+                span.title {{tab.name}}
+        data-section( v-if=' activeContentTab' 
+          :component='activeContentTab.component' :reqKey='reqKey' :module='module' :dataType='activeContentTab.dataType || dataType' :action='action')
       .page(v-if='data')
-        data-section(v-if='!tabs' :module='module' :dataType='dataType' :reqKey='reqKey' :component='component' :action='action')
+        data-section(v-if='!tabs && !activeContentTab' :module='module' :dataType='dataType' :reqKey='reqKey' :component='component' :action='action')
         .tabs(v-if='tabs && data')
           .tabs-titles
             template(v-for='tab in tabs')
@@ -70,7 +75,8 @@ export default {
   computed: {
     ...mapGetters({
       query: 'getQuery',
-      getActiveTab: 'getActiveTab'
+      getActiveTab: 'getActiveTab',
+      getActiveContentTab: 'getActiveContentTab'
     }),
     error () {
       return this.pageError()(this.reqKey)
@@ -105,7 +111,13 @@ export default {
     activeTab () {
       let tab = (this.tabs.length) ? this.tabs[0].name : null
       return this.getActiveTab || tab
-    }
+    },
+    activeContentTab () {
+      let tabs = this.mainContent || []
+      if (!tabs.length) return
+      let tabName = this.getActiveContentTab || tabs[0].name
+      return tabs.find(tab => tab.name === tabName)
+    },
   },
   methods: {
     ...mapActions([
@@ -118,8 +130,17 @@ export default {
       'pageError'
     ]),
     setTab (tab) {
+      this.updateRouterQuery('tab', tab)
+    },
+    setActiveContentTab (name) {
+      this.updateRouterQuery('cTab', name)
+    },
+    isActiveContentTab (tab) {
+      return this.activeContentTab === tab.name
+    },
+    updateRouterQuery (key, value) {
       let query = Object.assign({}, this.$route.query)
-      query.tab = tab
+      query[key] = value
       this.$router.push({ query })
     },
     renderTab (tab) {
@@ -177,7 +198,8 @@ export default {
 
   .page-header
     margin-bottom 2em
+
   .messages
-    font-size .9em
+    font-size 0.9em
     text-align center
 </style>
