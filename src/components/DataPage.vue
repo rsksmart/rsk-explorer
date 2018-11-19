@@ -31,7 +31,7 @@
 
           template(v-for='tab in tabs')
             data-section.tab-content(v-if='isActiveTab(tab)'
-              :module='module' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
+              :module='tab.module' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
 
 </template>
 <script>
