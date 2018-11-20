@@ -86,6 +86,13 @@ const TxFields = () => {
     },
     type: {
       field: 'txType'
+    },
+    status: {
+      field: 'status',
+      filters: ['tx-status'],
+      trim: 'auto',
+      css: (value, filtered, data) => txStatusCss(filtered),
+      hideIfEmpty: true
     }
   }
 }
@@ -115,13 +122,6 @@ export const Tx = () => {
   fields.from.trim = 'auto'
   tx.formatRow = transactionFormatRow
   tx.fields = Object.assign(fields, {
-    status: {
-      field: 'status',
-      filters: ['tx-status'],
-      trim: 'auto',
-      css: (value, filtered, data) => txStatusCss(filtered),
-      hideIfEmpty: true
-    },
     hash: {
       trim: 'auto'
     },
