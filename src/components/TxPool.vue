@@ -35,8 +35,16 @@ export default {
           return d.pending
         },
         bars: false,
+        axis: {
+          linesY: true,
+          valuesY: true
+        },
         curve: {
-          type: 'Linear',
+          type: 'MonotoneX',
+          style: {
+            'stroke-width': 2,
+            'opacity': 0.6
+          },
           gradient: {
             fill: false,
             stroke: true
@@ -44,6 +52,9 @@ export default {
         },
         curveBack: {
           close: true,
+          style: {
+            opacity: 0.15
+          },
           gradient: {
             fill: true,
             stroke: false
@@ -56,7 +67,6 @@ export default {
         formatLabel: bar => {
           let time = bar.d.timestamp
           let fill = this.blockColor(bar.d.blockNumber)
-
           return [
             ({ style: { fill }, txt: `#${bar.d.blockNumber}` }),
             (`pending: ${bar.d.pending}`),
@@ -67,7 +77,7 @@ export default {
         },
         marks: {
           type: 'circle',
-          size: 3
+          size: 5
         }
       },
       blocksChartOptions: {
