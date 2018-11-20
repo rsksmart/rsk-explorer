@@ -9,18 +9,25 @@
   flex-flow row nowrap
   justify-content flex-start
 
-
 .tab-title
   display flex
-  flex-flow column wrap
   margin 0 .5em 0 0 
+  justify-content  center
+  align-items center
   .title
     margin 0 1em
     text-transform capitalize
+   .loading-circle
+     .circle
+      fill none 
+      stroke green
 .tab-title.active
   background $color
   font-weight bold
   color white
+  .loading-circle
+    .circle
+      stroke: white
 
 .tab-content
   min-width 100%

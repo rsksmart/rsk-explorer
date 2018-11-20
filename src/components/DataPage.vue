@@ -17,7 +17,7 @@
             template(v-for='tab in mainContent')
               button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name)')
                 span.title {{tab.name}}
-        data-section( v-if=' activeContentTab' 
+        data-section( v-if=' activeContentTab'
           :component='activeContentTab.component' :reqKey='reqKey' :module='module' :dataType='activeContentTab.dataType || dataType' :action='action')
       .page(v-if='data')
         data-section(v-if='!tabs && !activeContentTab' :module='module' :dataType='dataType' :reqKey='reqKey' :component='component' :action='action')
@@ -28,7 +28,8 @@
                 template(v-if='requestingPageData()(tab.name)')
                   //- Change it by tab spinner
                   button.btn.tab-title.link
-                    span.title {{tab.name}} ...
+                    loading-circle(:size='10')
+                    span.title {{tab.name}}
                 template(v-else)
                   button.btn.tab-title.link(@click='setTab(tab.name)' :class='tabTitleCss(tab)')
                     span.title {{tab.name}}
@@ -37,11 +38,13 @@
           template(v-for='tab in tabs')
             data-section.tab-content(v-if='isActiveTab(tab)'
               :module='tab.module' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
+            spinner(v-if='requestingPageData()(tab.name)')
 
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Spinner from './Spinner.vue'
+import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
 import ErrorPage from './ErrorPage'
 import Message from './Message'
@@ -51,7 +54,8 @@ export default {
     Spinner,
     DataSection,
     ErrorPage,
-    Message
+    Message,
+    LoadingCircle
   },
   props: [
     'module',
@@ -117,7 +121,7 @@ export default {
       if (!tabs.length) return
       let tabName = this.getActiveContentTab || tabs[0].name
       return tabs.find(tab => tab.name === tabName)
-    },
+    }
   },
   methods: {
     ...mapActions([
