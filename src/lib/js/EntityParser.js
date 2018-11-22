@@ -47,7 +47,7 @@ export class EntityParser {
       }
       field = this.defValue(
         field,
-        ['titleIcon', 'hideTitle', 'icon', 'link', 'default'],
+        ['titleIcon', 'hideTitle', 'icon', 'link', 'default', 'css'],
         fieldDef
       )
     }
