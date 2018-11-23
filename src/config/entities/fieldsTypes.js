@@ -1,4 +1,4 @@
-import { ROUTES as r, CONTRACT_UNKNOWN_NAME } from '../types'
+import { ROUTES as r, CONTRACT_UNKNOWN_NAME, THIS_CONTRACT } from '../types'
 
 export default {
   block: {
@@ -67,5 +67,8 @@ export default {
     link: (data, value) => {
       return `/${r.address}/${data.address}`
     }
+  },
+  eventAddress: {
+    link: (data, value) => (value === THIS_CONTRACT) ? null : `/${r.address}/${value}`
   }
 }

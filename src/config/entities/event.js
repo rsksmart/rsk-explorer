@@ -1,5 +1,9 @@
-import { ROUTES as r, EVENTS } from '../types'
+import { ROUTES as r, EVENTS, THIS_CONTRACT } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
+
+const setThisContract = (val, match) => {
+  return val !== match ? val : THIS_CONTRACT
+}
 
 const eventFormatRow = (event, parentData) => {
   let args = event.args
@@ -18,8 +22,8 @@ const eventFormatRow = (event, parentData) => {
       to = args._spender
       from = args._owner
     }
-    event.to = to
-    event.from = from
+    event.to = setThisContract(to, event.address)
+    event.from = setThisContract(from, event.address)
     return event
   }
 }
@@ -42,8 +46,8 @@ export const Events = () => {
         field: 'event',
         link: (data, value) => `/${r.event}/${data.eventId}`
       },
-      from: null,
-      to: null,
+      from: { type: 'eventAddress' },
+      to: { type: 'eventAddress' },
       amount: {
         field: '_value',
         filters: ['token-value']
@@ -58,7 +62,7 @@ export const Events = () => {
 
 export const Event = () => {
   let event = Events()
-  event.fields = {
+  let fields = {
     token: {
       field: '_tokenRef',
       trim: 'auto',
@@ -70,8 +74,8 @@ export const Event = () => {
       type: 'address'
     },
     event: null,
-    from: { trim: 'auto' },
-    to: { trim: 'auto' },
+    from: { type: 'eventAddress' },
+    to: { type: 'eventAddress' },
     amount: {
       field: '_value',
       filters: ['token-value']
@@ -95,6 +99,9 @@ export const Event = () => {
       type: 'block'
     }
   }
+  fields.to.trim = 'auto'
+  fields.from.trim = 'auto'
+  event.fields = fields
   return event
 }
 

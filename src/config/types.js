@@ -30,6 +30,7 @@ export const EVENTS = {
 }
 
 export const THIS_ADDRESS = 'This Address'
+export const THIS_CONTRACT = 'This Contract'
 
 export const CONTRACT_UNKNOWN_NAME = '(Not provided)'
 export const CONTRACT_CREATED = 'contract created'
