@@ -25,7 +25,9 @@ const accountFormatFields = (fields, data, parentData) => {
   const contract = data.address || parentData.address
   const contractData = data._contractData || parentData || {}
   fields.balance.suffix = contractData.symbol || ''
+  if (fields.address && !fields.address.link) {
   fields.address.link = formatLink({ contract }, null, accountLink)
+  }
   return fields
 }
 
@@ -54,6 +56,11 @@ export const TokenAccounts = () => {
 const TokenAccount = () => {
   let tokenAccount = TokenAccounts()
   tokenAccount.fields = Object.assign(TokenAccounts().fields, {
+    address: {
+      field: 'address',
+      trim: 'auto',
+      link: `/${r.address}/`
+    },
     contract: {
       type: 'address',
       trim: 'auto'
