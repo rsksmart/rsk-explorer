@@ -29,7 +29,11 @@ export default [
     name: 'tokenAddress',
     component: DataPage,
     props: {
-      title: 'Token Account',
+      title: (data) => {
+        let cData = data._contractData || {}
+        let title = 'Token Account'
+        return (cData.name) ? `${cData.name} ${title}` : title
+      },
       module: 'tokens',
       dataType: 'tokenAccount',
       action: 'getTokenAccount',

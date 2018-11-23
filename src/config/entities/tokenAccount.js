@@ -16,6 +16,7 @@ const accountFormatRow = (data, parentData) => {
   let balance = data.balance
   const contractData = data._contractData || parentData || {}
   let decimals = contractData.decimals || 18
+  data.contractName = contractData.name
   decimals = parseInt(decimals)
   if (balance && decimals) data.balanceParsed = tokenAmount(balance, decimals)
   return data
@@ -26,7 +27,7 @@ const accountFormatFields = (fields, data, parentData) => {
   const contractData = data._contractData || parentData || {}
   fields.balance.suffix = contractData.symbol || ''
   if (fields.address && !fields.address.link) {
-  fields.address.link = formatLink({ contract }, null, accountLink)
+    fields.address.link = formatLink({ contract }, null, accountLink)
   }
   return fields
 }
@@ -64,6 +65,11 @@ const TokenAccount = () => {
     contract: {
       type: 'address',
       trim: 'auto'
+    },
+    token: {
+      field: 'contractName',
+      link: (data) => `/${r.address}/${data.contract}`,
+      hideIfEmpty: true
     }
   })
   return tokenAccount
