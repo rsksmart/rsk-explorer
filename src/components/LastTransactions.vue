@@ -3,14 +3,13 @@
     h2.title
       router-link(:to='entity.listLink')
         icon(:name='entity.icon')
-        span &nbsp; {{pageTitle}} &nbsp;
+        span &nbsp; {{pageTitle}}, &nbsp;
       ul.list-head
         li
           router-link(:to='txPoolPath')
-            span {{pending}}
-        li
-          router-link(:to='txPoolPath')
-            span /{{queued}}
+            small(v-if='txsInPool === 0') pool is empty
+            small(v-if='txsInPool === 1') {{txsInPool}} tx in pool
+            small(v-if='txsInPool > 1') {{txsInPool}} txs in pool
     .transactions(v-for='tx,index in transactions')
       transaction-box(v-if='index <= 13' :tx='tx')
 
@@ -41,6 +40,9 @@ export default {
     }),
     txPoolPath () {
       return ROUTES.txPool
+    },
+    txsInPool () {
+      return this.pending + this.queued
     }
   }
 }
