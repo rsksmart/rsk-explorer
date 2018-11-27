@@ -93,6 +93,7 @@ export const timeFromTs = Vue.filter('time-from-ts', timestamp => formatDate(tim
 export const dayFromTs = Vue.filter('day-from-ts', timestamp => formatDate(timestamp, 'YYYY/MM/DD'))
 
 export const dateFromUnixTs = Vue.filter('date-from-unix-ts', time => {
+  if (!time) return
   const date = new Date(time * 1000)
   return formatDate(date)
 })
