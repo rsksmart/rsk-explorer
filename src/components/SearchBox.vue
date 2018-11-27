@@ -19,7 +19,7 @@
 </template>
 <script>
 import * as ethUtils from '../lib/js/ethUtils'
-import { add0x } from '../lib/js/utils'
+import { normalizeSearch } from '../lib/js/utils'
 import { mapState } from 'vuex'
 import { ROUTES as r } from '../config/types'
 export default {
@@ -58,8 +58,7 @@ export default {
       }, duration)
     },
     search (event) {
-      let value = this.searchValue
-      value = (parseInt(value).toString() === Number(value).toString()) ? value : add0x(value.toLowerCase())
+      let value = normalizeSearch(this.searchValue)
       if (value) {
         value = String(value).replace(/[\W_]+/g, '')
 
