@@ -1,48 +1,57 @@
 @import './colors.styl'
 @import './mixins.styl'
+
 button
   cursor pointer
-  color color3
+  color color1
   background-color transparent
   border none
-  cursor hand
+
   .arrow
-    border-color color1colorcolor11
+    border-color color1
+
   .svg-icon
     fill color1
-    width  1em
-    height  @width
-  &  hover
-      color  color2
-      .arrow
-        border-color  color2
-    .svg-icon
-      fill  color2
+    width 1em
+    height @width
+
+  & hover
+    color color2
+
+    .arrow
+      border-color color2
+
+  .svg-icon
+    fill color2
 
 button.icon
   width 1.5em
   height @width
-  padding .25em
-  &.svg-icon, .icon
+  padding 0.25em
+
+  .svg-icon, .icon
     width 1em
     height 1em
 
- .btn  
-   padding .25em .5em
-   border-radius .1em
-   box-shadow 1px 1px 1px rgba(0,0,0,.5)
-   margin 0 .25em
-   font-weight bold
+.btn
+  padding 0.25em 0.5em
+  border-radius 0.1em
+  box-shadow 1px 1px 1px rgba(0, 0, 0, 0.5)
+  margin 0 0.25em
+  font-weight bold
 
 button.big
   font-size 1em
   width 2.5em
   height @width
+
   .svg-icon
-    width 1.75em 
+    width 1.75em
     height @width
+
   .badge
-    font-size .8em !important 
+    font-size 0.8em !important
+
 button.big-txt
   font-size 1.25em
 
@@ -50,39 +59,45 @@ button.menu
   width 2.5em
   height 2.5em
   padding 0
+
   .svg-icon
     width 2em
     height 2em
+
 button.circle
   border-radius 50%
-  border  $border
-  padding .4em
+  border $border
+  padding 0.4em
+
   .svg-icon
     width 1.5em
     height 1.5em
-   &  hover
-    border-color color2 
 
-
+  & hover
+    border-color color2
 
 .btn.badge, .w-badge
   position relative
-  margin .75em .5em .75em .25em
+  margin 0.75em 0.5em 0.75em 0.25em
   display inline-block
+
   .badge
     badge(1.5em)
     position absolute
-    bottom -.75em
+    bottom -0.75em
     right @bottom
+
     .arrow
       border-color $white
-  &  hover  
+
+  & hover
     .badge
       background $color2
 
-button.close 
+button.close
   min-width $button-close-size
   min-width @min-height
+
   svg
     display inline-block
     min-height $button-close-size
@@ -106,10 +121,10 @@ button.switch
   display inline-flex
   color $gray
   background $quasi-bg
-  padding .25em
-  margin .125em
-  border-radius .125em
+  padding 0.25em
+  margin 0.125em
+  border-radius 0.125em
   box-shadow $hard-sh
+
   &:disabled
     color $midlight
-    

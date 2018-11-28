@@ -13,10 +13,10 @@ export default {
   .big-field
     display flex
     .field
+      raw()
       width 100%
       max-width 100%
       height 3em
-      font-size .7em
       background none
       color $color
       border none
