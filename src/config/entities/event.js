@@ -1,5 +1,6 @@
-import { ROUTES as r, EVENTS, THIS_CONTRACT } from '../types'
+import { ROUTES as r, EVENTS, THIS_CONTRACT, NOT_AVAILABLE } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
+import { TxLogItem } from './transaction'
 
 const setThisContract = (val, match) => {
   return val !== match ? val : THIS_CONTRACT
@@ -13,6 +14,9 @@ const eventFormatRow = (event, parentData) => {
   const decimals = parseInt(addressData.decimals)
   event._tokenAddress = tokenAddress
   event._tokenRef = token
+  event.to = null
+  event.from = null
+  event._value = null
 
   if (args) {
     event._value = tokenAmount(args._value, decimals)
@@ -24,8 +28,8 @@ const eventFormatRow = (event, parentData) => {
     }
     event.to = setThisContract(to, event.address)
     event.from = setThisContract(from, event.address)
-    return event
   }
+  return event
 }
 
 const eventFormatFields = (fields, data, parentData) => {
@@ -44,13 +48,15 @@ export const Events = () => {
     fields: {
       event: {
         field: 'event',
-        link: (data, value) => `/${r.event}/${data.eventId}`
+        link: (data, value) => `/${r.event}/${data.eventId}`,
+        default: NOT_AVAILABLE
       },
       from: { type: 'eventAddress' },
       to: { type: 'eventAddress' },
       amount: {
         field: '_value',
-        filters: ['token-value']
+        filters: ['token-value'],
+        default: NOT_AVAILABLE
       },
       timestamp: null,
       blockNumber: {
@@ -73,13 +79,12 @@ export const Event = () => {
       trim: 'auto',
       type: 'address'
     },
-    event: null,
+    event: {
+      default: NOT_AVAILABLE
+    },
     from: { type: 'eventAddress' },
     to: { type: 'eventAddress' },
-    amount: {
-      field: '_value',
-      filters: ['token-value']
-    },
+    amount: event.fields.amount,
     data: {
       field: 'args._data',
       hideIfEmpty: true,
@@ -105,5 +110,13 @@ export const Event = () => {
   return event
 }
 
+export const EventData = () => {
+  let eventFields = Event().fields
+  let { transaction, blockNumber } = eventFields
+  let fields = Object.assign(TxLogItem().fields, { transaction, blockNumber })
+  return { fields }
+}
+
 export const events = Events()
 export const event = Event()
+export const eventData = EventData()

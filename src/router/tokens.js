@@ -1,4 +1,5 @@
 import DataPage from '@/components/DataPage'
+import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
 
 export default [
@@ -46,10 +47,23 @@ export default [
     name: 'Event',
     component: DataPage,
     props: {
+      mainContent: [
+        {
+          name: 'Event',
+          dataType: 'event',
+          component: DataItem
+        },
+        {
+          name: 'Log',
+          dataType: 'eventData',
+          component: DataItem
+        }
+      ],
       title: 'Event',
       module: 'events',
       dataType: 'event',
       action: 'getEvent'
+
     }
   }
 ]
