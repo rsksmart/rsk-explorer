@@ -25,6 +25,7 @@ import dataMixin from '../mixins/dataMixin'
 import DataField from './DataField'
 import FieldTitle from './FieldTitle'
 import DataTable from './DataTable'
+import CollapsibleList from './CollapsibleList'
 export default {
   name: 'data-item',
   props: [
@@ -36,7 +37,8 @@ export default {
   components: {
     DataField,
     DataTable,
-    FieldTitle
+    FieldTitle,
+    CollapsibleList
   },
   mixins: [
     dataMixin
