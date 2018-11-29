@@ -18,7 +18,7 @@
           .custom-item(v-else :class='itemClass(field)')
             //-.field-title(v-if='!field.hideTitle') {{ field.title }}
             field-title(:field='field' v-if='!field.hideTitle' :class='field.renderAs')
-            component.custom(:is='field.renderAs' :data='data[fieldName]' v-bind='componentProps(field)' )
+            component.custom(:is='field.renderAs' :data='getValue(field,data)' v-bind='componentProps(field)' )
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
