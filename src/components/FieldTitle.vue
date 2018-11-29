@@ -1,7 +1,7 @@
 <template lang="pug">
   .field-title
     .icon(v-if='showIcon' )
-      tool-tip(v-if='!showTitle' :value='field.name')
+      tool-tip(v-if="!showTitle" :value="field.name | camelCaseTo" :options='tipOptions')
         icon(:name='field.icon')
       icon(v-else :name='field.icon')
     span.title(v-if='showTitle && field.title') {{ field.title | camel-case-to }}
@@ -20,7 +20,11 @@ export default {
   data () {
     return {
       forceTitle: false,
-      forceIcon: false
+      forceIcon: false,
+      tipOptions: {
+        trim: 0,
+        forceTip: true
+      }
     }
   },
   created () {
