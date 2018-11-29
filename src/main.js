@@ -6,10 +6,12 @@ import VueSVGIcon from 'vue-svgicon'
 import store from './store'
 import App from './App'
 import router from './router'
+import DataItem from './components/DataItem'
 
 Vue.use(VueSVGIcon, { tagName: 'icon' })
 Vue.use(Vuex)
 Vue.config.productionTip = false
+Vue.component('data-item', DataItem)
 
 /* eslint-disable no-new */
 new Vue({
