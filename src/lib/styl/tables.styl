@@ -36,7 +36,6 @@
 $head-bg = $color
 $row-odd-bg = $darkness-odd
 $row-even-bg = $darkness-even
-$border-color = alpha($color,.2)
 $pinned-border = $brand2 solid 1px
 
   table.dark
@@ -47,7 +46,7 @@ $pinned-border = $brand2 solid 1px
         color $color
         fill $color
     th
-      border-bottom $border-color dashed 1px
+      border-bottom $soft-border
       padding 1em 2em
       color $color
         button *
@@ -61,10 +60,10 @@ $pinned-border = $brand2 solid 1px
       .pin .svg-icon
         fill $color
     tr:last-child td
-      border-bottom solid 1px $border-color   
+      border-bottom $mid-border
     td 
       border none
-      border-bottom dashed 1px $border-color
+      border-bottom $soft-border
       padding .75em 1.5em
     tr > td:first-child , tr > th:first-child
       padding-left 3em  
