@@ -14,24 +14,26 @@
       .page-header(v-if='mainContent')
         .tabs
           .tabs-titles
-            template(v-for='tab in mainContent')
-              button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name)')
-                span.title {{tab.name}}
-        data-section( v-if=' activeContentTab'
-          :component='activeContentTab.component' :reqKey='reqKey' :module='module' :dataType='activeContentTab.dataType || dataType' :action='action')
+            template(v-for='tab in mainContentTabs')
+              button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name)'
+               :class='tabTitleCss(isActiveContentTab(tab))')
+                span.title {{tab.name}} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}
+        data-section( v-if='activeContentTab'
+          :component='activeContentTab.component' :reqKey='reqKey' :module='module'
+          :dataType='activeContentTab.dataType || dataType' :action='action')
       .page(v-if='data')
-        data-section(v-if='!tabs && !activeContentTab' :module='module' :dataType='dataType' :reqKey='reqKey' :component='component' :action='action')
+        data-section(v-if='!tabs && !activeContentTab' :module='module' :dataType='dataType'
+          :reqKey='reqKey' :component='component' :action='action')
         .tabs(v-if='tabs && data')
           .tabs-titles
             template(v-for='tab in tabs')
               template(v-if='renderTab(tab)')
                 template(v-if='requestingPageData()(tab.name)')
-                  //- Change it by tab spinner
                   button.btn.tab-title.link
                     loading-circle(:size='10')
                     span.title {{tab.name}}
                 template(v-else)
-                  button.btn.tab-title.link(@click='setTab(tab.name)' :class='tabTitleCss(tab)')
+                  button.btn.tab-title.link(@click='setTab(tab.name)' :class='tabTitleCss(isActiveTab(tab))')
                     span.title {{tab.name}}
                       small.small ({{ getPageTotal()(tab.name) }})
 
@@ -120,7 +122,20 @@ export default {
       let tabs = this.mainContent || []
       if (!tabs.length) return
       let tabName = this.getActiveContentTab || tabs[0].name
-      return tabs.find(tab => tab.name === tabName)
+      let tab = tabs.find(tab => tab.name === tabName)
+      return tab
+    },
+    mainContentTabs () {
+      let tabs = this.mainContent || []
+      tabs = tabs.map(tab => {
+        let render = tab.render
+        render = (render && typeof render === 'function') ? render(this.data) : render
+        tab.render = render
+        let count = tab.count
+        if (count && typeof count === 'function') tab.total = count(this.data)
+        return tab
+      })
+      return tabs.filter(tab => { return (undefined !== tab.render) ? tab.render : true })
     }
   },
   methods: {
@@ -140,7 +155,7 @@ export default {
       this.updateRouterQuery('cTab', name)
     },
     isActiveContentTab (tab) {
-      return this.activeContentTab === tab.name
+      return this.activeContentTab.name === tab.name
     },
     updateRouterQuery (key, value) {
       let query = Object.assign({}, this.$route.query)
@@ -172,8 +187,8 @@ export default {
     isActiveTab (tab) {
       return this.activeTab === tab.name
     },
-    tabTitleCss (tab) {
-      return (this.isActiveTab(tab)) ? ['active'] : []
+    tabTitleCss (active) {
+      return (active) ? ['active'] : []
     }
   }
 }
