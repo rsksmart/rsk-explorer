@@ -38,13 +38,14 @@
 <script>
 /**
  *   - value: text to trim
-  - trim: trim position, 0  to not trim
+  - trim: trim position, 0 not trim
   - options:
     - pos: [top | bottom | left | right], tooltip position
     - copy: [boolean], show copy button
     - trimAt: 'start' | 'end' | 'center'
     - copyMsg: [boolean], show message when copy
     - trimTxt: '...' [string], symbol to replace trimmed text
+    - forceTip: <boolean> force to show tip when not trim
  */
 import '../icons/copy'
 export default {
@@ -76,7 +77,8 @@ export default {
         trimTxt: '...',
         trimMin: 2,
         trimMax: 0,
-        forceTrim: false
+        forceTrim: false,
+        forceTip: false
       }
     }
   },
@@ -213,8 +215,8 @@ export default {
       this.$emit('copy', this.value)
     },
     showTip (show) {
-      show = show || !this.show
-      if (this.trimLen) this.show = show
+      show = (undefined === show) ? !this.show : show
+      if (this.trimLen || this.opts.forceTip) this.show = show
     }
   }
 }
