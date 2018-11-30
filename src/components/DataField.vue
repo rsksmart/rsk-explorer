@@ -4,6 +4,12 @@
     template(v-if='filteredType === "array"')
       ul
         li(v-for='v in value') {{v}}
+    template(v-else-if='filteredType === "object"')
+      ul
+        li(v-for='p in Object.keys(value)')
+          strong {{p}}:&nbsp;
+          span {{value[p]}}
+
     template(v-else)
       template(v-if='trim && !options.noTrim')
         tool-tip.field-value(:value='value' :trim='trim' :options='trimOptions' :router-link='link')
@@ -76,6 +82,10 @@ export default {
   @import '../lib/styl/mixins.styl'
   @import '../lib/styl/lists.styl'
 
+  .data-field
+    ul
+      margin 0
+      padding 0
   .data-field, .data-field > a, .data-field > .tooltip, max-width 100%
     display flex
     position relative
