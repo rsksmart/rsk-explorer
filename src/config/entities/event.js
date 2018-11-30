@@ -10,7 +10,7 @@ const eventFormatRow = (event, parentData) => {
   let args = event.args
   const addressData = (parentData.address) ? parentData : event._addressData
   let tokenAddress = addressData.address
-  let token = addressData.name || event.address
+  let token = addressData.name || null
   const decimals = parseInt(addressData.decimals)
   event._tokenAddress = tokenAddress
   event._tokenRef = token
@@ -72,7 +72,8 @@ export const Event = () => {
     token: {
       field: '_tokenRef',
       trim: 'auto',
-      type: 'tokenName'
+      type: 'tokenName',
+      hideIfEmpty: true
     },
     contract: {
       field: 'address',
@@ -113,7 +114,9 @@ export const Event = () => {
 export const EventData = () => {
   let eventFields = Event().fields
   let { transaction, blockNumber } = eventFields
-  let fields = Object.assign(TxLogItem().fields, { transaction, blockNumber })
+  let txLogFields = TxLogItem().fields
+  txLogFields.logIndex.link = () => { }
+  let fields = Object.assign(txLogFields, { transaction, blockNumber })
   return { fields }
 }
 
