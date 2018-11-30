@@ -149,6 +149,19 @@ export default [
     name: 'Transaction',
     component: DataPage,
     props: {
+      mainContent: [
+        {
+          name: 'Transaction',
+          component: DataItem
+        },
+        {
+          name: 'Events',
+          component: DataItem,
+          dataType: 'transactionLogs',
+          // render: (data) => data && data.receipt.logs.length,
+          count: (data) => { return (data) ? data.receipt.logs.length : 0 }
+        }
+      ],
       module: 'txs',
       title: 'Transaction',
       dataType: 'transaction',

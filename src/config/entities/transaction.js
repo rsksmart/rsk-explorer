@@ -1,4 +1,10 @@
-import { ROUTES as r, THIS_ADDRESS, STATUS, CONTRACT_CREATED, CONTRACT_FAILED } from '../types'
+import {
+  ROUTES as r,
+  THIS_ADDRESS,
+  STATUS,
+  CONTRACT_CREATED,
+  CONTRACT_FAILED
+} from '../types'
 import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
@@ -184,8 +190,64 @@ const TxBox = () => {
   return txs
 }
 
+export const TxLogs = () => {
+  const tx = Tx()
+  return {
+    fields: {
+      hash: tx.fields.hash,
+      logs: {
+        hideTitle: true,
+        field: 'receipt.logs',
+        renderAs: 'collapsible-list',
+        renderAsProps: {
+          type: 'transactionLogItem',
+          header: (data) => {
+            let { logIndex, address, event } = data
+            return [logIndex, address, event]
+          }
+        }
+      }
+    }
+  }
+}
+
+export const TxLogItem = () => {
+  return {
+    name: 'tx-log-item',
+    fields: {
+      logIndex: {
+        default: 0
+      },
+      address: {
+        type: 'address',
+        trim: 'auto'
+      },
+      event: {
+        field: 'abi',
+        renderAs: 'event-call',
+        hideIfEmpty: true,
+        default: null
+      },
+      arguments: {
+        field: 'args',
+        css: ['raw'],
+        hideIfEmpty: true
+      },
+      topics: {
+        css: ['small', 'raw']
+      },
+      data: {
+        field: 'data',
+        renderAs: 'big-field'
+      }
+    }
+  }
+}
+
 export const Transactions = () => Object.assign(Txs(), { formatRow: transactionFormatRow })
 
 export const transactionsBox = TxBox()
 export const transactions = Transactions()
 export const transaction = Tx()
+export const transactionLogs = TxLogs()
+export const transactionLogItem = TxLogItem()

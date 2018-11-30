@@ -23,7 +23,7 @@
  */
 
 import { block, blocks, blockBox } from './block'
-import { transaction, transactions, transactionsBox } from './transaction'
+import { transaction, transactions, transactionsBox, transactionLogs, transactionLogItem } from './transaction'
 import { address, addresses } from './address'
 import { token, tokens } from './token'
 import { event, events } from './event'
@@ -37,6 +37,8 @@ export default {
   transaction,
   transactions,
   transactionsBox,
+  transactionLogs,
+  transactionLogItem,
   address,
   addresses,
   token,
