@@ -126,7 +126,7 @@ export default {
     },
     iconStyle (row) {
       let style = {}
-      let value = row[this.key]
+      let value = (row) ? row[this.key] : null
       if (this.type === 'blocks') {
         style.color = this.getBlockColor(value)
         style.fill = style.color
