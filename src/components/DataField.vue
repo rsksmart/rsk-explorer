@@ -11,7 +11,7 @@
         router-link(v-if='link' :to='link')
           .field-value {{ filteredValue || field.default }}
         .field-value(v-else) {{ filteredValue || field.default }}
-      span(v-if='field.suffix') &nbsp; {{field.suffix}}
+      span(v-if='field.suffix && filteredValue !== null') &nbsp; {{field.suffix}}
       progress-bar(v-if='delayed')
 </template>
 <script>
