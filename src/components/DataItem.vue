@@ -18,7 +18,7 @@
           .custom-item(v-else :class='itemClass(field)')
             //-.field-title(v-if='!field.hideTitle') {{ field.title }}
             field-title(:field='field' v-if='!field.hideTitle' :class='field.renderAs')
-            component.custom(:is='field.renderAs' :data='getValue(field,data)' v-bind='componentProps(field)' )
+            component.custom(:is='field.renderAs' :data='getValue(field,data)' v-bind='componentProps(field)')
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
@@ -26,6 +26,7 @@ import DataField from './DataField'
 import FieldTitle from './FieldTitle'
 import DataTable from './DataTable'
 import CollapsibleList from './CollapsibleList'
+import EventCall from './EventCall'
 export default {
   name: 'data-item',
   props: [
@@ -38,7 +39,8 @@ export default {
     DataField,
     DataTable,
     FieldTitle,
-    CollapsibleList
+    CollapsibleList,
+    EventCall
   },
   mixins: [
     dataMixin
@@ -101,7 +103,7 @@ export default {
       .field-icon, .field-title
         margin-right 0.5em
 
-      .field-title, .custom
+      .field-title
         flex 1
         margin 0 1em 0 2em
         justify-content flex-start
@@ -110,12 +112,23 @@ export default {
         margin 0 2em 0 0em !important
         flex 5
 
-  .custom-item
-    flex 1
-    flex-centered()
+  .custom
+    display flex
+    flex-flow column wrap
+    margin 0 2em 0 0em !important
+    flex 5
 
-    .field-title, .custom
+  .custom-item
+    display flex
+    flex 1 1 100%
+    align-items center
+    overflow visible
+    padding 0.5em 0em
+
+    .field-title
       flex 1
+      margin 0 1em 0 2em
+      justify-content flex-start
 
   .field-icon, .field-title
     color $color
@@ -123,7 +136,6 @@ export default {
   .field-title
     text-transform capitalize
     font-weight bold
-    justify-selft flex-end
 
   .data-field
     justify-content flex-start
