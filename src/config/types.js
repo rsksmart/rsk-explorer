@@ -33,6 +33,7 @@ export const THIS_ADDRESS = 'This Address'
 export const THIS_CONTRACT = 'This Contract'
 
 export const CONTRACT_UNKNOWN_NAME = '(Not provided)'
+export const NOT_AVAILABLE = 'N/A'
 export const CONTRACT_CREATED = 'contract created'
 export const CONTRACT_FAILED = 'creation failed'
 
