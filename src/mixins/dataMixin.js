@@ -134,15 +134,24 @@ export default {
 
       return style
     },
-    fieldCss (field, value, filteredValue, row) {
+    fieldFormatProp (prop, field, value, filteredValue, row) {
       if (undefined === value) value = this.getValue(field, this.data, true)
       if (undefined === filteredValue) filteredValue = this.filterFieldValue()(field, value)
-      let css = field.css
-      if (typeof css === 'function') {
-        return css(value, filteredValue, row)
+      let pv = field[prop]
+      if (typeof pv === 'function') {
+        return pv(value, filteredValue, row)
       }
-      return css
+      return pv
     },
+
+    fieldCss (field, value, filteredValue, row) {
+      return this.fieldFormatProp('css', field, value, filteredValue, row)
+    },
+
+    fieldIcon (field, value, filteredValue, row) {
+      return this.fieldFormatProp('icon', field, value, filteredValue, row)
+    },
+
     showField (field, data) {
       let fieldName = field.fieldName
       let hidden = this.isHidden(fieldName)
@@ -151,6 +160,7 @@ export default {
       let isNotEmpty = (field.hideIfEmpty) ? this.getValue(field, data) : true
       return Boolean(!hidden && !isTitleField && isNotEmpty)
     },
+    
     rowLink (row) {
       let link
       let key = this.keyValue(row)
