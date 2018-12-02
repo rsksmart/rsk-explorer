@@ -261,12 +261,14 @@ export default {
     position relative
 
     .tip
+      will-change transform opacity 
       position absolute
       filter drop-shadow($tip-sh)
       width 100%
       color $dark
       display flex
       justify-content flex-start // arrow on start
+      animation 0.125s ease-in tooltip-anim
 
       .value
         border-radius 3px
@@ -384,6 +386,17 @@ export default {
         opacity 0
         transform translateY(-5em)
 
+  @keyframes tooltip-anim 
+    0%
+      opacity 0
+      transform scale(0.75)
+
+    75%
+      transform scale(1)
+    100%
+      opacity 1
+          
+  
   .copying
     animation-duration 1s
     animation-name copyb
