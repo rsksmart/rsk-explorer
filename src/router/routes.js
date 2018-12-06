@@ -159,7 +159,8 @@ export default [
           component: DataItem,
           dataType: 'transactionLogs',
           // render: (data) => data && data.receipt.logs.length,
-          count: (data) => { return (data && data.receipt) ? data.receipt.logs.length : 0 }
+          count: (data) => { return (data && data.receipt) ? data.receipt.logs.length : 0 },
+          emptyMsg: 'The transaction does not have logs'
         }
       ],
       module: 'txs',

@@ -1,8 +1,8 @@
 <template lang="pug">
   .collapsible-list
-    template(v-if='!data.length')
+    template(v-if='(!data || !data.length) && emptyMsg')
       .txt-center
-        small The transaction does not have logs
+        small {{emptyMsg}}
     template(v-else)
       collapsible-container.element(v-for='item,key in data' :key='key' :expanded='data.length === 1'
         :class='(key % 2) ? "odd" : "even"')
@@ -16,7 +16,7 @@ import DataMixin from '../mixins/dataMixin'
 import CollapsibleContainer from './CollapsibleContainer'
 export default {
   name: 'collapsible-list',
-  props: ['data', 'type', 'header'],
+  props: ['data', 'type', 'header','emptyMsg'],
   mixins: [DataMixin],
   components: {
     CollapsibleContainer
