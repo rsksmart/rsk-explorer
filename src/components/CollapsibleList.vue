@@ -16,7 +16,7 @@ import DataMixin from '../mixins/dataMixin'
 import CollapsibleContainer from './CollapsibleContainer'
 export default {
   name: 'collapsible-list',
-  props: ['data', 'type', 'header','emptyMsg'],
+  props: ['data', 'type', 'header', 'emptyMsg'],
   mixins: [DataMixin],
   components: {
     CollapsibleContainer

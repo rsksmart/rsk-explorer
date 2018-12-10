@@ -107,8 +107,7 @@ export default {
       return cssClass
     },
     getValue (field, data, raw) {
-      let value = this.getFieldFilteredValue()(field, data, raw)
-      return value
+      return this.getFieldFilteredValue()(field, data, raw)
     },
     isFrom (fieldName, index) {
       let next = this.visibleFields[index + 1]
@@ -157,10 +156,11 @@ export default {
       let hidden = this.isHidden(fieldName)
       let entity = this.entity
       let isTitleField = (fieldName === entity.titleField)
-      let isNotEmpty = (field.hideIfEmpty) ? this.getValue(field, data) : true
+      let value = this.getValue(field, data)
+      let isNotEmpty = (field.hideIfEmpty) ? value : true
       return Boolean(!hidden && !isTitleField && isNotEmpty)
     },
-    
+
     rowLink (row) {
       let link
       let key = this.keyValue(row)

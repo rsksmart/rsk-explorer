@@ -261,7 +261,7 @@ export default {
     position relative
 
     .tip
-      will-change transform opacity 
+      will-change transform opacity
       position absolute
       filter drop-shadow($tip-sh)
       width 100%
@@ -386,7 +386,7 @@ export default {
         opacity 0
         transform translateY(-5em)
 
-  @keyframes tooltip-anim 
+  @keyframes tooltip-anim
     0%
       opacity 0
       transform scale(0.75)
@@ -395,8 +395,7 @@ export default {
       transform scale(1)
     100%
       opacity 1
-          
-  
+
   .copying
     animation-duration 1s
     animation-name copyb
