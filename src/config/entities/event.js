@@ -19,12 +19,12 @@ const eventFormatRow = (event, parentData) => {
   event._value = null
 
   if (args) {
-    event._value = tokenAmount(args._value, decimals)
-    let to = args._to
-    let from = args._from
+    event._value = tokenAmount(args.value, decimals)
+    let to = args.to
+    let from = args.from
     if (event.event === EVENTS.approval) {
-      to = args._spender
-      from = args._owner
+      to = args.spender
+      from = args.owner
     }
     event.to = setThisContract(to, event.address)
     event.from = setThisContract(from, event.address)
