@@ -69,7 +69,7 @@ export const Events = () => {
 export const Event = () => {
   let event = Events()
   let fields = {
-    token: {
+    contractName: {
       field: '_tokenRef',
       trim: 'auto',
       type: 'tokenName',
