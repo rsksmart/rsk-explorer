@@ -43,7 +43,7 @@ export default {
     }),
     mod () {
       let max = (this.pending > 4) ? this.pending : 4
-      if (max) return Math.ceil(Math.cbrt(max))
+      return (max) ? Math.ceil(Math.cbrt(max)) : 0
     },
     step () {
       let step = this.pending

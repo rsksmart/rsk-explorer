@@ -87,9 +87,7 @@ export default {
       return (this.data) ? this.isArray(this.data) : false
     },
     tableFields () {
-      if (this.isTable) {
-        return this.fields || Object.keys(this.data[0])
-      }
+      return (this.isTable) ? this.fields || Object.keys(this.data[0]) : null
     },
     pageOptions () {
       return this.page.pages

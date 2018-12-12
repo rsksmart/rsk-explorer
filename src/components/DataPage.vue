@@ -106,6 +106,7 @@ export default {
         let data = this.data || {}
         return (typeof title === 'function') ? title(data) : title
       }
+      return ''
     },
     reqKey () {
       if (this.rKey) return this.rKey

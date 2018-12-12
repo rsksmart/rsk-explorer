@@ -24,12 +24,13 @@ export default {
   },
   computed: {
     prev () {
-      if (this.page > 1) return this.page - 1
+      return (this.page > 1) ? this.page - 1 : null
     },
     next () {
       if ((this.page * this.perPage) <= this.total) {
         return parseInt(this.page) + 1
       }
+      return null
     },
     total () {
       return this.options.total

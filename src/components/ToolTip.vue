@@ -134,6 +134,7 @@ export default {
         let p = (pos === 'left') ? 'right' : 'left'
         return p + ':' + this.$el.clientWidth + 'px;  bottom: -50%;'
       }
+      return ''
     },
     tipClass () {
       let css = []
@@ -393,6 +394,7 @@ export default {
 
     75%
       transform scale(1)
+
     100%
       opacity 1
 
