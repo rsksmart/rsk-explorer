@@ -127,7 +127,7 @@ export default [
           action: 'getTokenAccounts',
           render: data => {
             let methods = data.contractMethods || []
-            return methods.indexOf('balanceOf') > -1
+            return methods.indexOf('balanceOf(address)') > -1
           }
         }
       ]
