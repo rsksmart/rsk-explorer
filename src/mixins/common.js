@@ -35,6 +35,17 @@ export default {
         if (type === 'block') style.color = this.getBlockColor(value)
         return style
       }
+    },
+    getEventPosition (event) {
+      if (!event) return
+      let x = event.clientX
+      let y = event.clientY
+      return { x, y }
+    },
+    getRouterHashFromEvent (event) {
+      let pos = this.getEventPosition(event)
+      let hash = (pos) ? `${pos.x}:${pos.y}` : ''
+      return hash
     }
   }
 }

@@ -14,7 +14,7 @@
             template(v-if='!isHidden(fieldName)')
               th(:class='thClass(field.fieldName)')
                 .sort(v-if='sort && isSortable(field.fieldName)')
-                  button.link(@click='sortBy(field.fieldName)')
+                  button.link(@click='sortBy(field.fieldName,$event)')
                     field-title(:field='field')
                       .sort-icon(v-if='isSorted(field.fieldName) && !isDefaultSort')
                         icon.small(:name='sortIcon(field.fieldName)')
@@ -32,7 +32,7 @@
             td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
               template(v-if='!renderTable')
                 .sort.td-title(v-if='sort && isSortable(field.fieldName)')
-                  button.link(@click='sortBy(field.fieldName)')
+                  button.link(@click='sortBy(field.fieldName,$event)')
                     field-title(:field='field')
                       .sort-icon(v-if='isSorted(field.fieldName) && !isDefaultSort')
                         icon.small(:name='sortIcon(field.fieldName)')
@@ -180,10 +180,11 @@ export default {
       delete sort[fieldName]
       this.getData(sort)
     },
-    getData (sort) {
-      this.updateRouterQuery({ sort })
+    getData (sort, hash) {
+      this.updateRouterQuery([{ sort }, hash])
     },
-    sortBy (field) {
+    sortBy (field, event) {
+      let hash = this.getRouterHashFromEvent(event)
       let sort = {}
       sort[field] = this.sort[field]
       if (!this.isDefaultSort) {
@@ -193,7 +194,7 @@ export default {
         let defSort = this.defaultSort[field]
         sort[field] = -defSort
       }
-      this.getData(sort)
+      this.getData(sort, hash)
     },
     isSorted (field) {
       let sort = this.sort

@@ -15,7 +15,7 @@
         .tabs
           .tabs-titles
             template(v-for='tab in mainContentTabs')
-              button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name)'
+              button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name,$event)'
                :class='tabTitleCss(isActiveContentTab(tab))')
                 span.title {{tab.name}} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}
         data-section( v-if='activeContentTab'
@@ -33,7 +33,7 @@
                     loading-circle(:size='10')
                     span.title {{tab.name}}
                 template(v-else)
-                  button.btn.tab-title.link(@click='setTab(tab.name)' :class='tabTitleCss(isActiveTab(tab))')
+                  button.btn.tab-title.link(@click='setTab(tab.name,$event)' :class='tabTitleCss(isActiveTab(tab))')
                     span.title {{tab.name}}
                       small.small ({{ getPageTotal()(tab.name) }})
 
@@ -52,6 +52,7 @@ import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
 import ErrorPage from './ErrorPage'
 import Message from './Message'
+import common from '../mixins/common'
 export default {
   name: 'data-page',
   components: {
@@ -61,6 +62,9 @@ export default {
     Message,
     LoadingCircle
   },
+  mixins: [
+    common
+  ],
   props: [
     'module',
     'dataType',
@@ -153,19 +157,20 @@ export default {
       'pageError',
       'isRequested'
     ]),
-    setTab (tab) {
-      this.updateRouterQuery('__tab', tab)
+    setTab (tab, event) {
+      this.updateRouterQuery('__tab', tab, event)
     },
-    setActiveContentTab (name) {
-      this.updateRouterQuery('__ctab', name)
+    setActiveContentTab (name, event) {
+      this.updateRouterQuery('__ctab', name, event)
     },
     isActiveContentTab (tab) {
       return this.activeContentTab.name === tab.name
     },
-    updateRouterQuery (key, value) {
+    updateRouterQuery (key, value, event) {
+      let hash = this.getRouterHashFromEvent(event)
       let query = Object.assign({}, this.$route.query)
       query[key] = value
-      this.$router.push({ query })
+      this.$router.push({ query, hash })
     },
     renderTab (tab) {
       const render = tab.render
@@ -178,6 +183,7 @@ export default {
         let diff = plainObjectChanges(to.query, from.query)
         let keys = Object.keys(diff)
         // dont fetch
+        if (!keys.length) return
         if (keys.length === 1 && keys[0].slice(0, 2) === '__') return
       }
       this.getData()

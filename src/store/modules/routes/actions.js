@@ -15,17 +15,30 @@ export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
   return dispatch('fetchData', req)
 }
 
-export const updateRouterQuery = ({ state, getters, dispatch }, update) => {
+export const updateRouterQuery = ({ state, getters, dispatch }, payload) => {
+  let update, hash
+  if (Array.isArray(payload)) {
+    update = payload[0]
+    hash = payload[1]
+  } else {
+    update = payload
+  }
   update = update || {}
   // update = getters.parseQuery(update)
   let query = getters.getRouterQuery
+  query = updateQuery(query, update)
+  dispatch('routerPush', { query, hash })
+}
+
+export const routerPush = ({ state, commit, getters }, payload) => {
+  let { query, hash } = payload
+  query = getters.parseQuery(query)
+  router.push({ query, hash })
+}
+
+export const updateQuery = (query, update) => {
   for (let p in update) {
     query[p] = update[p]
   }
-  dispatch('pushRouterQuery', query)
-}
-
-export const pushRouterQuery = ({ state, commit, getters }, query) => {
-  query = getters.parseQuery(query)
-  router.push({ query })
+  return query
 }

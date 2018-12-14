@@ -1,6 +1,6 @@
 <template lang="pug">
   .pages(v-if='pages && pages > 1')
-    button.page-button(v-if='prev' @click='goToPage(prev)')
+    button.page-button(v-if='prev' @click='goToPage(prev,$event)')
       icon(name='arrow-left')
     div(v-else)
     .page-numbers
@@ -8,15 +8,19 @@
      input.page(v-else type='text' :value='page' @change='changePage' @blur='editPage=false')
      small /
      small.link(@click='goToPage(pages)') {{ pages }}
-    button.page-button(v-if='next' @click='goToPage(next)')
+    button.page-button(v-if='next' @click='goToPage(next,$event)')
       icon(name='arrow-right')
     div(v-else)
 </template>
 <script>
 import { mapActions } from 'vuex'
+import common from '../mixins/common'
 export default {
   name: 'paginator',
-  props: ['options', 'link', 'tab'],
+  props: ['options', 'link'],
+  mixins: [
+    common
+  ],
   data () {
     return {
       editPage: false
@@ -50,14 +54,13 @@ export default {
     changePage (event) {
       this.editPage = false
       let page = event.target.value
-      if (page) this.goToPage(page)
+      if (page) this.goToPage(page, event)
     },
-    goToPage (page) {
-      let query = Object.assign({}, this.$route.query)
-      let tab = this.tab
-      query.page = page
-      if (tab) query.__tab = tab
-      this.$router.push({ query })
+    goToPage (page, event) {
+      let hash = this.getRouterHashFromEvent(event)
+      let key = this.key
+      let query = (key) ? { [`page__${key}`]: page } : { page }
+      this.updateRouterQuery([query, hash])
     }
   }
 }
