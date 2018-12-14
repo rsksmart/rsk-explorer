@@ -14,3 +14,15 @@ export const normalizeSearch = value => {
   value = (parseInt(value).toString() === Number(value).toString()) ? value : add0x(value)
   return value
 }
+
+export const plainObjectChanges = (oldObj, newObj) => {
+  oldObj = oldObj || {}
+  if (!newObj) return oldObj
+  let diff = Object.assign(Object.assign({}, oldObj), newObj)
+  for (let p in diff) {
+    let newValue = newObj[p]
+    let oldValue = oldObj[p]
+    if (oldValue === newValue) delete diff[p]
+  }
+  return diff
+}
