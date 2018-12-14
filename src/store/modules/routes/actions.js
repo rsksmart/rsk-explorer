@@ -7,7 +7,8 @@ export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
   let action = req.action
   let query = routerQuery.q || getters.getSavedQ(module, action) || null
   req.sort = routerQuery.sort || getters.getSavedSort(module, action) || null
-  req.page = routerQuery.page || 1
+  let key = req.key
+  req.page = (key) ? routerQuery[`page__${key}`] || 1 : 1
   if (query) query = getters.parseQuery(query, true)
   req.query = query
   req.params = req.params || {}

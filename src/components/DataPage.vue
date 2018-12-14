@@ -40,7 +40,7 @@
           template(v-for='tab in tabs')
             data-section.tab-content(v-if='isActiveTab(tab)'
               :module='tab.module' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action'
-              :msgs='tab.msgs' :tab='tab.name')
+              :msgs='tab.msgs')
             spinner(v-if='isRequesting()(tab.name)')
 
 </template>

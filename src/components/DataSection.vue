@@ -6,8 +6,8 @@
       .messages(v-if='msgs')
         message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data' :parentData='parentData')
       //- Transactions filters
-      tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module' :tab='tab')
-      paginator(v-if='isTable' :options='pageOptions' :link='0' :tab='tab' )
+      tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module')
+      paginator(v-if='isTable' :options='pageOptions' :link='0')
       template(v-if='!isTable')
         ul.prev-next
           li.prev(v-if='prev')
@@ -31,7 +31,7 @@
         template(v-else)
           data-item(:data='data' :type='dataType' :parentData='parentData' :delayed='delayed')
 
-    paginator(v-if='isTable' :options='pageOptions' :link='0' :tab='tab')
+    paginator(v-if='isTable' :options='pageOptions' :link='0')
 
 </template>
 <script>
@@ -55,7 +55,7 @@ export default {
     Message
   },
   props: [
-    'module', 'dataType', 'component', 'action', 'reqKey', 'msgs', 'tab'
+    'module', 'dataType', 'component', 'action', 'reqKey', 'msgs'
   ],
   computed: {
     page () {
@@ -89,7 +89,9 @@ export default {
       return (this.isTable) ? this.fields || Object.keys(this.data[0]) : null
     },
     pageOptions () {
-      return this.page.pages
+      let options = this.page.pages || {}
+      options.key = this.reqKey
+      return options
     },
     key () {
       return this.dataKey()(this.dataType)

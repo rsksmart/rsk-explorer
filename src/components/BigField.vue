@@ -20,8 +20,6 @@ export default {
       background none
       color $color
       border none
-      resize vertical
-      padding .5em
       margin 0 0 2em 0
       &:disabled
         color $txt-color

@@ -47,6 +47,9 @@ export default {
     },
     perPage () {
       return this.options.perPage
+    },
+    key () {
+      return this.options.key || 'page'
     }
   },
   methods: {
@@ -56,11 +59,10 @@ export default {
       let page = event.target.value
       if (page) this.goToPage(page, event)
     },
-    goToPage (page, event) {
-      let hash = this.getRouterHashFromEvent(event)
+    goToPage (page) {
       let key = this.key
       let query = (key) ? { [`page__${key}`]: page } : { page }
-      this.updateRouterQuery([query, hash])
+      this.updateRouterQuery(query)
     }
   }
 }
