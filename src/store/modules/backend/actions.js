@@ -74,6 +74,7 @@ export const socketData = ({ state, commit, dispatch }, res) => {
         }
         data.data = sData
       }
+      data.time = Date.now()
       commit('SET_RESPONSE', [key, data])
       commit('SET_CONFIG_Q', { module, action, value: q })
       commit('SET_CONFIG_SORT', { module, action, value: sort })
@@ -86,7 +87,7 @@ export const socketDbStatus = ({ state, commit }, data) => {
   commit('SET_DB_STATUS', data)
 }
 
-export const fetchData = ({ commit, getters }, req) => {
+export const fetchData = ({ commit }, req) => {
   req.params = req.params || {}
   let page, query, sort, action
   ({ page, query, sort, action } = req)
@@ -98,10 +99,11 @@ export const fetchData = ({ commit, getters }, req) => {
   const data = { module, action, params, key, time, getDelayed: true }
   commit('SET_REQUESTING', [key, time])
   // Fix next 2 lines
-  commit('SET_RESPONSE', ['data', { data: null }])
-  commit('SET_RESPONSE', ['parentData', { data: null }])
+  commit('SET_RESPONSE', [key, { data: null }])
+  if (key === 'data') commit('SET_RESPONSE', ['parentData', { data: null }])
   commit('SET_RESPONSE', [key, responseObject()])
   commit('SOCKET_EMIT', { event: 'data', data })
+  return req
 }
 
 export const socketTxPool = ({ commit }, data) => {

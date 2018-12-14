@@ -6,8 +6,8 @@
       .messages(v-if='msgs')
         message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data' :parentData='parentData')
       //- Transactions filters
-      tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module' :action='action')
-      paginator(v-if='isTable' :options='pageOptions' :link='0')
+      tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module' :tab='tab')
+      paginator(v-if='isTable' :options='pageOptions' :link='0' :tab='tab' )
       template(v-if='!isTable')
         ul.prev-next
           li.prev(v-if='prev')
@@ -31,8 +31,7 @@
         template(v-else)
           data-item(:data='data' :type='dataType' :parentData='parentData' :delayed='delayed')
 
-    template(v-if='isTable')
-      paginator(:options='pageOptions' :link='0')
+    paginator(v-if='isTable' :options='pageOptions' :link='0' :tab='tab')
 
 </template>
 <script>
@@ -56,7 +55,7 @@ export default {
     Message
   },
   props: [
-    'module', 'dataType', 'component', 'action', 'reqKey', 'msgs'
+    'module', 'dataType', 'component', 'action', 'reqKey', 'msgs', 'tab'
   ],
   computed: {
     page () {
@@ -102,7 +101,7 @@ export default {
       return this.getSavedQ()(this.module, this.action)
     },
     requesting () {
-      return this.requestingPageData()(this.reqKey)
+      return this.isRequesting()(this.reqKey)
     },
     error () {
       return (this.page) ? this.page.error : null
@@ -117,7 +116,7 @@ export default {
       'getSavedSort',
       'getSavedQ',
       'getPage',
-      'requestingPageData',
+      'isRequesting',
       'pageError'
     ]),
     isArray (val) {

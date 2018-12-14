@@ -28,7 +28,7 @@
           .tabs-titles
             template(v-for='tab in tabs')
               template(v-if='renderTab(tab)')
-                template(v-if='requestingPageData()(tab.name)')
+                template(v-if='isRequesting()(tab.name)')
                   button.btn.tab-title.link
                     loading-circle(:size='10')
                     span.title {{tab.name}}
@@ -39,12 +39,14 @@
 
           template(v-for='tab in tabs')
             data-section.tab-content(v-if='isActiveTab(tab)'
-              :module='tab.module' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
-            spinner(v-if='requestingPageData()(tab.name)')
+              :module='tab.module' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action'
+              :msgs='tab.msgs' :tab='tab.name')
+            spinner(v-if='isRequesting()(tab.name)')
 
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { plainObjectChanges } from '../lib/js/utils'
 import Spinner from './Spinner.vue'
 import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
@@ -75,8 +77,7 @@ export default {
     this.getData()
   },
   watch: {
-    // call again the method if the route changes
-    '$route': 'getData'
+    '$route': 'onRouteChange'
   },
   computed: {
     ...mapGetters({
@@ -113,10 +114,11 @@ export default {
       return (this.tabs) ? 'parentData' : 'data'
     },
     requesting () {
-      return this.requestingPageData()(this.reqKey)
+      return this.isRequesting()(this.reqKey)
     },
     activeTab () {
-      let tab = (this.tabs.length) ? this.tabs[0].name : null
+      let tabs = this.tabs || []
+      let tab = (tabs.length) ? tabs[0].name : null
       return this.getActiveTab || tab
     },
     activeContentTab () {
@@ -126,6 +128,7 @@ export default {
       let tab = tabs.find(tab => tab.name === tabName)
       return tab
     },
+
     mainContentTabs () {
       let tabs = this.mainContent || []
       tabs = tabs.map(tab => {
@@ -144,16 +147,17 @@ export default {
       'fetchRouteData'
     ]),
     ...mapGetters([
-      'requestingPageData',
+      'isRequesting',
       'getPage',
       'getPageTotal',
-      'pageError'
+      'pageError',
+      'isRequested'
     ]),
     setTab (tab) {
-      this.updateRouterQuery('tab', tab)
+      this.updateRouterQuery('__tab', tab)
     },
     setActiveContentTab (name) {
-      this.updateRouterQuery('cTab', name)
+      this.updateRouterQuery('__ctab', name)
     },
     isActiveContentTab (tab) {
       return this.activeContentTab.name === tab.name
@@ -168,26 +172,58 @@ export default {
       if (typeof render === 'function') return render(this.data)
       return (undefined === render) ? true : render
     },
-    getData () {
+    onRouteChange (to, from) {
+      if (to.path === from.path) {
+        // check for query changes
+        let diff = plainObjectChanges(to.query, from.query)
+        let keys = Object.keys(diff)
+        // dont fetch
+        if (keys.length === 1 && keys[0].slice(0, 2) === '__') return
+      }
+      this.getData()
+    },
+
+    async getData () {
       let module = this.module
       let tabs = this.tabs
       let action = this.action
       let key = this.reqKey
-      if (module && action) {
-        this.fetchRouteData({ action, module, key }).then(() => {
-          if (tabs) {
-            for (let tab of tabs) {
-              tab.module = tab.module || module
-              tab.key = tab.key || tab.name
-              this.fetchRouteData(tab)
-            }
-          }
-        })
+      if (!module || !action) return
+      await this.fetchRouteData({ action, module, key })
+      if (tabs) {
+        let active = this.activeTab
+        if (active) {
+          await this.fetchTab(active)
+          tabs = tabs.filter(tab => tab.name !== active)
+        }
+        for (let tab of tabs) {
+          this.fetchTab(tab.name)
+        }
       }
     },
+
+    async fetchTab (tabName) {
+      let tab = this.getTab(tabName)
+      let req = await this.fetchRouteData(tab)
+      return req
+    },
+
+    selectTabByName (name) {
+      return this.tabs.find(t => t.name === name)
+    },
+
     isActiveTab (tab) {
       return this.activeTab === tab.name
     },
+
+    getTab (name) {
+      let tab = this.selectTabByName(name)
+      tab = tab || {}
+      tab.key = tab.key || tab.name
+      tab.module = tab.module || this.module
+      return tab
+    },
+
     tabTitleCss (active) {
       return (active) ? ['active'] : []
     }

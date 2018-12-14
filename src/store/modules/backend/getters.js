@@ -14,7 +14,7 @@ export const pendingBlocks = state => {
   return Object.keys(state.pendingBlocks).length
 }
 
-export const requestingPageData = state => (key) => {
+export const isRequesting = state => (key) => {
   return state.requesting[key]
 }
 

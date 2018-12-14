@@ -12,7 +12,7 @@ export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
   req.query = query
   req.params = req.params || {}
   req.params = Object.assign(req.params, getters.getRouterParams)
-  dispatch('fetchData', req)
+  return dispatch('fetchData', req)
 }
 
 export const updateRouterQuery = ({ state, getters, dispatch }, update) => {

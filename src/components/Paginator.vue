@@ -56,7 +56,7 @@ export default {
       let query = Object.assign({}, this.$route.query)
       let tab = this.tab
       query.page = page
-      if (tab) query.tab = tab
+      if (tab) query.__tab = tab
       this.$router.push({ query })
     }
   }
