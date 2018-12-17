@@ -38,10 +38,10 @@
                       small.small ({{ getPageTotal()(tab.name) }})
 
           template(v-for='tab in tabs')
-            data-section.tab-content(v-if='isActiveTab(tab)'
-              :module='tab.module' :dataType='tab.dataType' :reqKey='tab.name' :action='tab.action'
-              :msgs='tab.msgs')
-            spinner(v-if='isRequesting()(tab.name)')
+            template(v-if='isActiveTab(tab)')
+              spinner(v-if='isRequesting()(tab.name)')
+              data-section.tab-content(v-else :module='tab.module' :dataType='tab.dataType'
+              :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
 
 </template>
 <script>
