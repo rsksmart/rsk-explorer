@@ -17,7 +17,7 @@
         router-link(v-if='link' :to='link')
           .field-value {{ filteredValue || field.default }}
         .field-value(v-else) {{ filteredValue || field.default }}
-      span(v-if='field.suffix && filteredValue !== null') &nbsp; {{field.suffix}}
+      span(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
       progress-bar(v-if='delayed')
 </template>
 <script>
@@ -73,6 +73,9 @@ export default {
     },
     fieldClass () {
       return this.fieldCss(this.field, this.value, this.filteredValue, this.row)
+    },
+    suffix () {
+      return this.fieldSuffix(this.field, this.value, this.filteredValue, this.row)
     }
   }
 }
@@ -86,6 +89,7 @@ export default {
     ul
       margin 0
       padding 0
+
   .data-field, .data-field > a, .data-field > .tooltip, max-width 100%
     display flex
     position relative
@@ -117,6 +121,7 @@ export default {
 
     li
       margin 0 0 0 1em
+
     :first-child
       margin 0
 </style>

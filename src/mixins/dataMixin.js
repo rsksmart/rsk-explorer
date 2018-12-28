@@ -151,6 +151,10 @@ export default {
       return this.fieldFormatProp('icon', field, value, filteredValue, row)
     },
 
+    fieldSuffix (field, value, filteredValue, row) {
+      return this.fieldFormatProp('suffix', field, value, filteredValue, row)
+    },
+
     showField (field, data) {
       let fieldName = field.fieldName
       let hidden = this.isHidden(fieldName)
