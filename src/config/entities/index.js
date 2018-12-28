@@ -27,7 +27,7 @@ import { transaction, transactions, transactionsBox, transactionLogs, transactio
 import { address, addresses } from './address'
 import { token, tokens } from './token'
 import { event, events, eventData } from './event'
-import { tokenAccount, tokenAccounts } from './tokenAccount'
+import { tokenAccount, tokenAccounts, tokenByAddress } from './tokenAccount'
 import { txPool } from './txPool'
 
 export default {
@@ -48,5 +48,6 @@ export default {
   eventData,
   tokenAccount,
   tokenAccounts,
+  tokenByAddress,
   txPool
 }

@@ -75,5 +75,25 @@ const TokenAccount = () => {
   return tokenAccount
 }
 
+const TokenByAddress = () => {
+  let taFields = TokenAccount().fields
+  return {
+    link: accountLink,
+    formatLink,
+    formatRow: data => {
+      let { decimals, name, symbol } = data
+      return accountFormatRow(data, { decimals, name, symbol })
+    },
+    key: 'tokenAddress',
+    fields: {
+      name: Object.assign(taFields.token, { field: 'name' }),
+      address: taFields.contract,
+      balance: Object.assign(taFields.balance,
+        { suffix: (value, filtered, row) => row.symbol })
+    }
+  }
+}
+
+export const tokenByAddress = TokenByAddress()
 export const tokenAccount = TokenAccount()
 export const tokenAccounts = TokenAccounts()
