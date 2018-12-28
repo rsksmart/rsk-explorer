@@ -102,6 +102,12 @@ export default [
       dataType: 'address',
       tabs: [
         {
+          name: 'tokens',
+          dataType: 'tokenByAddress',
+          module: 'tokens',
+          action: 'getTokensByAddress'
+        },
+        {
           name: 'transactions',
           dataType: 'transactions',
           action: 'getTransactionsByAddress',

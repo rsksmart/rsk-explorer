@@ -1,6 +1,7 @@
 
-import { ROUTES as r } from '../types'
+import { ROUTES as r, THIS_CONTRACT } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
+import { setThisContract } from './event'
 
 const accountLink = `/${r.token}/:contract/${r.account}/:address`
 
@@ -79,15 +80,20 @@ const TokenByAddress = () => {
   let taFields = TokenAccount().fields
   return {
     link: accountLink,
-    formatLink,
-    formatRow: data => {
+    formatRow: (data, parentData) => {
       let { decimals, name, symbol } = data
-      return accountFormatRow(data, { decimals, name, symbol })
+      let row = accountFormatRow(data, { decimals, name, symbol })
+      row.contractAddress = setThisContract(data.contract, data.address)
+      return row
     },
+    formatLink,
     key: 'tokenAddress',
     fields: {
-      name: Object.assign(taFields.token, { field: 'name' }),
-      address: taFields.contract,
+      name: Object.assign(taFields.token, { field: 'name', type: 'tokenName' }),
+      address: Object.assign(taFields.contract, {
+        field: 'contractAddress',
+        link: (data, value, link) => value === THIS_CONTRACT ? null : value
+      }),
       balance: Object.assign(taFields.balance,
         { suffix: (value, filtered, row) => row.symbol })
     }

@@ -189,7 +189,7 @@ export default {
     makeLink (field, row) {
       let link = field.link
       let value = this.getValue(field, row, true)
-      if (typeof link === 'function') return link(row, value)
+      if (typeof link === 'function') return link(row, value, link)
       return ((value || value === 0) && link) ? link + value : null
     },
     computeTrim (field, value) {
