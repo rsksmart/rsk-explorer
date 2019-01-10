@@ -214,6 +214,7 @@ export const TxLogs = () => {
 export const TxLogItem = () => {
   return {
     name: 'tx-log-item',
+    formatRow: (event) => formatEvent(event),
     fields: {
       logIndex: {
         default: 0
@@ -229,7 +230,7 @@ export const TxLogItem = () => {
         default: null
       },
       arguments: {
-        field: 'args',
+        field: '_arguments',
         css: ['raw'],
         hideIfEmpty: true
       },
@@ -241,6 +242,24 @@ export const TxLogItem = () => {
         renderAs: 'big-field'
       }
     }
+  }
+}
+export const formatEvent = event => {
+  let args = eventArgs(event)
+  if (args) {
+    event._arguments = args
+  }
+  return event
+}
+
+export const eventArgs = event => {
+  if (event.abi) {
+    event.args = event.args || []
+    let inputs = event.abi.inputs || []
+    return inputs.map(i => i.name).reduce((v, a, i) => {
+      v[a] = event.args[i]
+      return v
+    }, {})
   }
 }
 

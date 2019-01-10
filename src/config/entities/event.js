@@ -1,13 +1,14 @@
 import { ROUTES as r, EVENTS, THIS_CONTRACT, NOT_AVAILABLE } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
-import { TxLogItem } from './transaction'
+import { TxLogItem, formatEvent } from './transaction'
 
 export const setThisContract = (val, match) => {
   return val !== match ? val : THIS_CONTRACT
 }
 
-const eventFormatRow = (event, parentData) => {
-  let args = event.args
+export const eventFormatRow = (event, parentData) => {
+  event = formatEvent(event)
+  let args = event._arguments
   const addressData = (parentData.address) ? parentData : event._addressData
   let tokenAddress = addressData.address
   let token = addressData.name || null
@@ -113,11 +114,12 @@ export const Event = () => {
 
 export const EventData = () => {
   let eventFields = Event().fields
+  let formatRow = Event().formatRow
   let { transaction, blockNumber } = eventFields
   let txLogFields = TxLogItem().fields
   txLogFields.logIndex.link = () => { }
   let fields = Object.assign(txLogFields, { transaction, blockNumber })
-  return { fields }
+  return { formatRow, fields }
 }
 
 export const events = Events()
