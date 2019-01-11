@@ -22,6 +22,10 @@ apply-color($col, $val)
   // frames
   .frame-{$col}
     frame($val)
+  
+  // icons
+  .icon.{$col} svg *
+    fill $val
 
 small-titles()
   opacity 0.8
