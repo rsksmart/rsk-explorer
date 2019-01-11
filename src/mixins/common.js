@@ -1,11 +1,13 @@
 import ToolTip from '../components/ToolTip.vue'
 import BigField from '../components/BigField.vue'
+import FieldIcon from '../components/FieldIcon.vue'
 import { mSecondsAgo } from '../filters/TimeFilters'
 import { mapGetters } from 'vuex'
 export default {
   components: {
     ToolTip,
-    BigField
+    BigField,
+    FieldIcon
   },
   filers: {
     mSecondsAgo

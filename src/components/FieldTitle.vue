@@ -1,30 +1,21 @@
 <template lang="pug">
   .field-title
-    .icon(v-if='showIcon' )
-      tool-tip(v-if="!showTitle" :value="field.name | camelCaseTo" :options='tipOptions')
-        icon(:name='field.icon')
-      icon(v-else :name='field.icon')
+    field-icon(v-if='showIcon' :icon='field.icon' :title='(showTitle) ? null: field.title' )
     span.title(v-if='showTitle && field.title') {{ field.title | camel-case-to }}
     slot
 </template>
 <script>
-import ToolTip from './ToolTip'
-import { camelCaseTo } from '../filters/TextFilters'
+import FieldIcon from './FieldIcon'
 export default {
   name: 'field-title',
   components: {
-    ToolTip
+    FieldIcon
   },
   props: ['field', 'options'],
-  filters: { camelCaseTo },
   data () {
     return {
       forceTitle: false,
-      forceIcon: false,
-      tipOptions: {
-        trim: 0,
-        forceTip: true
-      }
+      forceIcon: false
     }
   },
   created () {
