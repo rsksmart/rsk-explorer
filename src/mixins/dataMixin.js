@@ -26,8 +26,9 @@ export default {
       }
     },
     fields () {
-      if (this.entity) {
-        let fields = this.entity.fields
+      let entity = this.entity
+      if (entity) {
+        let fields = entity.fields
         let parentData = this.parentData
         let data = this.data
         if (fields) {
@@ -153,6 +154,12 @@ export default {
 
     fieldSuffix (field, value, filteredValue, row) {
       return this.fieldFormatProp('suffix', field, value, filteredValue, row)
+    },
+
+    renderAsProps (payload) {
+      let field = payload.field || {}
+      let props = field.renderAsProps
+      return (typeof props === 'function') ? props(payload) : props
     },
 
     showField (field, data) {
