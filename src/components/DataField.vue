@@ -1,24 +1,27 @@
 <template lang="pug">
   .data-field(:style='cellStyle(field,value)' :class='fieldClass')
-    //- arrays (uncomplete)
-    template(v-if='filteredType === "array"')
-      ul
-        li(v-for='v in value') {{v}}
-    template(v-else-if='filteredType === "object"')
-      ul
-        li(v-for='p in Object.keys(value)')
-          strong {{p}}:&nbsp;
-          span {{value[p]}}
-
+    template(v-if='field.renderAs')
+      component(:is='field.renderAs' v-bind='renderAsProps({field,value,filteredValue})' )
     template(v-else)
-      template(v-if='trim && !options.noTrim')
-        tool-tip.field-value(:value='value' :trim='trim' :options='trimOptions' :router-link='link')
+      //- arrays (uncomplete)
+      template(v-if='filteredType === "array"')
+        ul
+          li(v-for='v in value') {{v}}
+      template(v-else-if='filteredType === "object"')
+        ul
+          li(v-for='p in Object.keys(value)')
+            strong {{p}}:&nbsp;
+            span {{value[p]}}
+
       template(v-else)
-        router-link(v-if='link' :to='link')
-          .field-value {{ filteredValue || field.default }}
-        .field-value(v-else) {{ filteredValue || field.default }}
-      span(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
-      progress-bar(v-if='delayed')
+        template(v-if='trim && !options.noTrim')
+          tool-tip.field-value(:value='value' :trim='trim' :options='trimOptions' :router-link='link')
+        template(v-else)
+          router-link(v-if='link' :to='link')
+            .field-value {{ filteredValue || field.default }}
+          .field-value(v-else) {{ filteredValue || field.default }}
+        span(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
+        progress-bar(v-if='delayed')
 </template>
 <script>
 import common from '../mixins/common'
