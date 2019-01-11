@@ -24,6 +24,13 @@ export const STATUS = {
   PENDING: 'PENDING'
 }
 
+export const STATUS_ICONS = {
+  SUCCESS: 'check',
+  FAIL: 'close',
+  QUEUED: 'zap',
+  PENDING: 'zap'
+}
+
 export const EVENTS = {
   approval: 'Approval',
   transfer: 'Transfer'

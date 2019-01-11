@@ -43,7 +43,7 @@ const txLink = (value) => {
   return (value === THIS_ADDRESS) ? null : `/${r.address}/${value}`
 }
 
-export const txStatusCss = (status) => {
+export const txStatusCss = status => {
   const css = {
     FAIL: 'error',
     SUCCESS: 'brand',
@@ -53,12 +53,14 @@ export const txStatusCss = (status) => {
   let key = Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
   return css[key] || ''
 }
+
 const TxFields = () => {
   return {
     hash: {
       field: 'hash',
       type: 'hash',
-      link: `/${r.transaction}/`
+      link: `/${r.transaction}/`,
+      css: (value, filtered, data) => txStatusCss(txStatus(data.status))
     },
     block: {
       field: 'blockNumber',
@@ -84,6 +86,7 @@ const TxFields = () => {
     gasUsed: {
       type: 'gas',
       field: 'receipt.gasUsed',
+      icon: 'block',
       default: 0
     },
     time: {
@@ -105,6 +108,23 @@ const TxFields = () => {
 const Txs = () => {
   let fields = TxFields()
   delete (fields.index)
+  fields.status = Object.assign(fields.status, {
+    filters: ['tx-icon'],
+    renderAs: 'field-icon',
+    renderAsProps: ({ filteredValue, value }) => {
+      return {
+        icon: filteredValue,
+        title: `status: ${txStatus(value)}`,
+        css: txStatusCss(txStatus(value))
+      }
+    },
+    hideTitle: true
+  })
+  fields.type = Object.assign(fields.type, {
+    icon: 'transaction',
+    type: null,
+    showTitle: false
+  })
   return {
     key: 'hash',
     icon: 'transaction',
