@@ -213,6 +213,16 @@ const TxBox = () => {
 export const TxLogs = () => {
   const tx = Tx()
   return {
+    formatRow: (tx) => {
+      let logs = (tx.receipt) ? tx.receipt.logs : null
+      let toData = tx._toData
+      if (logs && toData) {
+        logs = logs.map(log => {
+          if (toData.name) log._contractName = toData.name
+        })
+      }
+      return tx
+    },
     fields: {
       hash: tx.fields.hash,
       logs: {
@@ -222,8 +232,8 @@ export const TxLogs = () => {
         renderAsProps: {
           type: 'transactionLogItem',
           header: (data) => {
-            let { logIndex, address, event } = data
-            return [logIndex, address, event]
+            let { logIndex, address, event, _contractName } = data
+            return [logIndex, _contractName, address, event]
           }
         }
       }
@@ -234,7 +244,7 @@ export const TxLogs = () => {
 export const TxLogItem = () => {
   return {
     name: 'tx-log-item',
-    formatRow: (event) => formatEvent(event),
+    formatRow: formatEvent,
     fields: {
       logIndex: {
         default: 0
@@ -242,6 +252,11 @@ export const TxLogItem = () => {
       address: {
         type: 'address',
         trim: 'auto'
+      },
+      contractName: {
+        field: '_contractName',
+        type: 'tokenName',
+        hideIfEmty: true
       },
       event: {
         field: 'abi',
@@ -264,7 +279,7 @@ export const TxLogItem = () => {
     }
   }
 }
-export const formatEvent = event => {
+export const formatEvent = (event) => {
   let args = eventArgs(event)
   if (args) {
     event._arguments = args

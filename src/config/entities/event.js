@@ -10,11 +10,11 @@ export const eventFormatRow = (event, parentData) => {
   event = formatEvent(event)
   let args = event._arguments
   const addressData = (parentData.address) ? parentData : event._addressData
-  let tokenAddress = addressData.address
-  let token = addressData.name || null
+  let contractAddress = addressData.address
+  let name = addressData.name || null
   const decimals = parseInt(addressData.decimals)
-  event._tokenAddress = tokenAddress
-  event._tokenRef = token
+  event._contractAddress = contractAddress
+  event._contractName = name
   event.to = null
   event.from = null
   event._value = null
@@ -70,16 +70,16 @@ export const Events = () => {
 export const Event = () => {
   let event = Events()
   let fields = {
-    contractName: {
-      field: '_tokenRef',
-      trim: 'auto',
-      type: 'tokenName',
-      hideIfEmpty: true
-    },
     contract: {
       field: 'address',
       trim: 'auto',
       type: 'address'
+    },
+    contractName: {
+      field: '_contractName',
+      trim: 'auto',
+      type: 'tokenName',
+      hideIfEmpty: true
     },
     event: {
       default: NOT_AVAILABLE
