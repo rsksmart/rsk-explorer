@@ -27,8 +27,8 @@ export const STATUS = {
 export const STATUS_ICONS = {
   SUCCESS: 'check',
   FAIL: 'close',
-  QUEUED: 'zap',
-  PENDING: 'zap'
+  QUEUED: 'buffer',
+  PENDING: 'stopwatch'
 }
 
 export const EVENTS = {
