@@ -3,7 +3,7 @@ import {
   CONTRACT_UNKNOWN_NAME,
   THIS_CONTRACT,
   NOT_AVAILABLE
-} from '../types'
+} from '../../types'
 
 export default {
   block: {

@@ -1,6 +1,7 @@
 import { ROUTES as r, EVENTS, THIS_CONTRACT, NOT_AVAILABLE } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
-import { TxLogItem, formatEvent } from './transaction'
+import { formatEvent } from './lib/eventsLib'
+import { TxLogItem } from './transaction'
 
 export const setThisContract = (val, match) => {
   return val !== match ? val : THIS_CONTRACT
