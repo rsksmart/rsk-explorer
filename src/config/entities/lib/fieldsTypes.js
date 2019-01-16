@@ -48,7 +48,6 @@ export default {
     filters: ['locale']
   },
   address: {
-    trim: 'auto',
     link: `/${r.address}/`
   },
   token: {
@@ -76,5 +75,12 @@ export default {
   eventAddress: {
     link: (data, value) => (!value || value === THIS_CONTRACT) ? null : `/${r.address}/${value}`,
     default: NOT_AVAILABLE
+  },
+  eventId: {
+    icon: 'zap',
+    titleIcon: true,
+    hideTitle: true,
+    link: `/${r.event}/`,
+    trim: 'auto'
   }
 }

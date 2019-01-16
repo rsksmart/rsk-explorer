@@ -1,3 +1,4 @@
+
 import {
   ROUTES as r,
   THIS_ADDRESS,
@@ -8,7 +9,7 @@ import {
 import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
-import { formatEvent } from './lib/eventsLib'
+import { formatEvent, filterTransferEvens } from './lib/eventsLib'
 
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
@@ -211,19 +212,22 @@ const TxBox = () => {
   return txs
 }
 
+export const TxLogFormatter = tx => {
+  let logs = (tx.receipt) ? tx.receipt.logs : null
+  let addresses = tx._addresses
+  if (logs && addresses) {
+    logs = logs.map(log => {
+      log._addressData = addresses[log.address]
+      return log
+    })
+  }
+  return tx
+}
+
 export const TxLogs = () => {
   const tx = Tx()
   return {
-    formatRow: (tx) => {
-      let logs = (tx.receipt) ? tx.receipt.logs : null
-      let toData = tx._toData
-      if (logs && toData) {
-        logs = logs.map(log => {
-          if (toData.name) log._contractName = toData.name
-        })
-      }
-      return tx
-    },
+    formatRow: (tx) => TxLogFormatter(tx),
     fields: {
       hash: tx.fields.hash,
       logs: {
@@ -232,8 +236,10 @@ export const TxLogs = () => {
         renderAs: 'collapsible-list',
         renderAsProps: {
           type: 'transactionLogItem',
+          emptyMsg: 'The transaction does not contain tokens transfer events',
           header: (data) => {
-            let { logIndex, address, event, _contractName } = data
+            let { logIndex, address, event } = data
+            let _contractName = data._addressData.name
             return [logIndex, _contractName, address, event]
           }
         }
@@ -255,7 +261,7 @@ export const TxLogItem = () => {
         trim: 'auto'
       },
       contractName: {
-        field: '_contractName',
+        field: '_addressData.name',
         type: 'tokenName',
         hideIfEmty: true
       },
@@ -278,14 +284,25 @@ export const TxLogItem = () => {
         renderAs: 'big-field'
       },
       eventId: {
-        icon: 'zap',
-        titleIcon: true,
-        hideTitle: true,
-        link: `/${r.event}/`,
-        trim: 'auto'
+        type: 'eventId'
       }
     }
   }
+}
+
+export const TransferEvents = () => {
+  let te = TxLogs()
+  te.formatRow = (tx) => {
+    tx = TxLogFormatter(tx)
+    let logs = (tx.receipt && tx.receipt.logs) ? tx.receipt.logs : []
+    logs = filterTransferEvens(logs)
+    tx._transferEvents = logs
+    return tx
+  }
+  te.fields.logs.field = '_transferEvents'
+  te.fields.logs.renderAsProps.type = 'event'
+
+  return te
 }
 
 export const Transactions = () => Object.assign(Txs(), { formatRow: transactionFormatRow })
@@ -295,3 +312,4 @@ export const transactions = Transactions()
 export const transaction = Tx()
 export const transactionLogs = TxLogs()
 export const transactionLogItem = TxLogItem()
+export const transferEvents = TransferEvents()

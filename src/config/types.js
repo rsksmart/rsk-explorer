@@ -31,11 +31,6 @@ export const STATUS_ICONS = {
   PENDING: 'stopwatch'
 }
 
-export const EVENTS = {
-  approval: 'Approval',
-  transfer: 'Transfer'
-}
-
 export const THIS_ADDRESS = 'This Address'
 export const THIS_CONTRACT = 'This Contract'
 

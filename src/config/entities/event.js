@@ -1,5 +1,4 @@
-import { ROUTES as r, EVENTS, THIS_CONTRACT, NOT_AVAILABLE } from '../types'
-import { tokenAmount } from '../../filters/TokensFilters'
+import { ROUTES as r, THIS_CONTRACT, NOT_AVAILABLE } from '../types'
 import { formatEvent } from './lib/eventsLib'
 import { TxLogItem } from './transaction'
 
@@ -8,35 +7,17 @@ export const setThisContract = (val, match) => {
 }
 
 export const eventFormatRow = (event, parentData) => {
-  event = formatEvent(event)
-  let args = event._arguments
-  const addressData = (parentData.address) ? parentData : event._addressData
-  let contractAddress = addressData.address
-  let name = addressData.name || null
-  const decimals = parseInt(addressData.decimals)
+  const addressData = (parentData.address) ? parentData : event._addressData || {}
+  event = formatEvent(event, addressData)
+  let contractAddress = event.address
   event._contractAddress = contractAddress
-  event._contractName = name
-  event.to = null
-  event.from = null
-  event._value = null
-
-  if (args) {
-    event._value = tokenAmount(args.value, decimals)
-    let to = args.to
-    let from = args.from
-    if (event.event === EVENTS.approval) {
-      to = args.spender
-      from = args.owner
-    }
-    event.to = setThisContract(to, event.address)
-    event.from = setThisContract(from, event.address)
-  }
   return event
 }
 
 const eventFormatFields = (fields, data, parentData) => {
   let token = data._addressData || parentData || {}
-  fields.amount.suffix = token.symbol || ''
+  let value = fields.value
+  if (value) value.suffix = token.symbol || ''
   return fields
 }
 
@@ -53,12 +34,10 @@ export const Events = () => {
         link: (data, value) => `/${r.event}/${data.eventId}`,
         default: NOT_AVAILABLE
       },
-      from: { type: 'eventAddress' },
-      to: { type: 'eventAddress' },
-      amount: {
-        field: '_value',
-        filters: ['token-value'],
-        default: NOT_AVAILABLE
+      arguments: {
+        field: '_arguments',
+        css: ['raw'],
+        hideIfEmpty: true
       },
       timestamp: null,
       blockNumber: {
@@ -70,14 +49,38 @@ export const Events = () => {
 
 export const Event = () => {
   let event = Events()
-  let fields = {
+  let fields = Object.assign({
+    eventId: {
+      type: 'eventId'
+    },
+    event: {},
+    from: {
+      field: '_parsedArgs.from',
+      type: 'eventAddress',
+      hideIfEmpty: true
+    },
+    to: {
+      field: '_parsedArgs.to',
+      type: 'eventAddress',
+      hideIfEmpty: true
+    },
+    value: {
+      field: '_parsedArgs.value',
+      filters: ['token-value'],
+      default: NOT_AVAILABLE,
+      hideIfEmpty: true
+    },
+    contract: {},
+    contractName: {}
+  }, event.fields)
+  fields = Object.assign(fields, {
     contract: {
       field: 'address',
       trim: 'auto',
       type: 'address'
     },
     contractName: {
-      field: '_contractName',
+      field: '_addressData.name',
       trim: 'auto',
       type: 'tokenName',
       hideIfEmpty: true
@@ -85,9 +88,6 @@ export const Event = () => {
     event: {
       default: NOT_AVAILABLE
     },
-    from: { type: 'eventAddress' },
-    to: { type: 'eventAddress' },
-    amount: event.fields.amount,
     data: {
       field: 'args._data',
       hideIfEmpty: true,
@@ -106,10 +106,12 @@ export const Event = () => {
     blockNumber: {
       type: 'block'
     }
-  }
-  fields.to.trim = 'auto'
+  })
   fields.from.trim = 'auto'
+  fields.to.trim = 'auto'
+  delete fields.arguments
   event.fields = fields
+
   return event
 }
 
