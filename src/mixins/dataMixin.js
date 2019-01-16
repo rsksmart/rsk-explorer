@@ -32,8 +32,9 @@ export default {
         let parentData = this.parentData
         let data = this.data
         if (fields) {
-          if (this.fieldsCb) {
-            fields = this.fieldsCb(fields, data, parentData)
+          let fcb = this.fieldsCb
+          if (fcb) {
+            fields = fcb(fields, data, parentData)
           }
         }
         return fields || this.dataKeys
