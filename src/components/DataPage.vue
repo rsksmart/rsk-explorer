@@ -123,13 +123,20 @@ export default {
     activeTab () {
       let tabs = this.tabs || []
       let tab = (tabs.length) ? tabs[0].name : null
-      return this.getActiveTab || tab
+      let name = this.getActiveTab || tab
+      if (!this.selectTabByName(name)) {
+        name = tab
+        this.setTab(name)
+      }
+      return name
     },
     activeContentTab () {
       let tabs = this.mainContent || []
       if (!tabs.length) return
       let tabName = this.getActiveContentTab || tabs[0].name
-      let tab = tabs.find(tab => tab.name === tabName)
+      let tab = tabs.find(tab => tab.name === tabName) || tabs[0]
+      // reset tab if don't exist
+      if (tab.name !== tabName) this.setActiveContentTab(tab.name)
       return tab
     },
 
@@ -164,7 +171,8 @@ export default {
       this.updateRouterQuery('__ctab', name, event)
     },
     isActiveContentTab (tab) {
-      return this.activeContentTab.name === tab.name
+      let active = this.activeContentTab || {}
+      return active.name === tab.name
     },
     updateRouterQuery (key, value, event) {
       let hash = this.getRouterHashFromEvent(event)
@@ -210,8 +218,10 @@ export default {
 
     async fetchTab (tabName) {
       let tab = this.getTab(tabName)
-      let req = await this.fetchRouteData(tab)
-      return req
+      if (tab) {
+        let req = await this.fetchRouteData(tab)
+        return req
+      }
     },
 
     selectTabByName (name) {
