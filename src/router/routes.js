@@ -4,8 +4,8 @@ import DataItem from '@/components/DataItem'
 import ErrorPage from '@/components/ErrorPage'
 import TxPool from '@/components/TxPool'
 import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
-import { bignumber } from '../filters/TokensFilters'
 import tokens from './tokens'
+import { filterTransferEvens } from '../config/entities/lib/eventsLib'
 const statsUrl = process.env.STATS_URL
 
 export default [
@@ -102,23 +102,22 @@ export default [
       dataType: 'address',
       tabs: [
         {
-          name: 'tokens',
-          dataType: 'tokenByAddress',
-          module: 'tokens',
-          action: 'getTokensByAddress'
-        },
-        {
           name: 'transactions',
           dataType: 'transactions',
           action: 'getTransactionsByAddress',
           module: 'txs',
           msgs: [(data, parenData) => {
             const msgs = []
-            let balance = bignumber(parenData.balance)
-            let txBalance = bignumber(parenData.txBalance)
+            let { balance, txBalance } = parenData
             if (txBalance !== balance) msgs.push('INTERNAL_TX_WARN')
             return msgs
           }]
+        },
+        {
+          name: 'tokens',
+          dataType: 'tokenByAddress',
+          module: 'tokens',
+          action: 'getTokensByAddress'
         },
         {
           name: 'events',
@@ -161,18 +160,29 @@ export default [
           component: DataItem
         },
         {
-          name: 'Events',
+          name: 'Logs',
           component: DataItem,
           dataType: 'transactionLogs',
           // render: (data) => data && data.receipt.logs.length,
-          count: (data) => { return (data && data.receipt) ? data.receipt.logs.length : 0 },
-          emptyMsg: 'The transaction does not have logs'
+          count: (data) => { return (data && data.receipt) ? data.receipt.logs.length : 0 }
+        },
+        {
+          name: 'Token Transfers',
+          component: DataItem,
+          dataType: 'transferEvents',
+          count: (data) => {
+            let logs = []
+            if (data && data.receipt) {
+              logs = filterTransferEvens(data.receipt.logs)
+            }
+            return logs.length
+          }
         }
       ],
       module: 'txs',
       title: 'Transaction',
       dataType: 'transaction',
-      action: 'getTransaction'
+      action: 'getTransactionWithAddressData'
     }
   },
   {

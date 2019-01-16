@@ -236,7 +236,7 @@ export const TxLogs = () => {
         renderAs: 'collapsible-list',
         renderAsProps: {
           type: 'transactionLogItem',
-          emptyMsg: 'The transaction does not contain tokens transfer events',
+          emptyMsg: 'The transaction does not contain token transfer events',
           header: (data) => {
             let { logIndex, address, event } = data
             let _contractName = data._addressData.name
