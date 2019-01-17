@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 export const dataEntity = state => dataType => {
-  if (dataType) return state.dataEntities[dataType]
+  if (dataType) return state.entities[dataType]
 }
 
 export const dataFields = state => {
@@ -9,7 +9,7 @@ export const dataFields = state => {
 }
 
 export const dataKey = state => type => {
-  let entity = state.dataEntities[type]
+  let entity = state.entities[type]
   if (entity) return entity.key
 }
 
