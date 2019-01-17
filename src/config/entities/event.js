@@ -1,4 +1,4 @@
-import { ROUTES as r, THIS_CONTRACT, NOT_AVAILABLE } from '../types'
+import { ROUTES as r, THIS_CONTRACT, NOT_AVAILABLE, AUTO_FIELD } from '../types'
 import { formatEvent } from './lib/eventsLib'
 import { TxLogItem } from './transaction'
 
@@ -15,10 +15,33 @@ export const eventFormatRow = (event, parentData) => {
 }
 
 const eventFormatFields = (fields, data, parentData) => {
+  fields = removeAutoFields(fields)
   let token = data._addressData || parentData || {}
   let value = fields.value
   if (value) value.suffix = token.symbol || ''
+  let inputs = (data.abi) ? data.abi.inputs : []
+  for (let input of inputs) {
+    let name = input.name
+    let type = input.type || null
+    let field = ['_arguments', name]
+    if (!fields[name]) {
+      fields[name] = setAutoField({ field, type, trim: 'auto' })
+    }
+  }
   return fields
+}
+
+export const removeAutoFields = fields => {
+  for (let f in fields) {
+    let field = fields[f]
+    if (field[AUTO_FIELD]) delete fields[f]
+  }
+  return fields
+}
+
+export const setAutoField = field => {
+  field[AUTO_FIELD] = true
+  return field
 }
 
 export const Events = () => {
