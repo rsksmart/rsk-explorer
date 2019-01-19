@@ -5,7 +5,7 @@ import ErrorPage from '@/components/ErrorPage'
 import TxPool from '@/components/TxPool'
 import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
 import tokens from './tokens'
-import { filterTransferEvens } from '../config/entities/lib/eventsLib'
+import { filterTransferEvents } from '../config/entities/lib/eventsLib'
 const statsUrl = process.env.STATS_URL
 
 export default [
@@ -173,7 +173,7 @@ export default [
           count: (data) => {
             let logs = []
             if (data && data.receipt) {
-              logs = filterTransferEvens(data.receipt.logs)
+              logs = filterTransferEvents(data.receipt.logs)
             }
             return logs.length
           }

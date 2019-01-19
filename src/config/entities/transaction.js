@@ -9,7 +9,7 @@ import {
 import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
-import { formatEvent, filterTransferEvens } from './lib/eventsLib'
+import { formatEvent, filterTransferEvents } from './lib/eventsLib'
 
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
@@ -295,7 +295,7 @@ export const TransferEvents = () => {
   te.formatRow = (tx) => {
     tx = TxLogFormatter(tx)
     let logs = (tx.receipt && tx.receipt.logs) ? tx.receipt.logs : []
-    logs = filterTransferEvens(logs)
+    logs = filterTransferEvents(logs)
     tx._transferEvents = logs
     return tx
   }

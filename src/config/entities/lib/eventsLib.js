@@ -58,7 +58,7 @@ export const eventArgs = (event, { names }) => {
   }
 }
 
-export const filterTransferEvens = events => events.filter(e => e.event === EVENTS_TYPES.TRANSFER)
+export const filterTransferEvents = events => events.filter(e => e.event === EVENTS_TYPES.TRANSFER)
 
 export const getEventConfigBySignature = signature => {
   let config = EVENTS.find(e => e.signature === signature) || {}
