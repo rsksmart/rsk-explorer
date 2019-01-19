@@ -7,24 +7,18 @@
     .items(v-if='data && fields')
       template(v-for='field,fieldName,index in fields')
         template(v-if='showField(field,data)')
-          .item(v-if='!field.renderAs' :class='itemClass(field)')
-            field-title(:field='field')
-            data-field(
-              :field='field'
-              :row='dataFormatted'
-              :style='cellStyle(field,value(field,false))'
-              :delayed='isDelayed(field.fieldName)')
-          //-custom component
+          field-item(v-if='!field.renderAs' :field='field' :data='dataFormatted' v-bind='componentProps(field)')  
+            //-custom component
           .custom-item(v-else :class='itemClass(field)')
-            //-.field-title(v-if='!field.hideTitle') {{ field.title }}
             field-title(:field='field' v-if='!field.hideTitle' :class='field.renderAs')
-            component.custom(:is='field.renderAs' :data='getValue(field,data)' v-bind='componentProps(field)')
+            component.custom(:is='field.renderAs' :field='field' :data='getValue(field,data)' v-bind='componentProps(field)')
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
 import DataField from './DataField'
 import FieldTitle from './FieldTitle'
 import DataTable from './DataTable'
+import FieldItem from './FieldItem'
 import CollapsibleList from './CollapsibleList'
 import EventCall from './EventCall'
 export default {
@@ -39,6 +33,7 @@ export default {
     DataField,
     DataTable,
     FieldTitle,
+    FieldItem,
     CollapsibleList,
     EventCall
   },
@@ -71,7 +66,12 @@ export default {
       return css
     },
     componentProps (field) {
-      return Object.assign({ tableName: `field-${field.fieldName}` }, field.renderAsProps)
+      let tableName = `field-${field.fieldName}`
+      let css = this.itemClass(field)
+      let delayed = this.isDelayed(field)
+      let props = { tableName, css, delayed }
+      props = (field.renderAsProps) ? Object.assign(props, field.renderAsProps) : props
+      return props
     }
   }
 }
