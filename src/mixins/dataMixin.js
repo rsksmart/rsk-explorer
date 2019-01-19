@@ -61,13 +61,14 @@ export default {
     dataFormatted () {
       let data = this.data || {}
       let parentData = this.parentData || {}
+      let fields = this.fields
       if (this.rowCb) {
         if (Array.isArray(data)) {
           data = data.map(row => {
-            return this.rowCb(row, parentData)
+            return this.rowCb(row, parentData, fields)
           })
         } else {
-          data = this.rowCb(data, parentData)
+          data = this.rowCb(data, parentData, fields)
         }
       }
       return data
