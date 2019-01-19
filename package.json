@@ -18,30 +18,30 @@
     "d3-format": "^1.2.1",
     "moment": "^2.19.4",
     "socket.io-client": "^2.0.4",
-    "vue": "^2.5.17",
+    "vue": "^2.5.22",
     "vue-d3-barchart": "latest",
     "vue-router": "^3.0.1",
+    "vue-svgicon": "^1.2.6",
     "vuex": "^3.0.1",
-    "vuex-router-sync": "^5.0.0",
-    "vue-svgicon": "^1.2.6"
+    "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-e2e-cypress": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.0",
+    "@vue/cli-plugin-unit-mocha": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
     "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.1.2",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0-0",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
     "raw-loader": "^0.5.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-template-compiler": "^2.5.17",
-    "@vue/cli-plugin-e2e-cypress": "^3.2.0",
-    "@vue/cli-plugin-unit-mocha": "^3.2.0",
-    "@vue/test-utils": "^1.0.0-beta.20",
-    "babel-eslint": "^10.0.1",
-    "chai": "^4.1.2",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0-0"
+    "vue-template-compiler": "^2.5.22"
   }
 }
