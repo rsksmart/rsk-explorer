@@ -1,55 +1,82 @@
 import { tokenAmount } from '../../../filters/TokensFilters'
 import BigNumber from 'bignumber.js'
 
+export const eventValue = (value, { decimals, symbol }) => {
+  symbol = symbol || ''
+  decimals = parseInt(decimals)
+  value = (decimals) ? tokenAmount(value, decimals) : new BigNumber(value).toString()
+  value = (decimals) ? `${value} ${symbol}` : value
+  return value
+}
+
 export const EVENTS_TYPES = {
   TRANSFER: 'Transfer'
+}
+
+const EVENT_TRANSFER_FIELDS = (include) => {
+  let fields = {
+    from: {
+      type: 'eventAddress',
+      trim: 'auto'
+    },
+    to: {
+      type: 'eventAddress',
+      trim: 'auto'
+    },
+    value: {
+      filters: (value, data) => eventValue(value, data._addressData)
+    },
+    data: {
+      renderAs: 'big-field'
+    }
+  }
+  if (!include) return fields
+  return include.reduce((v, a, i) => {
+    v[a] = fields[a]
+    return v
+  }, {})
 }
 
 export const EVENTS = [
   {
     method: 'Transfer(address,address,uint256)',
     signature: 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-    fields: {
-      from: {},
-      to: {},
-      value: {
-        filter: (value, { decimals }) => {
-          decimals = parseInt(decimals)
-          value = (decimals) ? tokenAmount(value, decimals) : new BigNumber(value).toString()
-          return value
-        }
-      }
-    },
+    fields: EVENT_TRANSFER_FIELDS(['from', 'to', 'value']),
+    type: EVENTS_TYPES.TRANSFER
+  },
+  {
+    'method': 'Transfer(address,address,uint256,bytes)',
+    'signature': 'e19260aff97b920c7df27010903aeb9c8d2be5d310a2c67824cf3f15396e4c16',
+    fields: EVENT_TRANSFER_FIELDS(['from', 'to', 'value', 'data']),
     type: EVENTS_TYPES.TRANSFER
   }
 ]
 
 export const TRANSFER_EVENTS = EVENTS.filter(e => e.type === EVENTS_TYPES.TRANSFER)
 
+export const TRANFER_EVENTS_SIGNATURES = TRANSFER_EVENTS.map(e => e.signature)
+
+export const filterTransferEvents = events => events.filter(e => TRANFER_EVENTS_SIGNATURES.includes(e.signature))
+
 export const formatEvent = (event, data) => {
   let config = getEventConfigBySignature(event.signature) || {}
-  let fields = config.fields || {}
-  let names = Object.keys(fields)
-  let args = eventArgs(event, { names })
-  let parsedArgs = Object.assign({}, args)
-
-  for (let field in fields) {
-    let value = parsedArgs[field]
-    let filter = fields[field].filter
-    parsedArgs[field] = (filter) ? filter(value, data) : value
-  }
-
+  let args = eventArgs(event, config)
   if (args) event._arguments = args
   if (config) event._config = config
-  event._parsedArgs = parsedArgs
   return event
 }
 
-export const eventArgs = (event, { names }) => {
-  names = names || []
+export const getEventInputs = event => {
+  let inputs = (event.abi) ? event.abi.inputs : []
+  return inputs || []
+}
+
+export const eventArgs = (event, { fields }) => {
+  let inputs = getEventInputs(event)
+  fields = fields || {}
+  let names = Object.keys(fields) || []
   if (event.abi) {
     event.args = event.args || []
-    let inputs = event.abi.inputs || []
     return inputs.map(i => i.name).reduce((v, a, i) => {
       let name = names[i] || a
       v[name] = event.args[i]
@@ -58,15 +85,27 @@ export const eventArgs = (event, { names }) => {
   }
 }
 
-export const filterTransferEvents = events => events.filter(e => e.event === EVENTS_TYPES.TRANSFER)
-
 export const getEventConfigBySignature = signature => {
   let config = EVENTS.find(e => e.signature === signature) || {}
   let fields = config.fields
   if (fields) {
-    for (let f in fields) {
-      fields[f].field = ['_arguments', f]
+    for (let name in fields) {
+      let field = fields[name] || {}
+      field.field = ['_arguments', name]
+      fields[name] = field
     }
   }
   return config
+}
+
+export const getEventAbiFields = event => {
+  let inputs = getEventInputs(event)
+  return inputs.reduce((v, a, i) => {
+    let name = a.name
+    let type = a.type
+    let trim = (type === 'address') ? 'auto' : 0
+    let field = ['_arguments', name]
+    v[name] = { type, field, trim }
+    return v
+  }, {})
 }

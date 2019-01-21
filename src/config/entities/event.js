@@ -1,5 +1,5 @@
-import { ROUTES as r, THIS_CONTRACT, NOT_AVAILABLE, AUTO_FIELD } from '../types'
-import { formatEvent } from './lib/eventsLib'
+import { ROUTES as r, THIS_CONTRACT, NOT_AVAILABLE } from '../types'
+import { formatEvent, getEventConfigBySignature, getEventAbiFields } from './lib/eventsLib'
 import { TxLogItem } from './transaction'
 
 export const setThisContract = (val, match) => {
@@ -14,43 +14,12 @@ export const eventFormatRow = (event, parentData) => {
   return event
 }
 
-const eventFormatFields = (fields, data, parentData) => {
-  fields = removeAutoFields(fields)
-  let token = data._addressData || parentData || {}
-  let value = fields.value
-  if (value) value.suffix = token.symbol || ''
-  let inputs = (data.abi) ? data.abi.inputs : []
-  for (let input of inputs) {
-    let name = input.name
-    let type = input.type || null
-    let field = ['_arguments', name]
-    if (!fields[name]) {
-      fields[name] = setAutoField({ field, type, trim: 'auto' })
-    }
-  }
-  return fields
-}
-
-export const removeAutoFields = fields => {
-  for (let f in fields) {
-    let field = fields[f]
-    if (field[AUTO_FIELD]) delete fields[f]
-  }
-  return fields
-}
-
-export const setAutoField = field => {
-  field[AUTO_FIELD] = true
-  return field
-}
-
 export const Events = () => {
   return {
     key: 'eventId',
     icon: 'zap',
     link: `/${r.event}/`,
     formatRow: eventFormatRow,
-    formatFields: eventFormatFields,
     fields: {
       event: {
         field: 'event',
@@ -70,28 +39,16 @@ export const Events = () => {
   }
 }
 
-export const Event = () => {
+export const EventFields = () => {
   let event = Events()
   let fields = Object.assign({
     eventId: {
       type: 'eventId'
     },
     event: {},
-    from: {
-      field: '_parsedArgs.from',
-      type: 'eventAddress',
-      hideIfEmpty: true
-    },
-    to: {
-      field: '_parsedArgs.to',
-      type: 'eventAddress',
-      hideIfEmpty: true
-    },
-    value: {
-      field: '_parsedArgs.value',
-      filters: ['token-value'],
-      default: NOT_AVAILABLE,
-      hideIfEmpty: true
+    eventArguments: {
+      field: '_parsedArgs',
+      fields: {}
     },
     contract: {},
     contractName: {}
@@ -130,11 +87,23 @@ export const Event = () => {
       type: 'block'
     }
   })
-  fields.from.trim = 'auto'
-  fields.to.trim = 'auto'
-  delete fields.arguments
-  event.fields = fields
+  return fields
+}
 
+const eventFieldsFormatter = (fields, event) => {
+  let config = getEventConfigBySignature(event.signature)
+  let cFields = config.fields || getEventAbiFields(event)
+  let hide = !cFields
+  fields.eventArguments.fields = cFields
+  fields.eventArguments.hide = hide
+  fields.arguments.hide = !hide
+  return fields
+}
+
+export const Event = () => {
+  let event = Events()
+  event.fields = EventFields()
+  event.formatFields = eventFieldsFormatter
   return event
 }
 

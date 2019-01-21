@@ -2,7 +2,7 @@ import { mapGetters } from 'vuex'
 import common from './common'
 import { txValue } from '../filters/TokensFilters'
 import fieldsTypes from '../config/entities/lib/fieldsTypes'
-import { parseField } from '../lib/js/EntityParser'
+import { parseField, PARSED } from '../lib/js/EntityParser'
 export default {
   filters: { txValue },
   mixins: [common],
@@ -28,9 +28,9 @@ export default {
       }
     },
     fields () {
-      let entity = this.entity
+      let entity = this.entity || {}
+      let fields = entity.fields
       if (entity) {
-        let fields = entity.fields
         let parentData = this.parentData
         let data = this.data
         if (fields) {
@@ -38,14 +38,13 @@ export default {
           if (fcb) {
             fields = fcb(fields, data, parentData)
             for (let name in fields) {
-              let field = fields[name] || {}
-              if (!field.__parsed) fields[name] = parseField(name, fields[name], fieldsTypes)
+              fields[name] = this.parseField(name, fields[name])
             }
           }
         }
-        return fields || this.dataKeys
+        fields = fields || this.dataKeys
       }
-      return this.dataKeys
+      return Object.assign({}, fields)
     },
     visibleFields () {
       return Object.values(this.fields)
@@ -99,6 +98,11 @@ export default {
       'dataKey',
       'dataKeyValue'
     ]),
+    parseField (name, field) {
+      field = field || {}
+      if (field[PARSED]) return field
+      return parseField(name, field, fieldsTypes)
+    },
     fieldFromKey (key) {
       let entity = this.entity
       let keys = entity.fieldsKeys
@@ -144,7 +148,7 @@ export default {
     },
     fieldFormatProp (prop, field, value, filteredValue, row) {
       if (undefined === value) value = this.getValue(field, this.data, true)
-      if (undefined === filteredValue) filteredValue = this.filterFieldValue()(field, value)
+      if (undefined === filteredValue) filteredValue = this.filterFieldValue()(field, value, row)
       let pv = field[prop]
       if (typeof pv === 'function') {
         return pv(value, filteredValue, row)
@@ -177,7 +181,7 @@ export default {
       let isTitleField = (fieldName === entity.titleField)
       let value = this.getValue(field, data)
       let isNotEmpty = (field.hideIfEmpty) ? value : true
-      return Boolean(!hidden && !isTitleField && isNotEmpty)
+      return Boolean(!field.hide && !hidden && !isTitleField && isNotEmpty)
     },
 
     rowLink (row) {

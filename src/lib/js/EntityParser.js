@@ -1,4 +1,5 @@
-import { AUTO_FIELD } from '../../config/types'
+
+export const PARSED = '__parsed'
 
 export class EntityParser {
   constructor (entities, fields) {
@@ -64,8 +65,7 @@ export const parseField = (name, field, fieldsTypes) => {
       fieldDef
     )
   }
-  field.__parsed = true
-  field[AUTO_FIELD] = field[AUTO_FIELD] || false
+  field[PARSED] = true
   return field
 }
 
