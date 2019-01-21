@@ -25,20 +25,20 @@ export const getFieldFilteredValue = (state, getters) => (field, data, raw) => {
   if (field && field.field) {
     let value = getters.getFieldValue(field.field, data)
     if (value && !raw) {
-      value = getters.filterFieldValue(field, value)
+      value = getters.filterFieldValue(field, value, data)
     }
     return value
   }
 }
 
-export const filterFieldValue = (state, getters) => (field, value) => {
+export const filterFieldValue = (state, getters) => (field, value, data) => {
   field = field || {}
   let type = field.type
   let now = getters.getDate
   if (type === 'timestamp' && value) value = now - value * 1000
   let filters = field.filters
   if (filters) {
-    value = getters.applyFilters(filters, value)
+    value = getters.applyFilters(filters, value, data)
   }
   return value
 }
@@ -53,23 +53,21 @@ export const getFieldValue = state => (field, data) => {
   }
 }
 
-export const applyFilters = state => (filters, value) => {
+export const applyFilters = state => (filters, value, data) => {
   if (filters) {
     filters = Array.isArray(filters) ? filters : [filters]
     for (let f of filters) {
-      if (typeof f === 'object') {
-        let filterName = f.name
-        let args = f.args
-        if (filterName) value = filter(filterName, value, args)
+      if (typeof f === 'function') {
+        value = f(value, data)
       } else {
-        value = filter(f, value)
+        value = applyFilter(f, value)
       }
     }
   }
   return value
 }
 
-const filter = (filterName, value, args) => {
+const applyFilter = (filterName, value, args) => {
   let filter = Vue.filter(filterName)
   args = args || []
   args = Array.isArray(args) ? args : [args]

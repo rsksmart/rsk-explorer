@@ -9,6 +9,7 @@ import {
 import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
+import { round } from '../../filters/NumberFilters'
 import { formatEvent, filterTransferEvents } from './lib/eventsLib'
 
 const transactionFormatFields = (fields, data, parentData) => {
@@ -83,7 +84,10 @@ const TxFields = () => {
       }
     },
     value: {
-      filters: ['tx-value', { name: 'round', args: 4 }, 'rbtc']
+      filters: ['tx-value',
+        (value, data) => round(value, 4),
+        'rbtc'
+      ]
     },
     gasUsed: {
       type: 'gas',
