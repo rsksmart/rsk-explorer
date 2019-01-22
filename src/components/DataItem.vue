@@ -125,10 +125,9 @@ export default {
         margin 0 2em 0 0em !important
         flex 5
 
-
   .field-value
     display inline-flex
-  
+
   .custom
     display flex
     flex-flow column wrap
