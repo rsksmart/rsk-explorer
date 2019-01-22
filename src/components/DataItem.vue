@@ -7,11 +7,20 @@
     .items(v-if='data && fields')
       template(v-for='field,fieldName,index in fields')
         template(v-if='showField(field,data)')
-          field-item(v-if='!field.renderAs' :field='field' :data='dataFormatted' v-bind='componentProps(field)')  
-            //-custom component
-          .custom-item(v-else :class='itemClass(field)')
-            field-title(:field='field' v-if='!field.hideTitle' :class='field.renderAs')
-            component.custom(:is='field.renderAs' :field='field' :data='getValue(field,data)' v-bind='componentProps(field)')
+
+          template(v-if='hasFields(field)')
+            template(v-for='f,n,ii in field.fields')
+              field-item(v-if='!f.renderAs' :field='parseField(n,field.fields[n])' :data='dataFormatted' v-bind='componentProps(f)' :css='itemClass(f,index+ii)')
+              .custom-item(v-else :class='itemClass(f)')
+                field-title(:field='parseField(n,field.fields[n])' v-if='!field.hideTitle' :class='f.renderAs')
+                component.custom(:is='f.renderAs' :field='f' :data='getValue(f,data)' v-bind='componentProps(f)')
+
+          template(v-else)
+            field-item(v-if='!field.renderAs' :field='field' :data='dataFormatted' v-bind='componentProps(field)' :css='itemClass(field,index)')
+              //-custom component
+            .custom-item(v-else :class='itemClass(field)')
+              field-title(:field='field' v-if='!field.hideTitle' :class='field.renderAs')
+              component.custom(:is='field.renderAs' :field='field' :data='getValue(field,data)' v-bind='componentProps(field)')
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
@@ -55,23 +64,26 @@ export default {
       let fields = this.delayedFields
       return fields.indexOf(field) > -1
     },
-    itemClass (field) {
+    itemClass (field, rowNumber) {
       let css = []
       let fieldName = field.fieldName
       let pos = this.fieldPos(field)
       if (this.isFrom(fieldName, pos)) css.push('from')
       if (this.isTo(fieldName, pos)) css.push('to')
-      let row = (pos % 2) ? 'odd' : 'even'
+      rowNumber = rowNumber || pos
+      let row = (rowNumber % 2) ? 'odd' : 'even'
       css.push(row)
       return css
     },
     componentProps (field) {
       let tableName = `field-${field.fieldName}`
-      let css = this.itemClass(field)
       let delayed = this.isDelayed(field)
-      let props = { tableName, css, delayed }
+      let props = { tableName, delayed }
       props = (field.renderAsProps) ? Object.assign(props, field.renderAsProps) : props
       return props
+    },
+    hasFields (field) {
+      return field.fields && Object.keys(field.fields).length
     }
   }
 }

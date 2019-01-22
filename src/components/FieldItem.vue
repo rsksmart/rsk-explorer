@@ -21,7 +21,6 @@ export default {
   mixins: [
     dataMixin
   ],
-  props: ['field', 'css', 'data','delayed']
+  props: ['field', 'css', 'data', 'delayed']
 }
 </script>
-

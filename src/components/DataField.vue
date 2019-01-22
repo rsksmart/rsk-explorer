@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     filteredValue () {
-      return this.filterFieldValue()(this.field, this.value)
+      return this.filterFieldValue()(this.field, this.value, this.row)
     },
     value () {
       return this.getValue(this.field, this.row, true)
