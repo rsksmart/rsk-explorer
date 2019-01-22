@@ -229,9 +229,11 @@ flex-table()
   td
     flex-flow column wrap
     .td-title, .data-field 
-      display block
+      display flex
+      flex-flow column
+      justify-content center !important 
+      align-items  center !important
       flex 0 0 50%
-  
   td.from-to-arrow
     display none
   td.field-from

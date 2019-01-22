@@ -100,6 +100,7 @@ export default {
     overflow-wrap break-word
     word-break break-word
     justify-content center
+    align-items center
 
   .field-value
     overflow-wrap break-word

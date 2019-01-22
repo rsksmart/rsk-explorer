@@ -88,6 +88,7 @@ export default {
   }
 }
 </script>
+
 <style lang="stylus">
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/media_queries.styl'
@@ -124,6 +125,10 @@ export default {
         margin 0 2em 0 0em !important
         flex 5
 
+
+  .field-value
+    display inline-flex
+  
   .custom
     display flex
     flex-flow column wrap
@@ -148,12 +153,6 @@ export default {
   .field-title
     text-transform capitalize
     font-weight bold
-
-  .data-field
-    justify-content flex-start
-
-    .field-value
-      display inline-flex
 
   .item-title
     text-transform capitalize

@@ -213,6 +213,7 @@ const TxBox = () => {
   let txs = Txs()
   txs.fields.to.trim = 'auto'
   txs.fields.from.trim = 'auto'
+  txs.fields.hash.trim = 8
   return txs
 }
 
