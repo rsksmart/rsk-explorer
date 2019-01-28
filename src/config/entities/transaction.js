@@ -289,6 +289,7 @@ export const TxLogItem = () => {
         renderAs: 'big-field'
       },
       eventId: {
+        field: '_id',
         type: 'eventId'
       }
     }

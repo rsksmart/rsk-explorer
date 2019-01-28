@@ -16,14 +16,14 @@ export const eventFormatRow = (event, parentData) => {
 
 export const Events = () => {
   return {
-    key: 'eventId',
+    key: '_id',
     icon: 'zap',
     link: `/${r.event}/`,
     formatRow: eventFormatRow,
     fields: {
       event: {
         field: 'event',
-        link: (data, value) => `/${r.event}/${data.eventId}`,
+        link: (data, value) => `/${r.event}/${data._id}`,
         default: NOT_AVAILABLE
       },
       arguments: {
@@ -43,6 +43,7 @@ export const EventFields = () => {
   let event = Events()
   let fields = Object.assign({
     eventId: {
+      field: '_id',
       type: 'eventId'
     },
     event: {},
