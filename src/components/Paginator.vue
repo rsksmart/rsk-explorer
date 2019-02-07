@@ -59,10 +59,11 @@ export default {
       let page = event.target.value
       if (page) this.goToPage(page, event)
     },
-    goToPage (page) {
+    goToPage (page, event) {
       let key = this.key
+      // let hash = this.getRouterHashFromEvent(event)
       let query = (key) ? { [`page__${key}`]: page } : { page }
-      this.updateRouterQuery(query)
+      this.updateRouterQuery({ query })
     }
   }
 }

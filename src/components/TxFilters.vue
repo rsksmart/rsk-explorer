@@ -34,7 +34,8 @@ export default {
     update () {
       let q = Object.assign({}, this.q)
       q.txType = this.filterValues
-      this.updateRouterQuery({ q })
+      let query = { q }
+      this.updateRouterQuery({ query })
     }
   }
 }

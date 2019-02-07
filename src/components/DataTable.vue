@@ -181,7 +181,8 @@ export default {
       this.getData(sort)
     },
     getData (sort, hash) {
-      this.updateRouterQuery([{ sort }, hash])
+      let query = { sort }
+      this.updateRouterQuery({ query, hash })
     },
     sortBy (field, event) {
       let hash = this.getRouterHashFromEvent(event)

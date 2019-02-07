@@ -155,7 +155,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'fetchRouteData'
+      'fetchRouteData',
+      'updateRouterQuery'
     ]),
     ...mapGetters([
       'isRequesting',
@@ -165,20 +166,19 @@ export default {
       'isRequested'
     ]),
     setTab (tab, event) {
-      this.updateRouterQuery('__tab', tab, event)
+      this.updateRouterTabQuery('__tab', tab, event)
     },
     setActiveContentTab (name, event) {
-      this.updateRouterQuery('__ctab', name, event)
+      this.updateRouterTabQuery('__ctab', name, event)
     },
     isActiveContentTab (tab) {
       let active = this.activeContentTab || {}
       return active.name === tab.name
     },
-    updateRouterQuery (key, value, event) {
+    updateRouterTabQuery (key, value, event) {
       let hash = this.getRouterHashFromEvent(event)
-      let query = Object.assign({}, this.$route.query)
-      query[key] = value
-      this.$router.push({ query, hash })
+      let query = { [key]: value }
+      this.updateRouterQuery({ query, hash })
     },
     renderTab (tab) {
       const render = tab.render
