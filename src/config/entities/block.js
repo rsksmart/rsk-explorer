@@ -40,6 +40,10 @@ const Block = () => {
     hash: {
       trim: 'auto'
     },
+    date: {
+      field: 'timestamp',
+      type: 'date'
+    },
     parentHash: {
       trim: 'auto',
       link: `/${r.block}/`
