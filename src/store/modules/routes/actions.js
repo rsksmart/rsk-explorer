@@ -3,15 +3,16 @@ import router from '../../../router'
 
 export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
   let routerQuery = getters.getRouterQuery
-  let module = req.module
-  let action = req.action
+  let { module, action, key } = req
   let query = routerQuery.q || getters.getSavedQ(module, action) || null
   req.sort = routerQuery.sort || getters.getSavedSort(module, action) || null
-  let key = req.key
-  req.page = (key) ? routerQuery[`page__${key}`] || 1 : 1
+  req.next = (key) ? routerQuery[getters.nextKey(key)] : null
+  req.prev = (key) ? routerQuery[getters.prevKey(key)] : null
+  req.page = (key) ? routerQuery[getters.pageKey(key)] : null
   if (query) query = getters.parseQuery(query, true)
   req.query = query
   req.params = req.params || {}
+  req.count = false
   req.params = Object.assign(req.params, getters.getRouterParams)
   return dispatch('fetchData', req)
 }
@@ -32,7 +33,9 @@ export const routerPush = ({ state, commit, getters }, payload) => {
 
 export const updateQuery = (query, update) => {
   for (let p in update) {
-    query[p] = update[p]
+    let value = update[p]
+    if (value === null) delete query[p]
+    else query[p] = value
   }
   return query
 }

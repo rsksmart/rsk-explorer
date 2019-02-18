@@ -35,8 +35,7 @@ export const socketTransactions = ({ commit }, data) => {
 }
 
 export const socketData = ({ state, commit, dispatch }, res) => {
-  let req, pages, error, next, prev, delayed
-  ({ req, pages, error, next, prev, delayed } = res)
+  let { req, pages, error, next, prev, delayed } = res
   let key = req.key
   let sort = (pages) ? pages.sort : null
   let q = (req.params && req.params.query) ? req.params.query : null
@@ -89,13 +88,16 @@ export const socketDbStatus = ({ state, commit }, data) => {
 
 export const fetchData = ({ commit }, req) => {
   req.params = req.params || {}
-  let page, query, sort, action
-  ({ page, query, sort, action } = req)
+  let { next, prev, query, sort, action, count, page } = req
   let module = req.module || null
+
+  let limit = req.limit
+  let getPages = true
 
   const key = (req.key || 'data')
   const time = Date.now()
-  let params = Object.assign(req.params, { page, query, sort })
+
+  let params = Object.assign(req.params, { next, prev, query, sort, count, limit, page, getPages })
   const data = { module, action, params, key, time, getDelayed: true }
   commit('SET_REQUESTING', [key, time])
   // Fix next 2 lines

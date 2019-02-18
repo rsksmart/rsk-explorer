@@ -1,3 +1,5 @@
+import { NEXT, PREV, PAGE } from '../../../config/types'
+
 export const encodedProps = (state) => {
   return ['sort', 'q']
 }
@@ -57,4 +59,16 @@ export const getActiveTab = (state, getters, rootState) => {
 
 export const getActiveContentTab = (state, getters, rootState) => {
   return rootState.route.query.__ctab
+}
+
+export const nextKey = () => key => `${NEXT}__${key}`
+export const prevKey = () => key => `${PREV}__${key}`
+export const pageKey = () => key => `${PAGE}__${key}`
+
+export const removePaginationFromRoute = (state, getters) => (key, query) => {
+  const prev = getters.prevKey(key)
+  const next = getters.nextKey(key)
+  const page = getters.pageKey(key)
+  query = Object.assign(query, { [prev]: null, [next]: null, [page]: null })
+  return query
 }
