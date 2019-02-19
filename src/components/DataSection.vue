@@ -57,6 +57,12 @@ export default {
   props: [
     'module', 'dataType', 'component', 'action', 'reqKey', 'msgs'
   ],
+  mounted () {
+    window.addEventListener('keyup', this.keyPress, { passive: true })
+  },
+  beforeDestroy () {
+    window.removeEventListener('keyup', this.keyPress, { passive: true })
+  },
   computed: {
     page () {
       return this.getPage()(this.reqKey)
@@ -128,9 +134,22 @@ export default {
       let params = Object.assign({}, this.$route.params)
       let key = this.key
       let name = this.$route.name
+      let res = {}
       if (data && key && params) {
         params[key] = data[key]
-        return { params, name }
+        res = { params, name }
+      }
+      return res
+    },
+    keyPress (event) {
+      if (event.preventDefaulted) return
+      if (event.code === 'ArrowLeft') this.navigateTo(this.prev)
+      if (event.code === 'ArrowRight') this.navigateTo(this.next)
+    },
+    navigateTo (dest) {
+      if (dest) {
+        let go = this.routeParams(dest)
+        this.$router.push(go)
       }
     }
   }
