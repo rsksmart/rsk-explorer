@@ -19,7 +19,9 @@ export const isRequesting = state => (key) => {
 }
 
 export const pageError = state => key => {
-  return state.responses[key].error
+  const page = state.responses[key] || {}
+  const { error } = page
+  return error
 }
 export const getPage = state => key => {
   return state.responses[key]
@@ -30,8 +32,9 @@ export const lastBlocksTime = state => {
 }
 
 export const getPageTotal = (state, getters) => key => {
-  const pages = getters.getPage(key).pages
-  const total = (pages && pages.total) ? pages.total : 0
+  const data = state.responses[key]
+  const { pages } = data
+  const total = (pages && pages.total) ? pages.total : state.totals[key] || null
   return total
 }
 

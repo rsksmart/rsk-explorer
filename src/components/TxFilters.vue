@@ -8,7 +8,7 @@
           small {{name}}
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   name: 'tx-filters',
   props: ['q', 'module', 'action'],
@@ -31,10 +31,12 @@ export default {
   },
   methods: {
     ...mapActions(['updateRouterQuery']),
+    ...mapGetters(['removePaginationFromRoute']),
     update () {
       let q = Object.assign({}, this.q)
       q.txType = this.filterValues
       let query = { q }
+      query = this.removePaginationFromRoute()('data', query)
       this.updateRouterQuery({ query })
     }
   }

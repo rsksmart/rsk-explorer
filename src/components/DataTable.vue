@@ -9,17 +9,25 @@
     table.dark(v-if='data' ref='table' :class='tableClass')
       thead(:class='theadClass')
         tr
-          th.dummy
+          th(v-if='!isDefaultSortVisible')
+            icon(:name='iconLoad' :style='iconStyle()')
+            .sort(v-if='sort && isSorted([defKeys[0]])')
+              button.link(@click='sortBy(defKeys[0],$event)')
+                //-field-title(:field='fields[defKeys[0]]')
+                .field-title
+                  .sort-icon(v-if='isSorted(defKeys[0])')
+                    icon.small(:name='sortIcon(defKeys[0])')
+            //-template(v-else)
+              field-title(:field='field')  
+          th.dummy(v-else)
           template(v-for='field,fieldName,index in fields')
             template(v-if='!isHidden(fieldName)')
               th(:class='thClass(field.fieldName)')
                 .sort(v-if='sort && isSortable(field.fieldName)')
                   button.link(@click='sortBy(field.fieldName,$event)')
                     field-title(:field='field')
-                      .sort-icon(v-if='isSorted(field.fieldName) && !isDefaultSort')
+                      .sort-icon(v-if='isSorted(field.fieldName)')
                         icon.small(:name='sortIcon(field.fieldName)')
-                  //-template(v-if='isSorted(field.fieldName) && sortKeys.length > 1')
-                    small {{sortIndex(field.fieldName)}}
                 template(v-else)
                   field-title(:field='field')
               th.dummy(v-if='isFrom(fieldName,index)' )
@@ -29,6 +37,7 @@
             router-link(:to='rowLink(row)')
               icon(:name='iconLoad' :style='iconStyle(row)')
           template(v-for='field,fieldName,index in fields')
+            
             td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
               template(v-if='!renderTable')
                 .sort.td-title(v-if='sort && isSortable(field.fieldName)')
@@ -133,6 +142,11 @@ export default {
       if (sortKeys.length !== this.defKeys.length) return false
       return (undefined !== sortKeys.find(k => defSort[k] === sort[k]))
     },
+    isDefaultSortVisible () {
+      let fields = Object.values(this.fields).map(f => f.path)
+      let keys = this.defKeys.map(k => fields.includes(k))
+      return keys.reduce((v, a) => v && a)
+    },
     sortableFields () {
       let page = this.page
       let pages = page.pages
@@ -153,6 +167,11 @@ export default {
     },
     tableConfig () {
       return this.getTableConfig()(this.tableId)
+    },
+    key () {
+      let page = this.page
+      let req = (page) ? page.req : {}
+      return req.key
     }
   },
   methods: {
@@ -162,7 +181,8 @@ export default {
     ]),
     ...mapGetters([
       'getTableId',
-      'getTableConfig'
+      'getTableConfig',
+      'removePaginationFromRoute'
     ]),
     sortIcon (fieldName) {
       let sort = this.sort[fieldName]
@@ -175,13 +195,9 @@ export default {
     sortIndex (field) {
       return this.sortKeys.indexOf(field) + 1
     },
-    removeSort (fieldName) {
-      let sort = Object.assign({}, this.sort)
-      delete sort[fieldName]
-      this.getData(sort)
-    },
     getData (sort, hash) {
-      let query = { sort }
+      let key = this.key
+      let query = this.removePaginationFromRoute()(key, { sort })
       this.updateRouterQuery({ query, hash })
     },
     sortBy (field, event) {
@@ -192,14 +208,14 @@ export default {
         if (sort[field] === -1) delete sort[field]
         else sort[field] = (sort[field]) ? -1 : 1
       } else {
-        let defSort = this.defaultSort[field]
-        sort[field] = -defSort
+        sort[field] = (sort[field] === 1) ? -1 : 1
       }
       this.getData(sort, hash)
     },
     isSorted (field) {
       let sort = this.sort
-      return (sort && sort[field])
+      let sorted = (sort && sort[field])
+      return sorted
     },
     isSortable (field) {
       return (undefined !== this.sortableFields[field])
