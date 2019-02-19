@@ -2,28 +2,30 @@
   font-size 2.5em
 
 ul.inline
-  display: inline 
-  margin:0
-  padding:0
-  color:$color
-  text-shadow: $txt-sh
+  display inline
+  margin 0
+  padding 0
+  color $color
+  text-shadow $txt-sh
 
 .inline
-  list-style: none
+  list-style none
+
   li
-    display: inline-block
+    display inline-block
+
     &:after
-      content: ' '
-      margin: 0 0.5em
+      content ' '
+      margin 0 0.5em
 
 .cross-cursor
-  cursor: crosshair
+  cursor crosshair
 
 .suffix
-  font-size: 0.8em
+  font-size 0.8em
 
 .med
-  font-size: 2em
+  font-size 2em
 
 .row
   display flex
@@ -36,25 +38,28 @@ ul.inline
   flex-centered()
   flex 1 1 100%
 
-.space-v 
-  margin .5em 
+.space-v
+  margin 0.5em
 
 .nav-bar
   display flex
   flex-flow row nowrap
+
   .col
-   flex 1 1 100%
+    flex 1 1 100%
+
   .col:first-of-type *
     text-align left
-  .col:last-of-type 
+
+  .col:last-of-type
     text-align right
 
 .big-number
-  font-size: .6em
+  font-size 0.6em
 
- .soft
-    color gray
-    font-size .9em 
+.soft
+  color gray
+  font-size 0.9em
 
 .link
   link()
@@ -68,7 +73,14 @@ ul.inline
 .frame
   frame($border-color)
 
- .raw
-    raw()
-    ul
-      list-style none
+.raw
+  raw()
+
+  ul
+    list-style none
+
+.bold
+  font-weight bold
+
+.hidden
+  display none
