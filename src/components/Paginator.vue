@@ -2,10 +2,16 @@
   .pages(v-if='next || prev || pages')
     button.page-button(v-if='prev' @click='goToPage(prevIndex,$event)')
       icon(name='arrow-left')
-    div(v-else)  
+    div(v-else)
     ul.page-numbers(v-if='pages.length > 1')
+      li(v-if='prevPage')
+        button(@click='goToPage(prevPage,$event)')
+          icon.link(name='triangle-arrow-left')
       li.link(v-for='p in pages' :class='(p.page===page) ? "selected":""' @click='goToPage(p)')
         small {{p.page}}
+      li(v-if='nextPage')
+        button(@click='goToPage(nextPage,$event)')
+          icon.link(name='triangle-arrow-right')
     button.page-button(v-if='nextIndex' @click='goToPage(nextIndex,$event)')
       icon(name='arrow-right')
     div(v-else)
@@ -40,6 +46,14 @@ export default {
       let { prev, prevPage } = this.options
       prev = (prev) ? { prev } : null
       return (this.pages.length) ? prevPage : prev
+    },
+    nextPage () {
+      let aPage = this.findPage(this.page + 1)
+      return aPage || this.nextIndex
+    },
+    prevPage () {
+      let pPage = this.findPage(this.page - 1)
+      return pPage || this.prevIndex
     },
     total () {
       return this.options.total
@@ -81,6 +95,11 @@ export default {
       let pageKey = this.pageKey()(key)
       let query = { [nextKey]: next, [prevKey]: prev, [pageKey]: page }
       this.updateRouterQuery({ query })
+    },
+    findPage (page) {
+      let { pages } = this
+      let index = pages.findIndex(p => p.page === page)
+      return (index > -1) ? pages[index] : null
     }
   }
 }
@@ -108,8 +127,9 @@ export default {
       margin 0 0.25em
       min-width 1em
       flex-centered()
+
     li.selected
-      padding .0625em .125em
+      padding 0.0625em 0.125em
       border-radius $border-radius
       border-color $soft-border
 
