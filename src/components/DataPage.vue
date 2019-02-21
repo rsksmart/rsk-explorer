@@ -35,7 +35,7 @@
                 template(v-else)
                   button.btn.tab-title.link(@click='setTab(tab.name,$event)' :class='tabTitleCss(isActiveTab(tab))')
                     span.title {{tab.name}}
-                      small.small ({{ getPageTotal()(tab.name) }})
+                      small.small(v-if='tabsTotals[tab.name] !== null') &nbsp; ({{ tabsTotals[tab.name] }})
 
           template(v-for='tab in tabs')
             template(v-if='isActiveTab(tab)')
@@ -151,6 +151,13 @@ export default {
         return tab
       })
       return tabs.filter(tab => { return (undefined !== tab.render) ? tab.render : true })
+    },
+    tabsTotals () {
+      return this.tabs.reduce((v, a, i) => {
+        let { name } = a
+        v[name] = this.getPageTotal()(name)
+        return v
+      }, {})
     }
   },
   methods: {
@@ -198,9 +205,7 @@ export default {
     },
 
     async getData () {
-      let module = this.module
-      let tabs = this.tabs
-      let action = this.action
+      let { module, tabs, action } = this
       let key = this.reqKey
       if (!module || !action) return
       await this.fetchRouteData({ action, module, key })
@@ -218,6 +223,12 @@ export default {
 
     async fetchTab (tabName) {
       let tab = this.getTab(tabName)
+      let { params } = tab
+      params = params || {}
+      let count = true // WIP get totals in first request only
+      params = Object.assign(params, { count })
+      tab.params = params
+      tab.count = true
       if (tab) {
         let req = await this.fetchRouteData(tab)
         return req

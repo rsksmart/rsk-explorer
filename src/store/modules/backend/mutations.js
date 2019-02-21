@@ -54,6 +54,10 @@ export const SET_RESPONSE = (state, payload) => {
   }
 }
 
+export const SET_TOTAL = (state, { key, total }) => {
+  if (key) state.totals[key] = total
+}
+
 export const SET_DB_STATUS = (state, data) => {
   Vue.set(state, 'dbStatus', data)
   let missing = state.missingBlocks

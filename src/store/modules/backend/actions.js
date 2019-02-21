@@ -37,6 +37,7 @@ export const socketTransactions = ({ commit }, data) => {
 export const socketData = ({ state, commit, dispatch }, res) => {
   let { req, pages, error, next, prev, delayed } = res
   let key = req.key
+  const total = (pages) ? pages.total : null
   let sort = (pages) ? pages.sort : null
   let q = (req.params && req.params.query) ? req.params.query : null
   let requested = state.requesting[key]
@@ -63,6 +64,7 @@ export const socketData = ({ state, commit, dispatch }, res) => {
       }
     } else {
       commit('SET_RESPONSE', [key, { error: null }])
+      commit('SET_TOTAL', { key, total })
       if (isUpdating) {
         let dFields = Object.keys(data.data)
         let fields = updating.fields.filter(f => dFields.indexOf(f) < 0)
@@ -86,7 +88,7 @@ export const socketDbStatus = ({ state, commit }, data) => {
   commit('SET_DB_STATUS', data)
 }
 
-export const fetchData = ({ commit }, req) => {
+export const fetchData = ({ state, commit, getters }, req) => {
   req.params = req.params || {}
   let { next, prev, query, sort, action, count, page } = req
   let module = req.module || null
@@ -96,6 +98,7 @@ export const fetchData = ({ commit }, req) => {
 
   const key = (req.key || 'data')
   const time = Date.now()
+  // count = (undefined === count)
 
   let params = Object.assign(req.params, { next, prev, query, sort, count, limit, page, getPages })
   const data = { module, action, params, key, time, getDelayed: true }
@@ -123,8 +126,9 @@ const delayedObject = (payload = {}) => {
 }
 
 const responseObject = (res = {}) => {
-  let ret = {}
-  let keys = ['data', 'parentData', 'error', 'req', 'sort', 'delayed', 'updateError']
-  keys.forEach(v => { ret[v] = null })
-  return Object.assign(ret, res)
+  const keys = ['data', 'parentData', 'error', 'req', 'sort', 'delayed', 'updateError']
+  return keys.reduce((v, a) => {
+    v[a] = null
+    return v
+  }, {})
 }

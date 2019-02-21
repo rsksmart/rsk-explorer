@@ -12,8 +12,8 @@ export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
   if (query) query = getters.parseQuery(query, true)
   req.query = query
   req.params = req.params || {}
-  req.count = false
   req.params = Object.assign(req.params, getters.getRouterParams)
+
   return dispatch('fetchData', req)
 }
 

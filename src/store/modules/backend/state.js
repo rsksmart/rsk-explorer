@@ -5,6 +5,7 @@ export default function () {
     systemSettings: {},
     requesting: {},
     responses: {},
+    totals: {},
     blocks: [],
     lastBlocks: [],
     pendingBlocks: {},
