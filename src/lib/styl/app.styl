@@ -1,16 +1,11 @@
 @import './vars.styl'
+
 .block, .transaction
   ul
     list-style none
 
-//-.from
-  //margin-right 1em
-
 td.from, th.from
   text-align right
-
-//.to
-  //margin-left 1em
 
 td.to, th.to
   text-align left
@@ -71,6 +66,7 @@ td.to, th.to
     margin 0
     padding 0
     flex-flow column nowrap
+
     li
       width 100% !important
 
@@ -81,12 +77,17 @@ td.to, th.to
   flex 3
 
 .field-title + .data-field
-  margin 0 0 0 .5em
+  margin 0 0 0 0.5em
+
+.flex-table
+  .data-field
+    margin 0
 
 .odd
   background $bg-odd
+
 .even
-  background $bg-even  
+  background $bg-even
 
 .data-field
   justify-content flex-start

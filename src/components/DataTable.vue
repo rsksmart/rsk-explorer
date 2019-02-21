@@ -9,42 +9,52 @@
     table.dark(v-if='data' ref='table' :class='tableClass')
       thead(:class='theadClass')
         tr
-          th(v-if='!isDefaultSortVisible')
-            icon(:name='iconLoad' :style='iconStyle()')
+          th.table-id(v-if='!isDefaultSortVisible')
             .sort(v-if='sort && isSorted([defKeys[0]])')
+
+              //-field-title(:field='fields[defKeys[0]]')
               button.link(@click='sortBy(defKeys[0],$event)')
-                //-field-title(:field='fields[defKeys[0]]')
-                .field-title
-                  .sort-icon(v-if='isSorted(defKeys[0])')
-                    icon.small(:name='sortIcon(defKeys[0])')
-            //-template(v-else)
-              field-title(:field='field')  
+                icon(:name='iconLoad' :style='iconStyle()')
+                .sort-icon(v-if='isSorted(defKeys[0])')
+                  icon.small(:name='sortIcon(defKeys[0])')
+            template(v-else)
+              //-field-title(:field='field')
+              .field-title
+                button.link(@click='sortBy(defKeys[0],$event)')
+                  icon(:name='iconLoad' :style='iconStyle()')
           th.dummy(v-else)
           template(v-for='field,fieldName,index in fields')
             template(v-if='!isHidden(fieldName)')
               th(:class='thClass(field.fieldName)')
-                .sort(v-if='sort && isSortable(field.fieldName)')
-                  button.link(@click='sortBy(field.fieldName,$event)')
+                .sort(v-if='sort && isSortable(field.path)')
+                  button.link(@click='sortBy(field.path,$event)')
                     field-title(:field='field')
-                      .sort-icon(v-if='isSorted(field.fieldName)')
-                        icon.small(:name='sortIcon(field.fieldName)')
+                      .sort-icon(v-if='isSorted(field.path)')
+                        icon.small(:name='sortIcon(field.path)')
                 template(v-else)
                   field-title(:field='field')
               th.dummy(v-if='isFrom(fieldName,index)' )
       tbody
         tr(v-for='row, rowIndex in dataFormatted' :class='rowClass(rowIndex)')
+          //- row icon
           td.row-icon
             router-link(:to='rowLink(row)')
               icon(:name='iconLoad' :style='iconStyle(row)')
+            // - grid default sort icon
+            template(v-if='!renderTable')
+              .sort.td-title(v-if='sort && isSorted([defKeys[0]])')
+                button.link(@click='sortBy(defKeys[0],$event)')
+                  .sort-icon(v-if='isSorted(defKeys[0])')
+                    icon.small(:name='sortIcon(defKeys[0])')
           template(v-for='field,fieldName,index in fields')
-            
+
             td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
               template(v-if='!renderTable')
-                .sort.td-title(v-if='sort && isSortable(field.fieldName)')
-                  button.link(@click='sortBy(field.fieldName,$event)')
+                .sort.td-title(v-if='sort && isSortable(field.path)')
+                  button.link(@click='sortBy(field.path,$event)')
                     field-title(:field='field')
-                      .sort-icon(v-if='isSorted(field.fieldName) && !isDefaultSort')
-                        icon.small(:name='sortIcon(field.fieldName)')
+                      .sort-icon(v-if='isSorted(field.path) && !isDefaultSort')
+                        icon.small(:name='sortIcon(field.path)')
                 field-title.td-title(v-else :field='field')
               data-field(:field='field' :row='row')
             td.from-to-arrow(v-if='isFrom(fieldName,index)')
@@ -263,6 +273,9 @@ export default {
 
     .field-title
       flex-centered()
+
+    button
+      display flex
 
     div
       display flex
