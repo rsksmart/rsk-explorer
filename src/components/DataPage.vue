@@ -12,6 +12,9 @@
         message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data')
       //- Header
       .page-header(v-if='mainContent')
+
+        item-navigator(v-if='!isTable' :next='next' :prev='prev' :total='total' :regKey='dataKey()(dataType)')
+
         .tabs
           .tabs-titles
             template(v-for='tab in mainContentTabs')
@@ -52,6 +55,7 @@ import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
 import ErrorPage from './ErrorPage'
 import Message from './Message'
+import ItemNavigator from './ItemNavigator'
 import common from '../mixins/common'
 export default {
   name: 'data-page',
@@ -60,7 +64,8 @@ export default {
     DataSection,
     ErrorPage,
     Message,
-    LoadingCircle
+    LoadingCircle,
+    ItemNavigator
   },
   mixins: [
     common
@@ -97,6 +102,19 @@ export default {
     },
     page () {
       return this.getPage()(this.reqKey) || {}
+    },
+    prev () {
+      return this.page.prev || null
+    },
+    next () {
+      return this.page.next || null
+    },
+    total () {
+      return this.page.total || null
+    },
+    isTable () {
+      let { data } = this.page
+      return (data && Array.isArray(data))
     },
     delayed () {
       return this.page.delayed || {}
@@ -170,7 +188,8 @@ export default {
       'getPage',
       'getPageTotal',
       'pageError',
-      'isRequested'
+      'isRequested',
+      'dataKey'
     ]),
     setTab (tab, event) {
       this.updateRouterTabQuery('__tab', tab, event)

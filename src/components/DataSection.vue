@@ -8,8 +8,6 @@
       //- Transactions filters
       tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module')
       paginator(v-if='isTable' :options='pageOptions' :link='0')
-      template(v-if='!isTable')
-        item-navigator(:next='next' :prev='prev' :total='total' :regKey='key')
 
     //- Component
     template(v-if='component && data')
@@ -33,7 +31,6 @@ import Paginator from './Paginator'
 import TxFilters from './TxFilters'
 import Spinner from './Spinner'
 import Message from './Message'
-import ItemNavigator from './ItemNavigator'
 export default {
   name: 'data-section',
   components: {
@@ -43,8 +40,7 @@ export default {
     Paginator,
     TxFilters,
     Spinner,
-    Message,
-    ItemNavigator
+    Message
   },
   props: [
     'module', 'dataType', 'component', 'action', 'reqKey', 'msgs'
@@ -64,15 +60,6 @@ export default {
     },
     parentData () {
       return (this.parentPage) ? this.parentPage.data : {}
-    },
-    prev () {
-      return (this.page) ? this.page.prev : null
-    },
-    next () {
-      return (this.page) ? this.page.next : null
-    },
-    total () {
-      return (this.page) ? this.page.total : null
     },
     isTable () {
       return (this.data) ? this.isArray(this.data) : false
