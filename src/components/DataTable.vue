@@ -192,7 +192,8 @@ export default {
     ...mapGetters([
       'getTableId',
       'getTableConfig',
-      'removePaginationFromRoute'
+      'removePaginationFromRoute',
+      'sortKey'
     ]),
     sortIcon (fieldName) {
       let sort = this.sort[fieldName]
@@ -207,8 +208,9 @@ export default {
     },
     getData (sort, hash) {
       let key = this.key
-      let query = this.removePaginationFromRoute()(key, { sort })
-      this.updateRouterQuery({ query, hash })
+      let sortKey = this.sortKey()(key)
+      let query = this.removePaginationFromRoute()(key, { [sortKey]: sort })
+      this.updateRouterQuery({ query, hash, key })
     },
     sortBy (field, event) {
       let hash = this.getRouterHashFromEvent(event)

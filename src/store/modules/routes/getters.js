@@ -1,7 +1,9 @@
-import { NEXT, PREV, PAGE } from '../../../config/types'
+import { SEPARATOR, SORT, NEXT, PREV, PAGE, Q } from '../../../config/types'
 
-export const encodedProps = (state) => {
-  return ['sort', 'q']
+export const encodedProps = state => key => {
+  const props = [SORT, Q]
+  if (key) return props.map(p => getKey(key, p))
+  return props
 }
 
 export const encodeQueryProp = state => prop => {
@@ -27,26 +29,34 @@ export const decodeQueryProp = state => encoded => {
   return value
 }
 
-export const parseQuery = (state, getters) => (query, decode) => {
+export const parseQuery = (state, getters) => (query, key, decode, removeKey) => {
   if (!query) return
-  let encodeProps = getters.encodedProps
+  let props = getters.encodedProps(key)
   let fn = (decode) ? 'decodeQueryProp' : 'encodeQueryProp'
-  encodeProps.forEach((prop) => {
-    if (query[prop]) query[prop] = getters[fn](query[prop])
+  props.forEach((p) => {
+    let value = query[p]
+    let k = p
+    if (value) {
+      value = getters[fn](value)
+      if (removeKey) {
+        k = getPrefix(key, p)
+        delete query[p]
+      }
+      query[k] = value
+    }
   })
   return query
 }
 
-export const getQuery = (state, getters) => {
-  let query = getters.getRouterQuery
+export const getQuery = (state, getters) => key => {
+  let query = getters.getRouterQuery(key)
   let q = query.q || {}
-  // if (!q && type) q = getters.
   return q
 }
 
-export const getRouterQuery = (state, getters, rootState) => {
+export const getRouterQuery = (state, getters, rootState) => (key, removeKey = false) => {
   let query = Object.assign({}, rootState.route.query)
-  return getters.parseQuery(query, true)
+  return getters.parseQuery(query, key, true, removeKey)
 }
 
 export const getRouterParams = (state, getters, rootState) => {
@@ -61,9 +71,14 @@ export const getActiveContentTab = (state, getters, rootState) => {
   return rootState.route.query.__ctab
 }
 
-export const nextKey = () => key => `${NEXT}__${key}`
-export const prevKey = () => key => `${PREV}__${key}`
-export const pageKey = () => key => `${PAGE}__${key}`
+const getKey = (key, prefix) => `${prefix}${SEPARATOR}${key}`
+const getPrefix = (key, value) => value.split(SEPARATOR)[0]
+
+export const nextKey = () => key => getKey(key, NEXT)
+export const prevKey = () => key => getKey(key, PREV)
+export const pageKey = () => key => getKey(key, PAGE)
+export const sortKey = () => key => getKey(key, SORT)
+export const qKey = () => key => getKey(key, Q)
 
 export const removePaginationFromRoute = (state, getters) => (key, query) => {
   const prev = getters.prevKey(key)

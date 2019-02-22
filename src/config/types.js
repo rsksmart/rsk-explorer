@@ -40,6 +40,11 @@ export const CONTRACT_CREATED = 'contract created'
 export const CONTRACT_FAILED = 'creation failed'
 
 export const PAGE_NOT_FOUND = 'Page not found'
+
 export const NEXT = 'next'
 export const PREV = 'prev'
 export const PAGE = 'page'
+export const SORT = 'sort'
+export const Q = 'q'
+
+export const SEPARATOR = '__'

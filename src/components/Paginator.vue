@@ -76,7 +76,6 @@ export default {
     ...mapGetters(['nextKey', 'prevKey', 'pageKey']),
 
     goNext (event) {
-      console.log(this.options)
       let { pages, next } = this
       let p = pages[pages.length - 1]
       let page = p.page + 1
@@ -94,7 +93,7 @@ export default {
       let prevKey = this.prevKey()(key)
       let pageKey = this.pageKey()(key)
       let query = { [nextKey]: next, [prevKey]: prev, [pageKey]: page }
-      this.updateRouterQuery({ query })
+      this.updateRouterQuery({ query, key })
     },
     findPage (page) {
       let { pages } = this

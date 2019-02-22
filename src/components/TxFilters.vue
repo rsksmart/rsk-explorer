@@ -11,7 +11,7 @@
 import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   name: 'tx-filters',
-  props: ['q', 'module', 'action'],
+  props: ['q', 'module', 'action', 'reqKey'],
   data () {
     return {
       txFilters: {},
@@ -31,13 +31,15 @@ export default {
   },
   methods: {
     ...mapActions(['updateRouterQuery']),
-    ...mapGetters(['removePaginationFromRoute']),
+    ...mapGetters(['removePaginationFromRoute', 'qKey']),
     update () {
+      let key = this.reqKey
+      let qKey = this.qKey()(key)
       let q = Object.assign({}, this.q)
       q.txType = this.filterValues
-      let query = { q }
+      let query = { [qKey]: q }
       query = this.removePaginationFromRoute()('data', query)
-      this.updateRouterQuery({ query })
+      this.updateRouterQuery({ query, key })
     }
   }
 }

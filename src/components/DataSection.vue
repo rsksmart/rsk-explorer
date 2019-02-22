@@ -6,7 +6,7 @@
       .messages(v-if='msgs')
         message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data' :parentData='parentData')
       //- Transactions filters
-      tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module')
+      tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module' :reqKey='reqKey')
       paginator(v-if='isTable' :options='pageOptions' :link='0')
 
     //- Component

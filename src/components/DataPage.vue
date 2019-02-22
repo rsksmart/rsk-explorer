@@ -90,10 +90,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      query: 'getQuery',
       getActiveTab: 'getActiveTab',
       getActiveContentTab: 'getActiveContentTab'
     }),
+    query () {
+      let key = this.reqKey
+      return this.getQuery()(key)
+    },
     error () {
       return this.pageError()(this.reqKey)
     },
@@ -189,7 +192,8 @@ export default {
       'getPageTotal',
       'pageError',
       'isRequested',
-      'dataKey'
+      'dataKey',
+      'getQuery'
     ]),
     setTab (tab, event) {
       this.updateRouterTabQuery('__tab', tab, event)
@@ -204,7 +208,7 @@ export default {
     updateRouterTabQuery (key, value, event) {
       let hash = this.getRouterHashFromEvent(event)
       let query = { [key]: value }
-      this.updateRouterQuery({ query, hash })
+      this.updateRouterQuery({ query, hash, key })
     },
     renderTab (tab) {
       const render = tab.render
