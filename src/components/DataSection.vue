@@ -9,17 +9,7 @@
       tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module')
       paginator(v-if='isTable' :options='pageOptions' :link='0')
       template(v-if='!isTable')
-        ul.prev-next
-          li.prev(v-if='prev')
-            router-link(:to='routeParams(prev)')
-              icon(name='triangle-arrow-left')
-              small previous
-          li.total(v-if='total')
-            span {{total}}
-          li.next(v-if='next')
-            router-link(:to='routeParams(next)')
-              small next
-              icon(name='triangle-arrow-right')
+        item-navigator(:next='next' :prev='prev' :total='total' :regKey='key')
 
     //- Component
     template(v-if='component && data')
@@ -43,6 +33,7 @@ import Paginator from './Paginator'
 import TxFilters from './TxFilters'
 import Spinner from './Spinner'
 import Message from './Message'
+import ItemNavigator from './ItemNavigator'
 export default {
   name: 'data-section',
   components: {
@@ -52,17 +43,12 @@ export default {
     Paginator,
     TxFilters,
     Spinner,
-    Message
+    Message,
+    ItemNavigator
   },
   props: [
     'module', 'dataType', 'component', 'action', 'reqKey', 'msgs'
   ],
-  mounted () {
-    window.addEventListener('keyup', this.keyPress, { passive: true })
-  },
-  beforeDestroy () {
-    window.removeEventListener('keyup', this.keyPress, { passive: true })
-  },
   computed: {
     page () {
       return this.getPage()(this.reqKey)
@@ -129,28 +115,6 @@ export default {
     ]),
     isArray (val) {
       return Array.isArray(val)
-    },
-    routeParams (data) {
-      let params = Object.assign({}, this.$route.params)
-      let key = this.key
-      let name = this.$route.name
-      let res = {}
-      if (data && key && params) {
-        params[key] = data[key]
-        res = { params, name }
-      }
-      return res
-    },
-    keyPress (event) {
-      if (event.preventDefaulted) return
-      if (event.code === 'ArrowLeft') this.navigateTo(this.prev)
-      if (event.code === 'ArrowRight') this.navigateTo(this.next)
-    },
-    navigateTo (dest) {
-      if (dest) {
-        let go = this.routeParams(dest)
-        this.$router.push(go)
-      }
     }
   }
 }

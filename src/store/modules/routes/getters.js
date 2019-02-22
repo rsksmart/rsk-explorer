@@ -72,3 +72,12 @@ export const removePaginationFromRoute = (state, getters) => (key, query) => {
   query = Object.assign(query, { [prev]: null, [next]: null, [page]: null })
   return query
 }
+
+export const getNewRoute = (state, getters, rootState) => (key, dest) => {
+  let { params, name, query, hash } = rootState.route
+  if (params) {
+    params = Object.assign({}, params)
+    params[key] = dest[key]
+    return { name, params, query, hash }
+  }
+}
