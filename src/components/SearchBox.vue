@@ -8,6 +8,7 @@
       id="search"
       :placeholder="placeholder"
       @change='search'
+      @keyup.stop=''
       v-model='searchValue'
       :class='searchBoxClass'
       )
