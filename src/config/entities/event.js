@@ -114,6 +114,7 @@ export const EventData = () => {
   let { transaction, blockNumber } = eventFields
   let txLogFields = TxLogItem().fields
   txLogFields.logIndex.link = () => { }
+  txLogFields.eventId.field = '_id'
   let fields = Object.assign(txLogFields, { transaction, blockNumber })
   return { formatRow, fields }
 }
