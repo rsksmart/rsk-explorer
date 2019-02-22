@@ -284,20 +284,6 @@ export default {
     text-transform capitalize
     // align-self flex-start
 
-  .page, .section
-    will-change opacity
-    animation-name page-anim
-    animation-duration 0.5s
-    animation-timing-function ease-in
-    opacity 1
-
-    @keyframes page-anim
-      0%
-        opacity 0
-
-      100%
-        opacity 1
-
   .page-header
     margin-bottom 2em
 
