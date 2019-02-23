@@ -1,4 +1,4 @@
-import * as COLORS from '../../config/colors.json'
+import COLORS from '../../config/colors.json'
 import * as chroma from 'chroma-js'
 
 const autoColors = {
