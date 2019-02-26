@@ -24,6 +24,7 @@ const EVENT_TRANSFER_FIELDS = (include) => {
       trim: 'auto'
     },
     value: {
+      trim: 0,
       filters: (value, data) => eventValue(value, data._addressData)
     },
     data: {
