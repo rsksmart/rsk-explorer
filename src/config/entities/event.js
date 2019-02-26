@@ -42,9 +42,13 @@ export const Events = () => {
 export const EventFields = () => {
   let event = Events()
   let fields = Object.assign({
+    _id: {
+      type: 'eventId',
+      hideIfEmpty: true
+    },
     eventId: {
-      field: '_id',
-      type: 'eventId'
+      type: 'eventId',
+      hideIfEmpty: true
     },
     event: {},
     eventArguments: {
