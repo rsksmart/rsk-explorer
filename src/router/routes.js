@@ -5,7 +5,7 @@ import ErrorPage from '@/components/ErrorPage'
 import TxPool from '@/components/TxPool'
 import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
 import tokens from './tokens'
-import { filterTransferEvents } from '../config/entities/lib/eventsLib'
+import { filterTransferEvents, TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 const statsUrl = process.env.STATS_URL
 
 export default [
@@ -21,7 +21,6 @@ export default [
   {
     path: `/${r.accounts}`,
     redirect: `/${r.addresses}`
-
   },
   {
     path: `/${r.stats}`,
@@ -123,7 +122,14 @@ export default [
           name: 'events',
           dataType: 'events',
           module: 'events',
-          action: 'getEventsByAddress'
+          action: 'getAllEventsByAddress'
+        },
+        {
+          name: 'tokens transfers',
+          dataType: 'transferEvents',
+          module: 'events',
+          action: 'getEventsByAddress',
+          params: { signatures: TRANFER_EVENTS_SIGNATURES }
         },
         {
           name: 'accounts',
@@ -169,7 +175,7 @@ export default [
         {
           name: 'Token Transfers',
           component: DataItem,
-          dataType: 'transferEvents',
+          dataType: 'txTransferEvents',
           count: (data) => {
             let logs = []
             if (data && data.receipt) {
