@@ -3,7 +3,8 @@ import {
   formatEvent,
   getEventConfigBySignature,
   getEventAbiFields,
-  EventTransferFields
+  EventTransferFields,
+  setThisAddress
 } from './lib/eventsLib'
 import { TxLogItem } from './transaction'
 
@@ -15,7 +16,7 @@ export const setThisContract = (val, { address, type }) => {
 export const eventFormatRow = (event, parentData) => {
   const addressData = (parentData.address) ? parentData : event._addressData || {}
   event = formatEvent(event, addressData)
-  event.address = setThisContract(event.address, addressData)
+  // event.address = setThisContract(event.address, addressData)
   let contractAddress = event.address
   event._contractAddress = contractAddress
   return event
@@ -68,6 +69,7 @@ export const EventFields = () => {
     contract: {},
     contractName: {}
   }, event.fields)
+
   fields = Object.assign(fields, {
     contract: {
       field: 'address',
@@ -139,21 +141,27 @@ export const TransferEvents = () => {
   let te = {
     fields: {
       event: Events().fields.event,
+      contract: {
+        field: 'contract',
+        type: 'tokenName'
+      },
       from,
       to,
       value
     },
-    formatRow: (data) => {
+    formatRow: (data, parentData) => {
       let eventData = formatEvent(data)
       let event = eventData._arguments
-      const { _addressData } = data
+      const { _addressData, address } = data
       if (!event) return
       event._id = eventData._id
       event.event = eventData.event
+      event.address = address
       if (_addressData) {
+        event.contract = _addressData.name
         event._addressData = _addressData
-        event.from = setThisContract(event.from, _addressData)
-        event.to = setThisContract(event.to, _addressData)
+        event.from = setThisAddress(event.from, parentData)
+        event.to = setThisAddress(event.to, parentData)
       }
       return event
     },

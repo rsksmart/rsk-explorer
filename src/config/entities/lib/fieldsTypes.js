@@ -1,10 +1,9 @@
 import {
   ROUTES as r,
   CONTRACT_UNKNOWN_NAME,
-  THIS_CONTRACT,
-  NOT_AVAILABLE,
-  THIS_ADDRESS
+  NOT_AVAILABLE
 } from '../../types'
+import { isAddress } from '../../../lib/js/ethUtils'
 
 export default {
   block: {
@@ -49,7 +48,7 @@ export default {
     filters: ['locale']
   },
   address: {
-    link: (data, value) => (value === THIS_ADDRESS || value === THIS_CONTRACT) ? null : `/${r.address}/${value}`
+    link: (data, value) => (!isAddress(value)) ? null : `/${r.address}/${value}`
   },
   token: {
     link: `/${r.address}/`
@@ -69,12 +68,12 @@ export default {
   },
   tokenName: {
     default: CONTRACT_UNKNOWN_NAME,
-    link: (data, value) => {
-      return `/${r.address}/${data.address}`
+    link: ({ address }, value) => {
+      return (!isAddress(address)) ? null : `/${r.address}/${address}`
     }
   },
   eventAddress: {
-    link: (data, value) => (!value || value === THIS_CONTRACT || value === THIS_ADDRESS) ? null : `/${r.address}/${value}`,
+    link: (data, value) => (!isAddress(value)) ? null : `/${r.address}/${value}`,
     default: NOT_AVAILABLE
   },
   eventId: {
