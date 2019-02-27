@@ -1,4 +1,5 @@
 import { eventValue } from '../../../filters/TokensFilters'
+import { THIS_ADDRESS } from '../../types'
 
 export const EVENTS_TYPES = {
   TRANSFER: 'Transfer'
@@ -100,4 +101,8 @@ export const getEventAbiFields = event => {
     v[name] = { type, field, trim }
     return v
   }, {})
+}
+
+export const setThisAddress = (val, { address }) => {
+  return val !== address ? val : THIS_ADDRESS
 }

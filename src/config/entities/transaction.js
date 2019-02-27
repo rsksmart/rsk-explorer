@@ -10,14 +10,10 @@ import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
 import { round } from '../../filters/NumberFilters'
-import { formatEvent, filterTransferEvents } from './lib/eventsLib'
+import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
 
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
-}
-
-const setThisAddress = (val, match) => {
-  return val !== match ? val : THIS_ADDRESS
 }
 
 const transactionFee = tx => {
@@ -31,8 +27,8 @@ const transactionFormatRow = (tx, parentData) => {
   let contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
   if (parentData) address = parentData.address
   if (address) {
-    tx.from = setThisAddress(tx.from, address)
-    tx.to = setThisAddress(tx.to, address)
+    tx.from = setThisAddress(tx.from, { address })
+    tx.to = setThisAddress(tx.to, { address })
   }
   tx.status = (tx.receipt) ? tx.receipt.status : tx.status
   if (contractAddress) {
