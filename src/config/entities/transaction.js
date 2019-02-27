@@ -295,7 +295,7 @@ export const TxLogItem = () => {
   }
 }
 
-export const TransferEvents = () => {
+export const TxTransferEvents = () => {
   let te = TxLogs()
   te.formatRow = (tx) => {
     tx = TxLogFormatter(tx)
@@ -317,4 +317,4 @@ export const transactions = Transactions()
 export const transaction = Tx()
 export const transactionLogs = TxLogs()
 export const transactionLogItem = TxLogItem()
-export const transferEvents = TransferEvents()
+export const txTransferEvents = TxTransferEvents()

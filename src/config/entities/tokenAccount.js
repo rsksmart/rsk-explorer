@@ -83,7 +83,7 @@ const TokenByAddress = () => {
     formatRow: (data, parentData) => {
       let { decimals, name, symbol } = data
       let row = accountFormatRow(data, { decimals, name, symbol })
-      row.contractAddress = setThisContract(data.contract, data.address)
+      row.contractAddress = setThisContract(data.contract, data)
       return row
     },
     formatLink,

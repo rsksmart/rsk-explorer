@@ -2,7 +2,8 @@ import {
   ROUTES as r,
   CONTRACT_UNKNOWN_NAME,
   THIS_CONTRACT,
-  NOT_AVAILABLE
+  NOT_AVAILABLE,
+  THIS_ADDRESS
 } from '../../types'
 
 export default {
@@ -48,7 +49,7 @@ export default {
     filters: ['locale']
   },
   address: {
-    link: `/${r.address}/`
+    link: (data, value) => (value === THIS_ADDRESS || value === THIS_CONTRACT) ? null : `/${r.address}/${value}`
   },
   token: {
     link: `/${r.address}/`
@@ -73,7 +74,7 @@ export default {
     }
   },
   eventAddress: {
-    link: (data, value) => (!value || value === THIS_CONTRACT) ? null : `/${r.address}/${value}`,
+    link: (data, value) => (!value || value === THIS_CONTRACT || value === THIS_ADDRESS) ? null : `/${r.address}/${value}`,
     default: NOT_AVAILABLE
   },
   eventId: {

@@ -1,14 +1,21 @@
-import { ROUTES as r, THIS_CONTRACT, NOT_AVAILABLE } from '../types'
-import { formatEvent, getEventConfigBySignature, getEventAbiFields } from './lib/eventsLib'
+import { ROUTES as r, THIS_CONTRACT, NOT_AVAILABLE, THIS_ADDRESS } from '../types'
+import {
+  formatEvent,
+  getEventConfigBySignature,
+  getEventAbiFields,
+  EventTransferFields
+} from './lib/eventsLib'
 import { TxLogItem } from './transaction'
 
-export const setThisContract = (val, match) => {
-  return val !== match ? val : THIS_CONTRACT
+export const setThisContract = (val, { address, type }) => {
+  const txt = (type === 'contract') ? THIS_CONTRACT : THIS_ADDRESS
+  return val !== address ? val : txt
 }
 
 export const eventFormatRow = (event, parentData) => {
   const addressData = (parentData.address) ? parentData : event._addressData || {}
   event = formatEvent(event, addressData)
+  event.address = setThisContract(event.address, addressData)
   let contractAddress = event.address
   event._contractAddress = contractAddress
   return event
@@ -25,6 +32,9 @@ export const Events = () => {
         field: 'event',
         link: (data, value) => `/${r.event}/${data._id}`,
         default: NOT_AVAILABLE
+      },
+      address: {
+        type: 'address'
       },
       arguments: {
         field: '_arguments',
@@ -108,6 +118,7 @@ const eventFieldsFormatter = (fields, event) => {
 export const Event = () => {
   let event = Events()
   event.fields = EventFields()
+  delete event.fields.address
   event.formatFields = eventFieldsFormatter
   return event
 }
@@ -123,6 +134,35 @@ export const EventData = () => {
   return { formatRow, fields }
 }
 
+export const TransferEvents = () => {
+  let { from, to, value } = EventTransferFields()
+  let te = {
+    fields: {
+      event: Events().fields.event,
+      from,
+      to,
+      value
+    },
+    formatRow: (data) => {
+      let eventData = formatEvent(data)
+      let event = eventData._arguments
+      const { _addressData } = data
+      if (!event) return
+      event._id = eventData._id
+      event.event = eventData.event
+      if (_addressData) {
+        event._addressData = _addressData
+        event.from = setThisContract(event.from, _addressData)
+        event.to = setThisContract(event.to, _addressData)
+      }
+      return event
+    },
+    formatFields: null
+  }
+  return Object.assign(Event(), te)
+}
+
+export const transferEvents = TransferEvents()
 export const events = Events()
 export const event = Event()
 export const eventData = EventData()

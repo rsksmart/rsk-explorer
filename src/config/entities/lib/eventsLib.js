@@ -1,19 +1,10 @@
-import { tokenAmount } from '../../../filters/TokensFilters'
-import BigNumber from 'bignumber.js'
-
-export const eventValue = (value, { decimals, symbol }) => {
-  symbol = symbol || ''
-  decimals = parseInt(decimals)
-  value = (decimals) ? tokenAmount(value, decimals) : new BigNumber(value).toString()
-  value = (decimals) ? `${value} ${symbol}` : value
-  return value
-}
+import { eventValue } from '../../../filters/TokensFilters'
 
 export const EVENTS_TYPES = {
   TRANSFER: 'Transfer'
 }
 
-const EVENT_TRANSFER_FIELDS = (include) => {
+export const EventTransferFields = (include) => {
   let fields = {
     from: {
       type: 'eventAddress',
@@ -42,13 +33,13 @@ export const EVENTS = [
   {
     method: 'Transfer(address,address,uint256)',
     signature: 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-    fields: EVENT_TRANSFER_FIELDS(['from', 'to', 'value']),
+    fields: EventTransferFields(['from', 'to', 'value']),
     type: EVENTS_TYPES.TRANSFER
   },
   {
     'method': 'Transfer(address,address,uint256,bytes)',
     'signature': 'e19260aff97b920c7df27010903aeb9c8d2be5d310a2c67824cf3f15396e4c16',
-    fields: EVENT_TRANSFER_FIELDS(['from', 'to', 'value', 'data']),
+    fields: EventTransferFields(['from', 'to', 'value', 'data']),
     type: EVENTS_TYPES.TRANSFER
   }
 ]

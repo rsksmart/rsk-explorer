@@ -23,11 +23,11 @@
  */
 
 import { block, blocks, blockBox } from './block'
-import { transaction, transactions, transactionsBox, transactionLogs, transactionLogItem, transferEvents } from './transaction'
+import { transaction, transactions, transactionsBox, transactionLogs, transactionLogItem, txTransferEvents } from './transaction'
 import { address, addresses } from './address'
 import { token, tokens } from './token'
-import { event, events, eventData } from './event'
 import { tokenAccount, tokenAccounts, tokenByAddress } from './tokenAccount'
+import { event, events, eventData, transferEvents } from './event'
 import { txPool } from './txPool'
 
 export default {
@@ -50,5 +50,6 @@ export default {
   tokenAccounts,
   tokenByAddress,
   txPool,
+  txTransferEvents,
   transferEvents
 }

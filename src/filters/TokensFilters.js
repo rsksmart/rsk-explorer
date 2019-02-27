@@ -13,6 +13,14 @@ export const tokenAmount = (value, decimals = 18) => {
   return ret.dividedBy(divisor)
 }
 
+export const eventValue = (value, { decimals, symbol }) => {
+  symbol = symbol || ''
+  decimals = parseInt(decimals)
+  value = (decimals) ? tokenAmount(value, decimals) : new BigNumber(value).toString()
+  value = (decimals) ? `${value} ${symbol}` : value
+  return value
+}
+
 export const tokenDecimals = Vue.filter('token-decimals', (value, decimals) => {
   return tokenAmount(value, decimals)
 })
