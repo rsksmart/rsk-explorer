@@ -1,6 +1,7 @@
 import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
+import { TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 
 export default [
   {
@@ -38,8 +39,21 @@ export default [
       module: 'tokens',
       dataType: 'tokenAccount',
       action: 'getTokenAccount',
-      mainContent: null,
-      headType: 'token'
+      mainContent: [
+        { component: DataItem }
+      ],
+      headType: 'token',
+      tabs: [
+        {
+          name: 'transfers',
+          dataType: 'transferEvents',
+          module: 'events',
+          action: 'getEventsByAddress',
+          params: { signatures: TRANFER_EVENTS_SIGNATURES },
+          title: ({ contractName }) => (contractName) ? `${contractName} transfers` : 'Contract transfers'
+        }
+      ]
+
     }
   },
   {
