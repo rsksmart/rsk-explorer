@@ -20,7 +20,7 @@
             template(v-for='tab in mainContentTabs')
               button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name,$event)'
                :class='tabTitleCss(isActiveContentTab(tab))')
-                span.title {{tab.name}} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}
+                span.title {{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}
         data-section( v-if='activeContentTab'
           :component='activeContentTab.component' :reqKey='reqKey' :module='module'
           :dataType='activeContentTab.dataType || dataType' :action='action')
@@ -34,10 +34,10 @@
                 template(v-if='isRequesting()(tab.name)')
                   button.btn.tab-title.link
                     loading-circle(:size='10')
-                    span.title {{tab.name}}
+                    span.title {{ getTabTitle(tab) }}
                 template(v-else)
                   button.btn.tab-title.link(@click='setTab(tab.name,$event)' :class='tabTitleCss(isActiveTab(tab))')
-                    span.title {{tab.name}}
+                    span.title {{ getTabTitle(tab) }}
                       small.small(v-if='tabsTotals[tab.name] !== null') &nbsp; ({{ tabsTotals[tab.name] }})
 
           template(v-for='tab in tabs')
@@ -276,6 +276,14 @@ export default {
 
     tabTitleCss (active) {
       return (active) ? ['active'] : []
+    },
+
+    getTabTitle (tab) {
+      let { title, name } = tab
+      if (typeof title === 'function') {
+        title = title(this.data)
+      }
+      return title || name
     }
   }
 }
