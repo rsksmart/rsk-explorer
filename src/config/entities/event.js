@@ -1,7 +1,7 @@
 import { ROUTES as r, THIS_CONTRACT, NOT_AVAILABLE, THIS_ADDRESS } from '../types'
 import {
   formatEvent,
-  getEventConfigBySignature,
+  getEventConfig,
   getEventAbiFields,
   EventTransferFields,
   setThisAddress
@@ -108,7 +108,7 @@ export const EventFields = () => {
 }
 
 const eventFieldsFormatter = (fields, event) => {
-  let config = getEventConfigBySignature(event.signature)
+  let config = getEventConfig(event)
   let cFields = config.fields || getEventAbiFields(event)
   let hide = !cFields
   fields.eventArguments.fields = cFields

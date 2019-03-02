@@ -14,6 +14,9 @@ export default {
     filters: ['locale'],
     default: 0
   },
+  blockHash: {
+    link: `/${r.block}/`
+  },
   bigNumber: {
     filters: ['big-number']
   },

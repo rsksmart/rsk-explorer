@@ -1,5 +1,6 @@
 import { eventValue } from '../../../filters/TokensFilters'
 import { THIS_ADDRESS } from '../../types'
+import { isRemascEvent, remascEventConfig } from './remascEvents'
 
 export const EVENTS_TYPES = {
   TRANSFER: 'Transfer'
@@ -52,11 +53,20 @@ export const TRANFER_EVENTS_SIGNATURES = TRANSFER_EVENTS.map(e => e.signature)
 export const filterTransferEvents = events => events.filter(e => TRANFER_EVENTS_SIGNATURES.includes(e.signature))
 
 export const formatEvent = (event, data) => {
-  let config = getEventConfigBySignature(event.signature) || {}
+  let config = getEventConfig(event)
+
+  // non-standard remasc events
+  if (isRemascEvent(event)) config = remascEventConfig()
   let args = eventArgs(event, config)
   if (args) event._arguments = args
   if (config) event._config = config
   return event
+}
+
+export const getEventConfig = (event) => {
+  let config = getEventConfigBySignature(event.signature) || {}
+  if (isRemascEvent(event)) config = remascEventConfig()
+  return config
 }
 
 export const getEventInputs = event => {
