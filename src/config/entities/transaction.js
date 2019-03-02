@@ -11,6 +11,7 @@ import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
 import { round } from '../../filters/NumberFilters'
 import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
+import { isAddress } from '../../lib/js/ethUtils'
 
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
@@ -73,7 +74,10 @@ const TxFields = () => {
       link: (data, value) => txLink(value)
     },
     to: {
-      css: (value, filtered, data) => txStatusCss(txStatus((data.receipt) ? data.receipt.status : data.status || '')),
+      css: (value, filtered, data) => {
+        if (!isAddress(value)) return
+        return txStatusCss(txStatus((data.receipt) ? data.receipt.status : data.status || ''))
+      },
       link: (tx, value) => {
         let contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
         return txLink(contractAddress || value)
