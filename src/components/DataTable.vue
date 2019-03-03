@@ -9,7 +9,7 @@
     table.dark(v-if='data' ref='table' :class='tableClass')
       thead(:class='theadClass')
         tr
-          th.table-id(v-if='!isDefaultSortVisible')
+          th.table-id(v-if='sort && !isDefaultSortVisible')
             .sort(v-if='sort && isSorted([defKeys[0]])')
 
               //-field-title(:field='fields[defKeys[0]]')
@@ -143,7 +143,9 @@ export default {
       return Object.keys(this.defaultSort)
     },
     defaultSort () {
-      return this.page.pages.defaultSort || {}
+      let { page } = this
+      let pages = page.pages || {}
+      return pages.defaultSort || { _id: -1 }
     },
     isDefaultSort () {
       let sortKeys = this.sortKeys
@@ -181,7 +183,7 @@ export default {
     key () {
       let page = this.page
       let req = (page) ? page.req : {}
-      return req.key
+      return (req) ? req.key : null
     }
   },
   methods: {
