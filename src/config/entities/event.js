@@ -137,7 +137,7 @@ export const EventData = () => {
 }
 
 export const TransferEvents = () => {
-  let { from, to, value } = EventTransferFields()
+  let { from, to, value, created } = EventTransferFields()
   let te = {
     fields: {
       event: Events().fields.event,
@@ -147,7 +147,8 @@ export const TransferEvents = () => {
       },
       from,
       to,
-      value
+      value,
+      created
     },
     formatRow: (data, parentData) => {
       let eventData = formatEvent(data)
@@ -157,6 +158,7 @@ export const TransferEvents = () => {
       event._id = eventData._id
       event.event = eventData.event
       event.address = address
+      event.timestamp = eventData.timestamp
       if (_addressData) {
         event.contract = _addressData.name
         event._addressData = _addressData

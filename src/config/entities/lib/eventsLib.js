@@ -22,6 +22,10 @@ export const EventTransferFields = (include) => {
     },
     data: {
       renderAs: 'big-field'
+    },
+    created: {
+      field: 'timestamp',
+      type: 'timestamp'
     }
   }
   if (!include) return fields
