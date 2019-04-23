@@ -2,12 +2,14 @@ export default function (socket) {
   return store => {
     socket.on('data', res => {
       if (res) {
-        let action = res.action
-        let data = res.data
+        let { action, data, error } = res
         if (action) {
           action = 'socket' + action.charAt(0).toUpperCase() + action.slice(1)
           if (store._actions[action]) {
-            store.dispatch(action, data)
+            if (error) console.info(action, error)
+            if (!error) {
+              store.dispatch(action, data)
+            }
             store.dispatch('setDateInterval')
           } else {
             if (res.req && res.req.key) {

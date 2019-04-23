@@ -1,12 +1,20 @@
-export const init = ({ commit }, data) => {
+export const init = ({ commit, dispatch }, data) => {
   if (data) {
     commit('SET_TIME', { server: data.time })
     commit('SET_SYSTEM_SETTINGS', data.settings)
   }
+  dispatch('subscribe', 'blocks')
+  dispatch('subscribe', 'status')
+  dispatch('subscribe', 'txpool')
 }
 
 export const connectionUpdate = ({ commit }, connected) => {
   commit('SOCKET_CONNECTION', connected === true)
+}
+
+export const subscribe = ({ commit }, to) => {
+  const event = 'subscribe'
+  commit('SOCKET_EMIT', { event, data: { to } })
 }
 
 export const socketNewBlocks = ({ state, commit, getters }, data) => {
