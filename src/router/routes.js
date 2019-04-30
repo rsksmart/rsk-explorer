@@ -62,7 +62,7 @@ export default [
         {
           name: 'transactions',
           dataType: 'transactions',
-          module: 'txs',
+          module: 'transactions',
           action: 'getTransactionsByBlock'
         }
       ]
@@ -104,7 +104,7 @@ export default [
           name: 'transactions',
           dataType: 'transactions',
           action: 'getTransactionsByAddress',
-          module: 'txs',
+          module: 'transactions',
           msgs: [(data, parenData) => {
             const msgs = []
             let { balance, txBalance } = parenData
@@ -149,7 +149,7 @@ export default [
     name: 'Transactions',
     component: DataPage,
     props: {
-      module: 'txs',
+      module: 'transactions',
       title: 'Transactions',
       dataType: 'transactions',
       action: 'getTransactions'
@@ -185,7 +185,7 @@ export default [
           }
         }
       ],
-      module: 'txs',
+      module: 'transactions',
       title: 'Transaction',
       dataType: 'transaction',
       action: 'getTransactionWithAddressData'
