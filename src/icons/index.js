@@ -1,73 +1,73 @@
 /* eslint-disable */
-require('./arrow-down')
-require('./arrow-left')
-require('./arrow-right')
-require('./arrow-up')
-require('./block')
-require('./browser')
-require('./buffer')
-require('./calendar')
-require('./camera')
-require('./check')
-require('./close')
-require('./clowd-down')
-require('./clowd-up')
-require('./copy')
-require('./credit-card')
-require('./cube')
-require('./cubes')
-require('./database')
-require('./delete-forever')
-require('./delete')
-require('./ellipsis')
-require('./enlarge')
-require('./enlarge2')
-require('./equalizerh')
-require('./equalizerv')
-require('./ethereum')
-require('./flame')
-require('./floppy')
-require('./gear')
-require('./git-merge')
-require('./github')
-require('./grid')
-require('./hash')
-require('./light-bulb')
-require('./link-external')
-require('./linux')
-require('./load')
-require('./mac')
-require('./menu')
-require('./microscope')
-require('./miner')
-require('./move-down')
-require('./move')
-require('./pin')
-require('./pinned')
-require('./plug')
-require('./pointer')
-require('./pulse')
-require('./puzzle')
-require('./reload-alt')
-require('./repo-forked')
-require('./resize')
-require('./rif')
-require('./rocket')
-require('./rsk')
-require('./search')
-require('./server')
-require('./settings')
-require('./sort')
-require('./stats')
-require('./stopwatch')
-require('./table')
-require('./times-rectangle')
-require('./transaction')
-require('./triangle-arrow-down')
-require('./triangle-arrow-left')
-require('./triangle-arrow-right')
-require('./triangle-arrow-up')
-require('./versions')
-require('./warning')
-require('./windows')
-require('./zap')
+import './arrow-down'
+import './arrow-left'
+import './arrow-right'
+import './arrow-up'
+import './block'
+import './browser'
+import './buffer'
+import './calendar'
+import './camera'
+import './check'
+import './close'
+import './clowd-down'
+import './clowd-up'
+import './copy'
+import './credit-card'
+import './cube'
+import './cubes'
+import './database'
+import './delete-forever'
+import './delete'
+import './ellipsis'
+import './enlarge'
+import './enlarge2'
+import './equalizerh'
+import './equalizerv'
+import './ethereum'
+import './flame'
+import './floppy'
+import './gear'
+import './git-merge'
+import './github'
+import './grid'
+import './hash'
+import './light-bulb'
+import './link-external'
+import './linux'
+import './load'
+import './mac'
+import './menu'
+import './microscope'
+import './miner'
+import './move-down'
+import './move'
+import './pin'
+import './pinned'
+import './plug'
+import './pointer'
+import './pulse'
+import './puzzle'
+import './reload-alt'
+import './repo-forked'
+import './resize'
+import './rif'
+import './rocket'
+import './rsk'
+import './search'
+import './server'
+import './settings'
+import './sort'
+import './stats'
+import './stopwatch'
+import './table'
+import './times-rectangle'
+import './transaction'
+import './triangle-arrow-down'
+import './triangle-arrow-left'
+import './triangle-arrow-right'
+import './triangle-arrow-up'
+import './versions'
+import './warning'
+import './windows'
+import './zap'
