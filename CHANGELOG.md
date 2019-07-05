@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+## Added
+
+- Tab 'Mined blocks' to address page
+
 ## [0.8.0] 2019-06-04
 
 ### Added

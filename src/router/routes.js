@@ -140,6 +140,20 @@ export default [
             let methods = data.contractMethods || []
             return methods.indexOf('balanceOf(address)') > -1
           }
+        },
+        {
+          name: 'mined blocks',
+          dataType: 'blocks',
+          module: 'blocks',
+          action: 'getBlocks',
+          params: (routeParams) => {
+            routeParams = routeParams || {}
+            const { address } = routeParams
+            return { miner: address }
+          },
+          render: data => {
+            return data.lastBlockMined !== null
+          }
         }
       ]
     }
