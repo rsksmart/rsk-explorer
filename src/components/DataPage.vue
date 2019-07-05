@@ -91,7 +91,8 @@ export default {
   computed: {
     ...mapGetters({
       getActiveTab: 'getActiveTab',
-      getActiveContentTab: 'getActiveContentTab'
+      getActiveContentTab: 'getActiveContentTab',
+      routeParams: 'getRouterParams'
     }),
     query () {
       let key = this.reqKey
@@ -245,11 +246,11 @@ export default {
     },
 
     async fetchTab (tabName) {
-      let tab = this.getTab(tabName)
-      let { params } = tab
+      let tab = Object.assign({}, this.getTab(tabName))
+      let params = tab.params
+      params = (params && typeof params === 'function') ? params(this.routeParams) : params
       params = params || {}
-      let count = true // WIP get totals in first request only
-      params = Object.assign(params, { count })
+      params.count = true // WIP get totals in first request only
       tab.params = params
       tab.count = true
       if (tab) {
