@@ -66,7 +66,7 @@ export default {
       return this.makeLink(this.field, this.row)
     },
     trim () {
-      return this.computeTrim(this.field, this.value)
+      return this.computeTrim(this.field, this.value, this.filteredValue)
     },
     trimOptions () {
       let options = this.ttOpts

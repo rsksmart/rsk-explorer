@@ -211,7 +211,8 @@ export default {
       if (typeof link === 'function') return link(row, value, link)
       return ((value || value === 0) && link) ? link + value : null
     },
-    computeTrim (field, value) {
+    computeTrim (field, value, filteredValue) {
+      value = filteredValue || value
       field = field || {}
       value = value || ''
       if (field.trim === 0) return 0
