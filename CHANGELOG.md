@@ -2,9 +2,15 @@
 
 ## [Unreleased]
 
+## [0.8.1] 2019-07-22
+
 ## Added
 
 - Tab 'Mined blocks' to address page
+
+### Fixed
+
+- Big numbers render
 
 ## [0.8.0] 2019-06-04
 
