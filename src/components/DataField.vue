@@ -15,7 +15,7 @@
 
       template(v-else)
         template(v-if='trim && !options.noTrim')
-          tool-tip.field-value(:value='value' :trim='trim' :options='trimOptions' :router-link='link')
+          tool-tip.field-value(:value='filteredValue || value' :trim='trim' :options='trimOptions' :router-link='link')
         template(v-else)
           router-link(v-if='link' :to='link')
             .field-value {{ filteredValue || field.default }}

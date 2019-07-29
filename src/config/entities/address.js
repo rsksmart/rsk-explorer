@@ -18,7 +18,8 @@ const Addresses = () => {
       address: null,
       balance: {
         filters: ['tx-value', 'round', 'rbtc'],
-        default: 0
+        default: 0,
+        trim: 0
       },
       type: null
     }
