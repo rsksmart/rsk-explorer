@@ -1,6 +1,6 @@
 # rsk-explorer client
 
-  Client for rsk-explorer-api
+  Web client for [rsk-explorer-api](https://github.com/rsksmart/rsk-explorer-api)
 
 ## Tasks
 
@@ -16,7 +16,6 @@ npm run build
 
 ```
 
-
 ## Deployment
 
 ### Install dependencies
@@ -29,27 +28,27 @@ npm run build
 
 ### Settings
 
-WS_URL: ws backend url
-STATS_URL : rsk stats web  
+- **WS_URL**: ws backend url
+- **STATS_URL**: rsk stats web
 
 E.g. *to change WS_URL:*
-    ``` bash
-      export WS_URL=wss://backend.rsk.co
-    ```
 
-### Build for production
+``` shell
+  export WS_URL=wss://backend.rsk.co
+```
 
-  ``` bash
+### Building for production
+
+``` shell
   npm run build
-  ```
-
+```
 
 Serve ./dist folder on web server
 
-### Server configuration
+### HTTP Server configuration
 
   The client uses [vue-router HTML 5 History mode](https://router.vuejs.org/en/essentials/history-mode.html), this requires a special configuration of the web server:
- 
+
  nginx:
 
 ``` javascript
