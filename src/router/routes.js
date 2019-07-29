@@ -152,7 +152,7 @@ export default [
             return { miner: address }
           },
           render: data => {
-            return data.lastBlockMined !== null
+            return data.lastBlockMined
           }
         }
       ]
