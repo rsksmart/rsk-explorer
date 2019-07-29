@@ -1,6 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [0.8.2] 2019-07-29
+
+### Fixed
+
+- Address balance rendering
 
 ## [0.8.1] 2019-07-22
 
