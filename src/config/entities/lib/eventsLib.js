@@ -26,6 +26,10 @@ export const EventTransferFields = (include) => {
     created: {
       field: 'timestamp',
       type: 'timestamp'
+    },
+    date: {
+      field: 'timestamp',
+      format: 'date'
     }
   }
   if (!include) return fields

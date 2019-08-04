@@ -137,7 +137,7 @@ export const EventData = () => {
 }
 
 export const TransferEvents = () => {
-  let { from, to, value, created } = EventTransferFields()
+  let { from, to, value, date, created } = EventTransferFields()
   let te = {
     fields: {
       event: Events().fields.event,
@@ -148,6 +148,7 @@ export const TransferEvents = () => {
       from,
       to,
       value,
+      date,
       created
     },
     formatRow: (data, parentData) => {
