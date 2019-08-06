@@ -1,9 +1,10 @@
 import Home from '@/components/Home'
-import DataPage from '@/components/DataPage'
-import DataItem from '@/components/DataItem'
 import ErrorPage from '@/components/ErrorPage'
 import TxPool from '@/components/TxPool'
 import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
+import blocks from './blocks'
+import transactions from './transactions'
+import addresses from './addresses'
 import tokens from './tokens'
 import { filterTransferEvents, TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 const statsUrl = process.env.STATS_URL
@@ -36,180 +37,13 @@ export default [
     }
   },
   {
-    path: `/${r.blocks}`,
-    name: 'Blocks',
-    component: DataPage,
-    props: {
-      module: 'blocks',
-      dataType: 'blocks',
-      action: 'getBlocks',
-      title: 'Blocks'
-    }
-  },
-  {
-    path: `/${r.block}/:number`,
-    name: 'Block',
-    component: DataPage,
-    props: {
-      module: 'blocks',
-      dataType: 'block',
-      action: 'getBlock',
-      mainContent: [
-        { component: DataItem }
-      ],
-      title: '',
-      tabs: [
-        {
-          name: 'transactions',
-          dataType: 'transactions',
-          module: 'transactions',
-          action: 'getTransactionsByBlock'
-        }
-      ]
-    }
-  },
-  {
-    path: `/${r.addresses}`,
-    name: 'Addresses',
-    component: DataPage,
-    props: {
-      module: 'addresses',
-      dataType: 'addresses',
-      action: 'getAddresses',
-      title: 'Addresses'
-    }
-  },
-  {
-    path: '/addr/:address',
-    redirect: `/${r.address}/:address`
-  },
-  {
-    path: `/${r.address}/:address`,
-    name: 'Address',
-    component: DataPage,
-    props: {
-      module: 'addresses',
-      action: 'getAddress',
-      title: (data) => {
-        let title = (data.contractType === 'ERC20') ? 'token' : ''
-        title = (data.name) ? `${data.name} ${title}` : title
-        return title || data.type || ''
-      },
-      mainContent: [
-        { component: DataItem }
-      ],
-      dataType: 'address',
-      tabs: [
-        {
-          name: 'transactions',
-          dataType: 'transactions',
-          action: 'getTransactionsByAddress',
-          module: 'transactions',
-          msgs: [(data, parenData) => {
-            const msgs = []
-            let { balance, txBalance } = parenData
-            if (txBalance !== balance) msgs.push('INTERNAL_TX_WARN')
-            return msgs
-          }]
-        },
-        {
-          name: 'tokens',
-          dataType: 'tokenByAddress',
-          module: 'tokens',
-          action: 'getTokensByAddress'
-        },
-        {
-          name: 'events',
-          dataType: 'events',
-          module: 'events',
-          action: 'getAllEventsByAddress'
-        },
-        {
-          name: 'tokens transfers',
-          dataType: 'transferEvents',
-          module: 'events',
-          action: 'getEventsByAddress',
-          params: { signatures: TRANFER_EVENTS_SIGNATURES }
-        },
-        {
-          name: 'accounts',
-          dataType: 'tokenAccounts',
-          module: 'tokens',
-          action: 'getTokenAccounts',
-          render: data => {
-            let methods = data.contractMethods || []
-            return methods.indexOf('balanceOf(address)') > -1
-          }
-        },
-        {
-          name: 'mined blocks',
-          dataType: 'blocks',
-          module: 'blocks',
-          action: 'getBlocks',
-          params: (routeParams) => {
-            routeParams = routeParams || {}
-            const { address } = routeParams
-            return { miner: address }
-          },
-          render: data => {
-            return data.lastBlockMined
-          }
-        }
-      ]
-    }
-  },
-  {
-    path: `/${r.transactions}`,
-    name: 'Transactions',
-    component: DataPage,
-    props: {
-      module: 'transactions',
-      title: 'Transactions',
-      dataType: 'transactions',
-      action: 'getTransactions'
-    }
-  },
-  {
-    path: `/${r.transaction}/:hash`,
-    name: 'Transaction',
-    component: DataPage,
-    props: {
-      mainContent: [
-        {
-          name: 'Transaction',
-          component: DataItem
-        },
-        {
-          name: 'Logs',
-          component: DataItem,
-          dataType: 'transactionLogs',
-          // render: (data) => data && data.receipt.logs.length,
-          count: (data) => { return (data && data.receipt) ? data.receipt.logs.length : 0 }
-        },
-        {
-          name: 'Token Transfers',
-          component: DataItem,
-          dataType: 'txTransferEvents',
-          count: (data) => {
-            let logs = []
-            if (data && data.receipt) {
-              logs = filterTransferEvents(data.receipt.logs)
-            }
-            return logs.length
-          }
-        }
-      ],
-      module: 'transactions',
-      title: 'Transaction',
-      dataType: 'transaction',
-      action: 'getTransactionWithAddressData'
-    }
-  },
-  {
     path: `/${r.txPool}`,
     name: 'txPool',
     component: TxPool
   },
+  ...blocks,
+  ...transactions,
+  ...addresses,
   ...tokens,
   {
     path: '*',
