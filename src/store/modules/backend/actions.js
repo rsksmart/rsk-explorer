@@ -127,6 +127,10 @@ export const socketTxPoolChart = ({ commit }, data) => {
   commit('SET_TX_POOL_CHART', data)
 }
 
+export const setKeyData = ({ state, commit }, [key, data]) => {
+  commit('SET_RESPONSE', [key, data])
+}
+
 const delayedObject = (payload = {}) => {
   let fields = payload.fields || []
   let registry = payload.registry || false
