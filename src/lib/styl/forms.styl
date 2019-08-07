@@ -23,19 +23,32 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  border solid 1px $color
+  border $border
   -webkit-text-fill-color $color
   -webkit-box-shadow 0 0 0px 1000px $bg-color inset
   transition background-color 5000s ease-in-out 0s
 }
 
+form
+  display flex
+  background $bg-even
+fieldset
+  borders()
+  margin 0.25em
+
+select
+  font-size normal
+  padding .5em 2em
+  
+
 label
+  margin 0.250em
   margin-top 0.5em
 
 label + input[type='range']
   display block
 
-input
+input, select
   defaultsColors()
   borders()
 

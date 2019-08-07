@@ -56,7 +56,10 @@ $sel-bg = $color
 $selection-bg = rgba(red($sel-bg), green($sel-bg), blue($sel-bg), 0.5)
 $selection-color = rgba(red($sel-color), green($sel-color), blue($sel-color), 0.9)
 // Borders
-$border = $color solid 1px
+$border-color = $color
+$border-style = solid
+$border-width = 1px
+$border = $border-style $border-width $border-color
 $frame-border = solid alpha($darkness-odd, 1) 1px
 $border-panel = solid 1px $darkness
 $border-radius = 0.25em

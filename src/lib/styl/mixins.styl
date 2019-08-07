@@ -13,12 +13,17 @@ apply-color($col, $val)
   .{$col}, .{$col} a
     color $val
     fill $val
+  
+  input.{$col}, select.{$col}, {$col}.input:focus
+    color $val !important
 
   // borders
   .border-{$col}
     border-color $val
     stroke $val
   
+  input.{$col}, select.{$col}
+    border-color $val !important
   // frames
   .frame-{$col}
     frame($val)
@@ -154,7 +159,9 @@ setColor(c)
 
 borders()
   border none
-  border $border
+  border-style $border-style
+  border-width $border-width
+  border-color $border-color
   border-radius $border-radius
 
 focus()

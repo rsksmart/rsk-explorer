@@ -42,8 +42,10 @@ button.icon
 
 button.big
   font-size 1em
-  width 2.5em
+  width auto
   height @width
+  padding 0.4em .8em
+  border-radius 0.15em
 
   .svg-icon
     width 1.75em
@@ -116,6 +118,11 @@ button.btn.dark
 
 button.link
   link()
+
+button.primary
+  background $color
+  font-weight bold
+  color white
 
 button.switch
   display inline-flex
