@@ -46,11 +46,18 @@ export const storageAvailable = (type) => {
 }
 
 export const loadJSON = (file, cb) => {
-  if (file.type && file.type === 'application/json') {
+  return readTextFile(file, cb, 'application/json')
+}
+
+export const readTextFile = (file, cb, type) => {
+  return new Promise((resolve, reject) => {
+    if (type) {
+      if (!file || file.type !== type) reject(new Error('file type mismatch'))
+    }
     let reader = new FileReader()
     reader.onload = (event) => {
-      cb(event.target.result)
+      resolve(event.target.result)
     }
     reader.readAsText(file)
-  }
+  })
 }

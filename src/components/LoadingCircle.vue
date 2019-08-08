@@ -1,6 +1,6 @@
 <template lang="pug">
   svg.loading-circle(:width='size' :height='size' :viewBox='viewBox')
-    path.circle(:d='path' :stroke-dasharray='stroke' :stroke-width='strokeW')
+    path.circle(:d='path' :stroke-dasharray='stroke' :stroke-width='strokeWidth')
 </template>
 <script>
 export default {
@@ -10,10 +10,7 @@ export default {
       type: Number,
       default: 50
     },
-    strokeW: {
-      type: Number,
-      default: 3
-    },
+    strokeW: Number,
     duration: {
       type: Number,
       default: 3000
@@ -38,7 +35,7 @@ export default {
   },
   computed: {
     s () {
-      return this.size - this.strokeW
+      return this.size - this.strokeWidth
     },
     viewBox () {
       let s = this.size
@@ -48,6 +45,10 @@ export default {
       let percent = this.percent
       let long = this.circumference
       return `${long / 100 * percent}, ${long}`
+    },
+    strokeWidth () {
+      let sw = this.strokeW
+      return sw || this.size / 4
     },
     radius () {
       return this.s / 2
@@ -62,7 +63,7 @@ export default {
       let s = this.s
       let d = this.diameter
       let r = this.radius
-      let sw = this.strokeW
+      let sw = this.strokeWidth
       let p = []
       p.push(`M ${s / 2 + sw / 2} ${sw / 2}`)
       p.push(`a${r} ${r}  0 0 1 0 ${d}`)
@@ -90,5 +91,5 @@ export default {
     overflow hidden
     display flex
     fill none !important
-    stroke red
+    stroke white
 </style>

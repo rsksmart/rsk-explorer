@@ -14,7 +14,8 @@ export const ROUTES = {
   stats: 'stats',
   event: 'event',
   events: 'events',
-  txPool: 'txpool'
+  txPool: 'txpool',
+  verifyContract: 'verify'
 }
 
 export const STATUS = {

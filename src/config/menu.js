@@ -4,5 +4,6 @@ export default [
   'transactions',
   'addresses',
   'tokens',
+  'verifyContract',
   'stats'
 ]

@@ -106,6 +106,7 @@ export default {
     },
     getIcon (name) {
       if (name === 'home') return 'rsk'
+      if (name === 'verifyContract') return 'versions'
       let entity = this.getEntity()(name)
       return (entity) ? entity.icon || null : name
     },

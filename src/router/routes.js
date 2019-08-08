@@ -6,7 +6,7 @@ import blocks from './blocks'
 import transactions from './transactions'
 import addresses from './addresses'
 import tokens from './tokens'
-import { filterTransferEvents, TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
+import contracts from './contracts'
 const statsUrl = process.env.STATS_URL
 
 export default [
@@ -45,6 +45,7 @@ export default [
   ...transactions,
   ...addresses,
   ...tokens,
+  ...contracts,
   {
     path: '*',
     name: 'Error',
