@@ -164,15 +164,14 @@ export default {
 
     mainContentTabs () {
       let tabs = this.mainContent || []
-      tabs = tabs.map(tab => {
-        let render = tab.render
-        render = (render && typeof render === 'function') ? render(this.data) : render
-        tab.render = render
+      const { data } = this
+      // execute count and render callbacks
+      return tabs.filter(tab => {
+        let render = (typeof tab.render === 'function') ? tab.render(data) : true
         let count = tab.count
-        if (count && typeof count === 'function') tab.total = count(this.data)
-        return tab
+        if (count && typeof count === 'function') tab.total = count(data)
+        return render
       })
-      return tabs.filter(tab => { return (undefined !== tab.render) ? tab.render : true })
     },
     tabsTotals () {
       return this.tabs.reduce((v, a, i) => {
