@@ -30,11 +30,20 @@ select:-webkit-autofill:focus {
 }
 
 form
-  display flex
-  background $bg-even
+  padding 0
+  margin 2em 0
+  background $quasi-bg
 fieldset
-  borders()
-  margin 0.25em
+  //borders()
+  border none
+  margin 1.5em 0
+  padding 0
+  
+  div
+    display flex
+
+legend
+  color $brand
 
 select
   font-size normal
@@ -83,3 +92,6 @@ input[type='checkbox']
 
 textarea
   font-family $monospace-font
+
+label,input, select,legend 
+  margin 0 1em

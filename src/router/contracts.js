@@ -4,9 +4,8 @@ import VerifyContract from '@/components/VerifyContract'
 export default [
 
   {
-    path: `/${r.verifyContract}/:address?`,
+    path: `/${r.verifyContract}/:contractAddress?/:id?`,
     name: 'VerifyContract',
-    component: VerifyContract,
-    props: {}
+    component: VerifyContract
   }
 ]
