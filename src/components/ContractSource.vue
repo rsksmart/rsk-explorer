@@ -3,7 +3,7 @@
     .source.row(v-if='source')
       .files.col
         ul.plain.file-list
-          li.file(v-for='code,fileName in imports')
+          li.file(v-for='code,fileName in imports' :class='(fileSelected === fileName) ? ["bold"]:[]')
             //-icon(name='solidity')
             small.link(@click.passive='selectFile(fileName)') {{fileName}}
       .source.col
@@ -29,20 +29,23 @@ export default {
     }
   },
   computed: {
-    request () {
+    verification () {
       const { verification } = this.data || {}
-      return (verification) ? verification.request : {}
+      return verification || {}
     },
-    source () {
-      return this.imports[this.fileSelected]
-    },
+
     imports () {
-      let imports = this.request.imports || []
+      let imports = this.verification.sources || []
       return imports.reduce((v, a, i) => {
         v[a.name] = a.contents
         return v
       }, {})
+    },
+
+    source () {
+      return this.imports[this.fileSelected]
     }
+
   },
   methods: {
     selectFile (fileName) {
@@ -53,13 +56,15 @@ export default {
 </script>
 <style lang="stylus">
   .contract-source
-    flex-flow: row wrap
+    flex-flow row wrap
     display flex
     align-items flex-start
+
     .files
       display flex
       flex 0 0 5em
       align-self flex-start
+
     .file-list
       margin 1em
 

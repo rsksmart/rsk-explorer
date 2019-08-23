@@ -19,13 +19,9 @@ export default {
     verification () {
       return this.data.verification
     },
-    result () {
-      let { verification } = this
-      return (verification) ? verification.result : {}
-    },
-
     abi () {
-      return this.result.abi
+      let { verification } = this
+      return (verification) ? verification.abi : null
     }
   },
   methods: {
@@ -46,5 +42,3 @@ export default {
     *
       font-weight normal
 </style>
-
-

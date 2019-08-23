@@ -26,3 +26,10 @@ export const plainObjectChanges = (oldObj, newObj) => {
   }
   return diff
 }
+
+export const ObjectIdToDate = id => {
+  let timestamp = String(id).substr(0, 8)
+  return new Date(parseInt(timestamp, 16) * 1000)
+}
+
+export const ObjectIdSecondsElapsed = id => (Date.now() - ObjectIdToDate(id)) / 1000

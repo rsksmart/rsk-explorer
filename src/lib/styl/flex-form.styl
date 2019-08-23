@@ -8,11 +8,11 @@ form.flex
   max-width 100%
   width 100%
     
-  & > label,.form-ctrls,.form-help
+  & > label, legend,.form-ctrls,.form-help
     display block
     width 100%
   
-  .form-row
+  .form-row, fieldset
     display block
     margin 0 0 1em 0 
 
@@ -35,7 +35,7 @@ form.flex
     display flex
     flex-flow column nowrap
     
-    .form-row
+    .form-row,fieldset
       margin 0
       display flex
       flex-flow row wrap  
@@ -43,7 +43,7 @@ form.flex
       position relative
       align-items stretch    
       
-      & > label
+      & > label, legend
         flex 1
         margin 0 
         padding 0
@@ -58,7 +58,6 @@ form.flex
         margin 0
         align-self flex-start
         padding-bottom 2em
-        
         input:not([type='checkbox']),select,textarea
           margin 0
       
@@ -71,7 +70,7 @@ form.flex
         padding  .5em 1em 2em 1em
         align-items stretch
         background $bg-odd
-    
+     
       
 
           
