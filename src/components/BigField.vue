@@ -12,6 +12,10 @@ export default {
 @import '../lib/styl/vars.styl'
   .big-field
     display flex
+    textarea
+      padding 0
+      font-size .75em
+      font-family $monospace-font
     .field
       raw()
       width 100%

@@ -104,8 +104,12 @@ export default {
     button
       margin 0 0.5rem 0 0
 
-    input
+    #search
       text-align center
+      padding 0
+      background none
+      border-style solid
+      font-size .75em
 
   .msg-trans
     will-change opacity
