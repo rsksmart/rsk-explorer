@@ -1,11 +1,11 @@
 <template lang="pug">
   .filters
-    small Filter by type:&nbsp;
+    small Filter by type:&nbsp;&nbsp;
     ul.inline.dark
       li.col( v-for='val,name in txFilters')
-        input(type='checkbox' v-model='filterValues' :value='name' :id='name' @change='update')
-        label(:for='name')
-          small {{name}}
+        label
+          input(type='checkbox' v-model='filterValues' :value='name' @change='update')
+          span.label {{name}}
 </template>
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'

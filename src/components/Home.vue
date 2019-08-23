@@ -31,7 +31,7 @@ import LastTransactions from './LastTransactions.vue'
 import TxChart from './TxChart.vue'
 import BlockBox from './BlockBox.vue'
 import PendingBlocks from './PendingBlocks.vue'
-import CtrlSwitch from './CtrlSwitch.vue'
+import CtrlSwitch from './controls/CtrlSwitch.vue'
 import { ROUTES as r } from '../config/types'
 export default {
   name: 'Home',

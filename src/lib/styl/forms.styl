@@ -89,41 +89,21 @@ input[placehoder], ::-moz-placeholder, input::-moz-placeholder
 input:disabled
   color $gray
 
-input[type='radio'] + label
+input[type='radio']
+  cursor pointer
+
+input[type='radio'] + label, 
+input[type='radio'] + .label
+input[type='checkbox'] + label, 
+input[type='checkbox'] + .label
    color $gray
+   margin 0 0 0 .5em
 
-input[type='radio']:checked + label
-  color $color   
-
-input[type='radio'] 
-  appearance none
-  padding 0
-  margin 0
-  border none
-  background none
-  
-  &:before
-    position relative
-    display block
-    content ''
-    width 2em
-    height @width
-    border-radius 50%
-    border transparent solid 2px
-    background $forms-ctrls-bg
-  
-  &:checked:before
-    margin 0
-    padding 0
-    display block
-    content ''
-    width 2em
-    height @width
-    border-radius 50%
-    border $color solid 2px
-    background $color
-  
-
+input[type='radio']:checked + label, 
+input[type='radio']:checked + .label
+input[type='checkbox']:checked + label, 
+input[type='checkbox']:checked + .label
+  color $color
 
 input.big
   font-size 1.125em

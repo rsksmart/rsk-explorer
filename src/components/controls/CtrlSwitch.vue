@@ -1,9 +1,9 @@
 <template lang="pug">
   .switch
-    label
+    label.ctrl
       input(type='checkbox' :checked='value' @change='updateValue')
       span.slider(:class='ctrlClass')
-    span.label(v-if='label' :class='labelClass') {{ label }}
+    label.label(v-if='label' :class='labelClass') {{ label }}
 
 </template>
 <script>
@@ -27,7 +27,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/vars.styl'
+  @import '../../lib/styl/vars.styl'
 
   $sw-width = 2em
   $sw-space = ($sw-width / 10)
@@ -38,17 +38,22 @@ export default {
     display flex
     align-items center
 
-    label
+    .ctrl
       display inline-block
       position relative
       width $sw-width
+      max-width $sw-width
       height $sw-height
-      margin 0
+      margin 0 .5em 0 0
       padding 0
 
     .label
       margin-left .5em
       font-size .9em
+      display inline
+      margin 0
+      padding 0
+
     input[type="checkbox"]
       display none
       border none
@@ -63,7 +68,7 @@ export default {
       background-color gray
       transition 0.4s
       display inline
-      box-shadow inset 0px 1px 1px rgba(0, 0, 0, 0.5)
+      box-shadow $inset-sh
 
     .slider:before
       position absolute
