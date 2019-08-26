@@ -3,13 +3,15 @@ const add = (label, description = '') => { return { label, description } }
 export const messages = {
   INVALID_ADDRESS: 'invalid address',
   NOT_CONTRACT: 'Is not a contract',
+  CONTRACT_INFO: 'Getting contract information',
   IS_VERIFIED: 'The contract is already verified',
   NOT_SOURCE: 'the source is empty',
   VERIFICATION_ERROR: 'Error verifiying contract',
   VERIFICATION_DONE: 'Contract verification successful',
   WAITING_VERIFICATION: 'Waiting for verifier',
   WAITING_FOR_RESULT: 'Waiting for the verification result',
-  VERIFICATION_FAILED: 'Verification failed'
+  VERIFICATION_FAILED: 'Verification failed',
+  REQUEST_VERIFICATION: 'Requesting verification'
 }
 
 export const formFields = {

@@ -2,8 +2,9 @@
   .verify-contracts.section
     h2 Verify contract
     //- Form Errors
-    .col(v-show='isWaiting')
+    .row(v-show='isWaiting')
       loading-circle(:size='30' )
+      //- TODO describe requests...
     .errors(v-if='errors.length')
       .error(v-for='error in errors')
         small {{error}}
@@ -17,8 +18,9 @@
 
         //- Form errors
         template(v-for='[errored,error] in formErrors')
-          .box(v-if='errored')
-            h2.error {{error}}
+          //-FIX--------------------------------------------------
+          template(v-if='errored')
+            p.error {{error}}
 
         //-.contract(v-if='!isVerified')
           .items(v-if='contractData')
@@ -50,7 +52,7 @@
             button.btn.bg-brand.white(type="button" @click='addLibrary' name="add-library")
               icon.white(name="plus")
               span Add library
-        
+
         template(v-for='lib in libs')
           form-row(v-bind='formFields.LIB_NAME')
             input(type='text' v-model='lib.name')
@@ -66,11 +68,11 @@
 
     //- Waiting for verification
     div(v-if='isWaitingForVerification')
-      h3 {{messages().WAITING_VERIFICATION}}
+      p {{messages().WAITING_VERIFICATION}}
 
     //- Verification Result
     template.errrors(v-if='verificationErrors')
-      h3 {{messages().VERIFICATION_ERROR}}
+      p {{messages().VERIFICATION_ERROR}}
       .row
         ul.small
           li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
@@ -78,7 +80,7 @@
     .col(v-if='verificationDone')
       h3.brand(v-if='verificationSuccessful') {{messages().VERIFICATION_DONE}}
       template(v-else)
-        h3.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
+        p.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
         .try-again
           button.big.bg-brand.white.btn.flex(@click='tryAgain') Try again
 
@@ -150,6 +152,9 @@ export default {
     }
   },
   computed: {
+    keys () {
+      return KEYS
+    },
     verificationResult () {
       return this.getPage()(KEYS.verificationResult)
     },
@@ -321,7 +326,7 @@ export default {
     setVerificationId (id) {
       let { address } = this
       if (id === this.verificationId) return
-      this.verificationId = id
+      this.$set(this, 'verificationId', id)
       this.$router.push({ params: { address, id } })
       this.resetKeyData(KEYS.verificationResult)
       if (id) this.getVerificationResult()
@@ -422,6 +427,7 @@ export default {
     svg.loading-circle
       fill none
       stroke green
+
     .try-again
-      padding 2em  
+      padding 2em
 </style>
