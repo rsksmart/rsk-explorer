@@ -18,6 +18,8 @@
   .title
     margin 0 1em
     text-transform capitalize
+   .svg-icon *
+     fill green
    .loading-circle
      .circle
       fill none 
@@ -26,9 +28,11 @@
   background $color
   font-weight bold
   color white
+  .svg-icon *
+    fill @color
   .loading-circle
     .circle
-      stroke white
+      stroke @color
 
 .tab-content
   min-width 100%

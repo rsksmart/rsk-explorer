@@ -41,7 +41,12 @@ export default [
           name: 'Code',
           component: ContractDetails,
           render: data => (data && data.type === 'contract' && !data.isNative),
-          hideTabs: true
+          hideTabs: true,
+          icon: data => {
+            if (!data) return
+            let { verification } = data
+            if (verification && verification.match === true) return 'check'
+          }
         }
       ],
       dataType: 'address',
