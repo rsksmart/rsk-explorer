@@ -27,7 +27,7 @@
       .page(v-if='data')
         data-section(v-if='!tabs && !activeContentTab' :module='module' :dataType='dataType'
           :reqKey='reqKey' :component='component' :action='action')
-        .tabs(v-if='tabs && data')
+        .tabs(v-if='tabs && data && !hideTabs')
           .tabs-titles
             template(v-for='tab in tabs')
               template(v-if='renderTab(tab)')
@@ -94,6 +94,10 @@ export default {
       getActiveContentTab: 'getActiveContentTab',
       routeParams: 'getRouterParams'
     }),
+    hideTabs () {
+      let active = this.activeContentTab || {}
+      return active.hideTabs
+    },
     query () {
       let key = this.reqKey
       return this.getQuery()(key)
