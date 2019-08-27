@@ -1,6 +1,5 @@
 import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
-import ContractSource from '@/components/ContractSource'
 import ContractDetails from '@/components/ContractDetails'
 import { ROUTES as r } from '../config/types'
 import { TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
@@ -39,14 +38,10 @@ export default [
           component: DataItem
         },
         {
-          name: 'Contract Details',
+          name: 'Code',
           component: ContractDetails,
-          render: data => (data && data.type === 'contract' && !data.isNative)
-        },
-        {
-          name: 'Contract Source',
-          component: ContractSource,
-          render: data => (data && data.verification)
+          render: data => (data && data.type === 'contract' && !data.isNative),
+          hideTabs: true
         }
       ],
       dataType: 'address',
