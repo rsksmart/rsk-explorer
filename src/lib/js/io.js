@@ -61,3 +61,24 @@ export const readTextFile = (file, cb, type) => {
     reader.readAsText(file)
   })
 }
+
+export const copyText = (targetNode, atrtibutes) => {
+  atrtibutes = atrtibutes || { style: 'border:none;margin:0;padding:0;background-color:inherit;opacity:0;width:1px;heigth:1px;' }
+  let value = targetNode.value
+  let el = targetNode.parentNode
+  let ta = document.createElement('textarea')
+  for (let att in atrtibutes) {
+    ta.setAttribute(att, atrtibutes[att])
+  }
+  ta.value = value
+  let node = el.appendChild(ta)
+  try {
+    ta.select()
+    document.execCommand('copy')
+    el.removeChild(node)
+    return
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
