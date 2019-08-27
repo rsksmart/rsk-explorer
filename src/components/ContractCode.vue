@@ -3,7 +3,7 @@
     .section
       .verify(v-if='!verification.result')
         a.btn.btn-brand(@click='verifyContract') Verify Contract
-      ctrl-big-text(v-if='code' :value='code' title='Bytecode' height='10em')  
+      ctrl-big-text(v-if='code' :value='code' title='Bytecode' height='10em')
       ctrl-big-text(v-if='abi' :value='abi' fileName='abi.json' fileType='json' title='Contract ABI')
         highlight-code(lang='json' :code='abi')
       template(v-if='sources.length')
@@ -15,7 +15,7 @@
               .item(v-for='value,name,key in verificationData' :class='(key %2) ? "odd": "even"')
                 .field-title {{name| camel-case-to }}
                 .data-field(v-if='value') {{  value }}
-        template(v-if='libraries')
+        template(v-if='libraries.length')
           h4.subtitle External Libraries
           .data-item
             .items.small
@@ -24,7 +24,7 @@
                 .data-field
                   a(:href='addressLink(address)') {{address}}
         template(v-for='source in sources')
-          ctrl-big-text(v-if='source' :value='source.contents' :fileName='source.name' fileType='sol' :title='source.name' ) 
+          ctrl-big-text(v-if='source' :value='source.contents' :fileName='source.name' fileType='sol' :title='source.name' )
             source-code(language='solidity' :code='source.contents')
 </template>
 <script>
@@ -34,7 +34,7 @@ import CopyButton from './controls/CopyButton'
 import DownloadButton from './controls/DownloadButton'
 import { ROUTES } from '../config/types'
 export default {
-  name: 'contract-details',
+  name: 'contract-code',
   components: {
     SourceCode,
     CtrlBigText,
@@ -54,7 +54,7 @@ export default {
     abi () {
       let { verification } = this
       let abi = (verification) ? verification.abi : null
-      if (abi) return JSON.stringify(abi, null, 2)
+      return (abi) ? JSON.stringify(abi, null, 2) : null
     },
 
     sources () {

@@ -1,6 +1,6 @@
 import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
-import ContractDetails from '@/components/ContractDetails'
+import ContractCode from '@/components/ContractCode'
 import { ROUTES as r } from '../config/types'
 import { TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 
@@ -39,7 +39,7 @@ export default [
         },
         {
           name: 'Code',
-          component: ContractDetails,
+          component: ContractCode,
           render: data => (data && data.type === 'contract' && !data.isNative),
           hideTabs: true,
           icon: data => {
