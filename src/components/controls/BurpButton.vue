@@ -6,13 +6,13 @@
     .message(:class='(animate) ? "anim":"" ') {{message}}
 </template>
 <script>
-import { setTimeout } from 'timers'
 export default {
   name: 'burp-button',
   props: ['text', 'icon', 'message', 'title'],
   data () {
     return {
-      animate: false
+      animate: false,
+      timer: undefined
     }
   },
   methods: {
@@ -20,7 +20,8 @@ export default {
       this.animate = true
       this.$emit('click', event)
       // restart animation
-      setTimeout(() => {
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
         this.animate = false
       }, 600)
     }
