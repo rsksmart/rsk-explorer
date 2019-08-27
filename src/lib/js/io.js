@@ -12,10 +12,9 @@ export const locStorage = {
   }
 }
 
-export const downloadJSON = (json, name) => {
-  name = name || 'download'
-  name += '.json'
-  let data = 'data:text/json;charset=utf-8,' + encodeURIComponent(json)
+export const downloadText = (content, name, type = 'json') => {
+  name = name || `download.${type}`
+  let data = `data:text/${type};charset=utf-8,${encodeURIComponent(content)}`
   let el = document.createElement('a')
   el.setAttribute('href', data)
   el.setAttribute('download', name)
