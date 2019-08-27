@@ -1,39 +1,55 @@
 <template lang="pug">
   .contract-details.section
-    .section
-      .verify(v-if='!verification.result')
-        a.btn.btn-brand(@click='verifyContract') Verify Contract
-      ctrl-big-text(v-if='code' :value='code' title='Bytecode' height='10em')
-      ctrl-big-text(v-if='abi' :value='abi' fileName='abi.json' fileType='json' title='Contract ABI')
-        highlight-code(lang='json' :code='abi')
-      template(v-if='sources.length')
-        //-h3.subtitle Contract Source
-        template(v-if='verificationData')
-         h4.subtitle Compilation settings
-          .data-item
-            .items.small
-              .item(v-for='value,name,key in verificationData' :class='(key %2) ? "odd": "even"')
-                .field-title {{name| camel-case-to }}
-                .data-field(v-if='value') {{  value }}
-        template(v-if='libraries.length')
-          h4.subtitle External Libraries
-          .data-item
-            .items.small
-              .item(v-for='address,name,key in libraries' :class='(key %2) ? "odd": "even"')
-                .field-title {{name}}
-                .data-field
-                  a(:href='addressLink(address)') {{address}}
+      .section
+        //- ABI
+        ctrl-big-text(v-if='abi' :value='abi' :fileName='`${contractName}.json`' fileType='json' title='Contract ABI')
+          highlight-code(lang='json' :code='abi')
+      //- Verification 
+      .section(v-if='verification.result')
+        h3.subtitle Contract Source
+                
+        //- Source
         ctrl-big-text(v-if='source' :value='source.contents' :fileName='source.name' fileType='sol' :title='source.name' )
           source-code(language='solidity' :code='source.contents')
+        
+        //-Dependencies
         template(v-if='imports.length')
           h3.subtitle Dependencies
           .files
             button.link(v-for='source in imports' @click.passive='selectFile(source.name)' :class='(source.name===fileSelected)?"sel":""')
               span {{source.name}}
-            //-ctrl-big-text(v-if='source' :value='source.contents' :fileName='source.name' fileType='sol' :title='source.name' )
-              source-code(language='solidity' :code='source.contents')
-          ctrl-big-text(v-if='selected' :value='selected.contents' :fileName='selected.name' fileType='sol' :title='selected.name' )
-            source-code(language='solidity' :code='selected.contents')
+          transition(name='selected-file' mode='out-in')
+            ctrl-big-text(v-if='selected' :key='selected.name' :value='selected.contents' :fileName='selected.name' fileType='sol' :title='selected.name' )
+              source-code(language='solidity' :code='selected.contents')
+
+        //- Libraries
+        template(v-if='libraries')
+          h3.subtitle External Libraries
+          .data-item
+            .items.small
+              .item(v-for='address,name,key in libraries' :class='(key %2) ? "odd": "even"')
+                .field-title {{name}}
+                .data-field
+                  button.link(@click.passive='goTo(addressLink(address))')
+                    span {{address}}
+
+        //- Compilation settings
+        template(v-if='verificationData')
+         h3.subtitle Compilation settings
+        .data-item
+          .items.small
+            .item(v-for='value,name,key in verificationData' :class='(key %2) ? "odd": "even"')
+              .field-title {{ name | camel-case-to }}
+              .data-field(v-if='value') {{  value }}
+
+      //- bytecode
+      .section
+        ctrl-big-text(v-if='code' :value='code' title='Bytecode' height='10em')
+      
+      //- Verify message
+      .verify(v-if='!verification.result')
+        button.btn.big.btn-brand(@click='verifyContract') Verify Contract
+              
 </template>
 <script>
 import SourceCode from './SourceCode'
@@ -67,11 +83,19 @@ export default {
     code () {
       return this.data.code
     },
+    contractName () {
+      let { name, address } = this.data
+      return name || address
+    },
 
     abi () {
       let { verification } = this
       let abi = (verification) ? verification.abi : null
       return (abi) ? JSON.stringify(abi, null, 2) : null
+    },
+
+    result () {
+      return this.verification.result
     },
 
     sources () {
@@ -92,14 +116,15 @@ export default {
     },
 
     libraries () {
-      return this.request.libraries
+      return this.result.usedLibraries 
     },
 
     verificationData () {
-      let request = this.request || {}
-      let { name, settings, version } = request
-      let { evmVersion, optimizer } = settings
-      return { contractName: name, compilerVersion: version, evmVersion, optimizerEnabled: optimizer.enabled }
+      let result = this.result || {}
+      let { name: contractName, usedSettings, version } = result
+      let { evmVersion, optimizer: optimization } = usedSettings
+      let { version: compilerVersion } = usedSettings.compiler
+      return { contractName, compilerVersion, evmVersion, optimization }
     },
 
     selected () {
@@ -119,7 +144,10 @@ export default {
       this.fileSelected = fileName
     },
     addressLink (address) {
-      return `${ROUTES.address}/${address}`
+      return `/${ROUTES.address}/${address}`
+    },
+    goTo (link) {
+      this.$router.push(link)
     }
   }
 }
@@ -128,8 +156,13 @@ export default {
   @import '../lib/styl/vars.styl'
 
   .contract-details
-    .ctrl-big-text
-      margin 2em 0 0 0
+
+    .verify
+      display block
+      margin 1em
+      width 100%
+      text-align right
+
 
     .files
       display flex
@@ -144,6 +177,12 @@ export default {
         border-bottom solid 1px $color
 
       button
-        margin 0 .5em
+        margin 0 0.5em
         font-weight bold
+
+    .selected-file-enter-active, .selected-file-leave-active
+      transition opacity 0.2s ease-in
+
+    .selected-file-enter, .selected-file-leave-to
+      opacity 0
 </style>
