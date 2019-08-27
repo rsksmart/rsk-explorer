@@ -23,9 +23,17 @@
                 .field-title {{name}}
                 .data-field
                   a(:href='addressLink(address)') {{address}}
-        template(v-for='source in sources')
-          ctrl-big-text(v-if='source' :value='source.contents' :fileName='source.name' fileType='sol' :title='source.name' )
-            source-code(language='solidity' :code='source.contents')
+        ctrl-big-text(v-if='source' :value='source.contents' :fileName='source.name' fileType='sol' :title='source.name' )
+          source-code(language='solidity' :code='source.contents')
+        template(v-if='imports.length')
+          h3.subtitle Dependencies
+          .files
+            button.link(v-for='source in imports' @click.passive='selectFile(source.name)' :class='(source.name===fileSelected)?"sel":""')
+              span {{source.name}}
+            //-ctrl-big-text(v-if='source' :value='source.contents' :fileName='source.name' fileType='sol' :title='source.name' )
+              source-code(language='solidity' :code='source.contents')
+          ctrl-big-text(v-if='selected' :value='selected.contents' :fileName='selected.name' fileType='sol' :title='selected.name' )
+            source-code(language='solidity' :code='selected.contents')
 </template>
 <script>
 import SourceCode from './SourceCode'
@@ -42,6 +50,15 @@ export default {
     DownloadButton
   },
   props: ['data'],
+  data () {
+    return {
+      fileSelected: undefined
+    }
+  },
+  created () {
+    let first = this.imports[0]
+    if (first) this.selectFile(first.name)
+  },
   computed: {
     verification () {
       return this.data.verification || {}
@@ -61,6 +78,15 @@ export default {
       return this.verification.sources || []
     },
 
+    source () {
+      return this.sources[0]
+    },
+
+    imports () {
+      let sources = [...this.sources]
+      return sources.splice(1)
+    },
+
     request () {
       return this.verification.request
     },
@@ -74,6 +100,11 @@ export default {
       let { name, settings, version } = request
       let { evmVersion, optimizer } = settings
       return { contractName: name, compilerVersion: version, evmVersion, optimizerEnabled: optimizer.enabled }
+    },
+
+    selected () {
+      let { fileSelected } = this
+      return this.imports.find(f => f.name === fileSelected)
     }
 
   },
@@ -101,6 +132,8 @@ export default {
       margin 2em 0 0 0
 
     .files
+      display flex
+      flex-flow row wrap
       position relative
       min-width 100%
       width 100%
@@ -111,6 +144,6 @@ export default {
         border-bottom solid 1px $color
 
       button
-        margin 0 1em
+        margin 0 .5em
         font-weight bold
 </style>
