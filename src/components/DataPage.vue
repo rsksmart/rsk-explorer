@@ -21,6 +21,7 @@
               button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name,$event)'
                :class='tabTitleCss(isActiveContentTab(tab))')
                 span.title {{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}
+                icon(v-if='tab.buttonIcon' :name='tab.buttonIcon')
         data-section( v-if='activeContentTab'
           :component='activeContentTab.component' :reqKey='reqKey' :module='module'
           :dataType='activeContentTab.dataType || dataType' :action='action')
@@ -173,6 +174,8 @@ export default {
       return tabs.filter(tab => {
         let render = (typeof tab.render === 'function') ? tab.render(data) : true
         let count = tab.count
+        let icon = (typeof tab.icon === 'function') ? tab.icon(data) : tab.icon
+        tab.buttonIcon = icon
         if (count && typeof count === 'function') tab.total = count(data)
         return render
       })
