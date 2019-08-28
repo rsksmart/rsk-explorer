@@ -11,7 +11,8 @@ export const messages = {
   WAITING_VERIFICATION: 'Waiting for verifier',
   WAITING_FOR_RESULT: 'Waiting for the verification result',
   VERIFICATION_FAILED: 'Verification failed',
-  REQUEST_VERIFICATION: 'Requesting verification'
+  REQUEST_VERIFICATION: 'Requesting verification',
+  SHOW_RESULT: 'Go to contract page'
 }
 
 export const formFields = {

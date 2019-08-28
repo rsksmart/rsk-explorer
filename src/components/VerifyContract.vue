@@ -2,9 +2,9 @@
   .verify-contracts.section
     h2 Verify contract
     //- Form Errors
-    .row(v-show='isWaiting')
+    .loading(v-show='isWaiting')
       loading-circle(:size='30' )
-      //- TODO describe requests...
+      p(v-if='!verificationDone && timer') {{messages().WAITING_FOR_RESULT}}
     .errors(v-if='errors.length')
       .error(v-for='error in errors')
         small {{error}}
@@ -12,9 +12,6 @@
     form.flex(v-if='!verificationId' @submit.prevent='submit')
       form-row(v-bind='formFields.ADDRESS')
         input(name="address" type= "text" :value="address" @change="changeAddress($event.target.value)" size="50")
-
-      form-row(v-bind='formFields.NAME')
-        input(name="name" type="text" :value="name" @change='changeName($event.target.value)'  :class='cssClass("name")')
 
         //- Form errors
         template(v-for='[errored,error] in formErrors')
@@ -29,6 +26,8 @@
 
       //- Verification form
       template(v-if='isVerifiable')
+        form-row(v-bind='formFields.NAME')
+          input(name="name" type="text" :value="name" @change='changeName($event.target.value)'  :class='cssClass("name")')
         form-row(v-bind='(hasFiles) ?formFields.FILES : formFields.SOURCE')
           ctrl-files(:multiple='hasFiles' @change='updateFiles' @error='addError' :class='cssClass("file")' accept='.sol')
 
@@ -58,8 +57,11 @@
             input(type='text' v-model='lib.name')
           form-row(v-bind='formFields.LIB_ADDRESS')
             input(type='text' v-model='lib.address')
-        .form-row
-          button.btn.bg-brand.white.tab-title.big(name="submit") send
+        form-row
+          button.brand.big(name="submit")
+            span Verify
+          //-button.btn.big(name="submit" @click.passive='resetForm')
+            span Reset
 
     //- Verification response
     div(v-if='verifierResponse')
@@ -77,8 +79,11 @@
         ul.small
           li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
 
-    .col(v-if='verificationDone')
-      h3.brand(v-if='verificationSuccessful') {{messages().VERIFICATION_DONE}}
+    .col(v-if='verificationDone || verificationErrors')
+      template(v-if='verificationSuccessful')
+        h3.brand {{messages().VERIFICATION_DONE}}
+        a(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
+
       template(v-else)
         p.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
         .try-again
@@ -96,6 +101,7 @@ import { isAddress } from '../lib/js/ethUtils'
 import { camelCaseTo } from '../filters/TextFilters'
 import { ObjectIdSecondsElapsed } from '../lib/js/utils'
 import { messages, formFields } from '../config/verifyContractTexts'
+import { ROUTES } from '../config/types'
 
 const KEYS = {
   contract: '__contractVerifierContract',
@@ -300,15 +306,20 @@ export default {
       })
     },
 
+    resetForm () {
+      this.$router.go()
+    },
+
     resetKeyData (key) {
       this.setKeyData([key, { data: null }])
     },
 
     tryAgain () {
-      this.setVerificationId(null)
+      this.router.push({ params: { id: undefined, contractAddress: this.address } })
     },
     addLibrary () {
-      this.libs.push({ name: '', address: '' })
+      let empty = this.libs.find(l => l.name === '')
+      if (!empty) this.libs.push({ name: '', address: '' })
     },
     cssClass (input) {
       return (this.inputErrors.has(input)) ? ['error'] : []
@@ -326,8 +337,8 @@ export default {
     setVerificationId (id) {
       let { address } = this
       if (id === this.verificationId) return
-      this.$set(this, 'verificationId', id)
-      this.$router.push({ params: { address, id } })
+      this.verificationId = id
+      this.$router.replace({ params: { contractAddress: address, id } })
       this.resetKeyData(KEYS.verificationResult)
       if (id) this.getVerificationResult()
     },
@@ -337,12 +348,13 @@ export default {
       this.timer = undefined
       const key = KEYS.verificationResult
       if (this.isRequesting()(key)) return
-      if (this.verificationDone) return
+      if (this.verificationDone || this.verificationErrors) return
       let id = this.verificationId
       if (id) {
         this.fetch({ key, params: { id }, action: 'getVerificationResult' })
-        let vm = this
-        this.timer = setTimeout(() => vm.getVerificationResult(), 5000)
+        this.timer = setTimeout(() => {
+          this.getVerificationResult()
+        }, 5000)
       }
     },
 
@@ -414,6 +426,12 @@ export default {
       let action = 'verify'
       let key = KEYS.verify
       return this.fetch({ action, params: { request }, key })
+    },
+    goToContractPage () {
+      let { address } = this
+      let path = `/${ROUTES.address}/${address}`
+      let query = { '__ctab': 'Code' }
+      this.$router.push({ path, query })
     }
   }
 }
@@ -423,6 +441,13 @@ export default {
 
   .verify-contracts
     flex-flow column nowrap !important
+
+    .loading
+      display block
+      text-align center
+
+      svg
+        margin auto
 
     svg.loading-circle
       fill none
