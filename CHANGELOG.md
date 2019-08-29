@@ -1,5 +1,21 @@
 # Changelog
 
+## [Unreleased]
+
+## Added
+
+- Contract verification form
+
+- Tab 'code' to address page that shows bytecode and Verify Button (all contracts),
+  source, ABI, bytecode for verified contracts (verified contracts)
+
+- Date to token transfers list
+
+## Fixed
+
+- Trim of contract name
+
+
 ## [0.8.2] 2019-07-29
 
 ### Fixed
