@@ -71,6 +71,7 @@ export default {
   },
   tokenName: {
     default: CONTRACT_UNKNOWN_NAME,
+    trim: 'auto',
     link: ({ address }, value) => {
       return (!isAddress(address)) ? null : `/${r.address}/${address}`
     }
