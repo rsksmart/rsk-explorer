@@ -1,11 +1,17 @@
 <template lang="pug">
   .source-code
-    highlight-code(:lang='language' :code='code')
+    pre(v-hljs)
+      code(:class='language') {{code}}
+    //-highlight-code(:lang='language' :code='code')
 </template>
 <script>
+import hljs from '../directives/hljs'
 export default {
   name: 'source-code',
   props: ['code', 'language'],
+  directives: {
+    hljs
+  },
   computed: {
     parsedCode () {
       let { code } = this

@@ -3,15 +3,15 @@
       .section
         //- ABI
         ctrl-big-text(v-if='abi' :value='abi' :fileName='`${contractName}.json`' fileType='json' title='Contract ABI')
-          highlight-code(lang='json' :code='abi')
-      //- Verification 
+          source-code(lang='json' :code='abi')
+      //- Verification
       .section(v-if='verification.result')
         h3.subtitle Contract Source
-                
+
         //- Source
         ctrl-big-text(v-if='source' :value='source.contents' :fileName='source.name' fileType='sol' :title='source.name' )
           source-code(language='solidity' :code='source.contents')
-        
+
         //-Dependencies
         template(v-if='imports.length')
           h3.subtitle Dependencies
@@ -45,11 +45,11 @@
       //- bytecode
       .section
         ctrl-big-text(v-if='code' :value='code' title='Bytecode' height='10em')
-      
+
       //- Verify message
       .verify(v-if='!verification.result')
         button.btn.big.btn-brand(@click='verifyContract') Verify Contract
-              
+
 </template>
 <script>
 import SourceCode from './SourceCode'
@@ -116,12 +116,12 @@ export default {
     },
 
     libraries () {
-      return this.result.usedLibraries 
+      return this.result.usedLibraries
     },
 
     verificationData () {
       let result = this.result || {}
-      let { name: contractName, usedSettings, version } = result
+      let { name: contractName, usedSettings } = result
       let { evmVersion, optimizer: optimization } = usedSettings
       let { version: compilerVersion } = usedSettings.compiler
       return { contractName, compilerVersion, evmVersion, optimization }
@@ -156,13 +156,11 @@ export default {
   @import '../lib/styl/vars.styl'
 
   .contract-details
-
     .verify
       display block
       margin 1em
       width 100%
       text-align right
-
 
     .files
       display flex
