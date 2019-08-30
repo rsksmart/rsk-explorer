@@ -122,8 +122,10 @@ export default {
     margin 0
     padding 0
     display flex
+    flex-flow row wrap
 
     li
+      display flex
       margin 0 0 0 1em
 
     :first-child
