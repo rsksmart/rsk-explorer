@@ -51,12 +51,12 @@
             button.btn.bg-brand.white(type="button" @click='addLibrary' name="add-library")
               icon.white(name="plus")
               span Add library
-
+        //- Libraries
         template(v-for='lib in libs')
           form-row(v-bind='formFields.LIB_NAME')
-            input(type='text' v-model='lib.name')
+            input(type='text' v-model='lib.name' v-bind='formFields.LIB_NAME.input')
           form-row(v-bind='formFields.LIB_ADDRESS')
-            input(type='text' v-model='lib.address')
+            input(type='text' v-model='lib.address' v-bind='formFields.LIB_ADDRESS.input' )
         form-row
           button.brand.big(name="submit")
             span Verify

@@ -84,6 +84,7 @@ export default {
 }
 </script>
 <style lang="stylus">
+  @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
 
   .margin-less
@@ -100,6 +101,8 @@ export default {
 
   .search
     flex-flow row wrap
+    ::placeholder
+      color $graylight
 
     button
       margin 0 0.5rem 0 0
