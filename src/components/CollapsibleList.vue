@@ -16,7 +16,7 @@ import DataMixin from '../mixins/dataMixin'
 import CollapsibleContainer from './CollapsibleContainer'
 export default {
   name: 'collapsible-list',
-  props: ['data', 'type', 'header', 'emptyMsg'],
+  props: ['data', 'type', 'header', 'emptyMsg', 'field'],
   mixins: [DataMixin],
   components: {
     CollapsibleContainer
@@ -32,6 +32,9 @@ export default {
 </script>
 <style lang="stylus">
   .collapsible-list
+    display flex
+    flex 1
+    max-width 100%
     .element
       margin 0.5em
 </style>

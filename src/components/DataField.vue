@@ -90,15 +90,18 @@ export default {
 
   .data-field
     ul
+      display flex
+      flex-flow column
+      flex 1
       margin 0
       padding 0
+      li
+        break-word()
 
   .data-field, .data-field > a, .data-field > .tooltip, max-width 100%
     display flex
     position relative
-    word-wrap break-word
-    overflow-wrap break-word
-    word-break break-word
+    break-word()
     justify-content center
     align-items center
 

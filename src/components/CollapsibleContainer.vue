@@ -42,7 +42,7 @@ export default {
 
   .collapsible-container
     display flex
-    flex 1 1
+    flex 1 1 100%
     max-width 100%
     flex-flow column wrap
     border $frame-border
@@ -54,6 +54,7 @@ export default {
       link()
       flex-centered()
       justify-content space-between
+      break-word()
 
       .title
         margin 0.25em

@@ -140,6 +140,7 @@ export default {
     align-items center
     overflow visible
     padding 0.5em 0em
+    max-width 100%
 
     .field-title
       flex 1
