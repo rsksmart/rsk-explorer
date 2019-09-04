@@ -57,3 +57,11 @@ export const checkVersion = (state, getters) => test => {
   const testVersion = getters.getVersion(test)
   return version[1] === testVersion[1]
 }
+
+export const connectionEnd = state => {
+  return (!state.socketConnected) ? state.socketConnectionEnd : 0
+}
+
+export const connectionStart = state => {
+  return (state.socketConnected) ? state.socketConnectionStart : 0
+}

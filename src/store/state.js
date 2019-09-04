@@ -19,6 +19,8 @@ export default function () {
       h: 0
     },
     socketConnected: false,
+    socketConnectionStart: 0,
+    socketConnectionEnd: 0,
     socketErrors: [],
     colors,
     blocksColors,

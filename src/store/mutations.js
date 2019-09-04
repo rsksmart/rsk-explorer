@@ -1,6 +1,8 @@
 import Vue from 'vue'
-export const SOCKET_CONNECTION = (state, connection) => {
-  state.socketConnected = connection
+export const SOCKET_CONNECTION = (state, connected) => {
+  state.socketConnected = connected
+  state.socketConnectionStart = (connected) ? Date.now() : 0
+  state.socketConnectionEnd = (!connected) ? Date.now() : 0
 }
 
 export const SOCKET_ERROR = (state, error) => {
