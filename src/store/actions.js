@@ -17,7 +17,7 @@ export const setDateInterval = ({ state, commit }) => {
   if (interval) clearInterval(interval)
   interval = setInterval(() => {
     commit('SET_DATE')
-  }, 1000)
+  }, 300)
   commit('SET_DATE_INTERVAL', interval)
 }
 
