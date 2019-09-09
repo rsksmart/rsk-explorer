@@ -1,20 +1,25 @@
 # Changelog
 
-## [Unreleased]
+## [1.0.0] 2019-09-09
 
-## Added
+### Added
 
 - Contract verification form
 
-- Tab 'code' to address page that shows bytecode and Verify Button (all contracts),
-  source, ABI, bytecode for verified contracts (verified contracts)
+- Tab 'code' to address page wich shows bytecode and `Verify` button when the contract is unverified and
+  source, ABI and bytecode when the contract was verified.
 
 - Date to token transfers list
 
-## Fixed
+### Fixed
 
 - Trim of contract name
+- Unintented width overflows
 
+### Changed
+
+- Home, remove big menu
+- Connection status message
 
 ## [0.8.2] 2019-07-29
 
@@ -24,7 +29,7 @@
 
 ## [0.8.1] 2019-07-22
 
-## Added
+### Added
 
 - Tab 'Mined blocks' to address page
 
