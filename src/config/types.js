@@ -49,3 +49,10 @@ export const SORT = 'sort'
 export const Q = 'q'
 
 export const SEPARATOR = '__'
+
+export const CONNECTION_STATUS = {
+  CONNECTED: 'Connected',
+  WAITING: 'Waiting for connection',
+  LOST: 'Connection lost',
+  UNABLE: 'Cannot connect to backend'
+}
