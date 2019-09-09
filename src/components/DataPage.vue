@@ -16,7 +16,7 @@
         item-navigator(v-if='!isTable' :next='next' :prev='prev' :total='total' :regKey='dataKey()(dataType)')
 
         .tabs
-          .tabs-titles
+          .tabs-titles(v-if='page.data')
             template(v-for='tab in mainContentTabs')
               button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name,$event)'
                :class='tabTitleCss(isActiveContentTab(tab))')
@@ -29,7 +29,8 @@
         data-section(v-if='!tabs && !activeContentTab' :module='module' :dataType='dataType'
           :reqKey='reqKey' :component='component' :action='action')
         .tabs(v-if='tabs && data && !hideTabs')
-          .tabs-titles
+          //- Tabs titles
+          .tabs-titles(v-if='page.data')
             template(v-for='tab in tabs')
               template(v-if='renderTab(tab)')
                 template(v-if='isRequesting()(tab.name)')
@@ -296,6 +297,8 @@ export default {
 }
 </script>
 <style lang="stylus">
+  .data-page
+    align-self flex-start
   .page-header
     width 100%
 

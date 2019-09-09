@@ -1,5 +1,5 @@
 <template lang="pug">
-  .home
+  .home(v-if='lastBlocks.length')
     .hero
       .col-a(ref='last-blocks-box')
         .box.row.last-blocks

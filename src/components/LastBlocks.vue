@@ -1,5 +1,5 @@
 <template lang="pug">
-  .blocks-wrapper
+  .blocks-wrapper(v-show='blocks.length')
     h2.title
       router-link(:to='entity.listLink')
         icon(:name='entity.icon')
