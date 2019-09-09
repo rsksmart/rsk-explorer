@@ -8,86 +8,91 @@
     .errors(v-if='errors.length')
       .error(v-for='error in errors')
         small {{error}}
+    //- Verifier connection errors
+    .error.center(v-if='verifierConnectionErrors')
+      h3.error ERROR
+      p {{messages().VERIFIER_DATA_ERROR}}
+    template(v-else)
+      form.flex(v-if='!verificationId' @submit.prevent='submit')
+        form-row(v-bind='formFields.ADDRESS')
+          input(name="address" type= "text" :value="address" @change="changeAddress($event.target.value)" size="50")
 
-    form.flex(v-if='!verificationId' @submit.prevent='submit')
-      form-row(v-bind='formFields.ADDRESS')
-        input(name="address" type= "text" :value="address" @change="changeAddress($event.target.value)" size="50")
+          //- Form errors
+          template(v-for='[errored,error] in formErrors')
+            //-FIX--------------------------------------------------
+            template(v-if='errored')
+              p.error {{error}}
 
-        //- Form errors
-        template(v-for='[errored,error] in formErrors')
-          //-FIX--------------------------------------------------
-          template(v-if='errored')
-            p.error {{error}}
+          //-.contract(v-if='!isVerified')
+            .items(v-if='contractData')
+              .item(v-for='p,v in contractData')
+                small {{ v | camel-case-to }}: {{p}}
 
-        //-.contract(v-if='!isVerified')
-          .items(v-if='contractData')
-            .item(v-for='p,v in contractData')
-              small {{ v | camel-case-to }}: {{p}}
+        //- Verification form
+        template(v-if='isVerifiable')
+          form-row(v-bind='formFields.NAME')
+            input(name="name" type="text" :value="name" @change='changeName($event.target.value)'  :class='cssClass("name")')
+          form-row(v-bind='(hasFiles) ?formFields.FILES : formFields.SOURCE')
+            ctrl-files(:multiple='hasFiles' @change='updateFiles' @error='addError' :class='cssClass("file")' accept='.sol')
 
-      //- Verification form
-      template(v-if='isVerifiable')
-        form-row(v-bind='formFields.NAME')
-          input(name="name" type="text" :value="name" @change='changeName($event.target.value)'  :class='cssClass("name")')
-        form-row(v-bind='(hasFiles) ?formFields.FILES : formFields.SOURCE')
-          ctrl-files(:multiple='hasFiles' @change='updateFiles' @error='addError' :class='cssClass("file")' accept='.sol')
+          form-row(v-if='versionsData' v-bind='formFields.VERSION')
+            select(name='version' :value='version' @change='changeVersion($event.target.value)' :class='cssClass("version")')
+              option(v-for="path,version in versions" :value='path') {{path}}
+            ctrl-switch( :value='showAllVersions' @change='(value)=>showAllVersions=value' label='Show all versions')
 
-        form-row(v-if='versionsData' v-bind='formFields.VERSION')
-          select(v-model='version' name='version' :class='cssClass("version")')
-            option(v-for="path,version in versions" :value='path') {{path}}
-          ctrl-switch( :value='showAllVersions' @change='(value)=>showAllVersions=value' label='Show all versions')
+          form-row(v-bind='formFields.OPTIMIZATION')
+            ctrl-radio-grp.frow(name='optimization' @change='(value)=>settings.optimizer.enabled=value' :selected='settings.optimizer.enabled')
 
-        form-row(v-bind='formFields.OPTIMIZATION')
-          ctrl-radio-grp.frow(name='optimization' @change='(value)=>settings.optimizer.enabled=value' :selected='settings.optimizer.enabled')
+          form-row(v-bind='formFields.RUNS')
+            input(type='text' name='runs' v-model='settings.optimizer.runs' :disabled='!settings.optimizer.enabled')
 
-        form-row(v-bind='formFields.RUNS')
-          input(type='text' name='runs' v-model='settings.optimizer.runs' :disabled='!settings.optimizer.enabled')
+          form-row(v-bind='formFields.EVM')
+            select(v-if='evmVersions' name='evm-version' v-model='settings.evmVersion')
+              option(:value='undefined') latest
+              option(v-for='evm in evmVersions' :value='evm') {{evm}}
+          form-row(v-bind='formFields.LIBRARIES')
+            .frow
+              button.btn.bg-brand.white(type="button" @click='addLibrary' name="add-library")
+                icon.white(name="plus")
+                span Add library
+          //- Libraries
+          template(v-for='lib in libs')
+            form-row(v-bind='formFields.LIB_NAME')
+              input(type='text' v-model='lib.name' v-bind='formFields.LIB_NAME.input')
+            form-row(v-bind='formFields.LIB_ADDRESS')
+              input(type='text' v-model='lib.address' v-bind='formFields.LIB_ADDRESS.input' )
+          form-row
+            button.brand.big(name="submit")
+              span Verify
+            //-button.btn.big(name="submit" @click.passive='resetForm')
+              span Reset
 
-        form-row(v-bind='formFields.EVM')
-          select(v-if='evmVersions' name='evm-version' v-model='settings.evmVersion')
-            option(:value='undefined') latest
-            option(v-for='evm in evmVersions' :value='evm') {{evm}}
-        form-row(v-bind='formFields.LIBRARIES')
-          .frow
-            button.btn.bg-brand.white(type="button" @click='addLibrary' name="add-library")
-              icon.white(name="plus")
-              span Add library
-        //- Libraries
-        template(v-for='lib in libs')
-          form-row(v-bind='formFields.LIB_NAME')
-            input(type='text' v-model='lib.name' v-bind='formFields.LIB_NAME.input')
-          form-row(v-bind='formFields.LIB_ADDRESS')
-            input(type='text' v-model='lib.address' v-bind='formFields.LIB_ADDRESS.input' )
-        form-row
-          button.brand.big(name="submit")
-            span Verify
-          //-button.btn.big(name="submit" @click.passive='resetForm')
-            span Reset
+      //- Verification response
+      div(v-if='verifierResponse')
+        .error(v-if='verifierResponse.error')
+          p {{verifierResponse.error}}
 
-    //- Verification response
-    div(v-if='verifierResponse')
-      .error(v-if='verifierResponse.error')
-        p {{verifierResponse.error}}
+      //- Waiting for verification
+      div(v-if='isWaitingForVerification')
+        p {{messages().WAITING_VERIFICATION}}
 
-    //- Waiting for verification
-    div(v-if='isWaitingForVerification')
-      p {{messages().WAITING_VERIFICATION}}
+      //- Verification Result
+      template.errrors(v-if='verificationErrors')
+        p {{messages().VERIFICATION_ERROR}}
+        .row
+          ul.small
+            li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
 
-    //- Verification Result
-    template.errrors(v-if='verificationErrors')
-      p {{messages().VERIFICATION_ERROR}}
-      .row
-        ul.small
-          li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
+      .col(v-if='verificationDone || verificationErrors')
+        template(v-if='verificationSuccessful')
+          h3.brand {{messages().VERIFICATION_DONE}}
+          .row
+            button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
 
-    .col(v-if='verificationDone || verificationErrors')
-      template(v-if='verificationSuccessful')
-        h3.brand {{messages().VERIFICATION_DONE}}
-        a(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
-
-      template(v-else)
-        p.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
-        .try-again
-          button.big.bg-brand.white.btn.flex(@click='tryAgain') Try again
+        template(v-else)
+          p.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
+          .try-again
+            button.big.bg-brand.white.btn.flex(@click.prevent='tryAgain') Try again
 
 </template>
 <script>
@@ -158,6 +163,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['contractVerifierEnabled']),
     keys () {
       return KEYS
     },
@@ -184,9 +190,6 @@ export default {
 
     verificationSuccessful () {
       return this.verificationDone && this.verificationResultData.match === true
-    },
-    test () {
-      return Object.values(KEYS).map(key => [key, this.isRequesting()(key)])
     },
     isWaiting () {
       let requesting = Object.values(KEYS).map(key => this.isRequesting()(key)).find(v => v !== null)
@@ -242,7 +245,15 @@ export default {
       let { data } = this.getPage()(VERSIONS_KEY) || {}
       return data
     },
+    versionsDataError () {
+      let { error } = this.getPage()(VERSIONS_KEY) || {}
+      return error
+    },
+    verifierConnectionErrors () {
+      let { contractVerifierEnabled, versionsDataError } = this
 
+      return contractVerifierEnabled === false || versionsDataError
+    },
     versions () {
       let { showAllVersions, versionsData } = this
       let { builds, releases } = versionsData
@@ -314,8 +325,8 @@ export default {
       this.setKeyData([key, { data: null }])
     },
 
-    tryAgain () {
-      this.router.push({ params: { id: undefined, contractAddress: this.address } })
+    tryAgain (event) {
+      this.setVerificationId(undefined)
     },
     addLibrary () {
       let empty = this.libs.find(l => l.name === '')
@@ -339,6 +350,7 @@ export default {
       if (id === this.verificationId) return
       this.verificationId = id
       this.$router.replace({ params: { contractAddress: address, id } })
+      this.resetKeyData(KEYS.verify)
       this.resetKeyData(KEYS.verificationResult)
       if (id) this.getVerificationResult()
     },
@@ -371,7 +383,10 @@ export default {
         this.getIsVerified()
       }
     },
-
+    changeVersion (version) {
+      this.version = version
+      this.inputErrors.delete('version')
+    },
     getContract (event) {
       const { address } = this
       this.fetch({ module: 'addresses', action: 'getCode', key: KEYS.contract, params: { address } })
