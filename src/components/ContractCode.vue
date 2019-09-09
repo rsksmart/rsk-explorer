@@ -47,7 +47,7 @@
         ctrl-big-text(v-if='code' :value='code' title='Bytecode' height='10em')
 
       //- Verify message
-      .verify(v-if='!verification.result')
+      .verify(v-if='!verification.result && contractVerifierEnabled')
         button.btn.big.btn-brand(@click='verifyContract') Verify Contract
 
 </template>
@@ -57,6 +57,7 @@ import CtrlBigText from './controls/CtrlBigText'
 import CopyButton from './controls/CopyButton'
 import DownloadButton from './controls/DownloadButton'
 import { ROUTES } from '../config/types'
+import { mapGetters } from 'vuex'
 export default {
   name: 'contract-code',
   components: {
@@ -76,6 +77,7 @@ export default {
     if (first) this.selectFile(first.name)
   },
   computed: {
+    ...mapGetters(['contractVerifierEnabled']),
     verification () {
       return this.data.verification || {}
     },

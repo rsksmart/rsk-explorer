@@ -50,3 +50,8 @@ export const getTxPoolTxs = (state) => status => {
   let txs = state.txPool.txs || []
   return (status) ? txs.filter(tx => tx.status === status) : txs
 }
+
+export const contractVerifierEnabled = state => {
+  let modules = state.systemSettings.modules || {}
+  return modules.contractVerifier
+}
