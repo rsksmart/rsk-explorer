@@ -3,7 +3,8 @@
   .wrapper
     .top-page(v-if='topMsg')
       message.top-msg(:message='topMsg')
-    .header(:class='(bigMenu) ? "big-menu" : ""')
+    //-.header(:class='(bigMenu) ? "big-menu" : ""')
+    .header
       transition(name='head-trans')
         header.w-trans
           .brand(@click='goHome' @touchstart.passive='goHome')
@@ -24,11 +25,9 @@
                     router-link(:to='"/" + path')
                       icon.icon(:name='getIcon(menu)')
                       span {{menu}}
+    connection-status(v-if='!connected')
     .main
-      template(v-if='connected')
-        router-view
-      template(v-else)
-        h1 connecting to server
+      router-view
     .footer
       footer
         .logo
@@ -40,6 +39,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import ConnectionStatus from './components/ConnectionStatus.vue'
 import ToolTip from './components/ToolTip.vue'
 import SearchBox from './components/SearchBox.vue'
 import Message from './components/Message.vue'
@@ -47,6 +47,7 @@ import './icons'
 export default {
   name: 'app',
   components: {
+    ConnectionStatus,
     SearchBox,
     ToolTip,
     Message
