@@ -61,13 +61,25 @@ export const readTextFile = (file, cb, type) => {
   })
 }
 
-export const copyText = (targetNode, atrtibutes) => {
-  atrtibutes = atrtibutes || { style: 'border:none;margin:0;padding:0;background-color:inherit;opacity:0;width:1px;heigth:1px;' }
-  let value = targetNode.value
+const copyTextStyle = {
+  border: 'none',
+  margin: 0,
+  padding: 0,
+  'background-color': 'inherit',
+  opacity: 0,
+  width: '1px',
+  height: '1px'
+}
+
+export const copyText = (targetNode, attributes) => {
+  if (!targetNode) throw new Error('Invalid node')
+  let style = Object.entries(copyTextStyle).map(p => p.join(':')).join(';')
+  attributes = attributes || { style }
+  let value = targetNode.value || targetNode.innerText
   let el = targetNode.parentNode
   let ta = document.createElement('textarea')
-  for (let att in atrtibutes) {
-    ta.setAttribute(att, atrtibutes[att])
+  for (let att in attributes) {
+    ta.setAttribute(att, attributes[att])
   }
   ta.value = value
   let node = el.appendChild(ta)
@@ -77,7 +89,6 @@ export const copyText = (targetNode, atrtibutes) => {
     el.removeChild(node)
     return
   } catch (err) {
-    console.log(err)
     throw err
   }
 }

@@ -27,6 +27,7 @@ export default {
   methods: {
     copy (event) {
       copyText(this.targetNode, { class: 'hidden-ctrl' })
+      this.$emit('copy')
     }
   }
 }

@@ -31,6 +31,7 @@ export default {
       let { target, fileName, fileType } = this
       let text = (target) ? target.value : this.value
       downloadText(text, fileName, fileType)
+      this.$emit('download')
     }
   }
 }

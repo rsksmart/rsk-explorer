@@ -14,26 +14,25 @@
     slot(v-else)
       template(v-if='routerLink')
         router-link(:to='routerLink')
-          span {{value}}
-      span(v-else) {{value}}
+          span(ref='node-value') {{value}}
+      span(v-else ref='node-value') {{value}}
+      copy-button.left-button(v-if='opts.copy' :target='selectRef("node-value")' @copy='onCopy')
     .points(v-if='trimLen' :class='pointsClass')
         button(v-if='!show')
           span.icon {{ opts.trimTxt }}
-        button.copy(v-if='show  && opts.copy' @click='copyText' @touchend.stop='copyText')
-          icon(name='copy')
+        copy-button(v-if='show && opts.copy' :value='value' @copy='onCopy')
     .trim(v-if='trimed[1]')
       template(v-if='routerLink')
         router-link(:to='routerLink')
           span {{trimed[1]}}
       span(v-else) {{trimed[1]}}
+      
     //- Tooltip
     .tip(v-if='show' :class='opts.pos' :style='tipPos')
       //- value
       .value(:class=' (clicked) ? "clicked" : ""' )
-        .msg(v-if='show && opts.copyMsg' :class='(anim) ? "anim" : ""') copied!
         .copy-txt(@touchend.stop='show = !show' @click.stop='showTip()')
           .tip-txt(:class='tipClass') {{value}}
-          textarea(ref='cptxt' rows='1' :cols='value.length') {{ value }}
 </template>
 <script>
 /**
@@ -43,13 +42,15 @@
     - pos: [top | bottom | left | right], tooltip position
     - copy: [boolean], show copy button
     - trimAt: 'start' | 'end' | 'center'
-    - copyMsg: [boolean], show message when copy
     - trimTxt: '...' [string], symbol to replace trimmed text
     - forceTip: <boolean> force to show tip when not trim
  */
-import '../icons/copy'
+import CopyButton from './controls/CopyButton'
 export default {
   name: 'tool-tip',
+  components: {
+    CopyButton
+  },
   props: [
     'value',
     'trim',
@@ -73,7 +74,6 @@ export default {
         pos: 'top',
         trimAt: 'start',
         copy: true,
-        copyMsg: true,
         trimTxt: '...',
         trimMin: 2,
         trimMax: 0,
@@ -196,34 +196,24 @@ export default {
         }
       }
     },
-    copyText () {
-      let text = this.$refs.cptxt
-      text.value = this.value
-      text.select()
-      try {
-        document.execCommand('copy')
+    onCopy () {
         this.anim = true
-        text.value = ''
-        let vm = this
         // restart animation
         setTimeout(() => {
-          vm.anim = false
+          this.anim = false
         }, 600)
-      } catch (err) {
-        // eslint-disable-next-line
-        console.info('Unable to copy')
-      }
-      this.$emit('copy', this.value)
     },
     showTip (show) {
       show = (undefined === show) ? !this.show : show
       if (this.trimLen || this.opts.forceTip) this.show = show
+    },
+    selectRef (name) {
+      return this.$refs[name]
     }
   }
 }
 </script>
 <style lang="stylus">
-
   $tip-arrow-size = 5px
   $tip-bg = white
   $tip-border = 1px
@@ -260,7 +250,16 @@ export default {
 
   .tooltip
     position relative
+    display inline-flex
+    flex-flow row nowrap
+    justify-content center
+    align-items center
+    .copy-button
+      .message
+        z-index 100
 
+    .left-button
+      margin 0 0 0 .5em 
     .tip
       will-change transform opacity
       position absolute
@@ -270,6 +269,7 @@ export default {
       display flex
       justify-content flex-start // arrow on start
       animation 0.125s ease-in tooltip-anim
+      z-index 50
 
       .value
         border-radius 3px
@@ -308,38 +308,34 @@ export default {
         arrow(pos)
 
     .points
-      display inline-block
+      display inline-flex
       box-shadow none
-      margin 0 0.25em
-      line-height 0.5em
-      margin-top 0.25em
 
       button
-        height 1em
-        line-height 1em
+        height auto
         width @height
+        min-height 2em
         color @color
+        margin 0 .25em
 
-        .icon
+        .icon, .svg-icon
+          display inline-flex
           color @color
+          max-height 1em
+          min-width 1em
+          justify-content center
+          align-items center
 
     .points.left
       float left
+      justify-content flex-start
 
     .points.right
       float right
+      justify-content flex-end
 
     .copy-txt
       display inline
-
-      textarea
-        border none
-        margin 0
-        padding 0
-        background-color inherit
-        opacity 0
-        width 1px
-        heigth 1px
 
     button.close
       line-height 1em
@@ -356,15 +352,6 @@ export default {
 
   .head
     display block
-
-  .msg
-    color @color
-    position absolute
-    top -1.5em
-    left 0
-    width 100%
-    font-size 0.8em
-    opacity 0
 
   // Copy Animations
   .anim
