@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import highlightjs from 'highlight.js/lib/highlight'
 import json from 'highlight.js/lib/languages/javascript'
-import { definer as solidity } from 'highlightjs-solidity'
-
+// see: https://github.com/highlightjs/highlightjs-solidity/issues/9
+// import { definer as solidity } from 'highlightjs-solidity'
+import solidity from 'highlight.js/lib/languages/cs'
 highlightjs.registerLanguage('json', json)
 highlightjs.registerLanguage('solidity', solidity)
 
