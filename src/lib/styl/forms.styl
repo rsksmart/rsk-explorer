@@ -75,13 +75,12 @@ label + input[type='range']
 input, select
   defaultsColors()
   background $forms-ctrls-bg
-  border-style none
   border-width $border-width
-  border-color $border-color
   border-radius $border-radius
-
+  border-color $border-color
+  border-style none
   &:focus
-    focus()
+    focus($forms-ctrls-bg)
 
 input.error,select.error
   border-style solid
@@ -92,7 +91,7 @@ input[placehoder], ::-moz-placeholder, input::-moz-placeholder
 input:disabled
   color $gray
 
-input[type='radio']
+input[type='radio'], input[type='checkbox']
   cursor pointer
 
 input[type='radio'] + label, 
@@ -101,6 +100,7 @@ input[type='checkbox'] + label,
 input[type='checkbox'] + .label
    color $gray
    margin 0 0 0 .5em
+   cursor pointer
 
 input[type='radio']:checked + label, 
 input[type='radio']:checked + .label

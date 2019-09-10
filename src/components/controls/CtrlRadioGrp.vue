@@ -39,7 +39,7 @@ export default {
 </script>
 <style lang="stylus">
   @import '../../lib/styl/vars.styl'
-
+  @import '../../lib/styl/mixins.styl'
   $size = 2em
 
   radioSym($w)
@@ -93,6 +93,13 @@ export default {
         // border gray solid 1px
         box-shadow none
 
+        
+      &:focus
+        border-radius 50%
+      
+      &:checked
+        border none
+
       &:checked:before
         background $color !important
 
@@ -102,5 +109,9 @@ export default {
         background $white
         box-shadow $tip-sh
         border none
-
+      
+      &:hover:before
+        background $gray
+      &:hover:after
+        background white  
 </style>

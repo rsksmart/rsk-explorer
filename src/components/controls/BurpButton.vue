@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.burp-button(:title='title' @click.passive='click' @touchend.stop='click')
+  button.burp-button.link(:title='title' @click.passive='click' @touchend.stop='click')
     icon(v-if='icon' :name='icon')
     span(v-if='text') {{text}}
     slot
@@ -41,6 +41,8 @@ export default {
       z-index 10
       bottom 0
       opacity 0
+      width auto
+      white-space nowrap
 
     .anim
       animation-duration 0.5s
@@ -60,5 +62,5 @@ export default {
 
         100%
           opacity 0
-          transform translateY(-5em)
+          transform translateY(-6em)
 </style>

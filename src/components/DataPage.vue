@@ -18,7 +18,7 @@
         .tabs
           .tabs-titles(v-if='page.data')
             template(v-for='tab in mainContentTabs')
-              button.btn.tab-title.link(v-if='tab.name' @click='setActiveContentTab(tab.name,$event)'
+              button.btn.tab-title(v-if='tab.name' @click='setActiveContentTab(tab.name,$event)'
                :class='tabTitleCss(isActiveContentTab(tab))')
                 span.title {{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}
                 icon(v-if='tab.buttonIcon' :name='tab.buttonIcon')
@@ -34,11 +34,11 @@
             template(v-for='tab in tabs')
               template(v-if='renderTab(tab)')
                 template(v-if='isRequesting()(tab.name)')
-                  button.btn.tab-title.link
+                  button.btn.tab-title
                     loading-circle(:size='10')
                     span.title {{ getTabTitle(tab) }}
                 template(v-else)
-                  button.btn.tab-title.link(@click='setTab(tab.name,$event)' :class='tabTitleCss(isActiveTab(tab))')
+                  button.btn.tab-title(@click='setTab(tab.name,$event)' :class='tabTitleCss(isActiveTab(tab))')
                     span.title {{ getTabTitle(tab) }}
                       small.small(v-if='tabsTotals[tab.name] !== null') &nbsp; ({{ tabsTotals[tab.name] }})
 

@@ -1,7 +1,7 @@
 <template lang="pug">
   .files-ctrl
     input(type='file' @change='addFiles' :multiple='multiple' ref='filesInput' class='files-input' :accept='accept')
-    button(v-if='multiple || !files.length').btn.bg-brand.white(@click.prevent='clickFile')
+    button(v-if='multiple || !files.length').btn.brand(@click.prevent='clickFile')
       icon.white(name='document-add')
       span(v-if='buttonText') {{buttonText}}
       template(v-else)

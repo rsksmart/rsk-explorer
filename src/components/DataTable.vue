@@ -264,7 +264,7 @@ export default {
   .table-ctrls
     display flex
     justify-content flex-end
-    margin 0 1em
+    margin  1em
 
   .unsortable > .field-title
     color gray

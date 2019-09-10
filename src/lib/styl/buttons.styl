@@ -6,6 +6,17 @@ button
   color color1
   background-color transparent
   border none
+  background-clip padding-box
+  position relative
+  flex-centered()
+  // increase hit area
+  &::before
+    content ""
+    position absolute
+    top - $button-border-width
+    right - $button-border-width
+    bottom - $button-border-width
+    left - $button-border-width
 
   .arrow
     border-color color1
@@ -14,9 +25,6 @@ button
     fill color1
     width 1em
     height @width
-
-  & hover
-    color color2
 
     .arrow
       border-color color2
@@ -39,6 +47,7 @@ button.icon
   box-shadow 1px 1px 1px rgba(0, 0, 0, 0.5)
   margin 0 0.25em
   font-weight bold
+  buttonColors($color,$bg-odd)
 
 button.big
   font-size 1em
@@ -68,15 +77,7 @@ button.menu
 
 button.circle
   border-radius 50%
-  border $border
-  padding 0.4em
 
-  .svg-icon
-    width 1.5em
-    height 1.5em
-
-  & hover
-    border-color color2
 
 .btn.badge, .w-badge
   position relative
@@ -120,12 +121,7 @@ button.link
   link()
 
 button.brand, .btn-brand
-  background $color
-  color white
-  svg
-    fill @color
-  span 
-    font-weight bold
+  buttonColors($white,$color)
 button.switch
   display inline-flex
   color $gray
@@ -134,9 +130,13 @@ button.switch
   margin 0.125em
   border-radius 0.125em
   box-shadow $hard-sh
+  svg
+    fill $gray
 
   &:disabled
     color $midlight
+    svg
+      fill $midlight
 
 button
   .svg-icon+span

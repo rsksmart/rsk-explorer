@@ -52,7 +52,7 @@
               option(v-for='evm in evmVersions' :value='evm') {{evm}}
           form-row(v-bind='formFields.LIBRARIES')
             .frow
-              button.btn.bg-brand.white(type="button" @click='addLibrary' name="add-library")
+              button.btn.brand(type="button" @click='addLibrary' name="add-library")
                 icon.white(name="plus")
                 span Add library
           //- Libraries
@@ -92,7 +92,7 @@
         template(v-else)
           p.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
           .try-again
-            button.big.bg-brand.white.btn.flex(@click.prevent='tryAgain') Try again
+            button.big.brand.btn.flex(@click.prevent='tryAgain') Try again
 
 </template>
 <script>
