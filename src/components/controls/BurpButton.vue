@@ -36,6 +36,10 @@ export default {
     justify-content center
     align-items center
 
+    .svg-icon,.icon
+      width 1.25em
+      height @width
+
     .message
       position absolute
       z-index 10

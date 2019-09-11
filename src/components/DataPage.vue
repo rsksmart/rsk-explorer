@@ -12,7 +12,6 @@
         message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data')
       //- Header
       .page-header(v-if='mainContent')
-
         item-navigator(v-if='!isTable' :next='next' :prev='prev' :total='total' :regKey='dataKey()(dataType)')
 
         .tabs
@@ -22,6 +21,7 @@
                :class='tabTitleCss(isActiveContentTab(tab))')
                 span.title {{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}
                 icon(v-if='tab.buttonIcon' :name='tab.buttonIcon')
+            export-controls(v-if='data' :data='page.data' :type='dataType')
         data-section( v-if='activeContentTab'
           :component='activeContentTab.component' :reqKey='reqKey' :module='module'
           :dataType='activeContentTab.dataType || dataType' :action='action')
@@ -58,6 +58,7 @@ import DataSection from './DataSection'
 import ErrorPage from './ErrorPage'
 import Message from './Message'
 import ItemNavigator from './ItemNavigator'
+import ExportControls from './ExportControls'
 import common from '../mixins/common'
 export default {
   name: 'data-page',
@@ -67,7 +68,8 @@ export default {
     ErrorPage,
     Message,
     LoadingCircle,
-    ItemNavigator
+    ItemNavigator,
+    ExportControls
   },
   mixins: [
     common
@@ -299,6 +301,7 @@ export default {
 <style lang="stylus">
   .data-page
     align-self flex-start
+
   .page-header
     width 100%
 
