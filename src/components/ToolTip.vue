@@ -26,7 +26,7 @@
         router-link(:to='routerLink')
           span {{trimed[1]}}
       span(v-else) {{trimed[1]}}
-      
+
     //- Tooltip
     .tip(v-if='show' :class='opts.pos' :style='tipPos')
       //- value
@@ -197,11 +197,11 @@ export default {
       }
     },
     onCopy () {
-        this.anim = true
-        // restart animation
-        setTimeout(() => {
-          this.anim = false
-        }, 600)
+      this.anim = true
+      // restart animation
+      setTimeout(() => {
+        this.anim = false
+      }, 600)
     },
     showTip (show) {
       show = (undefined === show) ? !this.show : show
@@ -259,7 +259,7 @@ export default {
         z-index 100
 
     .left-button
-      margin 0 0 0 .5em 
+      margin 0 0 0 .5em
     .tip
       will-change transform opacity
       position absolute

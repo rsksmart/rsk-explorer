@@ -1,20 +1,32 @@
 # Changelog
 
+## [1.0.1] 2019-09-12
+
+### Added
+
+- 'Copy' button for all large files, even when they aren't trimmed.
+- 'Copy & Download' buttons in all views that exports json data.
+
+### Fixed
+
+- Firefox render
+- 'Try again' action on verify contract form
+
 ## [1.0.0] 2019-09-09
 
 ### Added
 
 - Contract verification form
 
-- Tab 'code' to address page wich shows bytecode and `Verify` button when the contract is unverified and
-  source, ABI and bytecode when the contract was verified.
+- Tab 'code' to address page which shows the **contract bytecode** and **'Verify'** button when the contract is unverified
+  and **source**, **ABI** and **bytecode** when the contract was verified.
 
 - Date to token transfers list
 
 ### Fixed
 
 - Trim of contract name
-- Unintented width overflows
+- Unintended width overflows
 
 ### Changed
 
@@ -55,9 +67,9 @@
 
 ### Added
 
-- Entitites/events, remasc events formatter.
+- Entities/events, remasc events formatter.
 - Entities/tokenTransfers
-- Tranfers tab to token account page 
+- Transfers tab to token account page
 - Token Transfers tab to address page
 
 ### Fixed
@@ -70,7 +82,7 @@
 ### Fixed
 
 - Sorts and queries in tabs (see #77)
-- Searchbox, stoped propagation of keyup events
+- Searchbox, stopped propagation of keyup events
 - EventId in event and transaction entities
 
 ## [0.7.0] - 2019-02-21

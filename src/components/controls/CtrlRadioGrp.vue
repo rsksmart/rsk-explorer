@@ -93,10 +93,9 @@ export default {
         // border gray solid 1px
         box-shadow none
 
-        
       &:focus
         border-radius 50%
-      
+
       &:checked
         border none
 
@@ -109,9 +108,9 @@ export default {
         background $white
         box-shadow $tip-sh
         border none
-      
+
       &:hover:before
         background $gray
       &:hover:after
-        background white  
+        background white
 </style>
