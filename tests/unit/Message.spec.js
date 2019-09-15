@@ -10,7 +10,7 @@ localVue.use(Vuex)
 
 describe('Message.vue', () => {
   it('renders props.message when passed', () => {
-    const message = { txt: 'test messsage' }
+    const message = { txt: 'test message' }
     const wrapper = shallowMount(Message, {
       store,
       localVue,
