@@ -25,22 +25,12 @@
         //- Libraries
         template(v-if='libraries')
           h3.subtitle External Libraries
-          .data-item
-            .items.small
-              .item(v-for='address,name,key in libraries' :class='(key %2) ? "odd": "even"')
-                .field-title {{name}}
-                .data-field
-                  button.link(@click.passive='goTo(addressLink(address))')
-                    span {{address}}
+          data-item(type='externalLibraries' :data='libraries')
 
         //- Compilation settings
         template(v-if='verificationData')
          h3.subtitle Compilation settings
-        .data-item
-          .items.small
-            .item(v-for='value,name,key in verificationData' :class='(key %2) ? "odd": "even"')
-              .field-title {{ name | camel-case-to }}
-              .data-field(v-if='value') {{  value }}
+        data-item(:data='verificationData' type='compilationSettings')
 
       //- bytecode
       .section
@@ -56,6 +46,7 @@ import SourceCode from './SourceCode'
 import CtrlBigText from './controls/CtrlBigText'
 import CopyButton from './controls/CopyButton'
 import DownloadButton from './controls/DownloadButton'
+import DataItem from './DataItem'
 import { ROUTES } from '../config/types'
 import { mapGetters } from 'vuex'
 export default {
@@ -64,7 +55,8 @@ export default {
     SourceCode,
     CtrlBigText,
     CopyButton,
-    DownloadButton
+    DownloadButton,
+    DataItem
   },
   props: ['data'],
   data () {
@@ -144,12 +136,6 @@ export default {
 
     selectFile (fileName) {
       this.fileSelected = fileName
-    },
-    addressLink (address) {
-      return `/${ROUTES.address}/${address}`
-    },
-    goTo (link) {
-      this.$router.push(link)
     }
   }
 }
