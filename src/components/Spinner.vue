@@ -30,24 +30,33 @@ export default {
       limit: 0,
       show: false,
       interval: null,
-      startTime: 0
+      frameDuration: 0,
+      startTime: 0,
+      prevFrame: undefined
     }
   },
   created () {
-    let mod = this.mod
+    let { mod, speed } = this
     this.limit = mod * mod * mod
-    let vm = this
-    this.interval = setInterval(vm.animate, mod * this.speed)
+    this.frameDuration = mod * speed
+    this.prevFrame = Date.now()
+    this.nextFrame()
   },
   mounted () {
     this.startTime = Date.now()
   },
   beforeDestroy () {
-    clearInterval(this.interval)
+    cancelAnimationFrame(this.interval)
   },
   methods: {
+    nextFrame () {
+      this.interval = requestAnimationFrame(this.animate)
+    },
     animate () {
       let date = Date.now()
+      let { prevFrame, frameDuration } = this
+      let elapsed = date - prevFrame
+      if (elapsed < frameDuration) return this.nextFrame()
       this.show = (date - this.startTime >= this.delay)
       let step = this.step
       if (step < this.limit) {
@@ -61,6 +70,8 @@ export default {
         step++
       }
       this.step = step
+      this.prevFrame = date
+      this.nextFrame()
     }
   }
 }

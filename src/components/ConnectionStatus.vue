@@ -24,7 +24,6 @@ export default {
   },
   data () {
     return {
-      interval: undefined,
       startTime: 0,
       watcher: undefined
     }

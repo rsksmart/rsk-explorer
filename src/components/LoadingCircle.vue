@@ -24,14 +24,13 @@ export default {
     }
   },
   created () {
-    let vm = this
-    this.interval = setInterval(vm.animate, 100)
+    this.nextFrame()
   },
   mounted () {
     this.setStartTime()
   },
   beforeDestroy () {
-    clearInterval(this.interval)
+    cancelAnimationFrame(this.interval)
   },
   computed: {
     s () {
@@ -75,11 +74,15 @@ export default {
     setStartTime () {
       this.startTime = Date.now()
     },
+    nextFrame () {
+      this.interval = requestAnimationFrame(this.animate)
+    },
     animate () {
       let time = Date.now() - this.startTime
       let duration = this.duration
       this.percent = parseInt((time * 100) / duration)
       if (this.percent > 99) this.setStartTime()
+      this.nextFrame()
     }
   }
 }

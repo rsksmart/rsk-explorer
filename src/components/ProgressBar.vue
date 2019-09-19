@@ -27,14 +27,10 @@ export default {
     }
   },
   created () {
-    let vm = this
-    this.interval = setInterval(vm.animate, 500)
-  },
-  mounted () {
-    this.setStartTime()
+    this.interval = requestAnimationFrame(this.animate)
   },
   beforeDestroy () {
-    clearInterval(this.interval)
+    this.removeInterval()
   },
   computed: {
     barWidth () {
@@ -42,14 +38,15 @@ export default {
     }
   },
   methods: {
-    setStartTime () {
-      this.startTime = Date.now()
-    },
     animate () {
+      if (!this.startTime) this.startTime = Date.now()
       let time = Date.now() - this.startTime
       let duration = this.duration
       this.percent = parseInt((time * 100) / duration)
-      if (this.percent > 99) this.setStartTime()
+      if (this.percent < 100) this.interval = requestAnimationFrame(this.animate)
+    },
+    removeInterval () {
+      cancelAnimationFrame(this.interval)
     }
   }
 }
@@ -59,6 +56,7 @@ export default {
 
   .progress-bar
     margin-left 1em
+
     rect
       fill green
 </style>

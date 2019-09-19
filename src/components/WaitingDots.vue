@@ -31,10 +31,10 @@ export default {
     }
   },
   created () {
-    this.interval = setInterval(() => this.tick(), 50)
+    this.nextFrame()
   },
   beforeDestroy () {
-    clearInterval(this.interval)
+    cancelAnimationFrame(this.interval)
   },
   computed: {
     space () {
@@ -50,6 +50,9 @@ export default {
     }
   },
   methods: {
+    nextFrame () {
+      this.interval = requestAnimationFrame(this.tick)
+    },
     tick () {
       let { lastTick, drawDots } = this
       let time = Date.now()
@@ -58,6 +61,7 @@ export default {
         this.lastTick = time
         this.animate()
       }
+      this.nextFrame()
     },
     animate () {
       let { drawDots, dots } = this
