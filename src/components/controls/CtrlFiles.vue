@@ -29,6 +29,9 @@ export default {
       type: Boolean,
       default: false
     },
+    loadFiles: {
+      type: Array
+    },
     accept: {
       type: String
     },
@@ -40,6 +43,12 @@ export default {
     return {
       files: [],
       errors: []
+    }
+  },
+  created () {
+    let { loadFiles } = this
+    if (loadFiles) {
+      this.files = [...loadFiles]
     }
   },
   methods: {
@@ -92,8 +101,10 @@ export default {
   .files-ctrl
     box-sizing content-box
     min-width 100%
+
     .files-input
       display none
+
   ul.files
     list-style none
     padding 0
@@ -102,18 +113,19 @@ export default {
     margin 1em 0 0 0
 
     li.file
-      font-size .85em
+      font-size 0.85em
       display flex
       flex 1
       display flex
       flex-flow row nowrap
       align-items center
-      margin 0 .5em
+      margin 0 0.5em
+
       button
         vertical-align middle
         height auto
-        margin 0 .5em
-      .file-name
-        margin 0 0 0 .5em
+        margin 0 0.5em
 
+      .file-name
+        margin 0 0 0 0.5em
 </style>

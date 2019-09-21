@@ -32,9 +32,8 @@
         template(v-if='isVerifiable')
           form-row(v-bind='formFields.NAME')
             input(name="name" type="text" :value="name" @change='changeName($event.target.value)'  :class='cssClass("name")')
-          form-row(v-bind='(hasFiles) ?formFields.FILES : formFields.SOURCE')
-            ctrl-files(:multiple='hasFiles' @change='updateFiles' @error='addError' :class='cssClass("file")' accept='.sol')
-
+          form-row(v-bind='(hasFiles) ? formFields.FILES : formFields.SOURCE')
+            ctrl-files(:multiple='hasFiles' @change='updateFiles' @error='addError' :load-files='files' :class='cssClass("file")' accept='.sol')
           form-row(v-if='versionsData' v-bind='formFields.VERSION')
             select(name='version' :value='version' @change='changeVersion($event.target.value)' :class='cssClass("version")')
               option(v-for="path,version in versions" :value='path') {{path}}
