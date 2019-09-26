@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2] 2019-09-26
+
+### Changed
+
+- Display block.minimumGasPrice in Gwei
+- Contract verification form: remember uploaded files when the 'try again' action is called.
+
 ## [1.0.1] 2019-09-12
 
 ### Added
