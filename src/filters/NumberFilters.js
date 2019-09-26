@@ -47,6 +47,10 @@ export const wei = Vue.filter('wei', (value) => {
   return locale(value) + 'wei'
 })
 
+export const gwei = Vue.filter('gwei', (value) => {
+  return value + ' Gwei'
+})
+
 export const rbtc = Vue.filter('rbtc', (value) => {
   return value + ' RBTC'
 })

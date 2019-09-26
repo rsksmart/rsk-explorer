@@ -192,8 +192,7 @@ export const Tx = () => {
     },
     gasPrice: {
       field: 'gasPrice',
-      filters: ['tx-gas-price', 'rbtc'],
-      default: 0
+      type: 'gasPrice'
     },
     contractAddress: {
       field: 'receipt.contractAddress',

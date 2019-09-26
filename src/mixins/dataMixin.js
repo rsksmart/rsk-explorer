@@ -215,9 +215,11 @@ export default {
       value = filteredValue || value
       field = field || {}
       value = value || ''
-      if (field.trim === 0) return 0
+      let { trim } = field
+      if (trim === 'forced-auto') return 'auto'
+      if (trim === 0) return 0
       if (String(value.length) > this.trimIf) {
-        return field.trim || this.defaultTrim
+        return trim || this.defaultTrim
       }
     }
   }

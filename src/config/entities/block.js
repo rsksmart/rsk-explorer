@@ -67,7 +67,11 @@ const Block = () => {
       type: 'gas',
       default: 0
     },
-    minimumGasPrice: null,
+    minimumGasPrice: {
+      filters: ['m-gas-price', 'gwei'],
+      default: 0,
+      trim: 'forced-auto'
+    },
     extraData: null
   })
   block.itemTitle = true

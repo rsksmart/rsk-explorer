@@ -50,6 +50,11 @@ export default {
   gas: {
     filters: ['locale']
   },
+  gasPrice: {
+    filters: ['tx-gas-price', 'rbtc'],
+    trim: 'auto',
+    default: 0
+  },
   address: {
     link: (data, value) => (!isAddress(value)) ? null : `/${r.address}/${value}`
   },

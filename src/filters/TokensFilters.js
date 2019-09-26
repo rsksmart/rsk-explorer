@@ -35,7 +35,11 @@ export const txValue = Vue.filter('tx-value', value => {
   return (value) ? etherUnits.toEther(value, 'wei') : 0
 })
 
-export const txGasPrice = Vue.filter('tx-gas-price', value => {
+export const txGasPrice = Vue.filter('tx-gas-price', (value, unit = 'wei') => {
   value = newBigNumber(value)
-  return (value) ? etherUnits.toEther(value, 'wei') : 0
+  return (value) ? etherUnits.toEther(value, unit) : 0
+})
+
+export const mGasPrice = Vue.filter('m-gas-price', (value, unit = 'gwei') => {
+  return txGasPrice(value, unit)
 })
