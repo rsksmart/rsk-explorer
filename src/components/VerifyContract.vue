@@ -67,7 +67,7 @@
               span Reset
 
       //- Verification response
-      div(v-if='verifierResponse')
+      //-div(v-if='verifierResponse')
         .error(v-if='verifierResponse.error')
           p {{verifierResponse.error}}
 
@@ -136,7 +136,6 @@ export default {
       name: undefined,
       verificationId: undefined,
       files: [],
-      source: undefined,
       showAllVersions: false,
       settings: {
         optimizer: {
@@ -250,8 +249,8 @@ export default {
     },
     verifierConnectionErrors () {
       let { contractVerifierEnabled, versionsDataError } = this
-
-      return contractVerifierEnabled === false || versionsDataError
+      let { verifierResponse } = this
+      return contractVerifierEnabled === false || versionsDataError || verifierResponse.error
     },
     versions () {
       let { showAllVersions, versionsData } = this
@@ -444,7 +443,7 @@ export default {
     goToContractPage () {
       let { address } = this
       let path = `/${ROUTES.address}/${address}`
-      let query = { '__ctab': 'Code' }
+      let query = { '__ctab': 'code' }
       this.$router.push({ path, query })
     }
   }
