@@ -28,7 +28,7 @@ export default {
 
   .event-call
     margin 0
-
+    display flex
     .index
       font-size .8em
 
@@ -40,15 +40,15 @@ export default {
       raw()
       font-size .9em
       list-style none
-      display flex
-      flex-flow row
       align-items flex-end
       font-style italic
       font-weight normal
       margin 0
       padding 0
+      flex-flow row wrap
       li
         color gray
+
 
     ul,li
       margin 0 0.25em 0 0

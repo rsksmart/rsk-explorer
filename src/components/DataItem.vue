@@ -120,6 +120,7 @@ export default {
         flex 1
         margin 0 1em 0 2em
         justify-content flex-start
+        align-self flex-start
 
       .data-field
         margin 0 2em 0 0em !important

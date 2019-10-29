@@ -5,7 +5,7 @@
     template(v-else)
       //- arrays (uncomplete)
       template(v-if='filteredType === "array"')
-        ul
+        ul.array
           li(v-for='v in value') {{v}}
       template(v-else-if='filteredType === "object"')
         ul
@@ -26,7 +26,7 @@
 <script>
 import common from '../mixins/common'
 import dataMixin from '../mixins/dataMixin'
-import { getType } from '../lib/js/utils'
+import { getType} from '../lib/js/utils'
 import ProgressBar from './ProgressBar'
 export default {
   name: 'data-field',
@@ -95,8 +95,13 @@ export default {
       flex 1
       margin 0
       padding 0
+
       li
         break-word()
+
+    ul.array
+      font-size 0.9em
+      list-style none
 
   .data-field, .data-field > a, .data-field > .tooltip, max-width 100%
     display flex
