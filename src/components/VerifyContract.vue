@@ -406,9 +406,9 @@ export default {
       this.inputErrors.delete('file')
     },
     buildsList (builds) {
-      return builds.reduce((v, a, i) => {
-        let { version, longVersion } = a
-        v[version] = longVersion
+      return builds.concat().reverse().reduce((v, a, i) => {
+        let { longVersion } = a
+        v[longVersion] = longVersion
         return v
       }, {})
     },
