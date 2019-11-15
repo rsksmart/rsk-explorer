@@ -2,7 +2,7 @@
   "name": "rsk-explorer",
   "version": "1.0.2",
   "description": "Rsk explorer client",
-  "author": "emilio <emiliorizzo@gmail.com>",
+  "author": "emi <emiliorizzo@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
-    "@vue/cli-plugin-e2e-cypress": "^3.9.0",
+    "@vue/cli-plugin-e2e-cypress": "^4.0.5",
     "@vue/cli-plugin-eslint": "^3.5.0",
     "@vue/cli-plugin-unit-mocha": "^3.5.0",
     "@vue/cli-service": "^3.6.0",
