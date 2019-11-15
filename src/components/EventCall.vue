@@ -49,7 +49,6 @@ export default {
       li
         color gray
 
-
     ul,li
       margin 0 0.25em 0 0
       display flex

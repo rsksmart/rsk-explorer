@@ -112,8 +112,7 @@ export const getEventConfigBySignature = signature => {
 export const getEventAbiFields = event => {
   let inputs = getEventInputs(event)
   return inputs.reduce((v, a, i) => {
-    let name = a.name
-    let type = a.type
+    let { type, name } = a
     let trim = (type === 'address') ? 'auto' : 0
     let field = ['_arguments', name]
     v[name] = { type, field, trim }

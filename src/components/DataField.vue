@@ -26,7 +26,7 @@
 <script>
 import common from '../mixins/common'
 import dataMixin from '../mixins/dataMixin'
-import { getType} from '../lib/js/utils'
+import { getType } from '../lib/js/utils'
 import ProgressBar from './ProgressBar'
 export default {
   name: 'data-field',
