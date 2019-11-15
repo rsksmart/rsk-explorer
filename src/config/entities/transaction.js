@@ -18,10 +18,12 @@ const transactionFormatFields = (fields, data, parentData) => {
 }
 
 const transactionFee = tx => {
-  if (tx._receipt) {
-    const gas = new BigNumber(tx._receipt.gasUsed)
+  const { receipt } = tx
+  if (receipt) {
+    const gas = new BigNumber(receipt.gasUsed)
     const gasPrice = txGasPrice(tx.gasPrice)
-    return gas.multipliedBy(gasPrice).toString()
+    const fee = gas.multipliedBy(gasPrice).toString()
+    return fee
   }
 }
 
