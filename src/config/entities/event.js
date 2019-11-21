@@ -24,14 +24,14 @@ export const eventFormatRow = (event, parentData) => {
 
 export const Events = () => {
   return {
-    key: '_id',
+    key: 'eventId',
     icon: 'zap',
     link: `/${r.event}/`,
     formatRow: eventFormatRow,
     fields: {
       event: {
         field: 'event',
-        link: (data, value) => `/${r.event}/${data._id}`,
+        link: (data, value) => `/${r.event}/${data.eventId}`,
         default: NOT_AVAILABLE
       },
       address: {
@@ -53,10 +53,6 @@ export const Events = () => {
 export const EventFields = () => {
   let event = Events()
   let fields = Object.assign({
-    _id: {
-      type: 'eventId',
-      hideIfEmpty: true
-    },
     eventId: {
       type: 'eventId',
       hideIfEmpty: true
@@ -131,7 +127,7 @@ export const EventData = () => {
   let { transaction, blockNumber } = eventFields
   let txLogFields = TxLogItem().fields
   txLogFields.logIndex.link = () => { }
-  txLogFields.eventId.field = '_id'
+  txLogFields.eventId.field = 'eventId'
   let fields = Object.assign(txLogFields, { transaction, blockNumber })
   return { formatRow, fields }
 }
@@ -156,7 +152,7 @@ export const TransferEvents = () => {
       let event = eventData._arguments
       const { _addressData, address } = data
       if (!event) return
-      event._id = eventData._id
+      event.eventId = eventData.eventId
       event.event = eventData.event
       event.address = address
       event.timestamp = eventData.timestamp
