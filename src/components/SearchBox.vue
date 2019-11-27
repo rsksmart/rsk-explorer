@@ -19,8 +19,7 @@
           small.soft {{ msg }}
 </template>
 <script>
-import * as ethUtils from '../lib/js/ethUtils'
-import { normalizeSearch } from '../lib/js/utils'
+import { normalizeSearch, isAddress, isTxHash } from '../lib/js/utils'
 import { mapState } from 'vuex'
 import { ROUTES as r } from '../config/types'
 export default {
@@ -64,8 +63,8 @@ export default {
         value = String(value).replace(/[\W_]+/g, '')
 
         let tests = {
-          address: (ethUtils.isAddress(value)) ? `/${r.address}/` : null,
-          tx: (ethUtils.isTx(value)) ? `/${r.transaction}/` : null,
+          address: (isAddress(value)) ? `/${r.address}/` : null,
+          tx: (isTxHash(value)) ? `/${r.transaction}/` : null,
           block: (this.isBlock(value)) ? `/${r.block}/` : null
         }
         let links = Object.values(tests).filter(l => l)
@@ -101,6 +100,7 @@ export default {
 
   .search
     flex-flow row wrap
+
     ::placeholder
       color $graylight
 
@@ -113,7 +113,7 @@ export default {
       padding 0
       background none
       border-style solid
-      font-size .75em
+      font-size 0.75em
 
   .msg-trans
     will-change opacity

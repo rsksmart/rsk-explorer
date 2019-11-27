@@ -1,13 +1,11 @@
+import { add0x, isHexString } from 'rsk-utils/dist/strings'
+import { isAddress } from 'rsk-utils/dist/addresses'
+
+export { add0x, isHexString, isAddress }
+
 export const getType = (obj) => {
   return {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase()
 }
-
-export const isHexString = str => {
-  str = (str.substring(0, 2) === '0x') ? str.substring(2) : str
-  return /^[0-9a-f]+$/i.test(str)
-}
-
-export const add0x = str => (isHexString(str) && str.substring(0, 2) !== '0x') ? `0x${str}` : str
 
 export const normalizeSearch = value => {
   value = String(value).toLowerCase()
@@ -33,3 +31,7 @@ export const ObjectIdToDate = id => {
 }
 
 export const ObjectIdSecondsElapsed = id => (Date.now() - ObjectIdToDate(id)) / 1000
+
+export const isTxHash = str => {
+  return (/^(0x)?[0-9a-f]{64}$/.test(str) || /^(0x)?[0-9A-F]{64}$/.test(str))
+}

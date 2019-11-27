@@ -3,7 +3,7 @@ import {
   CONTRACT_UNKNOWN_NAME,
   NOT_AVAILABLE
 } from '../../types'
-import { isAddress } from '../../../lib/js/ethUtils'
+import { isAddress } from '../../../lib/js/utils'
 
 export default {
   block: {

@@ -11,7 +11,7 @@ import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
 import { round } from '../../filters/NumberFilters'
 import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
-import { isAddress } from '../../lib/js/ethUtils'
+import { isAddress } from '../../lib/js/utils'
 
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
