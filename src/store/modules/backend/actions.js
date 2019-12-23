@@ -4,6 +4,7 @@ export const init = ({ commit, dispatch }, data) => {
     commit('SET_SYSTEM_SETTINGS', data.settings)
   }
   dispatch('subscribe', 'blocks')
+  dispatch('subscribe', 'transactions')
   dispatch('subscribe', 'status')
   dispatch('subscribe', 'txpool')
 }
@@ -17,29 +18,24 @@ export const subscribe = ({ commit }, to) => {
   commit('SOCKET_EMIT', { event, data: { to } })
 }
 
-export const socketNewBlocks = ({ state, commit, getters }, data) => {
+export const socketNewTransactions = ({ state, commit, getters }, result) => {
+  let transactions = result.data || []
   let autoUpdate = getters.autoUpdate
-  if (data) {
-    let blocks = data.blocks
-    let transactions = data.transactions
-    if (!state.lastBlocksTime) commit('LAST_BLOCKS_TIME')
-    commit('LAST_BLOCKS', blocks)
-    commit('LAST_TRANSACTIONS', transactions)
-    if (!state.blocks.length || autoUpdate) {
-      commit('SET_BLOCKS', blocks.slice())
-      commit('SET_TRANSACTIONS', transactions.slice())
-    }
-    if (!autoUpdate) commit('SET_PENDING_BLOCKS', blocks)
+  commit('LAST_TRANSACTIONS', transactions)
+  if (!state.transactions.length || autoUpdate) {
+    commit('SET_TRANSACTIONS', transactions.slice())
   }
 }
 
-export const socketBlocks = ({ commit, dispatch }, data) => {
-  commit('SET_BLOCKS', data)
-  dispatch('setDateInterval')
-}
-
-export const socketTransactions = ({ commit }, data) => {
-  commit('SET_TRANSACTIONS', data)
+export const socketNewBlocks = ({ state, commit, getters }, result) => {
+  let blocks = result.data || []
+  let autoUpdate = getters.autoUpdate
+  commit('LAST_BLOCKS', blocks)
+  if (!state.lastBlocksTime) commit('LAST_BLOCKS_TIME')
+  if (!state.blocks.length || autoUpdate) {
+    commit('SET_BLOCKS', blocks.slice())
+  }
+  if (!autoUpdate) commit('SET_PENDING_BLOCKS', blocks)
 }
 
 export const socketData = ({ state, commit, dispatch }, res) => {
