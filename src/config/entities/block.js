@@ -72,6 +72,18 @@ const Block = () => {
       default: 0,
       trim: 'forced-auto'
     },
+    time: {
+      field: '_metadata.time',
+      suffix: 's'
+    },
+    txDensity: {
+      field: '_metadata.txDensity',
+      filters: ['tx-density', 'txs-s']
+    },
+    hashRate: {
+      field: '_metadata.hashrate',
+      filters: ['big-number', 'Hs']
+    },
     extraData: null
   })
   block.itemTitle = true
