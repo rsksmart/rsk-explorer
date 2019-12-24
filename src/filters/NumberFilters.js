@@ -68,9 +68,11 @@ export const count = Vue.filter('count', (value) => {
   return value.length || 0
 })
 
-export const txDensity = Vue.filter('tx-density', (value, decimals = 2) => {
+export const getTxDensity = (value, decimals = 2) => {
   value = round(value, decimals)
   return value
-})
+}
 
-export const txsS = Vue.filter('txs-s', (value) => `${value} txs/s`) 
+export const txDensity = Vue.filter('tx-density', getTxDensity)
+
+export const txsS = Vue.filter('txs-s', (value) => `${value} txs/s`)

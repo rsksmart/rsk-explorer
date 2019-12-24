@@ -91,5 +91,20 @@ export default {
     hideTitle: true,
     link: `/${r.event}/`,
     trim: 'auto'
+  },
+  txDensity: {
+    icon: 'server',
+    titleIcon: true,
+    hideTitle: true,
+    filters: ['tx-density', 'txs-s']
+  },
+  hashrate: {
+    icon: 'flame',
+    titleIcon: true,
+    hideTitle: true,
+    filters: ['big-number', 'Hs']
+  },
+  rbtcBalance: {
+    filters: ['round', 'rbtc']
   }
 }
