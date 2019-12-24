@@ -105,6 +105,6 @@ export default {
     filters: ['big-number', 'Hs']
   },
   rbtcBalance: {
-    filters: ['round', 'rbtc']
+    filters: ['round', 'locale', 'rbtc']
   }
 }

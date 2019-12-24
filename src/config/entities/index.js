@@ -30,6 +30,7 @@ import { tokenAccount, tokenAccounts, tokenByAddress } from './tokenAccount'
 import { event, events, eventData, transferEvents } from './event'
 import { txPool } from './txPool'
 import { compilationSettings, externalLibraries } from './verifiedContracts'
+import { stats } from './stats'
 
 export default {
   block,
@@ -54,5 +55,6 @@ export default {
   txTransferEvents,
   transferEvents,
   compilationSettings,
-  externalLibraries
+  externalLibraries,
+  stats
 }
