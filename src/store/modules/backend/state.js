@@ -23,6 +23,7 @@ export default function () {
       txs: [],
       timestamp: 0
     },
-    txPoolChart: []
+    txPoolChart: [],
+    stats: {}
   }
 }

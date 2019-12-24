@@ -80,3 +80,7 @@ export const SET_TX_POOL = (state, data) => {
 export const SET_TX_POOL_CHART = (state, data) => {
   Vue.set(state, 'txPoolChart', data)
 }
+
+export const SET_STATS = (state, data) => {
+  Vue.set(state, 'stats', data)
+}

@@ -7,6 +7,7 @@ export const init = ({ commit, dispatch }, data) => {
   dispatch('subscribe', 'transactions')
   dispatch('subscribe', 'status')
   dispatch('subscribe', 'txpool')
+  dispatch('subscribe', 'stats')
 }
 
 export const connectionUpdate = ({ commit }, connected) => {
@@ -18,6 +19,7 @@ export const subscribe = ({ commit }, to) => {
   commit('SOCKET_EMIT', { event, data: { to } })
 }
 
+// handle newTransactions from transactions channel
 export const socketNewTransactions = ({ state, commit, getters }, result) => {
   let transactions = result.data || []
   let autoUpdate = getters.autoUpdate
@@ -26,7 +28,7 @@ export const socketNewTransactions = ({ state, commit, getters }, result) => {
     commit('SET_TRANSACTIONS', transactions.slice())
   }
 }
-
+// handle newBlocks from blocks channel
 export const socketNewBlocks = ({ state, commit, getters }, result) => {
   let blocks = result.data || []
   let autoUpdate = getters.autoUpdate
@@ -88,6 +90,7 @@ export const socketData = ({ state, commit, dispatch }, res) => {
   }
 }
 
+// handle status from status channel
 export const socketDbStatus = ({ state, commit }, data) => {
   commit('SET_DB_STATUS', data)
 }
@@ -115,10 +118,12 @@ export const fetchData = ({ state, commit, getters }, req) => {
   return req
 }
 
+// handle txPool from txPool channel
 export const socketTxPool = ({ commit }, data) => {
   commit('SET_TX_POOL', data)
 }
 
+// handle txPoolChart from txPool channell
 export const socketTxPoolChart = ({ commit }, data) => {
   commit('SET_TX_POOL_CHART', data)
 }
@@ -139,4 +144,9 @@ const responseObject = (res = {}) => {
     v[a] = null
     return v
   }, {})
+}
+
+// handle newStats from stats channell
+export const socketStats = ({ commit }, msg) => {
+  commit('SET_STATS', msg)
 }
