@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Stats bar that shows: circulating supply, net hashrate and active accounts
+- Metadata fields to block (txDensity, hashrate)
+
+### Changed
+
+- TxChart by TxDensityChart
+
+### Fixed
+
+- Box margins for small devices
+
 ## [1.0.2] 2019-09-26
 
 ### Changed
