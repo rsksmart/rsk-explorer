@@ -13,15 +13,11 @@
               router-link(:to='blockLink')
                 .block-number(:style='bStyle' )
                   span {{ blockNumber }}
-            li.half
-              field-title.small(:field='fields.miner')
-              data-field.small(:field='fields.miner' :row='block')
-            li.half.soft(:style='bStyle')
-              field-title(:field='fields.txs')
-              data-field(:field='fields.txs' :row='block')
-            li.half.soft
-              field-title.small(:field='fields.timestamp')
-              data-field.small(:field='fields.timestamp' :row='block')
+            template(v-for='f,i in boxFields')
+              li.half(:class=' (i>0) ? "soft" : "" ')
+                .xdata(v-for='field,x in f' :class=' (x>0) ? "soft" : "" ')
+                  field-title.small(:field='field')
+                  data-field.small(:field='field' :row='block')
 </template>
 <script>
 import DataField from './DataField'
@@ -41,6 +37,14 @@ export default {
     }
   },
   computed: {
+    boxFields () {
+      let { miner, hashrate, txs, txDensity, timestamp } = this.fields
+      return [
+        [miner, hashrate],
+        [txs, txDensity],
+        [timestamp]
+      ]
+    },
     blockLink () {
       return this.makeLink(this.fields.number, this.block)
     },
@@ -62,6 +66,7 @@ export default {
 }
 </script>
 <style lang="stylus">
+@import '../lib/styl/media_queries.styl'
   .block-box
     display flex
     flex 1
@@ -77,4 +82,14 @@ export default {
 
   .blockbox-enter, .block-box-leave-to
     opacity 0
+
+  .xdata
+    display flex
+    flex-flow row nowrap
+    margin 0
+
+@media $media_medium
+  .xdata
+    margin 0 1em 0 0
+
 </style>
