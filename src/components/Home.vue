@@ -1,5 +1,6 @@
 <template lang="pug">
   .home(v-if='lastBlocks.length')
+    stats-bar
     .hero
       .col-a(ref='last-blocks-box')
         .box.row.last-blocks
@@ -32,10 +33,12 @@ import TxDensityChart from './TxDensityChart'
 import BlockBox from './BlockBox.vue'
 import PendingBlocks from './PendingBlocks.vue'
 import CtrlSwitch from './controls/CtrlSwitch.vue'
+import StatsBar from './StatsBar'
 import { ROUTES as r } from '../config/types'
 export default {
   name: 'Home',
   components: {
+    StatsBar,
     LastBlocks,
     LastTransactions,
     TxDensityChart,
