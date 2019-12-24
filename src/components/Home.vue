@@ -11,7 +11,7 @@
       .col-b(ref='chart-box')
           .box
             .chart-c
-              tx-chart(:asize='appSize.w + appSize.h')
+              tx-density-chart(:asize='appSize.w + appSize.h')
     .cols
       .col-a
         last-blocks
@@ -28,7 +28,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 import LastBlocks from './LastBlocks.vue'
 import LastTransactions from './LastTransactions.vue'
-import TxChart from './TxChart.vue'
+import TxDensityChart from './TxDensityChart'
 import BlockBox from './BlockBox.vue'
 import PendingBlocks from './PendingBlocks.vue'
 import CtrlSwitch from './controls/CtrlSwitch.vue'
@@ -38,7 +38,7 @@ export default {
   components: {
     LastBlocks,
     LastTransactions,
-    TxChart,
+    TxDensityChart,
     BlockBox,
     PendingBlocks,
     CtrlSwitch
