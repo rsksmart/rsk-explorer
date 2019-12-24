@@ -22,6 +22,7 @@ export default {
     let options = this.options || {}
     this.forceTitle = options.forceTitle || false
     this.forceIcon = options.forceIcon || false
+    this.hideIcon = options.hideIcon || false
   },
   computed: {
     showTitle () {
@@ -29,9 +30,9 @@ export default {
       return field.showTitle || !field.hideTitle || this.forceTitle
     },
     showIcon () {
-      let field = this.field
-      if (!field) return false
-      return (field.titleIcon || this.forceIcon) && field.icon
+      let { field, forceIcon, hideIcon } = this
+      if (!field || (hideIcon && !forceIcon)) return false
+      return (field.titleIcon || forceIcon) && field.icon
     }
   }
 }
