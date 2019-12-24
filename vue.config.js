@@ -1,5 +1,6 @@
 
 const pkg = require('./package.json')
+
 module.exports = {
   configureWebpack: {
     performance: { hints: false }
@@ -8,6 +9,13 @@ module.exports = {
     sourceMap: true
   },
   chainWebpack: config => {
+    // remove console in production mode
+    config
+      .optimization.minimizer('terser').tap((args) => {
+        args[0].terserOptions.compress.drop_console = process.env.NODE_ENV === 'production'
+        return args
+      })
+
     config
       .plugin('define')
       .tap(args => {
@@ -24,6 +32,8 @@ module.exports = {
         })
         return args
       })
+
+
     const svgRule = config.module.rule('svg')
 
     svgRule.uses.clear()

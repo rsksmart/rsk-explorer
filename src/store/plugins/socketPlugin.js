@@ -15,7 +15,6 @@ export default function (socket) {
             if (res.req && res.req.key) {
               store.dispatch('socketData', res)
             } else {
-              // eslint-disable-next-line
               console.info('Unknown action received: ' + action)
             }
           }

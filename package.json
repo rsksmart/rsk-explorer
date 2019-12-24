@@ -5,12 +5,12 @@
   "description": "Rsk explorer client",
   "author": "emi <emiliorizzo@gmail.com>",
   "scripts": {
-    "build": "vue-cli-service build --modern",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint",
-    "dev": "vue-cli-service serve",
-    "svg": "./node_modules/.bin/vsvg -s ./public/svg/icons -t ./src/icons --es6"
+    "build": "npx vue-cli-service build --modern",
+    "test:unit": "npx vue-cli-service test:unit",
+    "test:e2e": "npx vue-cli-service test:e2e",
+    "lint": "npx vue-cli-service lint",
+    "dev": "npx vue-cli-service serve",
+    "svg": "npx vsvg -s ./public/svg/icons -t ./src/icons --es6"
   },
   "dependencies": {
     "bignumber.js": "^7.2.1",
@@ -45,6 +45,7 @@
     "raw-loader": "^0.5.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "terser-webpack-plugin": "^2.3.1",
     "vue-svgicon": "^3.2.6",
     "vue-template-compiler": "^2.5.22"
   }
