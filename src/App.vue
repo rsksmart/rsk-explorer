@@ -11,7 +11,8 @@
               .iso.plain-color
                 include assets/svg/logo-alt.svg
               .title
-                h1.logo rsk explorer
+                h1.logo.link rsk explorer
+                sub.net.gray {{netName}}
           .header-content
             search-box
           .nav(:class='(menu) ? "open":""')
@@ -76,12 +77,18 @@ export default {
       errors: state => state.socketErrors,
       route: state => state.route,
       menuItems: state => state.menuItems,
-      content: state => state.content
+      content: state => state.content,
+      net: state => state.backend.systemSettings.net
     }),
     ...mapGetters({
       appSize: 'getSize',
       dbIsOutdated: 'dbIsOutdated'
     }),
+    netName () {
+      let { name } = this.net || {}
+      if (name) name = name.replace('RSK', '').trim().toLowerCase()
+      return name
+    },
     bigMenu () {
       return this.isRoute('home')
     },
@@ -108,7 +115,7 @@ export default {
     getIcon (name) {
       if (name === 'home') return 'rsk'
       let entity = this.getEntity()(name)
-      return (entity) ? entity.icon || null : name
+      return (entity) ? entity.icon || name : name
     },
     onResize () {
       let size = {
@@ -135,7 +142,6 @@ export default {
 </script>
 <style src="vue-d3-barchart/dist/vue-d3-barchart.css"></style>
 <style lang="stylus">
-
   @import 'lib/styl/style.styl'
   @import 'lib/styl/mixins.styl'
 
