@@ -40,7 +40,8 @@ export default {
     boxFields () {
       let { miner, hashrate, txs, txDensity, timestamp } = this.fields
       return [
-        [miner, hashrate],
+        [miner],
+        [hashrate],
         [txs, txDensity],
         [timestamp]
       ]
@@ -66,7 +67,8 @@ export default {
 }
 </script>
 <style lang="stylus">
-@import '../lib/styl/media_queries.styl'
+  @import '../lib/styl/media_queries.styl'
+
   .block-box
     display flex
     flex 1
@@ -88,8 +90,7 @@ export default {
     flex-flow row nowrap
     margin 0
 
-@media $media_medium
-  .xdata
-    margin 0 1em 0 0
-
+  @media $media_medium
+    .xdata
+      margin 0 1em 0 0
 </style>
