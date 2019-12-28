@@ -1,5 +1,5 @@
 import COLORS from '../../config/colors.json'
-import * as chroma from 'chroma-js'
+import chroma from 'chroma-js'
 
 const autoColors = {
   iconColor: COLORS.color1,
