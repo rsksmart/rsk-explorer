@@ -168,6 +168,7 @@ export default {
 
   .field-title.big-field
     justify-content flex-start
+    align-self flex-start
     margin-bottom 0.5em
 
   .field-title.big-field, .big-field.custom

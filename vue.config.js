@@ -33,7 +33,6 @@ module.exports = {
         return args
       })
 
-
     const svgRule = config.module.rule('svg')
 
     svgRule.uses.clear()
