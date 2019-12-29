@@ -1,16 +1,23 @@
-export const locStorage = {
-  set (key, data) {
-    data = JSON.stringify(data)
-    localStorage.setItem(key, data)
-  },
-  get (key) {
-    let data = localStorage.getItem(key)
-    if (data !== null) {
-      return JSON.parse(data)
+const isBrowser = typeof window !== 'undefined'
+
+export const createLocStorage = () => {
+  const { localStorage } = window
+  return {
+    set (key, data) {
+      data = JSON.stringify(data)
+      localStorage.setItem(key, data)
+    },
+    get (key) {
+      let data = localStorage.getItem(key)
+      if (data !== null) {
+        return JSON.parse(data)
+      }
+      return null
     }
-    return null
   }
 }
+
+export const locStorage = (isBrowser) ? createLocStorage() : {}
 
 export const downloadText = (content, name, type = 'json') => {
   name = name || `download.${type}`
