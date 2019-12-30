@@ -79,8 +79,8 @@ const Block = () => {
     txDensity: {
       field: '_metadata.txDensity'
     },
-    hashrate: {
-      field: '_metadata.hashrate'
+    blockHashrate: {
+      field: '_metadata.blockHashrate'
     },
     extraData: {
       renderAs: 'big-field',
@@ -93,13 +93,13 @@ const Block = () => {
 
 const BlockBox = () => {
   let blocks = Blocks()
-  let { txDensity, hashrate } = Block().fields
+  let { txDensity, blockHashrate } = Block().fields
   blocks.fields = Object.assign(blocks.fields, {
     miner: {
       trim: 4
     },
     txDensity,
-    hashrate
+    blockHashrate
   })
   return blocks
 }

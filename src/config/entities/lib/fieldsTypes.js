@@ -5,6 +5,13 @@ import {
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
 
+const hashrate = {
+  icon: 'flame',
+  titleIcon: true,
+  hideTitle: true,
+  filters: ['big-number', 'Hs']
+}
+
 export default {
   block: {
     icon: 'cube',
@@ -98,13 +105,9 @@ export default {
     hideTitle: true,
     filters: ['tx-density', 'txs-s']
   },
-  hashrate: {
-    icon: 'flame',
-    titleIcon: true,
-    hideTitle: true,
-    filters: ['big-number', 'Hs']
-  },
   rbtcBalance: {
     filters: ['round', 'locale', 'rbtc']
-  }
+  },
+  hashrate,
+  blockHashrate: hashrate
 }
