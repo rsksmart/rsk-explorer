@@ -38,10 +38,11 @@ export default {
   },
   computed: {
     boxFields () {
-      let { miner, hashrate, txs, txDensity, timestamp } = this.fields
+      let { miner, txs, txDensity, timestamp } = this.fields
+      // let { blockHashrate } = this.fields
       return [
         [miner],
-        [hashrate],
+        // [blockHashrate],
         [txs, txDensity],
         [timestamp]
       ]
