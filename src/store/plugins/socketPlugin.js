@@ -6,7 +6,7 @@ export default function (socket) {
         if (action) {
           action = 'socket' + action.charAt(0).toUpperCase() + action.slice(1)
           if (store._actions[action]) {
-            if (error) console.info(action, error)
+            /// if (error) console.info(action, error)
             if (!error) {
               store.dispatch(action, data)
             }
@@ -15,7 +15,7 @@ export default function (socket) {
             if (res.req && res.req.key) {
               store.dispatch('socketData', res)
             } else {
-              console.info('Unknown action received: ' + action)
+              // console.info('Unknown action received: ' + action)
             }
           }
         }

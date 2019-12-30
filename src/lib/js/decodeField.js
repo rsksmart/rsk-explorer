@@ -29,6 +29,6 @@ function rlpDecode (data) {
     let decoded = rlp.decode(data)
     return (Array.isArray(decoded)) ? decoded.map(d => toStr(d)) : toStr(decoded)
   } catch (err) {
-    console.log(err)
+    // console.log(err)
   }
 }

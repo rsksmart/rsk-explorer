@@ -74,7 +74,7 @@ const applyFilter = (filterName, value, args) => {
   if (filter) {
     value = filter(value, ...args)
   } else {
-    console.info('Unknown filter ' + filterName)
+    // console.info('Unknown filter ' + filterName)
   }
   return value
 }

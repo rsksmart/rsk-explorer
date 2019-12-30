@@ -1,7 +1,7 @@
 
 const pkg = require('./package.json')
-
 module.exports = {
+  parallel: 0, // e2e test fails on circle-ci with parallel != 0
   configureWebpack: {
     performance: { hints: false }
   },
@@ -10,11 +10,11 @@ module.exports = {
   },
   chainWebpack: config => {
     // remove console in production mode
-    config
-      .optimization.minimizer('terser').tap((args) => {
-        args[0].terserOptions.compress.drop_console = process.env.NODE_ENV === 'production'
-        return args
-      })
+    /*     config
+          .optimization.minimizer('terser').tap((args) => {
+            args[0].terserOptions.compress.drop_console = process.env.NODE_ENV === 'production'
+            return args
+          }) */
 
     config
       .plugin('define')
