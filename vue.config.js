@@ -1,7 +1,7 @@
 
 const pkg = require('./package.json')
 module.exports = {
-  parallel: 0,
+  // parallel: 0,
   configureWebpack: {
     performance: { hints: false }
   },
