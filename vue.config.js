@@ -1,6 +1,5 @@
 
 const pkg = require('./package.json')
-const ENV = process.env.NODE_ENV
 module.exports = {
   parallel: 0,
   configureWebpack: {
@@ -11,11 +10,11 @@ module.exports = {
   },
   chainWebpack: config => {
     // remove console in production mode
-    config
-      .optimization.minimizer('terser').tap((args) => {
-        args[0].terserOptions.compress.drop_console = ENV === 'production'
-        return args
-      })
+    /*     config
+          .optimization.minimizer('terser').tap((args) => {
+            args[0].terserOptions.compress.drop_console = process.env.NODE_ENV === 'production'
+            return args
+          }) */
 
     config
       .plugin('define')

@@ -46,8 +46,6 @@
     "raw-loader": "^0.5.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "terser": "^4.4.3",
-    "terser-webpack-plugin": "^2.3.1",
     "vue-svgicon": "^3.2.6",
     "vue-template-compiler": "^2.6.10"
   }
