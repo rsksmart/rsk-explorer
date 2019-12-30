@@ -1,7 +1,8 @@
 
 const pkg = require('./package.json')
-
+const ENV = process.env.NODE_ENV
 module.exports = {
+  parallel: 0,
   configureWebpack: {
     performance: { hints: false }
   },
@@ -12,7 +13,7 @@ module.exports = {
     // remove console in production mode
     config
       .optimization.minimizer('terser').tap((args) => {
-        args[0].terserOptions.compress.drop_console = process.env.NODE_ENV === 'production'
+        args[0].terserOptions.compress.drop_console = ENV === 'production'
         return args
       })
 

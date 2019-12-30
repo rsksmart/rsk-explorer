@@ -1,0 +1,26 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: ~/project/app
+  docker:
+     - image: vuejs/ci
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+            - ~/.npm
+            - ~/.cache
+      - run:
+          name: prod dev server
+          command: npx vue-cli-service serve --mode production --port 9000
+        
