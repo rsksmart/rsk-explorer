@@ -113,7 +113,7 @@ export default {
     .item
       font-size 1em
 
-      .field-icon, .field-title
+     .field-title
         margin-right 0.5em
 
       .field-title

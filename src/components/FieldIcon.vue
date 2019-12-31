@@ -1,5 +1,5 @@
 <template lang="pug">
-  .icon(:class='css')
+  .field-icon.icon(:class='css')
     tool-tip(v-if='title' :value='title | camelCaseTo' :options='tipOptions')
       icon(:name='icon')
     icon(v-else :name='icon')

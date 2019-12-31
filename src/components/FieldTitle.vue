@@ -1,5 +1,6 @@
 <template lang="pug">
   .field-title
+    field-icon.field-description(v-if='description' icon="help" :title='description' )
     field-icon(v-if='showIcon' :icon='field.icon' :title='(showTitle) ? null: field.title' )
     span.title(v-if='showTitle && field.title') {{ field.title | camel-case-to }}
     slot
@@ -33,6 +34,10 @@ export default {
       let { field, forceIcon, hideIcon } = this
       if (!field || (hideIcon && !forceIcon)) return false
       return (field.titleIcon || forceIcon) && field.icon
+    },
+    description () {
+      let { description, hideDescription } = this.field
+      return (!hideDescription) ? description : false
     }
   }
 }
@@ -49,4 +54,7 @@ export default {
 
     .icon + .title
       margin 0 0 0 0.5em
+    .field-icon
+      .tooltip *
+        word-break normal !important
 </style>
