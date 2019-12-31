@@ -55,7 +55,8 @@ const Block = () => {
       trim: 'auto'
     },
     difficulty: {
-      type: 'difficulty'
+      type: 'difficulty',
+      description: 'Avg of double-SHA256 operations required to obtain a valid PoW'
     },
     totalDifficulty: {
       type: 'difficulty'
