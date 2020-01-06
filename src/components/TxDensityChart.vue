@@ -54,13 +54,11 @@ export default {
           linesX: false
         },
         marks: false,
-        getX (d) {
-          return d.time
-        },
         getY (d) {
           return d.txDensity
         },
         formatLabel (bar) {
+          console.log(bar)
           let label = []
           label.push('#' + bar.d.number)
           label.push('txd:' + bar.d.txDensity)

@@ -6,10 +6,12 @@
   "author": "emi <emiliorizzo@gmail.com>",
   "scripts": {
     "build": "npx vue-cli-service build --modern",
+    "build-with-tracking": "npx vue-cli-service build src/main.with.tracking.js --modern",
     "test:unit": "npx vue-cli-service test:unit",
     "test:e2e": "npx vue-cli-service test:e2e",
     "lint": "npx vue-cli-service lint",
     "dev": "npx vue-cli-service serve",
+    "dev-with-tracking": "npx vue-cli-service serve src/main.with.tracking.js",
     "svg": "npx vsvg -s ./public/svg/icons -t ./src/icons --es6"
   },
   "dependencies": {
@@ -24,6 +26,7 @@
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.10",
     "vue-d3-barchart": "latest",
+    "vue-gtag": "^1.1.1",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
     "vuex-router-sync": "^5.0.0"

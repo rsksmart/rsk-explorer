@@ -11,8 +11,15 @@ npm install
 # serve with hot reload at localhost:8080
 npm run dev
 
+# serve with google tag tracking
+npm run dev-with-tracking
+
 # build for production with minification
 npm run build
+
+# build for production with google tag tracking
+# you must set the GA-TAG first, see 'Settings'
+npm run build-with-tracking
 
 ```
 
@@ -28,10 +35,13 @@ npm run build
 
 ### Settings
 
-- **WS_URL**: ws backend url
-- **STATS_URL**: rsk stats web
+The configuration is provided through this environment variables:
 
-E.g. *to change WS_URL:*
+- **WS_URL**: rsk-explorer-api WS url (backend)
+- **STATS_URL**: rsk stats web (link redirect the 'stats' link)
+- **GA_TAG**: (optional) Google analytics tag.
+
+E.g. *to change the backend url :*
 
 ``` shell
   export WS_URL=wss://backend.rsk.co
