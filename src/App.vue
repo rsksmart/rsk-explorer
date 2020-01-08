@@ -35,7 +35,12 @@
           .iso.plain-color
             include assets/svg/iso-logo-v.svg
         .text
-          p(v-for='txt in content.footer') {{txt}}
+          ul.plain
+            li(v-for='item in content.footer')
+              template(v-if="typeof item ==='object'")
+                a(v-if='item.link' :href='item.link')
+                  strong {{item.text}}
+              span(v-else) {{ item }}
 </template>
 
 <script>
