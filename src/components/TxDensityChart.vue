@@ -24,8 +24,7 @@ export default {
       },
       options: {
         domain: {
-          min: 0,
-          max: null
+          min: 0
         },
         fontSize: 12,
         margin: 0,
@@ -58,7 +57,6 @@ export default {
           return d.txDensity
         },
         formatLabel (bar) {
-          console.log(bar)
           let label = []
           label.push('#' + bar.d.number)
           label.push('txd:' + bar.d.txDensity)
@@ -99,15 +97,9 @@ export default {
         let { txDensity } = _metadata
         txDensity = getTxDensity(txDensity)
         transactions = transactions.length
-        return { timestamp, txDensity, number, transactions }
+        let time = this.blocks[0].timestamp - timestamp
+        return { timestamp, txDensity, number, transactions, time }
       })
-      /*       return [
-              { txDensity: 1, time: 0 },
-              { txDensity: 3, time: 10 },
-              { txDensity: 2, time: 30 },
-              { txDensity: 10, time: 25 },
-              { txDensity: 1, time: 40 },
-            ] */
     }
   },
   methods: {
