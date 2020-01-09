@@ -3,7 +3,7 @@ version: 2.1
 defaults: &defaults
   working_directory: ~/project/app
   docker:
-     - image: cypress/browsers:chrome69
+    - image: cypress/browsers:chrome69
 jobs:
   build:
     <<: *defaults
@@ -25,7 +25,13 @@ jobs:
           command: npm run lint
       - run:
           name: Unit test
-          command: npm run test:unit     
+          command: npm run test:unit
       - run:
           name: e2e test
           command: npm run test:e2e -- --headless --browser chrome
+      - run:
+          name: build
+          command: npm run build
+      - run:
+          name: build-with-tracking
+          command: npm run build-with-tracking
