@@ -25,7 +25,9 @@ export default {
   created () {
     let { decoded } = this
     // select rlp if is available
-    if (decoded.rlp) this.field = 'rlp'
+    if (decoded && decoded.rlp) {
+      this.field = 'rlp'
+    }
   },
   computed: {
     opts () {
@@ -54,8 +56,10 @@ export default {
 
   .big-field
     display flex
+
     .decode
       align-self flex-end
+
     textarea
       padding 0
       font-size 0.75em
