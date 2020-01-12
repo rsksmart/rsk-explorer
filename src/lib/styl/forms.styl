@@ -8,9 +8,7 @@
 ::-webkit-search-cancel-button
   /* Remove default */
   -webkit-appearance none
-  height 0.75em
-  width 0.75em
-  background $dark
+  display none
   
 /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill,
@@ -72,7 +70,7 @@ label + input[type='range']
   //margin .5em 1em 0 1em
 
 
-input, select
+input, select,.input
   defaultsColors()
   background $forms-ctrls-bg
   border-width $border-width

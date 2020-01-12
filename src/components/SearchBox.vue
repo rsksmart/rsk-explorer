@@ -1,32 +1,22 @@
 <template lang="pug">
   .search
-    button.color1
-      icon(name='search')
-
-    input(name="search"
-      type='search'
-      id="search"
+    ctrl-search(
+      @change="search"
       :placeholder="placeholder"
-      @change='search'
-      @keyup.stop=''
-      v-model='searchValue'
-      :class='searchBoxClass'
-      )
-
-    //-transition(name='msgtrans')
-      .search-msg(v-if='msg')
-        .small
-          small.soft {{ msg }}
+      :cssClass="searchBoxClass")
 </template>
 <script>
 import { normalizeSearch, isAddress, isTxHash } from '../lib/js/utils'
 import { mapState } from 'vuex'
 import { ROUTES as r } from '../config/types'
+import CtrlSearch from './controls/CtrlSearch'
 export default {
   name: 'search-box',
+  components: {
+    CtrlSearch
+  },
   data () {
     return {
-      searchValue: '',
       msg: '',
       msgTimeout: null
     }
@@ -57,8 +47,8 @@ export default {
         vm.msgTimeout = null
       }, duration)
     },
-    search (event) {
-      let value = normalizeSearch(this.searchValue)
+    search (value, event) {
+      value = normalizeSearch(value)
       if (value) {
         value = String(value).replace(/[\W_]+/g, '')
 
@@ -71,10 +61,8 @@ export default {
         // fix to show all posible matches:
         let link = (links.length) ? links[0] + value : null
         if (link) {
-          this.searchValue = ''
           this.$router.push(link)
         } else {
-          this.searchValue = ''
           this.ephemeralMessage(`Please type: address, block number or tx hash`)
         }
       }
@@ -107,13 +95,6 @@ export default {
     button
       margin 0 0.5rem 0 0
       display inline-block
-
-    #search
-      text-align center
-      padding 0
-      background none
-      border-style solid
-      font-size 0.75em
 
   .msg-trans
     will-change opacity
