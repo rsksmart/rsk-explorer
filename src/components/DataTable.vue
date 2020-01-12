@@ -298,7 +298,7 @@ export default {
       border-radius 50%
 
       svg.svg-icon *
-        fill $bg-color
+        fill $bg-color !important
         display flex
 
   sub

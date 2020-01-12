@@ -95,14 +95,16 @@ link()
   color $color
   cursor pointer
   .svg-icon , svg
-    fill $color !important
+    path
+      fill $color !important
   
   &:hover
     transition unquote('color') 1s ease
     color color2 
     & .svg-icon, svg
-      transition fill 1s ease
-      fill color2 !important
+      path
+        transition fill 1s ease
+        fill color2 !important
 
   &:active
     color $color
