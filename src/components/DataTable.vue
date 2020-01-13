@@ -245,7 +245,7 @@ export default {
       return css
     },
     tdClass (name) {
-      let css = [`field-${name}`]
+      let css = [`field__${name}`]
       if (this.key === name) css.push('row-header')
       return css
     }
