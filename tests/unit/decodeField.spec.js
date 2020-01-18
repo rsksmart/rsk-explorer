@@ -5,10 +5,10 @@ import { rlp } from 'rsk-utils'
 describe('decodeField()', () => {
   it(`should decode data`, () => {
     let data = '0xffffffffffffffffff'
-    let result = decodeField(data, ['raw', 'ascii', 'number'])
+    let result = decodeField(data, ['hex', 'raw', 'decimal'])
     expect(result.rlp).to.be.deep.equal(undefined)
-    expect(result.raw).to.be.deep.equal(data)
-    expect(result.number).to.be.deep.equal('4722366482869645213695')
+    expect(result.hex).to.be.deep.equal(data)
+    expect(result.decimal).to.be.deep.equal('4722366482869645213695')
   })
 
   it(`should be decoded as rlp`, () => {

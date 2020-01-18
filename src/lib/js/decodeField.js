@@ -1,22 +1,23 @@
 import { rlp, isHexString, toBuffer } from 'rsk-utils'
 import { BigNumber } from 'bignumber.js'
 
+const DECODERS = {
+  rlp: (d) => rlpDecode(d),
+  hex: (d) => d,
+  decimal: (d) => new BigNumber(d).toString(10),
+  raw: (d) => toBuffer(d).toString()
+}
+
 export function decodeField (data, types) {
   try {
-    types = types || ['raw', 'rlp', 'number', 'ascii']
-    types = types.reduce((v, a) => {
-      v[a] = true
-      return v
-    }, {})
+    types = types || ['hex', 'rlp', 'decimal', 'raw']
     if (!data || !isHexString(data)) return
     let decoded = {}
-    if (types.raw) decoded.raw = data
-    if (types.rlp) {
-      let rlpDecoded = rlpDecode(data)
-      if (rlpDecoded) decoded.rlp = rlpDecoded
+    let selectedDecoders = Object.keys(DECODERS).filter(k => types.includes(k))
+    for (let d of selectedDecoders) {
+      let decodedValue = DECODERS[d](data)
+      if (decodedValue) decoded[d] = decodedValue
     }
-    if (types.number) decoded.number = new BigNumber(data).toString(10)
-    if (types.ascii) decoded.ascii = toBuffer(data).toString()
     return decoded
   } catch (err) {
     return data
