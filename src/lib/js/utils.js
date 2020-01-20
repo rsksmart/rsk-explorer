@@ -35,3 +35,10 @@ export const ObjectIdSecondsElapsed = id => (Date.now() - ObjectIdToDate(id)) / 
 export const isTxHash = str => {
   return (/^(0x)?[0-9a-f]{64}$/.test(str) || /^(0x)?[0-9A-F]{64}$/.test(str))
 }
+
+export const clamp = (number, min, max) => {
+  number = parseInt(number)
+  number = (number < min) ? min : number
+  number = (number > max) ? max : number
+  return number
+}
