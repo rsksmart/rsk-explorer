@@ -2,6 +2,7 @@
   .search
     ctrl-search(
       @change="search"
+      @result="onResult"
       :placeholder="placeholder"
       :cssClass="searchBoxClass")
 </template>
@@ -47,21 +48,31 @@ export default {
         vm.msgTimeout = null
       }, duration)
     },
-    search (value, event) {
+
+    goTo ({ type, value }) {
+      let path = r[type]
+      if (!path || !value) return
+      let link = `/${path}/${value}`
+      this.$router.push(link)
+    },
+    onResult ({ event, value }) {
+      this.goTo(value)
+    },
+    search ({ value, event }) {
       value = normalizeSearch(value)
       if (value) {
         value = String(value).replace(/[\W_]+/g, '')
 
         let tests = {
-          address: (isAddress(value)) ? `/${r.address}/` : null,
-          tx: (isTxHash(value)) ? `/${r.transaction}/` : null,
-          block: (this.isBlock(value)) ? `/${r.block}/` : null
+          address: isAddress(value),
+          tx: isTxHash(value),
+          block: this.isBlock(value)
         }
-        let links = Object.values(tests).filter(l => l)
+        let types = Object.keys(tests).filter(k => tests[k])
         // fix to show all posible matches:
-        let link = (links.length) ? links[0] + value : null
-        if (link) {
-          this.$router.push(link)
+        let type = (types.length) ? types[0] : null
+        if (type) {
+          this.goTo({ type, value })
         } else {
           this.ephemeralMessage(`Please type: address, block number or tx hash`)
         }
