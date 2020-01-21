@@ -163,4 +163,7 @@ export default {
     text-shadow $txt-sh
     background $darkness-odd
     border-bottom 1px solid $darkness-even
+
+  .menu
+    font-size 0.9em
 </style>
