@@ -15,7 +15,8 @@ export const ROUTES = {
   event: 'event',
   events: 'events',
   txPool: 'txpool',
-  verifyContract: 'verify'
+  verifyContract: 'verify',
+  checkAddress: 'check-address'
 }
 
 export const STATUS = {

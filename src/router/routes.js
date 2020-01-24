@@ -1,6 +1,7 @@
 import Home from '@/components/Home'
 import ErrorPage from '@/components/ErrorPage'
 import TxPool from '@/components/TxPool'
+import CheckAddress from '@/components/CheckAddress'
 import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
 import blocks from './blocks'
 import transactions from './transactions'
@@ -40,6 +41,12 @@ export default [
     path: `/${r.txPool}`,
     name: 'txPool',
     component: TxPool
+  },
+  {
+    path: `/${r.checkAddress}/:address`,
+    name: 'CheckAddress',
+    component: CheckAddress,
+    props: true
   },
   ...blocks,
   ...transactions,
