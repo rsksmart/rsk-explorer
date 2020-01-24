@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { isDigits } from './NumberFilters.js'
 import { STATUS, STATUS_ICONS } from '../config/types'
+import { toChecksumAddress } from 'rsk-utils/dist/addresses'
+import store from '../store/'
 
 export const yesNo = Vue.filter('yes-no', (value) => {
   return (value) ? 'yes' : 'no'
@@ -30,3 +32,8 @@ export const txStatus = Vue.filter('tx-status', value => {
 })
 
 export const txIcon = Vue.filter('tx-icon', value => STATUS_ICONS[getTxStatus(value)])
+
+export const checksumAddress = Vue.filter('checksum-address', address => {
+  let chainId = store.getters.chainId
+  return toChecksumAddress(address, chainId)
+})

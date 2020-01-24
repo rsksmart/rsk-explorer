@@ -63,7 +63,8 @@ export default {
     default: 0
   },
   address: {
-    link: (data, value) => (!isAddress(value)) ? null : `/${r.address}/${value}`
+    link: (data, value) => (!isAddress(value)) ? null : `/${r.address}/${value}`,
+    filters: ['checksum-address']
   },
   token: {
     link: `/${r.address}/`
@@ -79,7 +80,8 @@ export default {
     default: 0
   },
   tokenAddress: {
-    trim: 'auto'
+    trim: 'auto',
+    filters: ['checksum-address']
   },
   tokenName: {
     default: CONTRACT_UNKNOWN_NAME,
