@@ -2,8 +2,9 @@ export const firstListBlock = state => {
   return state.blocks[0]
 }
 
-export const lastListBlock = state => {
-  return state.blocks[state.blocks.lenght]
+export const lastBlock = state => {
+  let { lastBlocks } = state
+  return lastBlocks[0]
 }
 
 export const transactions = state => {
@@ -54,4 +55,15 @@ export const getTxPoolTxs = (state) => status => {
 export const contractVerifierEnabled = state => {
   let modules = state.systemSettings.modules || {}
   return modules.contractVerifier
+}
+
+export const bcNet = state => state.systemSettings.net
+
+export const chainId = state => {
+  let net = state.systemSettings.net
+  return (net) ? net.id : undefined
+}
+
+export const isConfigLoaded = state => {
+  return Object.keys(state.systemSettings).length > 0
 }
