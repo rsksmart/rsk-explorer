@@ -46,6 +46,10 @@ export const SET_RESPONSE = (state, [key, data]) => {
   }
 }
 
+export const CLEAR_RESPONSE = (state, key) => {
+  Vue.delete(state.responses, key)
+}
+
 export const SET_TOTAL = (state, { key, total }) => {
   if (key) state.totals[key] = total
 }
