@@ -150,3 +150,10 @@ const responseObject = (res = {}) => {
 export const socketStats = ({ commit }, msg) => {
   commit('SET_STATS', msg)
 }
+
+export const clearResponses = ({ commit }, keys) => {
+  keys = (!Array.isArray(keys)) ? [keys] : keys
+  for (let key of keys) {
+    commit('CLEAR_RESPONSE', key)
+  }
+}
