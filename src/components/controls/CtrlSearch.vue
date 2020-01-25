@@ -4,21 +4,20 @@
       input.search-input(
         type="search"
         :value='value'
-        @change.prevent="change"
-        @input="input"
+        @input.prevent="input"
+        @change.prevent="changeInput"
         @keyup.stop='onKey'
         :placeholder="placeholder"
         :class="cssClass"
         )
       button.link(@click="clear" v-if="value")
         icon(name="close")
-      button.link(@click="change")
+      button.link(@click="onChange")
         icon(name="search")
     ul.results(v-if="results")
-      template(v-for="result,i in results" )
-        li.result.link(
-          @click="gotoResult($event,result)"
-          :class="{selected: selectedResult === i+1 }") {{result.name || result.value }}
+      template(v-for="result,i in results")
+        li.result(v-if='result.link && result.value' :class="{selected: selectedResult === i+1 }" :key="result.value")
+          a.button(:href="result.link" @touchend.passive="gotoResult($event,i)" @click.native="gotoResult($event,i)") {{result.name || result.value }}
 </template>
 <script>
 import { clamp } from '../../lib/js/utils'
@@ -29,6 +28,7 @@ export default {
     return {
       value: '',
       selectedResult: 0,
+      resultEmitted: null,
       focused: undefined
     }
   },
@@ -51,21 +51,30 @@ export default {
       type = type || event.type
       this.$emit(type, { value, event })
     },
-    change (event) {
-      let { value, selectedResult } = this
-      if (selectedResult) {
-        let key = selectedResult - 1
-        this.clear()
-        return this.gotoResult(event, this.results[key])
-      }
-
+    changeInput (event) {
+      let vm = this
+      setTimeout(() => {
+        if (!vm.selectedResult) {
+          vm.onChange(event)
+        }
+      }, 200)
+    },
+    onChange (event) {
+      let value = event.target.value
       this.emit(event, 'change', value)
       this.clear()
     },
     selectResult (result) {
       this.selectedResult = result
     },
-    gotoResult (event, result) {
+    gotoResult (event, key) {
+      let result = this.results[key]
+      let { link } = result
+      if (link) this.$router.push(link)
+      this.selectResult(key++)
+      this.emitResult(event, result)
+    },
+    emitResult (event, result) {
       this.emit(event, 'result', result)
     },
     onKey (event) {
@@ -75,7 +84,7 @@ export default {
 
       // open result
       if (['Enter'].includes(code) && selectedResult) {
-        this.gotoResult(event, this.results[selectedResult - 1])
+        this.gotoResult(event, (selectedResult - 1))
         return
       }
       // select results with arrows
