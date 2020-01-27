@@ -97,7 +97,7 @@ export const socketDbStatus = ({ state, commit }, data) => {
 
 export const fetchData = ({ state, commit, getters }, req) => {
   req.params = req.params || {}
-  let { next, prev, query, sort, action, count, page } = req
+  let { next, prev, query, sort, action, count, page, fields } = req
   let module = req.module || null
 
   let limit = req.limit
@@ -107,7 +107,7 @@ export const fetchData = ({ state, commit, getters }, req) => {
   const time = Date.now()
   // count = (undefined === count)
 
-  let params = Object.assign(req.params, { next, prev, query, sort, count, limit, page, getPages })
+  let params = Object.assign(req.params, { next, prev, query, sort, count, limit, page, getPages, fields })
   const data = { module, action, params, key, time, getDelayed: true }
   commit('SET_REQUESTING', [key, time])
   // Fix next 2 lines
