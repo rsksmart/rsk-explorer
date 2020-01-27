@@ -48,7 +48,10 @@ export default [
       module: 'transactions',
       title: 'Transaction',
       dataType: 'transaction',
-      action: 'getTransactionWithAddressData'
+      action: 'getTransactionWithAddressData',
+      params: {
+        getPrevNext: true
+      }
     }
   }
 ]
