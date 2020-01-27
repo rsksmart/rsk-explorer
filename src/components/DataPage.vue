@@ -78,6 +78,7 @@ export default {
     'module',
     'dataType',
     'action',
+    'params',
     'component',
     'title',
     'mainContent',
@@ -238,10 +239,10 @@ export default {
     },
 
     async getData () {
-      let { module, tabs, action } = this
+      let { module, tabs, action, params } = this
       let key = this.reqKey
       if (!module || !action) return
-      await this.fetchRouteData({ action, module, key })
+      await this.fetchRouteData({ action, params, module, key })
       if (tabs) {
         let active = this.activeTab
         if (active) {
