@@ -22,6 +22,9 @@ export default [
       module: 'blocks',
       dataType: 'block',
       action: 'getBlock',
+      params: {
+        getPrevNext: true
+      },
       mainContent: [
         { component: DataItem }
       ],
