@@ -5,6 +5,7 @@
       @result="onResult"
       @input="onInput"
       :results="results"
+      :loading="isLoading"
       :placeholder="placeholder"
       :cssClass="searchBoxClass")
 </template>
@@ -45,6 +46,9 @@ export default {
     chainId () {
       let { net } = this
       return (net) ? net.id : undefined
+    },
+    isLoading () {
+      return this.requesting.length
     }
   },
   methods: {
@@ -126,7 +130,7 @@ export default {
       let vm = this
       return new Promise((resolve) => {
         return vm.createTimeout(() => {
-          if (vm.requesting.length) resolve(vm.waitForResults())
+          if (vm.isLoading) resolve(vm.waitForResults())
           else resolve(vm.results)
         })
       })
