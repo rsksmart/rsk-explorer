@@ -8,6 +8,7 @@ import backend from './modules/backend/'
 import entities from './modules/entities/'
 import config from './modules/config/'
 import routes from './modules/routes/'
+import search from './modules/search/'
 import socket from '../socket.js'
 import socketPlugin from './plugins/socketPlugin'
 import storagePlugin from './plugins/localStorage'
@@ -32,7 +33,8 @@ const store = new Vuex.Store({
     backend,
     entities,
     config,
-    routes
+    routes,
+    search
   }
 })
 
