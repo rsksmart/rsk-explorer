@@ -12,18 +12,27 @@
         )
       button.link(@click="clear" v-if="value")
         icon(name="close")
-      button.link(@click="onChange")
+      button(v-if="isLoading" )
+        loading-circle(:size="10")
+      button.link(v-if="!isLoading" @click="onChange")
         icon(name="search")
     ul.results(v-if="results")
       template(v-for="result,i in results")
         li.result(v-if='result.link && result.value' :class="{selected: selectedResult === i+1 }" :key="result.value")
-          a.button(:href="result.link" @touchend.passive="gotoResult($event,i)" @click.native="gotoResult($event,i)") {{result.name || result.value }}
+          a.button(
+            :href="result.link"
+            @touchend.passive="gotoResult($event,i)"
+            @click.native="gotoResult($event,i)") {{result.name || result.value }}
 </template>
 <script>
 import { clamp } from '../../lib/js/utils'
+import LoadingCircle from '../LoadingCircle'
 export default {
   name: 'ctrl-search',
-  props: ['placeholder', 'cssClass', 'results', 'searchValue'],
+  components: {
+    LoadingCircle
+  },
+  props: ['placeholder', 'cssClass', 'results', 'searchValue', 'loading'],
   data () {
     return {
       value: '',
@@ -101,6 +110,9 @@ export default {
     totalResults () {
       let { results } = this
       return (results) ? results.length : 0
+    },
+    isLoading () {
+      return !!this.loading
     }
   }
 }
@@ -111,6 +123,10 @@ export default {
 
   .ctrl-search
     position relative
+
+    .loading-circle
+      fill none
+      stroke green
 
     .input
       display flex
