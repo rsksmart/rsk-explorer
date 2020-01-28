@@ -51,7 +51,7 @@ export const socketData = ({ state, commit, dispatch }, res) => {
   let action = req.action || null
   if (key && requested && requested === req.time) {
     const response = Object.assign({}, state.responses[key])
-    let updating = Object.assign(delayedObject(), state.responses[key].delayed)
+    let updating = Object.assign(delayedObject(), response.delayed)
     let isUpdating = Boolean(!updating.registry && updating.fields.length)
     if (!delayed) {
       commit('SET_REQUESTING', [key, null])
