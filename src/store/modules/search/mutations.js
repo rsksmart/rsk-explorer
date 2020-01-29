@@ -20,3 +20,7 @@ export const ADD_SEARCH_REQUEST = (state, [key, payload]) => {
 export const CLEAR_SEARCH_REQUEST = state => {
   Vue.set(state, 'requested', {})
 }
+
+export const SET_SEARCH_TYPES = (state, types) => {
+  Vue.set(state, 'types', types)
+}
