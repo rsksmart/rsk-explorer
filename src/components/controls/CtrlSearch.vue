@@ -14,11 +14,14 @@
         icon(name="close")
       button(v-if="isLoading" )
         loading-circle(:size="10")
-      button.link(v-if="!isLoading" @click="onChange")
+      button.link(v-if="!isLoading" @click.stop="onChange")
         icon(name="search")
-    ul.results(v-if="results")
+    .results(v-if="results.length" ref="results")
       template(v-for="result,i in results")
-        li.result(v-if='result.link && result.value' :class="{selected: selectedResult === i+1 }" :key="result.value")
+        .result(v-if='result.link && result.value'
+          :class="{selected: selectedResult === i+1 }"
+          :key="`${result.value}${i}`"
+          :ref="`result-${i}`")
           a.button(
             :href="result.link"
             @touchend.passive="gotoResult($event,i)"
@@ -61,15 +64,21 @@ export default {
       this.$emit(type, { value, event })
     },
     changeInput (event) {
+      let { fullPath } = this.$route
       let vm = this
       setTimeout(() => {
         if (!vm.selectedResult) {
-          vm.onChange(event)
+          if (fullPath === vm.$route.fullPath) {
+            vm.onChange(event)
+          } else {
+            this.value = ''
+            vm.emitResult(event, null)
+          }
         }
       }, 200)
     },
     onChange (event) {
-      let value = event.target.value
+      let value = this.value
       this.emit(event, 'change', value)
       this.clear()
     },
@@ -82,6 +91,7 @@ export default {
       if (link) this.$router.push(link)
       this.selectResult(key++)
       this.emitResult(event, result)
+      this.clear()
     },
     emitResult (event, result) {
       this.emit(event, 'result', result)
@@ -90,7 +100,6 @@ export default {
       let { selectedResult, results } = this
       if (!results || results.length < 1) return
       let { code } = event
-
       // open result
       if (['Enter'].includes(code) && selectedResult) {
         this.gotoResult(event, (selectedResult - 1))
@@ -104,6 +113,9 @@ export default {
       selectedResult = selectedResult + (1 * direction)
       selectedResult = clamp(selectedResult, 0, results.length)
       this.selectResult(selectedResult)
+    },
+    onShowMore (event) {
+      this.emit(event, 'showMore', this.value)
     }
   },
   computed: {
@@ -135,6 +147,13 @@ export default {
       border-style solid
       width 100%
 
+      ::placeholder
+        transition $trans-fade
+        opacity 1
+
+      :focus::placeholder
+        opacity 0.25
+
       button
         display flex
         margin 0 0.5em 0 0
@@ -149,14 +168,16 @@ export default {
         margin 0 0.5em 0 0
         flex 1
 
-  .results
-    padding 0
-    position absolute
-    z-index 1000
-    list-style none
-    font-size 0.75em
-    background $bg-even
-    width 100%
+    .results
+      padding 0
+      position absolute
+      z-index 1100
+      list-style none
+      font-size 0.75em
+      background $bg-even
+      width 100%
+      overflow-y auto
+      max-height 70vh
 
     .result
       display flex
