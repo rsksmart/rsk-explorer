@@ -17,12 +17,18 @@ const requestPayloads = {
     module: 'blocks',
     action: 'getBlock',
     searchField: 'hash',
-    fields: { number: 1, hash: 1 }
+    fields: { number: 1, hash: 1 },
+    getName: (data) => {
+      return `block ${data.hash}`
+    }
   },
   transaction: {
     module: 'transactions',
     action: 'getTransaction',
-    searchField: 'hash'
+    searchField: 'hash',
+    getName: (data) => {
+      return `transaction ${data.hash}`
+    }
   },
   address: {
     type: 'address'
@@ -34,6 +40,11 @@ const requestPayloads = {
     searchField: 'name',
     field: 'address',
     fields: { name: 1, address: 1 },
+    getTime: (data) => {
+      let { createdByTx } = data
+      let { timestamp } = createdByTx || {}
+      return timestamp
+    },
     getName: (data) => {
       let { address, name } = data
       return `${name} ${address}`

@@ -24,7 +24,7 @@ export const getSearchedResults = (state, getters) => {
       let { data } = res
       if (!data) return
       let { type } = requested[key]
-      let { searchField, field, getName } = getters.getSearchPayloadByType(type)
+      let { searchField, field, getName, getTime } = getters.getSearchPayloadByType(type)
       data = (!Array.isArray(data)) ? [data] : data
       return data.map(d => {
         if (!d) return
@@ -32,7 +32,8 @@ export const getSearchedResults = (state, getters) => {
         let value = d[k]
         let link = getters.getSearchLink({ type, value })
         let name = (typeof getName === 'function') ? getName(d) : undefined
-        return { link, type, value, name, data: d }
+        let time = (typeof getTime === 'function') ? getTime(d) : undefined
+        return { link, type, value, name, time, data: d }
       })
     }
   })
@@ -41,3 +42,10 @@ export const getSearchedResults = (state, getters) => {
 }
 
 export const requestingSearches = (state, getters) => getters.searchKeysRequested.filter(key => getters.isRequesting(key))
+
+export const searchedValue = state => state.value
+
+export const searchedTypes = state => {
+  let types = state.types
+  return Object.keys(types).filter(k => types[k])
+}

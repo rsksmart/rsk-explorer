@@ -10,11 +10,9 @@
       :cssClass="searchBoxClass")
 </template>
 <script>
-import { testSearchedValue } from '../lib/js/validate'
 import { mapState, mapGetters, mapActions } from 'vuex'
-import { ROUTES as r } from '../config/types'
 import CtrlSearch from './controls/CtrlSearch'
-
+// oconst RESULTS_LENGTH = 10
 export default {
   name: 'search-box',
   components: {
@@ -22,7 +20,7 @@ export default {
   },
   data () {
     return {
-      msg: '',
+      msg: `Search by: address / block / tx / name`,
       msgTimeout: null,
       requestingTimeout: null
     }
@@ -33,19 +31,16 @@ export default {
     }),
     ...mapGetters({
       lastBlock: 'lastBlock',
-      net: 'bcNet',
       results: 'getSearchedResults',
-      requesting: 'requestingSearches'
+      requesting: 'requestingSearches',
+      searchedValue: 'searchedValue',
+      types: 'searchedTypes'
     }),
     searchBoxClass () {
       return (this.msg) ? 'margin-less' : ''
     },
     placeholder () {
       return this.msg || 'Search'
-    },
-    chainId () {
-      let { net } = this
-      return (net) ? net.id : undefined
     },
     isLoading () {
       return this.requesting.length
@@ -54,7 +49,9 @@ export default {
   methods: {
     ...mapActions([
       'clearSearchedResults',
-      'fetchSearch'
+      'fetchSearch',
+      'prepareSearch',
+      'searchTypes'
     ]),
     ...mapGetters([
       'getPage',
@@ -67,62 +64,42 @@ export default {
     clearRequests () {
       this.clearSearchedResults()
     },
-    ephemeralMessage (msg, duration) {
-      duration = duration || 5000
-      let vm = this
-      this.msg = msg
-      if (this.msgTimeout) clearTimeout(this.msgTimeout)
-      this.msgTimeout = setTimeout(() => {
-        vm.msg = null
-        vm.msgTimeout = null
-      }, duration)
-    },
     goTo ({ type, value }) {
       let link = this.getSearchLink()({ type, value })
       if (!link) return
       this.clearRequests()
       this.$router.push(link)
     },
-
+    goToSearchPage (value) {
+      // let link = `/${r.search}/${value}`
+      // return this.$router.push(link)
+    },
     onResult ({ event, value }) {
-      this.clearRequests()
+      if (value) this.clearRequests()
     },
     onInput ({ event, value }) {
       this.clearRequests()
-      if (!value || value.length < 3) return
-      let type = 'addressByName'
-      this.fetchSearch({ value, type })
+      if (!value || value.length < 2) return
+      this.fetchSearch({ value })
     },
-    search ({ value, event }) {
-      value = String(value).replace(/[\W_]+/g, '')
-      this.clearRequests()
-      if (!value) return
-      let { chainId, lastBlock } = this
-
-      // prevents errors when the lastBlock is unknown
-      lastBlock = (lastBlock) ? lastBlock.number + 2 : undefined
-      let test = testSearchedValue(value, { chainId, lastBlock })
-      let types = Object.keys(test).filter(k => test[k])
+    async search ({ value, event }) {
+      await this.prepareSearch({ value })
+      value = this.searchedValue
+      let { types } = this
       if (!types || !types.length) {
-        this.$router.push(`/${r.search}/${value}`)
-        this.ephemeralMessage(`Please type: address, block number or tx hash`)
-      } else {
-        return this.searchTypes(value, types)
-      }
-    },
-    async searchTypes (value, types) {
-      if (types.length === 1) {
+        return this.goToSearchPage(value)
+      } else if (types.length === 1) {
         let type = types[0]
         return this.goTo({ type, value })
       } else {
-        for (let type of types) {
-          await this.fetchSearch({ value, type })
-        }
+        await this.searchTypes({ types, value })
         await this.waitForResults()
         let { results } = this
         // redirect when result once
-        if (results && results.length === 1) {
-          return this.goTo(results[0])
+        if (results) {
+          if (results.length === 1) return this.goTo(results[0])
+        } else {
+          this.goToSearchPage(value)
         }
       }
     },
