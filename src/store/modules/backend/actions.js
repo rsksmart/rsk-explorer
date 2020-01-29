@@ -157,3 +157,10 @@ export const clearResponses = ({ commit }, keys) => {
     commit('CLEAR_RESPONSE', key)
   }
 }
+
+export const clearRequests = ({ commit }, keys) => {
+  keys = (!Array.isArray(keys)) ? [keys] : keys
+  for (let key of keys) {
+    commit('CLEAR_REQUEST', key)
+  }
+}

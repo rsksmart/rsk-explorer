@@ -38,6 +38,10 @@ export const SET_REQUESTING = (state, [key, value]) => {
   if (key) Vue.set(state.requesting, key, value)
 }
 
+export const CLEAR_REQUEST = (state, key) => {
+  Vue.delete(state.requesting, key)
+}
+
 export const SET_RESPONSE = (state, [key, data]) => {
   data.sort = data.sort || {}
   if (!state.responses[key]) Vue.set(state.responses, key, {})
