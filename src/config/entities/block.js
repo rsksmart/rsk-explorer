@@ -88,8 +88,19 @@ const Block = () => {
       renderAsProps: { options: { decode: true } }
     }
   })
-  block.itemTitle = true
+  block.itemTitle = false
   return block
+}
+
+const MiningFields = () => {
+  let miner = Block().fields
+  return {
+    miner,
+    bitcoinMergedMiningHeader: { trim: 'auto' },
+    bitcoinMergedMiningCoinbaseTransaction: { trim: 'auto' },
+    bitcoinMergedMiningMerkleProof: { trim: 'auto' },
+    hashForMergedMining: { trim: 'auto' }
+  }
 }
 
 const BlockBox = () => {
@@ -105,6 +116,13 @@ const BlockBox = () => {
   return blocks
 }
 
+const BlockMining = () => {
+  let block = Block()
+  block.fields = MiningFields()
+  return block
+}
+
+export const blockMining = BlockMining()
 export const blockBox = BlockBox()
 export const block = Block()
 export const blocks = Blocks()

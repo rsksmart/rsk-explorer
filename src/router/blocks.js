@@ -26,9 +26,17 @@ export default [
         getPrevNext: true
       },
       mainContent: [
-        { component: DataItem }
+        {
+          name: 'Block',
+          component: DataItem
+        },
+        {
+          name: 'Mining',
+          component: DataItem,
+          dataType: 'blockMining'
+        }
       ],
-      title: '',
+      title: 'Block',
       tabs: [
         {
           name: 'transactions',
