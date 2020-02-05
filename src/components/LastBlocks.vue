@@ -9,7 +9,7 @@
         button.txt-center.info(@click='updateBlocks')
           em there are&nbsp;
             strong.badge {{ pending }}&nbsp;
-          em new blocks, click  here to update the list
+          em new blocks, click here to update the list
       template(v-for='block,index in blocks')
         block-box(v-if='index <= 10' :block='block')
     .msg(v-else)
@@ -51,6 +51,8 @@ export default {
 <style lang="stylus">
   .blocks-wrapper
     .blocks
+      .pending-msg
+        white-space: pre-wrap;
       .block-box
         .block:first-child
           margin-top 0 !important
