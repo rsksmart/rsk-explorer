@@ -52,7 +52,7 @@ export default {
   .blocks-wrapper
     .blocks
       .pending-msg
-        white-space: pre-wrap;
+        white-space: pre-wrap
       .block-box
         .block:first-child
           margin-top 0 !important
