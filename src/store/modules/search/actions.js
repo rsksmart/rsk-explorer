@@ -8,13 +8,23 @@ const createSearchKey = (value, type) => {
 
 export const clearSearchedResults = async ({ commit, dispatch, getters }) => {
   let keys = getters.searchKeysRequested
-  commit('SET_SEARCH_RESULTS')
   commit('CLEAR_SEARCH_REQUEST')
   await dispatch('clearRequests', keys)
   return dispatch('clearResponses', keys)
 }
 
+export const updateSearchedValue = async ({ commit, dispatch, state }, value) => {
+  value = String(value).replace(/[\W_]+/g, '')
+  if (state.value !== value) {
+    commit('SET_SEARCH_VALUE', value)
+    await dispatch('clearSearchedResults')
+  }
+  return value
+}
+
 export const fetchSearch = async ({ commit, dispatch, getters }, { value, type }) => {
+  value = await dispatch('updateSearchedValue', value)
+  if (!value) return
   type = type || DEFAULT_TYPE
   let key = createSearchKey(value, type)
   let payload = Object.assign({}, getters.getSearchPayloadByType(type))
@@ -28,10 +38,9 @@ export const fetchSearch = async ({ commit, dispatch, getters }, { value, type }
   commit('ADD_SEARCH_REQUEST', [key, { payload, type }])
 }
 
-export const prepareSearch = ({ commit, rootGetters }, { value }) => {
-  value = String(value).replace(/[\W_]+/g, '')
+export const prepareSearch = async ({ commit, dispatch, rootGetters }, { value }) => {
+  value = await dispatch('updateSearchedValue', value)
   if (!value) return
-  commit('SET_SEARCH_VALUE', value)
   let chainId = rootGetters.chainId
   let { number: lastBlock } = rootGetters.lastBlock || {}
   if (lastBlock) lastBlock += 2

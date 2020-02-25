@@ -10,9 +10,10 @@
       :cssClass="searchBoxClass")
 </template>
 <script>
+import { ROUTES as r } from '../config/types'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import CtrlSearch from './controls/CtrlSearch'
-// oconst RESULTS_LENGTH = 10
+// const RESULTS_LENGTH = 10
 export default {
   name: 'search-box',
   components: {
@@ -20,6 +21,7 @@ export default {
   },
   data () {
     return {
+      value: undefined,
       msg: `Search by: address / block / tx / name`,
       msgTimeout: null,
       requestingTimeout: null
@@ -31,11 +33,19 @@ export default {
     }),
     ...mapGetters({
       lastBlock: 'lastBlock',
-      results: 'getSearchedResults',
       requesting: 'requestingSearches',
-      searchedValue: 'searchedValue',
+      searched: 'searchedValue',
       types: 'searchedTypes'
     }),
+    ...mapGetters([
+      'getSearchedResults',
+      'searchPathChanged',
+      'isSearchPage'
+    ]),
+    results () {
+      let { getSearchedResults, isSearchPage, searched, value } = this
+      return (!isSearchPage && value === searched) ? getSearchedResults : []
+    },
     searchBoxClass () {
       return (this.msg) ? 'margin-less' : ''
     },
@@ -71,20 +81,30 @@ export default {
       this.$router.push(link)
     },
     goToSearchPage (value) {
-      // let link = `/${r.search}/${value}`
-      // return this.$router.push(link)
+      let link = `/${r.search}/${value}`
+      this.$router.push(link, () => { })
     },
+
+    setValue (value) {
+      this.value = value
+      if (this.isSearchPage) {
+        history.pushState({}, document.title, value)
+      }
+    },
+
     onResult ({ event, value }) {
-      if (value) this.clearRequests()
+      this.setValue(value)
+      // if (value) this.clearRequests()
     },
     onInput ({ event, value }) {
       this.clearRequests()
       if (!value || value.length < 2) return
+      this.setValue(value)
       this.fetchSearch({ value })
     },
     async search ({ value, event }) {
       await this.prepareSearch({ value })
-      value = this.searchedValue
+      value = this.searched
       let { types } = this
       if (!types || !types.length) {
         return this.goToSearchPage(value)
@@ -95,9 +115,9 @@ export default {
         await this.searchTypes({ types, value })
         await this.waitForResults()
         let { results } = this
-        // redirect when result once
-        if (results) {
-          if (results.length === 1) return this.goTo(results[0])
+        // redirect when there is only one result
+        if (results && results.length === 1) {
+          return this.goTo(results[0])
         } else {
           this.goToSearchPage(value)
         }

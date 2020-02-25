@@ -25,7 +25,7 @@
           a.button(
             :href="result.link"
             @touchend.passive="gotoResult($event,i)"
-            @click.native="gotoResult($event,i)") {{result.name || result.value }}
+            @click="gotoResult($event,i)") {{result.name || result.value }}
 </template>
 <script>
 import { clamp } from '../../lib/js/utils'

@@ -5,7 +5,6 @@ export default function () {
     payloads,
     value: undefined,
     types: {},
-    requested: {},
-    results: []
+    requested: {}
   }
 }

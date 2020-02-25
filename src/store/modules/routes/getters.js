@@ -96,3 +96,5 @@ export const getNewRoute = (state, getters, rootState) => (key, dest) => {
     return { name, params, query, hash }
   }
 }
+
+export const getRouterPath = (state, getters, rootState) => rootState.route.path

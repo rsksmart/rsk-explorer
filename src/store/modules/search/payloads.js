@@ -12,43 +12,50 @@ export const createPayloads = (payloads) => {
   return payloads
 }
 
+const getAddressName = data => {
+  let { address, name } = data
+  return `${name} ${address}`
+}
+
+const getAddressTime = data => {
+  let { createdByTx } = data
+  let { timestamp } = createdByTx || {}
+  return timestamp
+}
+
 const requestPayloads = {
   block: {
     module: 'blocks',
     action: 'getBlock',
     searchField: 'hash',
     fields: { number: 1, hash: 1 },
-    getName: (data) => {
-      return `block ${data.hash}`
-    }
+    getName: data => `block ${data.hash}`
+
   },
   transaction: {
     module: 'transactions',
     action: 'getTransaction',
     searchField: 'hash',
-    getName: (data) => {
-      return `transaction ${data.hash}`
-    }
+    getName: data => `transaction ${data.hash}`
   },
   address: {
-    type: 'address'
+    module: 'addresses',
+    action: 'getAddress',
+    type: 'address',
+    searchField: 'address',
+    fields: { name: 1, address: 1 },
+    getTime: getAddressTime,
+    getName: getAddressName
   },
   addressByName: {
-    type: 'address',
     module: 'addresses',
     action: 'findAddresses',
     searchField: 'name',
+    type: 'address',
     field: 'address',
     fields: { name: 1, address: 1 },
-    getTime: (data) => {
-      let { createdByTx } = data
-      let { timestamp } = createdByTx || {}
-      return timestamp
-    },
-    getName: (data) => {
-      let { address, name } = data
-      return `${name} ${address}`
-    }
+    getTime: getAddressTime,
+    getName: getAddressName
   }
 }
 

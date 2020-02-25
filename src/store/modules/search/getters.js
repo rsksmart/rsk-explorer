@@ -49,3 +49,8 @@ export const searchedTypes = state => {
   let types = state.types
   return Object.keys(types).filter(k => types[k])
 }
+
+export const isSearchPage = (state, getters) => {
+  let re = new RegExp(`^/${r.search}`)
+  return re.test(getters.getRouterPath)
+}
