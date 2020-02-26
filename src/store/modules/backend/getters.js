@@ -67,3 +67,8 @@ export const chainId = state => {
 export const isConfigLoaded = state => {
   return Object.keys(state.systemSettings).length > 0
 }
+
+export const netName = state => {
+  let { name } = state.systemSettings.net || {}
+  return name
+}

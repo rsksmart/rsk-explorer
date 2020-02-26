@@ -12,7 +12,7 @@
                 include assets/svg/logo-alt.svg
               .title
                 h1.logo.link rsk explorer
-                sub.net.gray {{netName}}
+                sub.net.gray {{networkName}}
           .header-content
             search-box
           .nav(:class='(menu) ? "open":""')
@@ -89,16 +89,16 @@ export default {
       appSize: 'getSize',
       dbIsOutdated: 'dbIsOutdated'
     }),
-    netName () {
-      let { name } = this.net || {}
-      if (name) name = name.replace('RSK', '').trim().toLowerCase()
-      return name
-    },
+    ...mapGetters(['netName']),
     bigMenu () {
       return this.isRoute('home')
     },
     topMsg () {
       return (this.dbIsOutdated) ? 'DB_OUTDATED' || null : null
+    },
+    networkName () {
+      let name = this.netName || ''
+      return (name) ? name.replace('RSK', '').trim().toLowerCase() : name
     }
   },
   methods: {
