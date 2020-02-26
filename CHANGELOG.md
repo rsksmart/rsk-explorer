@@ -1,19 +1,81 @@
 # Changelog
 
-## [Unreleased]
+## [1.1.0] 26-02-2020
 
 ### Added
 
-- Stats bar that shows: circulating supply, net hashrate and active accounts
-- Metadata fields to block (txDensity, hashrate)
+- Mining information to blocks
+- Search page
+- Check Address page
+- Search results while typing
+- Address search by name
+- Block search by hash
+- EIP1191 support: display checksummed addresses, check address checksum on search
 
 ### Changed
 
-- TxChart by TxDensityChart
+- Menu: change media queries and remove 'home' item
 
 ### Fixed
 
-- Box margins for small devices
+- Display of field-value in tables
+- store/backend/actions/socketData()
+
+## [1.0.6] 2020-01-13
+
+### Changed
+
+- Search input by custom component
+- Socket.io configuration, try to use WS first
+
+## [1.0.5] 2020-01-10
+
+### Changed
+  
+- vue-gtag version
+
+### Fixed
+
+- BigField, rlp selection at start
+
+## [1.0.4] 2020-01-09
+
+### Added
+
+- Privacy policy in footer
+- Optional google tag tracking
+- Licence
+- Field descriptions
+- Circle-CI configuration
+- Network name in header
+- Block extradata decoding
+- TxDensity & hashrate in BlockBox
+- Metadata fields to block
+- Stats bar that shows: circulating supply, net hashrate and active accounts
+
+
+### Changed
+
+- Copyright date
+- localStorage provider
+- entities/eventId
+
+### Fixed
+
+- Field title on grid view
+- Box margins for small screens
+
+### Removed
+
+- BlockHashRate from BlockBox
+
+## [1.0.3] 2019-11-15
+
+### Fixed
+
+- Transaction fee calculation
+- components/VerifyContract, show nightly versions
+- Display of large events
 
 ## [1.0.2] 2019-09-26
 
