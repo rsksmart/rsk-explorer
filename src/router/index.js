@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
   let r = Object.assign({}, to)
   r.hash = ''
-  router.replace(r)
+  router.replace(r).catch(() => { })
 })
 
 /**

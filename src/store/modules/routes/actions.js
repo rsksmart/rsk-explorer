@@ -29,7 +29,7 @@ export const updateRouterQuery = ({ state, getters, dispatch }, { query, hash, k
 
 export const routerPush = ({ state, commit, getters }, { query, hash, key }) => {
   query = getters.parseQuery(query, key)
-  router.push({ query, hash })
+  router.push({ query, hash }, () => { })
 }
 
 export const updateQuery = (query, update) => {
