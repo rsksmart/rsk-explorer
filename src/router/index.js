@@ -55,7 +55,8 @@ router.afterEach((to, from) => {
 function checkBeforeEnter (to, from, next) {
   let chainId = store.getters.chainId
   let { params } = Object.assign({}, to)
-  let { address } = params
+  let { address, hash } = params
+  if (hash) params.hash = normalizeSearch(hash)
   if (!isCheckAddressPath(to) && address) {
     if (!isValidAddress(address, chainId)) {
       next(`/${r.checkAddress}/${address}`)
