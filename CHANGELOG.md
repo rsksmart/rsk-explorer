@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Support uppercase in block hash and tx hash
+
+### Fixed
+
+- Decimals on token accounts views
+
 ## [1.1.0] 26-02-2020
 
 ### Added
