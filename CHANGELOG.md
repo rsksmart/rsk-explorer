@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [1.1.1]
 
 ### Added
 
@@ -8,7 +8,7 @@
 
 ### Fixed
 
-- Decimals on token accounts views
+- Decimals in token accounts views
 
 ## [1.1.0] 26-02-2020
 
