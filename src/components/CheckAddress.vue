@@ -16,6 +16,9 @@
           strong(:class="checkClass") {{(checksumValid) ? 'valid':'invalid' }}&nbsp;
           span for the current network:&nbsp;
           strong {{netName}} ({{chainId}})
+      .pa(v-if='!isValid && isAddress')
+        h3.warn Proceed anyway
+        a(:href='unchecksummedPath') Go to unchecksummed address
       .networks(v-if="networks.length")
         p.info The address match with these networks:
         template(v-for="net in networks")
@@ -29,6 +32,7 @@
 
 </template>
 <script>
+import { ROUTES } from '../config/types'
 import { mapGetters } from 'vuex'
 import {
   searchChecksummedNetworks,
@@ -67,6 +71,11 @@ export default {
     },
     checkClass () {
       return (this.checksumValid) ? 'info' : 'error'
+    },
+    unchecksummedPath () {
+      let { address } = this
+      address = address.toLowerCase()
+      return `/${ROUTES.address}/${address}`
     }
   },
   methods: {
