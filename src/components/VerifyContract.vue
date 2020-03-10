@@ -103,7 +103,7 @@ import CtrlRadioGrp from './controls/CtrlRadioGrp'
 import FormRow from './FormRow'
 import { camelCaseTo } from '../filters/TextFilters'
 import { ObjectIdSecondsElapsed, isAddress } from '../lib/js/utils'
-import { messages, formFields } from '../config/verifyContractTexts'
+import { messages, formFields } from '../config/texts/verifyContract'
 import { ROUTES } from '../config/types'
 
 const KEYS = {
