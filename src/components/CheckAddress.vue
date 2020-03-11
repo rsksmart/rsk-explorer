@@ -3,24 +3,25 @@
     h2 Check address
     .address {{address}}
     .error(v-if='!isAddress')
-        p Is not an address
+        p {{messages.IS_NOT_ADDRESS}}
     div(v-else)
       .valid(v-if="isValid")
-        h3 The address is valid
+        h3 {{messages.VALID_ADDRESS}}
       .invalid.error(v-else)
-        h3.error Invalid address
+        h3.error {{messages.INVALID_ADDRESS}}
       .checksum
         h3(:class="checkClass") Checksum
         p
-          span The checksum is&nbsp;
-          strong(:class="checkClass") {{(checksumValid) ? 'valid':'invalid' }}&nbsp;
-          span for the current network:&nbsp;
+          span {{messages.CHECKSUM_IS}} &nbsp;
+          strong(:class="checkClass") {{(checksumValid) ? messages.VALID:messages.INVALID }}&nbsp;
+          span {{messages.FOR_NET}}:&nbsp;
           strong {{netName}} ({{chainId}})
       .pa(v-if='!isValid && isAddress')
         h3.warn Proceed anyway
-        a(:href='unchecksummedPath') Go to unchecksummed address
+        p {{messages.PA_MESSAGE}}&nbsp;
+          a.btn.btn-brand(:href='unchecksummedPath') {{messages.GOTO_UNCHECKSUMED}}
       .networks(v-if="networks.length")
-        p.info The address match with these networks:
+        p.info {{messages.MATCH}}:
         template(v-for="net in networks")
           ul.net.plain
             li
@@ -33,6 +34,7 @@
 </template>
 <script>
 import { ROUTES } from '../config/types'
+import { messages } from '../config/texts/checkAddress'
 import { mapGetters } from 'vuex'
 import {
   searchChecksummedNetworks,
@@ -44,6 +46,9 @@ import {
 export default {
   name: 'check-address',
   props: ['address'],
+  data () {
+    return Object.assign({}, { messages })
+  },
   computed: {
     ...mapGetters(['chainId', 'netName']),
     isAddress () {
