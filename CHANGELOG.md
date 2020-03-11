@@ -1,6 +1,12 @@
 # Changelog
 
-## [1.1.1]
+## [1.1.2] 2020-03-11
+
+### Changed
+
+- Disable address checksum
+
+## [1.1.1] 2020-03-04
 
 ### Added
 
@@ -10,7 +16,7 @@
 
 - Decimals in token accounts views
 
-## [1.1.0] 26-02-2020
+## [1.1.0] 2020-02-26
 
 ### Added
 
