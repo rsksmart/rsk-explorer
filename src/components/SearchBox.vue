@@ -78,7 +78,7 @@ export default {
       let link = this.getSearchLink()({ type, value })
       if (!link) return
       this.clearRequests()
-      this.$router.push(link)
+      this.$router.push(link, () => { })
     },
     goToSearchPage (value) {
       let link = `/${r.search}/${value}`
