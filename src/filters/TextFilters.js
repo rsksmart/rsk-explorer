@@ -37,3 +37,15 @@ export const checksumAddress = Vue.filter('checksum-address', address => {
   const chainId = store.getters.chainId
   return toChecksumAddress(address, chainId)
 })
+
+export const textTemplate = Vue.filter('txt-template', (txt, data) => {
+  try {
+    Object.entries(data).forEach(field => {
+      let [key, value] = field
+      txt = txt.replace(`@${key}`, value)
+    })
+    return txt
+  } catch (err) {
+    return txt
+  }
+})
