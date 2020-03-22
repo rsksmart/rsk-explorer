@@ -8,8 +8,8 @@
         span Update Error:&nbsp;
         small {{updateError.error}}
     template(v-if='!error')
-      .messages(v-if='msgs')
-        message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data')
+      .messages(v-if='pageMessages')
+        message(v-for='msg,key in pageMessages' :message='msg' :key='key' :data='data')
       //- Header
       .page-header(v-if='mainContent')
         item-navigator(v-if='!isTable' :next='next' :prev='prev' :total='total' :regKey='dataKey()(dataType)')
@@ -190,6 +190,11 @@ export default {
         v[name] = this.getPageTotal()(name)
         return v
       }, {})
+    },
+    pageMessages () {
+      let { msgs, data } = this
+      if (typeof msgs === 'function') msgs = msgs(data)
+      return msgs
     }
   },
   methods: {
