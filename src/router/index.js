@@ -3,7 +3,7 @@ import store from '../store/'
 import Router from 'vue-router'
 import routes from './routes'
 import { normalizeSearch } from '../lib/js/utils'
-// import { isValidAddress } from 'rsk-utils/dist/addresses'
+import { isValidAddress } from 'rsk-utils/dist/addresses'
 import { ROUTES as r } from '../config/types'
 
 Vue.use(Router)
@@ -53,11 +53,19 @@ router.afterEach((to, from) => {
  *  Navigation guard for all routes
  */
 function checkBeforeEnter (to, from, next) {
-  // let chainId = store.getters.chainId
+  const chainId = store.getters.chainId
   const { params } = Object.assign({}, to)
   const { address, hash } = params
   if (hash) params.hash = normalizeSearch(hash)
-  if (!isCheckAddressPath(to) && address) {
+  if (isAddressPath(to, address)) {
+    // checksum error
+    let error
+    if (!isValidAddress(address, chainId)) {
+      error = address
+    }
+    if (!store.getters.getChecksumError(address)) {
+      store.commit('CHECKSUM_ERROR', error)
+    }
     to.params.address = normalizeSearch(address)
     next()
   } else {
@@ -65,8 +73,12 @@ function checkBeforeEnter (to, from, next) {
   }
 }
 
-function isCheckAddressPath ({ path }) {
+/* function isCheckAddressPath ({ path }) {
   return new RegExp(`^/${r.checkAddress}`).test(path)
+} */
+
+function isAddressPath ({ path }, address) {
+  return `/${r.address}/${address}` === path
 }
 
 export default router

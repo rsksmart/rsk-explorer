@@ -3,6 +3,8 @@ import DataItem from '@/components/DataItem'
 import ContractCode from '@/components/ContractCode'
 import { ROUTES as r } from '../config/types'
 import { TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
+import store from '../store/'
+import { fillMessage, CHECKSUM_WARN } from '../config/messages'
 
 export default [
   {
@@ -27,6 +29,16 @@ export default [
     props: {
       module: 'addresses',
       action: 'getAddress',
+      msgs: (data) => {
+        let msgs = []
+        data = data || {}
+        let { address } = data
+        let checksumError = store.getters.getChecksumError(address)
+        if (checksumError) {
+          msgs.push(fillMessage(CHECKSUM_WARN, { address: checksumError }))
+        }
+        return msgs
+      },
       title: (data) => {
         let title = (data.contractType === 'ERC20') ? 'token' : ''
         title = (data.name) ? `${data.name} ${title}` : title
