@@ -54,14 +54,14 @@ export default {
     },
     cubes () {
       let cubes = []
-      let cs = this.cs
-      let cc = this.cc
-      let cmod = this.mod
-      let cx = this.size / 1.8
-      let cy = this.size / 2
-      let crows = this.crows
+      const cs = this.cs
+      const cc = this.cc
+      const cmod = this.mod
+      const cx = this.size / 1.8
+      const cy = this.size / 2
+      const crows = this.crows
       for (let j = 0; j < crows; j++) {
-        let cyy = cy - (cs * j)
+        const cyy = cy - (cs * j)
         for (let h = 0; h < cmod; h++) {
           cubes = this.cLine(cubes, cx + (cc.x * h), cyy + (cc.y * h))
         }
@@ -71,17 +71,17 @@ export default {
   },
   methods: {
     cLine (cubes, cx, cy) {
-      let cc = this.cc
-      let cmod = this.mod
+      const cc = this.cc
+      const cmod = this.mod
       for (let i = 1; i <= cmod; i++) {
-        let x = cx - (i * cc.x)
-        let y = cy + (i * cc.y)
+        const x = cx - (i * cc.x)
+        const y = cy + (i * cc.y)
         cubes.push({ x, y })
       }
       return cubes
     },
     cubeStyle (cube) {
-      let cb = this.cubeStyleCb
+      const cb = this.cubeStyleCb
       if (cb && typeof (cb) === 'function') {
         return cb(cube)
       } else {

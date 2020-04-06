@@ -57,7 +57,7 @@ export default {
           return d.txDensity
         },
         formatLabel (bar) {
-          let label = []
+          const label = []
           label.push('#' + bar.d.number)
           label.push('txd:' + bar.d.txDensity)
           label.push('txs:' + bar.d.transactions)
@@ -67,14 +67,14 @@ export default {
     }
   },
   mounted () {
-    let vm = this
+    const vm = this
     this.$nextTick(() => {
       vm.onResize()
     })
   },
   watch: {
     asize () {
-      let vm = this
+      const vm = this
       this.$nextTick(() => {
         vm.onResize()
       })
@@ -97,20 +97,20 @@ export default {
         let { txDensity } = _metadata
         txDensity = getTxDensity(txDensity)
         transactions = transactions.length
-        let time = this.blocks[0].timestamp - timestamp
+        const time = this.blocks[0].timestamp - timestamp
         return { timestamp, txDensity, number, transactions, time }
       })
     }
   },
   methods: {
     onResize () {
-      let w = this.$el.parentElement.offsetWidth
-      let h = w / 3.5
+      const w = this.$el.parentElement.offsetWidth
+      const h = w / 3.5
       this.size = Object.assign({}, { w, h })
     },
     barClick (event) {
-      let bar = event.bar || {}
-      let blockNumber = (bar.d) ? bar.d.number : null
+      const bar = event.bar || {}
+      const blockNumber = (bar.d) ? bar.d.number : null
       if (blockNumber) this.$router.push({ path: `${ROUTES.block}/${blockNumber}` })
     }
   }

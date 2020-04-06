@@ -32,7 +32,7 @@ test('txStatus', [
 
 function test (name, values) {
   describe(`# ${name}`, () => {
-    for (let c of values) {
+    for (const c of values) {
       const method = textFilters[name]
       const [value, expected] = c
       it(`${addQuotes(value)} should be ${addQuotes(expected)}`, () => {

@@ -20,23 +20,23 @@ export default {
     }
   },
   created () {
-    let options = this.options || {}
+    const options = this.options || {}
     this.forceTitle = options.forceTitle || false
     this.forceIcon = options.forceIcon || false
     this.hideIcon = options.hideIcon || false
   },
   computed: {
     showTitle () {
-      let field = this.field || {}
+      const field = this.field || {}
       return field.showTitle || !field.hideTitle || this.forceTitle
     },
     showIcon () {
-      let { field, forceIcon, hideIcon } = this
+      const { field, forceIcon, hideIcon } = this
       if (!field || (hideIcon && !forceIcon)) return false
       return (field.titleIcon || forceIcon) && field.icon
     },
     description () {
-      let { description, hideDescription } = this.field
+      const { description, hideDescription } = this.field
       return (!hideDescription) ? description : false
     }
   }

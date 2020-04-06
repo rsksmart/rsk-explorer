@@ -68,7 +68,7 @@ export default {
       return (this.isTable) ? this.fields || Object.keys(this.data[0]) : null
     },
     pageOptions () {
-      let options = this.page.pages || {}
+      const options = this.page.pages || {}
       options.key = this.reqKey
       return options
     },

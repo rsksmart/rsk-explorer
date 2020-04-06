@@ -10,7 +10,7 @@ highlightjs.registerLanguage('solidity', solidity)
 export const hljs = Vue.directive('hljs', {
   deep: true,
   bind: function (el, binding) {
-    let targets = el.querySelectorAll('code')
+    const targets = el.querySelectorAll('code')
     targets.forEach((target) => {
       if (binding.value) {
         target.textContent = binding.value
@@ -19,7 +19,7 @@ export const hljs = Vue.directive('hljs', {
     })
   },
   componentUpdated: function (el, binding) {
-    let targets = el.querySelectorAll('code')
+    const targets = el.querySelectorAll('code')
     targets.forEach((target) => {
       if (binding.value) {
         target.textContent = binding.value

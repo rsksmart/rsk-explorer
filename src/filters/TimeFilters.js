@@ -3,13 +3,13 @@ import * as moment from 'moment'
 import { isDigits } from './NumberFilters.js'
 
 export const tSecondsAgo = Vue.filter('t-seconds-ago', timestamp => {
-  let time = moment(timestamp).format('s')
+  const time = moment(timestamp).format('s')
   return sAgo(time)
 })
 
 export const mSecondsAgo = Vue.filter('m-seconds-ago', miliseconds => {
   if (!miliseconds) return 0
-  let seconds = mToSeconds(miliseconds)
+  const seconds = mToSeconds(miliseconds)
   return sAgo(seconds)
 })
 
@@ -41,7 +41,7 @@ export const abbreviatedTimeObj = time => {
   if (time < 1000) return { time, suffix }
   time = Math.floor(time / 1000)
   if (time < 1) return { time, suffix }
-  let ts = {
+  const ts = {
     s: 60,
     m: 3600,
     h: 86400, // 60*60*24
@@ -51,8 +51,8 @@ export const abbreviatedTimeObj = time => {
   suffix = 's'
   let ant = 1
   if (time < 60) return { time, suffix }
-  for (let t in ts) {
-    let seconds = ts[t]
+  for (const t in ts) {
+    const seconds = ts[t]
     suffix = t
     if (time < seconds) {
       time = time / ant
@@ -65,13 +65,13 @@ export const abbreviatedTimeObj = time => {
 }
 
 export const abbrTime = Vue.filter('abbr-time', time => {
-  let obj = abbreviatedTimeObj(time)
+  const obj = abbreviatedTimeObj(time)
   return obj.time + '' + obj.suffix
 })
 
 export const abbrTimeSeconds = Vue.filter('abbr-time-seconds', time => {
   if (time < 900) return '0s'
-  let obj = abbreviatedTimeObj(time)
+  const obj = abbreviatedTimeObj(time)
   return obj.time + '' + obj.suffix
 })
 
@@ -82,7 +82,7 @@ export const sSeconds = Vue.filter('s-seconds', time => {
 
 export const formatDate = Vue.filter('format-date', (timestamp, format = 'YYYY/MM/DD HH:mm:ss') => {
   timestamp = Number(timestamp)
-  let date = new Date(timestamp)
+  const date = new Date(timestamp)
   return moment(String(date.toISOString())).format(format)
 })
 
@@ -102,6 +102,6 @@ export const miliseconds = Vue.filter('miliseconds', time => {
   time = parseInt(time)
   if (time === 0) return time
   if (time < 1000) return time + 'ms'
-  let seconds = Math.floor(time / 1000)
+  const seconds = Math.floor(time / 1000)
   return sAgo(seconds)
 })

@@ -25,14 +25,14 @@ export default {
     }
   },
   mounted () {
-    let vm = this
+    const vm = this
     this.$nextTick(() => {
       vm.onResize()
     })
   },
   watch: {
     asize () {
-      let vm = this
+      const vm = this
       this.$nextTick(() => {
         vm.onResize()
       })
@@ -55,14 +55,14 @@ export default {
       return Object.assign({ size: this.size }, this.opts)
     },
     hRatio () {
-      let hr = this.heightRatio
+      const hr = this.heightRatio
       return (undefined !== hr) ? hr : 3.5
     }
   },
   methods: {
     onResize () {
-      let w = this.$el.parentElement.offsetWidth
-      let h = w / this.hRatio
+      const w = this.$el.parentElement.offsetWidth
+      const h = w / this.hRatio
       this.size = Object.assign({}, { w, h })
     }
   }

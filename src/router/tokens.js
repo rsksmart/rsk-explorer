@@ -32,8 +32,8 @@ export default [
     component: DataPage,
     props: {
       title: (data) => {
-        let cData = data._contractData || {}
-        let title = 'Token Account'
+        const cData = data._contractData || {}
+        const title = 'Token Account'
         return (cData.name) ? `${cData.name} ${title}` : title
       },
       module: 'tokens',

@@ -37,16 +37,16 @@ export default {
       return this.size - this.strokeWidth
     },
     viewBox () {
-      let s = this.size
+      const s = this.size
       return `0 0 ${s} ${s}`
     },
     stroke () {
-      let percent = this.percent
-      let long = this.circumference
+      const percent = this.percent
+      const long = this.circumference
       return `${long / 100 * percent}, ${long}`
     },
     strokeWidth () {
-      let sw = this.strokeW
+      const sw = this.strokeW
       return sw || this.size / 4
     },
     radius () {
@@ -59,11 +59,11 @@ export default {
       return this.radius * 2
     },
     path () {
-      let s = this.s
-      let d = this.diameter
-      let r = this.radius
-      let sw = this.strokeWidth
-      let p = []
+      const s = this.s
+      const d = this.diameter
+      const r = this.radius
+      const sw = this.strokeWidth
+      const p = []
       p.push(`M ${s / 2 + sw / 2} ${sw / 2}`)
       p.push(`a${r} ${r}  0 0 1 0 ${d}`)
       p.push(`a${r} ${r}  0 0 1 0 -${d}`)
@@ -78,8 +78,8 @@ export default {
       this.interval = requestAnimationFrame(this.animate)
     },
     animate () {
-      let time = Date.now() - this.startTime
-      let duration = this.duration
+      const time = Date.now() - this.startTime
+      const duration = this.duration
       this.percent = parseInt((time * 100) / duration)
       if (this.percent > 99) this.setStartTime()
       this.nextFrame()

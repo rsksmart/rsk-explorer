@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     updateValue (event) {
-      let value = event.target.checked
+      const value = event.target.checked
       this.$emit('change', value)
     }
   }

@@ -41,11 +41,11 @@ export default {
       return this.size / 2
     },
     width () {
-      let { size, dots, space } = this
+      const { size, dots, space } = this
       return size * dots + space * (dots + 1)
     },
     viewBox () {
-      let { width, size } = this
+      const { width, size } = this
       return `0 0 ${width} ${size}`
     }
   },
@@ -54,9 +54,9 @@ export default {
       this.interval = requestAnimationFrame(this.tick)
     },
     tick () {
-      let { lastTick, drawDots } = this
-      let time = Date.now()
-      let d = 1 + Math.pow(drawDots, 2)
+      const { lastTick, drawDots } = this
+      const time = Date.now()
+      const d = 1 + Math.pow(drawDots, 2)
       if (time - (this.dotDuration / d) > lastTick) {
         this.lastTick = time
         this.animate()
@@ -64,7 +64,7 @@ export default {
       this.nextFrame()
     },
     animate () {
-      let { drawDots, dots } = this
+      const { drawDots, dots } = this
       if (drawDots >= dots) {
         this.direction = -1
       }

@@ -67,8 +67,8 @@ export default {
       elStyle: {
         'max-width': 'inherit !important',
         'overflow-x': 'hidden !important',
-        'display': 'block',
-        'position': 'absolute'
+        display: 'block',
+        position: 'absolute'
       },
       opts: {
         pos: 'top',
@@ -85,14 +85,14 @@ export default {
   created () {
     if (this.trim !== 'auto') this.elStyle = null
     if (this.options) {
-      for (let op in this.options) {
+      for (const op in this.options) {
         this.$set(this.opts, op, this.options[op])
       }
     }
   },
   mounted () {
     if (this.trim === 'auto') {
-      let vm = this
+      const vm = this
 
       this.$nextTick(() => {
         vm.autoSize()
@@ -101,14 +101,14 @@ export default {
   },
   computed: {
     trimLen () {
-      let trim = this.trim
+      const trim = this.trim
       return (trim !== 'auto') ? this.trim : this.autoTrimLen
     },
     trimed () {
       let trimed = [this.value]
-      let value = this.value
-      let trimAt = this.opts.trimAt
-      let len = this.value.length
+      const value = this.value
+      const trimAt = this.opts.trimAt
+      const len = this.value.length
       if (this.trimLen) {
         switch (trimAt) {
           case 'end':
@@ -125,26 +125,26 @@ export default {
       return trimed
     },
     tipPos () {
-      let pos = this.opts.pos
+      const pos = this.opts.pos
       if (pos === 'bottom' || pos === 'top') {
-        let p = (pos === 'top') ? 'bottom' : 'top'
+        const p = (pos === 'top') ? 'bottom' : 'top'
         return p + ':' + this.$el.clientHeight + 'px; left:0'
       }
       if (pos === 'left' || pos === 'right') {
-        let p = (pos === 'left') ? 'right' : 'left'
+        const p = (pos === 'left') ? 'right' : 'left'
         return p + ':' + this.$el.clientWidth + 'px;  bottom: -50%;'
       }
       return ''
     },
     tipClass () {
-      let css = []
+      const css = []
       if (this.anim) css.push('copying')
       if (this.value.length < 30) css.push('nowrap')
       return css
     },
     pointsClass () {
-      let css = []
-      let trimAt = this.opts.trimAt
+      const css = []
+      const trimAt = this.opts.trimAt
       let pos = 'right'
       if (this.clicked) css.push('clicked')
       if (trimAt !== 'start') pos = (trimAt === 'end') ? 'left' : 'center'
@@ -163,9 +163,9 @@ export default {
       const fontSize = parseInt(style.fontSize.match(/(\d+)px/)[1] || 16)
       if (size > parentWidth || this.opts.forceTrim) {
         let trimLen = parentWidth / fontSize / 2
-        let max = txt.length / 3
-        let trimMin = this.opts.trimMin
-        let trimMax = this.opts.trimMax
+        const max = txt.length / 3
+        const trimMin = this.opts.trimMin
+        const trimMax = this.opts.trimMax
         trimLen = (trimLen > trimMin) ? trimLen : trimMin
         if (trimMax) {
           if (trimLen > trimMax || !trimLen) trimLen = trimMax
@@ -176,10 +176,10 @@ export default {
       this.elStyle = ''
     },
     getTexWidth (txt, font) {
-      let canvas = document.createElement('canvas')
-      let ctx = canvas.getContext('2d')
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
       ctx.font = font
-      let size = ctx.measureText(txt)
+      const size = ctx.measureText(txt)
       return size.width
     },
     touch (value) {
@@ -189,7 +189,7 @@ export default {
       // timeout to close tip after, not for trimmeds
       if (this.show && !this.trimLen) {
         if (!this.closer) {
-          let vm = this
+          const vm = this
           this.closer = setTimeout(() => {
             vm.show = false
           }, 3000)

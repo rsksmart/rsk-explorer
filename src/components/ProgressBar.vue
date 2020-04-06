@@ -40,8 +40,8 @@ export default {
   methods: {
     animate () {
       if (!this.startTime) this.startTime = Date.now()
-      let time = Date.now() - this.startTime
-      let duration = this.duration
+      const time = Date.now() - this.startTime
+      const duration = this.duration
       this.percent = parseInt((time * 100) / duration)
       if (this.percent < 100) this.interval = requestAnimationFrame(this.animate)
     },

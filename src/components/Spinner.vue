@@ -36,7 +36,7 @@ export default {
     }
   },
   created () {
-    let { mod, speed } = this
+    const { mod, speed } = this
     this.limit = mod * mod * mod
     this.frameDuration = mod * speed
     this.prevFrame = Date.now()
@@ -53,9 +53,9 @@ export default {
       this.interval = requestAnimationFrame(this.animate)
     },
     animate () {
-      let date = Date.now()
-      let { prevFrame, frameDuration } = this
-      let elapsed = date - prevFrame
+      const date = Date.now()
+      const { prevFrame, frameDuration } = this
+      const elapsed = date - prevFrame
       if (elapsed < frameDuration) return this.nextFrame()
       this.show = (date - this.startTime >= this.delay)
       let step = this.step

@@ -5,7 +5,7 @@ export const autoUpdate = state => {
 
 export const getConfig = (state, getters) => (module, action, key) => {
   if (module && action) {
-    let stype = (state[key]) ? state[key][module] : null
+    const stype = (state[key]) ? state[key][module] : null
     return (stype && stype[action]) ? stype[action] : {}
   }
 }

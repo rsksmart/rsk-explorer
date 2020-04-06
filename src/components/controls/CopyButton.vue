@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     targetNode () {
-      let { refName, target } = this
+      const { refName, target } = this
       return (target) || this.$refs[refName]
     }
   },

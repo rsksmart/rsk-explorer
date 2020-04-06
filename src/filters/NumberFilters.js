@@ -6,12 +6,12 @@ export const numerals = Vue.filter('numerals', (num, fixed) => {
   num = Number(num)
   if (!fixed) fixed = 1
   fixed++
-  let prefix = d3.format('.' + fixed + 's')
+  const prefix = d3.format('.' + fixed + 's')
   return prefix(num)
 })
 
 export const numeralsSuffix = Vue.filter('numerals-suffix', (num) => {
-  let value = numerals(num)
+  const value = numerals(num)
   return value.replace(/\d/g, '').replace(/\./g, '')
 })
 
@@ -26,7 +26,7 @@ export const toInt = Vue.filter('to-int', (value) => {
 })
 
 export const locale = Vue.filter('locale', (value) => {
-  let format = d3.format(',d')
+  const format = d3.format(',d')
   return format(value)
 })
 

@@ -23,7 +23,7 @@ export default {
     }
   },
   created () {
-    let { decoded } = this
+    const { decoded } = this
     // select rlp if is available
     if (decoded && decoded.rlp) {
       this.field = 'rlp'
@@ -34,14 +34,14 @@ export default {
       return this.options || {}
     },
     decode () {
-      let { decode } = this.opts
+      const { decode } = this.opts
       return decode
     },
     decoded () {
       return (this.decode) ? decodeField(this.data) : null
     },
     value () {
-      let { decoded, field, data } = this
+      const { decoded, field, data } = this
       return (decoded && field) ? decoded[field] || data : data
     },
     rows () {

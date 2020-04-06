@@ -1,8 +1,8 @@
 import { Transactions, Tx, txStatusCss } from './transaction'
 
 const pool = () => {
-  let pool = Transactions()
-  let fields = ['hash', 'gas', 'from', 'to', 'value']
+  const pool = Transactions()
+  const fields = ['hash', 'gas', 'from', 'to', 'value']
   Object.keys(pool.fields).forEach(f => {
     if (!fields.includes(f)) delete pool.fields[f]
   })

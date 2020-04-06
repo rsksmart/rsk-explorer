@@ -3,7 +3,7 @@ import { tokenAmount } from '../../filters/TokensFilters'
 
 const addressFormatRow = (data, parentData) => {
   data._totalSupplyResult = totalSupplyField(data)
-  let decimals = data.decimals
+  const decimals = data.decimals
   data.decimals = (decimals && decimals !== '0x0') ? decimals : null
   return data
 }
@@ -28,9 +28,9 @@ const Addresses = () => {
 // type
 
 const Address = () => {
-  let address = Addresses()
+  const address = Addresses()
   address.formatRow = addressFormatRow
-  let fields = Object.assign(address.fields, {
+  const fields = Object.assign(address.fields, {
     address: {
       trim: 'auto'
     },
@@ -87,8 +87,8 @@ export const address = Address()
 export const addresses = Addresses()
 
 export const totalSupplyField = data => {
-  let totalSupply = data.totalSupply
-  let decimals = data.decimals
+  const totalSupply = data.totalSupply
+  const decimals = data.decimals
   if ((totalSupply && totalSupply !== '0x0') && decimals) {
     return tokenAmount(totalSupply, decimals)
   }

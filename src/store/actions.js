@@ -22,8 +22,8 @@ export const setDateInterval = ({ state, commit }) => {
 }
 
 export const updateBlocks = ({ state, commit }) => {
-  let blocks = state.backend.lastBlocks
-  let transactions = state.backend.lastTransactions
+  const blocks = state.backend.lastBlocks
+  const transactions = state.backend.lastTransactions
   commit('LAST_BLOCKS_TIME')
   commit('CLEAR_PENDING_BLOCKS')
   commit('SET_BLOCKS', blocks.slice())

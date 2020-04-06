@@ -151,7 +151,7 @@ export default {
     }
   },
   created () {
-    let { contractAddress, id } = this.$route.params
+    const { contractAddress, id } = this.$route.params
     this.getVersions()
     this.reset()
     if (id) this.setVerificationId(id)
@@ -169,19 +169,19 @@ export default {
     },
 
     verificationResultData () {
-      let { data } = this.verificationResult || {}
+      const { data } = this.verificationResult || {}
       return data
     },
 
     verificationErrors () {
-      let data = this.verificationResultData || {}
-      let { result } = data
+      const data = this.verificationResultData || {}
+      const { result } = data
       return (result) ? result.errors : null
     },
 
     verificationDone () {
-      let { verificationResultData } = this
-      let { match } = (verificationResultData) || {}
+      const { verificationResultData } = this
+      const { match } = (verificationResultData) || {}
       return undefined !== match
     },
 
@@ -189,19 +189,19 @@ export default {
       return this.verificationDone && this.verificationResultData.match === true
     },
     isWaiting () {
-      let requesting = Object.values(KEYS).map(key => this.isRequesting()(key)).find(v => v !== null)
+      const requesting = Object.values(KEYS).map(key => this.isRequesting()(key)).find(v => v !== null)
       return (requesting || this.timer) && !this.verificationDone
     },
     isWaitingForVerification () {
-      let { verificationId, verificationResult } = this
-      let requestingVerification = this.isRequesting()(KEYS.verificationResult)
+      const { verificationId, verificationResult } = this
+      const requestingVerification = this.isRequesting()(KEYS.verificationResult)
       return verificationId && !verificationResult && requestingVerification
     },
     verifierResponse () {
       let { data, error, updateError } = this.getPage()(KEYS.verify)
       error = error || updateError
       if (data && data.id) {
-        let { id } = data
+        const { id } = data
         this.setVerificationId(id)
       }
       return { data, error }
@@ -213,7 +213,7 @@ export default {
       return this.isRequesting()(KEYS.verify)
     },
     contract () {
-      let { data, error } = this.getPage()(KEYS.contract) || {}
+      const { data, error } = this.getPage()(KEYS.contract) || {}
       return { data, error }
     },
     contractData () {
@@ -226,11 +226,11 @@ export default {
       return data
     },
     isVerified () {
-      let { data } = this.getPage()(KEYS.isVerified)
+      const { data } = this.getPage()(KEYS.isVerified)
       return data
     },
     isVerifiable () {
-      let { isVerified, contract, verificationId } = this
+      const { isVerified, contract, verificationId } = this
       return !isVerified && contract.data && !verificationId
     },
     isNotAContract () {
@@ -239,20 +239,20 @@ export default {
       return address && isAddress(address) && data === null && error
     },
     versionsData () {
-      let { data } = this.getPage()(VERSIONS_KEY) || {}
+      const { data } = this.getPage()(VERSIONS_KEY) || {}
       return data
     },
     versionsDataError () {
-      let { error } = this.getPage()(VERSIONS_KEY) || {}
+      const { error } = this.getPage()(VERSIONS_KEY) || {}
       return error
     },
     verifierConnectionErrors () {
-      let { contractVerifierEnabled, versionsDataError } = this
-      let { verifierResponse } = this
+      const { contractVerifierEnabled, versionsDataError } = this
+      const { verifierResponse } = this
       return contractVerifierEnabled === false || versionsDataError || verifierResponse.error
     },
     versions () {
-      let { showAllVersions, versionsData } = this
+      const { showAllVersions, versionsData } = this
       let { builds, releases } = versionsData
       if (builds) builds = this.buildsList(builds)
       if (releases) releases = this.releasesList(releases)
@@ -260,32 +260,32 @@ export default {
     },
 
     evmVersions () {
-      let { data } = this.getPage()(EVM_VERSIONS_KEY) || {}
+      const { data } = this.getPage()(EVM_VERSIONS_KEY) || {}
       return data
     },
 
     isReadyToSend () {
-      let { address, settings, files, version, name, libs } = this
-      let libraries = libs.reduce((v, a, i) => {
-        let { name, address } = a
+      const { address, settings, files, version, name, libs } = this
+      const libraries = libs.reduce((v, a, i) => {
+        const { name, address } = a
         if (address && name) {
           v[name] = address
         }
         return v
       }, {})
-      let params = Object.assign({}, { address, settings, version, name })
+      const params = Object.assign({}, { address, settings, version, name })
       let ready = !Object.values(params).filter(v => undefined === v).length
       ready = (files.length) ? ready : false
       if (!ready) return false
-      let imports = [...files]
-      let source = imports[0].contents
+      const imports = [...files]
+      const source = imports[0].contents
       return Object.assign(params, { imports, source, libraries })
     },
     hasFiles () {
       return !!this.files.length
     },
     addressIsOk () {
-      let { address } = this
+      const { address } = this
       return (isAddress(address)) ? address : undefined
     },
     formErrors () {
@@ -296,7 +296,7 @@ export default {
       ]
     },
     isIdOutDated () {
-      let id = this.verificationId
+      const id = this.verificationId
       if (!id) return
       return ObjectIdSecondsElapsed(id) > ID_TIMEOUT_SECONDS
     }
@@ -326,7 +326,7 @@ export default {
       this.setVerificationId(undefined)
     },
     addLibrary () {
-      let empty = this.libs.find(l => l.name === '')
+      const empty = this.libs.find(l => l.name === '')
       if (!empty) this.libs.push({ name: '', address: '' })
     },
     cssClass (input) {
@@ -343,7 +343,7 @@ export default {
     },
 
     setVerificationId (id) {
-      let { address } = this
+      const { address } = this
       if (id === this.verificationId) return
       this.verificationId = id
       this.$router.replace({ params: { contractAddress: address, id } })
@@ -358,7 +358,7 @@ export default {
       const key = KEYS.verificationResult
       if (this.isRequesting()(key)) return
       if (this.verificationDone || this.verificationErrors) return
-      let id = this.verificationId
+      const id = this.verificationId
       if (id) {
         this.fetch({ key, params: { id }, action: 'getVerificationResult' })
         this.timer = setTimeout(() => {
@@ -406,14 +406,14 @@ export default {
     },
     buildsList (builds) {
       return builds.concat().reverse().reduce((v, a, i) => {
-        let { longVersion } = a
+        const { longVersion } = a
         v[longVersion] = longVersion
         return v
       }, {})
     },
     releasesList (releases) {
-      let newReleases = Object.assign({}, releases)
-      for (let p in newReleases) {
+      const newReleases = Object.assign({}, releases)
+      for (const p in newReleases) {
         newReleases[p] = newReleases[p].replace('soljson-v', '').replace('.js', '')
       }
       return newReleases
@@ -426,7 +426,7 @@ export default {
     },
 
     submit () {
-      let params = this.isReadyToSend
+      const params = this.isReadyToSend
       if (params) return this.requestVerification(params)
       this.clearErrors()
       if (!this.version) this.inputErrors.add('version')
@@ -435,14 +435,14 @@ export default {
     },
 
     async requestVerification (request) {
-      let action = 'verify'
-      let key = KEYS.verify
+      const action = 'verify'
+      const key = KEYS.verify
       return this.fetch({ action, params: { request }, key })
     },
     goToContractPage () {
-      let { address } = this
-      let path = `/${ROUTES.address}/${address}`
-      let query = { '__ctab': 'code' }
+      const { address } = this
+      const path = `/${ROUTES.address}/${address}`
+      const query = { __ctab: 'code' }
       this.$router.push({ path, query })
     }
   }

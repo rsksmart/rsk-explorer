@@ -28,10 +28,10 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  let configLoaded = store.getters.isConfigLoaded
+  const configLoaded = store.getters.isConfigLoaded
   // Checks if backend configuration is loaded
   if (!configLoaded) {
-    let unwatch = store.watch((state, getters) => getters.isConfigLoaded,
+    const unwatch = store.watch((state, getters) => getters.isConfigLoaded,
       (newValue, oldValue) => {
         if (newValue === true) {
           unwatch()
@@ -44,7 +44,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
-  let r = Object.assign({}, to)
+  const r = Object.assign({}, to)
   r.hash = ''
   router.replace(r).catch(() => { })
 })
@@ -54,8 +54,8 @@ router.afterEach((to, from) => {
  */
 function checkBeforeEnter (to, from, next) {
   // let chainId = store.getters.chainId
-  let { params } = Object.assign({}, to)
-  let { address, hash } = params
+  const { params } = Object.assign({}, to)
+  const { address, hash } = params
   if (hash) params.hash = normalizeSearch(hash)
   if (!isCheckAddressPath(to) && address) {
     to.params.address = normalizeSearch(address)

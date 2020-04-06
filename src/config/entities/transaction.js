@@ -29,7 +29,7 @@ const transactionFee = tx => {
 
 const transactionFormatRow = (tx, parentData) => {
   let address
-  let contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
+  const contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
   if (parentData) address = parentData.address
   if (address) {
     tx.from = setThisAddress(tx.from, { address })
@@ -54,7 +54,7 @@ export const txStatusCss = status => {
     QUEUED: 'blue',
     PENDING: 'yellow'
   }
-  let key = Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
+  const key = Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
   return css[key] || ''
 }
 
@@ -83,7 +83,7 @@ const TxFields = () => {
         return txStatusCss(txStatus((data.receipt) ? data.receipt.status : data.status || ''))
       },
       link: (tx, value) => {
-        let contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
+        const contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
         return txLink(contractAddress || value)
       }
     },
@@ -116,7 +116,7 @@ const TxFields = () => {
   }
 }
 const Txs = () => {
-  let fields = TxFields()
+  const fields = TxFields()
   delete (fields.index)
   fields.status = Object.assign(fields.status, {
     filters: ['tx-icon'],
@@ -148,8 +148,8 @@ const Txs = () => {
 }
 
 export const Tx = () => {
-  let tx = Txs()
-  let fields = TxFields()
+  const tx = Txs()
+  const fields = TxFields()
   const time = fields.time
   delete fields.gas
   delete fields.time
@@ -213,7 +213,7 @@ export const Tx = () => {
 }
 
 const TxBox = () => {
-  let txs = Txs()
+  const txs = Txs()
   txs.fields.to.trim = 'auto'
   txs.fields.from.trim = 'auto'
   txs.fields.hash.trim = 8
@@ -222,7 +222,7 @@ const TxBox = () => {
 
 export const TxLogFormatter = tx => {
   let logs = (tx.receipt) ? tx.receipt.logs : null
-  let addresses = tx._addresses
+  const addresses = tx._addresses
   if (logs && addresses) {
     logs = logs.map(log => {
       log._addressData = addresses[log.address]
@@ -246,8 +246,8 @@ export const TxLogs = () => {
           type: 'transactionLogItem',
           emptyMsg: 'The transaction does not contain token transfer events',
           header: (data) => {
-            let { logIndex, address, event } = data
-            let _contractName = data._addressData.name
+            const { logIndex, address, event } = data
+            const _contractName = data._addressData.name
             return [logIndex, _contractName, address, event]
           }
         }
@@ -299,7 +299,7 @@ export const TxLogItem = () => {
 }
 
 export const TxTransferEvents = () => {
-  let te = TxLogs()
+  const te = TxLogs()
   te.formatRow = (tx) => {
     tx = TxLogFormatter(tx)
     let logs = (tx.receipt && tx.receipt.logs) ? tx.receipt.logs : []

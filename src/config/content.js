@@ -1,5 +1,5 @@
 export default {
-  'footer': [
+  footer: [
     {
       text: 'Privacy Policy',
       link: 'https://www.rsk.co/privacy-policy'

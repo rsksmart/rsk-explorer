@@ -36,7 +36,7 @@ export default {
       return this.$slots.default
     },
     style () {
-      let { height } = this
+      const { height } = this
       return { height }
     },
     copyTitle () {

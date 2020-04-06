@@ -20,24 +20,24 @@ export default {
       return this.cbParse('formatLink')
     },
     entity () {
-      let type = this.type
+      const type = this.type
       if (type) {
-        let entity = this.dataEntity()(type)
+        const entity = this.dataEntity()(type)
         // if (!entity) console.warn(`Warning, unknown entity: ${type}`)
         return entity
       }
     },
     fields () {
-      let entity = this.entity || {}
+      const entity = this.entity || {}
       let fields = entity.fields
       if (entity) {
-        let parentData = this.parentData
-        let data = this.data
+        const parentData = this.parentData
+        const data = this.data
         if (fields) {
-          let fcb = this.fieldsCb
+          const fcb = this.fieldsCb
           if (fcb) {
             fields = fcb(fields, data, parentData)
-            for (let name in fields) {
+            for (const name in fields) {
               fields[name] = this.parseField(name, fields[name])
             }
           }
@@ -59,8 +59,8 @@ export default {
     },
     dataFormatted () {
       let data = this.data || {}
-      let parentData = this.parentData || {}
-      let fields = this.fields
+      const parentData = this.parentData || {}
+      const fields = this.fields
       if (this.rowCb) {
         if (Array.isArray(data)) {
           data = data.map(row => {
@@ -73,14 +73,14 @@ export default {
       return data
     },
     dataKeys () {
-      let data = this.data
+      const data = this.data
       if (data) {
         if (data[0]) return Object.keys(data[0])
         else return Object.keys(data)
       }
     },
     iconLoad () {
-      let entity = this.entity
+      const entity = this.entity
       let icon = 'load'
       if (entity) icon = entity.icon || icon
       return icon
@@ -104,8 +104,8 @@ export default {
       return parseField(name, field, fieldsTypes)
     },
     fieldFromKey (key) {
-      let entity = this.entity
-      let keys = entity.fieldsKeys
+      const entity = this.entity
+      const keys = entity.fieldsKeys
       if (keys) {
         return entity.fields[keys[key]]
       }
@@ -116,18 +116,18 @@ export default {
       return typeof cb === 'function' ? cb : null
     },
     rowClass (index) {
-      let cssClass = index % 2 ? 'odd' : 'even'
+      const cssClass = index % 2 ? 'odd' : 'even'
       return cssClass
     },
     getValue (field, data, raw) {
       return this.getFieldFilteredValue()(field, data, raw)
     },
     isFrom (fieldName, index) {
-      let next = this.visibleFields[index + 1]
+      const next = this.visibleFields[index + 1]
       return fieldName === 'from' && next === 'to'
     },
     isTo (fieldName, index) {
-      let prev = this.visibleFields[index - 1]
+      const prev = this.visibleFields[index - 1]
       return fieldName === 'to' && prev === 'from'
     },
     fieldPos (field) {
@@ -137,8 +137,8 @@ export default {
       return this.dataKeyValue()(this.type, data)
     },
     iconStyle (row) {
-      let style = {}
-      let value = (row) ? row[this.key] : null
+      const style = {}
+      const value = (row) ? row[this.key] : null
       if (this.type === 'blocks') {
         style.color = this.getBlockColor(value)
         style.fill = style.color
@@ -149,7 +149,7 @@ export default {
     fieldFormatProp (prop, field, value, filteredValue, row) {
       if (undefined === value) value = this.getValue(field, this.data, true)
       if (undefined === filteredValue) filteredValue = this.filterFieldValue()(field, value, row)
-      let pv = field[prop]
+      const pv = field[prop]
       if (typeof pv === 'function') {
         return pv(value, filteredValue, row)
       }
@@ -169,25 +169,25 @@ export default {
     },
 
     renderAsProps (payload) {
-      let field = payload.field || {}
-      let props = field.renderAsProps
+      const field = payload.field || {}
+      const props = field.renderAsProps
       return (typeof props === 'function') ? props(payload) : props
     },
 
     showField (field, data) {
-      let fieldName = field.fieldName
-      let hidden = this.isHidden(fieldName)
-      let entity = this.entity
-      let isTitleField = (fieldName === entity.titleField)
-      let value = this.getValue(field, data)
-      let isNotEmpty = (field.hideIfEmpty) ? value : true
+      const fieldName = field.fieldName
+      const hidden = this.isHidden(fieldName)
+      const entity = this.entity
+      const isTitleField = (fieldName === entity.titleField)
+      const value = this.getValue(field, data)
+      const isNotEmpty = (field.hideIfEmpty) ? value : true
       return Boolean(!field.hide && !hidden && !isTitleField && isNotEmpty)
     },
 
     rowLink (row) {
       let link
-      let key = this.keyValue(row)
-      let linkCb = this.linkCb
+      const key = this.keyValue(row)
+      const linkCb = this.linkCb
       if (linkCb) return linkCb(row, this.parentData, this.entity.link, key)
       link = link || this.entity.link
       // link = link || this.$route.path
@@ -197,7 +197,7 @@ export default {
       return link
     },
     isHidden (field) {
-      let hideFields = this.hideFields
+      const hideFields = this.hideFields
       if (hideFields) {
         return hideFields.find(value => {
           return value === field
@@ -206,8 +206,8 @@ export default {
       return false
     },
     makeLink (field, row) {
-      let link = field.link
-      let value = this.getValue(field, row, true)
+      const link = field.link
+      const value = this.getValue(field, row, true)
       if (typeof link === 'function') return link(row, value, link)
       return ((value || value === 0) && link) ? link + value : null
     },
@@ -215,7 +215,7 @@ export default {
       value = filteredValue || value
       field = field || {}
       value = value || ''
-      let { trim } = field
+      const { trim } = field
       if (trim === 'forced-auto') return 'auto'
       if (trim === 0) return 0
       if (String(value.length) > this.trimIf) {

@@ -100,14 +100,14 @@ export default {
     }
   },
   mounted () {
-    let vm = this
-    let table = this.$refs.table
-    let tw = this.tableConfig.w
-    let size = this.size
-    let parent = vm.$parent.$el
+    const vm = this
+    const table = this.$refs.table
+    const tw = this.tableConfig.w
+    const size = this.size
+    const parent = vm.$parent.$el
     this.$nextTick(() => {
       if (table) {
-        let tcw = table.clientWidth
+        const tcw = table.clientWidth
         if (table && (tcw > size.w || tcw > parent.clientWidth)) {
           if (!tw || size.w < tw) {
             vm.$set(vm, 'renderTable', false)
@@ -122,7 +122,7 @@ export default {
     }),
     renderTable: {
       get () {
-        let r = this.tableConfig.renderTable
+        const r = this.tableConfig.renderTable
         return (undefined === r) ? true : r
       },
       set (renderTable) {
@@ -143,25 +143,25 @@ export default {
       return Object.keys(this.defaultSort)
     },
     defaultSort () {
-      let { page } = this
-      let pages = page.pages || {}
+      const { page } = this
+      const pages = page.pages || {}
       return pages.defaultSort || { _id: -1 }
     },
     isDefaultSort () {
-      let sortKeys = this.sortKeys
-      let defSort = this.defaultSort
-      let sort = this.sort
+      const sortKeys = this.sortKeys
+      const defSort = this.defaultSort
+      const sort = this.sort
       if (sortKeys.length !== this.defKeys.length) return false
       return (undefined !== sortKeys.find(k => defSort[k] === sort[k]))
     },
     isDefaultSortVisible () {
-      let fields = Object.values(this.fields).map(f => f.path)
-      let keys = this.defKeys.map(k => fields.includes(k))
+      const fields = Object.values(this.fields).map(f => f.path)
+      const keys = this.defKeys.map(k => fields.includes(k))
       return keys.reduce((v, a) => v && a)
     },
     sortableFields () {
-      let page = this.page
-      let pages = page.pages
+      const page = this.page
+      const pages = page.pages
       return (pages && pages.sortable) ? pages.sortable : {}
     },
     hasSorts () {
@@ -181,8 +181,8 @@ export default {
       return this.getTableConfig()(this.tableId)
     },
     key () {
-      let page = this.page
-      let req = (page) ? page.req : {}
+      const page = this.page
+      const req = (page) ? page.req : {}
       return (req) ? req.key : null
     }
   },
@@ -198,7 +198,7 @@ export default {
       'sortKey'
     ]),
     sortIcon (fieldName) {
-      let sort = this.sort[fieldName]
+      const sort = this.sort[fieldName]
       let icon = 'triangle-arrow-'
       if (sort) {
         icon = (sort === -1) ? icon + 'down' : icon + 'up'
@@ -209,14 +209,14 @@ export default {
       return this.sortKeys.indexOf(field) + 1
     },
     getData (sort, hash) {
-      let key = this.key
-      let sortKey = this.sortKey()(key)
-      let query = this.removePaginationFromRoute()(key, { [sortKey]: sort })
+      const key = this.key
+      const sortKey = this.sortKey()(key)
+      const query = this.removePaginationFromRoute()(key, { [sortKey]: sort })
       this.updateRouterQuery({ query, hash, key })
     },
     sortBy (field, event) {
-      let hash = this.getRouterHashFromEvent(event)
-      let sort = {}
+      const hash = this.getRouterHashFromEvent(event)
+      const sort = {}
       sort[field] = this.sort[field]
       if (!this.isDefaultSort) {
         if (sort[field] === -1) delete sort[field]
@@ -227,8 +227,8 @@ export default {
       this.getData(sort, hash)
     },
     isSorted (field) {
-      let sort = this.sort
-      let sorted = (sort && sort[field])
+      const sort = this.sort
+      const sorted = (sort && sort[field])
       return sorted
     },
     isSortable (field) {
@@ -239,13 +239,13 @@ export default {
       this.renderTable = renderTable
     },
     thClass (field) {
-      let css = []
+      const css = []
       if (this.isSorted(field)) css.push('has-sort')
       if (!this.isSortable(field)) css.push('unsortable')
       return css
     },
     tdClass (name) {
-      let css = [`field__${name}`]
+      const css = [`field__${name}`]
       if (this.key === name) css.push('row-header')
       return css
     }

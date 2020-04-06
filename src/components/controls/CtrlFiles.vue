@@ -46,27 +46,27 @@ export default {
     }
   },
   created () {
-    let { loadFiles } = this
+    const { loadFiles } = this
     if (loadFiles) {
       this.files = [...loadFiles]
     }
   },
   methods: {
     clickFile () {
-      let ctrl = this.$refs.filesInput
+      const ctrl = this.$refs.filesInput
       ctrl.click()
     },
     async addFiles (event) {
       try {
-        let { target } = event
-        let files = [...target.files]
+        const { target } = event
+        const files = [...target.files]
         target.value = null
-        for (let file of files) {
-          let { name } = file
-          let contents = await readTextFile(file)
+        for (const file of files) {
+          const { name } = file
+          const contents = await readTextFile(file)
           if (contents) {
             if (this.findFileKey(name) < 0) {
-              let file = { name, contents }
+              const file = { name, contents }
               if (this.multiple) this.files.push(file)
               else this.files = [file]
               this.emitChange()
@@ -84,14 +84,14 @@ export default {
     },
 
     removeFile (fileName) {
-      let files = [...this.files]
-      let key = this.findFileKey(fileName, files)
+      const files = [...this.files]
+      const key = this.findFileKey(fileName, files)
       if (key > -1) files.splice(key, 1)
       this.files = files
       this.emitChange()
     },
     emitChange () {
-      let files = [...this.files]
+      const files = [...this.files]
       this.$emit('change', files)
     }
   }

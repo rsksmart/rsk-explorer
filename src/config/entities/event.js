@@ -17,7 +17,7 @@ export const eventFormatRow = (event, parentData) => {
   const addressData = (parentData.address) ? parentData : event._addressData || {}
   event = formatEvent(event, addressData)
   // event.address = setThisContract(event.address, addressData)
-  let contractAddress = event.address
+  const contractAddress = event.address
   event._contractAddress = contractAddress
   return event
 }
@@ -51,7 +51,7 @@ export const Events = () => {
 }
 
 export const EventFields = () => {
-  let event = Events()
+  const event = Events()
   let fields = Object.assign({
     eventId: {
       type: 'eventId',
@@ -104,9 +104,9 @@ export const EventFields = () => {
 }
 
 const eventFieldsFormatter = (fields, event) => {
-  let config = getEventConfig(event)
-  let cFields = config.fields || getEventAbiFields(event)
-  let hide = !cFields
+  const config = getEventConfig(event)
+  const cFields = config.fields || getEventAbiFields(event)
+  const hide = !cFields
   fields.eventArguments.fields = cFields
   fields.eventArguments.hide = hide
   fields.arguments.hide = !hide
@@ -114,7 +114,7 @@ const eventFieldsFormatter = (fields, event) => {
 }
 
 export const Event = () => {
-  let event = Events()
+  const event = Events()
   event.fields = EventFields()
   delete event.fields.address
   event.formatFields = eventFieldsFormatter
@@ -122,19 +122,19 @@ export const Event = () => {
 }
 
 export const EventData = () => {
-  let eventFields = Event().fields
-  let formatRow = Event().formatRow
-  let { transaction, blockNumber } = eventFields
-  let txLogFields = TxLogItem().fields
+  const eventFields = Event().fields
+  const formatRow = Event().formatRow
+  const { transaction, blockNumber } = eventFields
+  const txLogFields = TxLogItem().fields
   txLogFields.logIndex.link = () => { }
   txLogFields.eventId.field = 'eventId'
-  let fields = Object.assign(txLogFields, { transaction, blockNumber })
+  const fields = Object.assign(txLogFields, { transaction, blockNumber })
   return { formatRow, fields }
 }
 
 export const TransferEvents = () => {
-  let { from, to, value, date, created } = EventTransferFields()
-  let te = {
+  const { from, to, value, date, created } = EventTransferFields()
+  const te = {
     fields: {
       event: Events().fields.event,
       contract: {
@@ -148,8 +148,8 @@ export const TransferEvents = () => {
       created
     },
     formatRow: (data, parentData) => {
-      let eventData = formatEvent(data)
-      let event = eventData._arguments
+      const eventData = formatEvent(data)
+      const event = eventData._arguments
       const { _addressData, address } = data
       if (!event) return
       event.eventId = eventData.eventId

@@ -35,13 +35,13 @@ export default {
     },
 
     linkTo (dest) {
-      let { regKey } = this
+      const { regKey } = this
       return this.getNewRoute()(regKey, dest)
     },
 
     navigateTo (dest) {
       if (dest) {
-        let link = this.linkTo(dest)
+        const link = this.linkTo(dest)
         this.$router.push(link)
       }
     }

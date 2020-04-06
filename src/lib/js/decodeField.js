@@ -12,10 +12,10 @@ export function decodeField (data, types) {
   try {
     types = types || ['hex', 'rlp', 'decimal', 'raw']
     if (!data || !isHexString(data)) return
-    let decoded = {}
-    let selectedDecoders = Object.keys(DECODERS).filter(k => types.includes(k))
-    for (let d of selectedDecoders) {
-      let decodedValue = DECODERS[d](data)
+    const decoded = {}
+    const selectedDecoders = Object.keys(DECODERS).filter(k => types.includes(k))
+    for (const d of selectedDecoders) {
+      const decodedValue = DECODERS[d](data)
       if (decodedValue) decoded[d] = decodedValue
     }
     return decoded
@@ -27,7 +27,7 @@ export function decodeField (data, types) {
 function rlpDecode (data) {
   const toStr = value => value.toString()
   try {
-    let decoded = rlp.decode(data)
+    const decoded = rlp.decode(data)
     return (Array.isArray(decoded)) ? decoded.map(d => toStr(d)) : toStr(decoded)
   } catch (err) {
     // console.log(err)

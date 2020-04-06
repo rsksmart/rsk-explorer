@@ -97,7 +97,7 @@ export default {
       return (this.dbIsOutdated) ? 'DB_OUTDATED' || null : null
     },
     networkName () {
-      let name = this.netName || ''
+      const name = this.netName || ''
       return (name) ? name.replace('RSK', '').trim().toLowerCase() : name
     }
   },
@@ -119,11 +119,11 @@ export default {
     },
     getIcon (name) {
       if (name === 'home') return 'rsk'
-      let entity = this.getEntity()(name)
+      const entity = this.getEntity()(name)
       return (entity) ? entity.icon || name : name
     },
     onResize () {
-      let size = {
+      const size = {
         w: this.$el.clientWidth,
         h: this.$el.clientHeight
       }
@@ -132,7 +132,7 @@ export default {
     resizeThrottler () {
       this.menu = false
       if (!this.resizeTimeout) {
-        let vm = this
+        const vm = this
         this.resizeTimeout = setTimeout(() => {
           vm.resizeTimeout = null
           vm.onResize()

@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     boxFields () {
-      let { miner, txs, txDensity, timestamp } = this.fields
+      const { miner, txs, txDensity, timestamp } = this.fields
       // let { blockHashrate } = this.fields
       return [
         [miner],
@@ -57,11 +57,11 @@ export default {
       return this.getBlockColor(this.block.number)
     },
     bStyle () {
-      let color = this.blockColor
+      const color = this.blockColor
       return { color, fill: color }
     },
     blockBoxStyle () {
-      let color = this.blockColor
+      const color = this.blockColor
       return { 'border-color': color }
     }
   }

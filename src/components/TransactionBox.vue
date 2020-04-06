@@ -56,11 +56,11 @@ export default {
       return this.getBlockColor(this.tx.blockNumber)
     },
     blockStyle2 () {
-      let color = this.blockColor
+      const color = this.blockColor
       return { color }
     },
     txBoxStyle () {
-      let color = this.blockColor
+      const color = this.blockColor
       return { 'border-color': color }
     },
     bField () {

@@ -55,23 +55,23 @@ export default {
       return isAddress(this.address)
     },
     checksumValid () {
-      let { address, chainId } = this
+      const { address, chainId } = this
       return isValidChecksumAddress(address, chainId)
     },
     isValid () {
-      let { address, chainId } = this
+      const { address, chainId } = this
       return isValidAddress(address, chainId)
     },
     checkSummed () {
       return toChecksumAddress(this.address)
     },
     isCheckSummed () {
-      let { checksummed, address } = this
+      const { checksummed, address } = this
       return checksummed === address
     },
     networks () {
-      let { chainId, address } = this
-      let nets = searchChecksummedNetworks(address)
+      const { chainId, address } = this
+      const nets = searchChecksummedNetworks(address)
       return nets.filter(d => `${d.chainId}` !== `${chainId}`)
     },
     checkClass () {

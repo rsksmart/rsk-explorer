@@ -31,8 +31,8 @@ export const decodeQueryProp = state => encoded => {
 
 export const parseQuery = (state, getters) => (query, key, decode, removeKey) => {
   if (!query) return
-  let props = getters.encodedProps(key)
-  let fn = (decode) ? 'decodeQueryProp' : 'encodeQueryProp'
+  const props = getters.encodedProps(key)
+  const fn = (decode) ? 'decodeQueryProp' : 'encodeQueryProp'
   props.forEach((p) => {
     let value = query[p]
     let k = p
@@ -49,13 +49,13 @@ export const parseQuery = (state, getters) => (query, key, decode, removeKey) =>
 }
 
 export const getQuery = (state, getters) => key => {
-  let query = getters.getRouterQuery(key)
-  let q = query.q || {}
+  const query = getters.getRouterQuery(key)
+  const q = query.q || {}
   return q
 }
 
 export const getRouterQuery = (state, getters, rootState) => (key, removeKey = false) => {
-  let query = Object.assign({}, rootState.route.query)
+  const query = Object.assign({}, rootState.route.query)
   return getters.parseQuery(query, key, true, removeKey)
 }
 

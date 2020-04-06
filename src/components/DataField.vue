@@ -70,7 +70,7 @@ export default {
     },
     trimOptions () {
       let options = this.ttOpts
-      let fieldOptions = this.field.trimOptions
+      const fieldOptions = this.field.trimOptions
       if (fieldOptions) options = Object.assign(options, fieldOptions)
       return options
     },

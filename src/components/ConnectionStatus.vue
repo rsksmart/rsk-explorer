@@ -51,7 +51,7 @@ export default {
       return true
     },
     lostTime () {
-      let { connectionEnd, now } = this
+      const { connectionEnd, now } = this
       return (connectionEnd) ? now - connectionEnd : 0
     },
     waitingTime () {
@@ -67,21 +67,21 @@ export default {
       return (this.connectionEnd) ? this.lostTime > WAITING_TIME : 0
     },
     connectedTime () {
-      let { connectionStart, now } = this
+      const { connectionStart, now } = this
       return (connectionStart) ? (now - connectionStart) || 0 : 0
     },
     isWaiting () {
       return this.waitingTime < WAITING_TIME
     },
     connectionStatus () {
-      let { isLost, isWaiting, connected, lostTime, waitingTime, connectedTime } = this
+      const { isLost, isWaiting, connected, lostTime, waitingTime, connectedTime } = this
       if (connected) return [STATUS.CONNECTED, 'brand', connectedTime]
       if (isLost) return [STATUS.LOST, 'warn', lostTime]
       if (isWaiting) return [STATUS.WAITING, 'brand', waitingTime]
       return [STATUS.UNABLE, 'error', waitingTime]
     },
     status () {
-      let [msg, css, time] = this.connectionStatus
+      const [msg, css, time] = this.connectionStatus
       return { msg, css, time }
     },
     showTime () {

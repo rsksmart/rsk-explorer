@@ -7,8 +7,8 @@ const cases = [
 ]
 
 describe('# BigNumber', () => {
-  describe(`bignumber`, () => {
-    for (let c of cases) {
+  describe('bignumber', () => {
+    for (const c of cases) {
       it(`${c.v}  should be ${c.e}`, () => {
         expect(bignumber(c.v)).to.be.equal(c.e)
       })

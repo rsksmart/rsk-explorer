@@ -48,11 +48,11 @@ export default {
       return (this.pages.length) ? prevPage : prev
     },
     nextPage () {
-      let aPage = this.findPage(this.page + 1)
+      const aPage = this.findPage(this.page + 1)
       return aPage || this.nextIndex
     },
     prevPage () {
-      let pPage = this.findPage(this.page - 1)
+      const pPage = this.findPage(this.page - 1)
       return pPage || this.prevIndex
     },
     total () {
@@ -76,9 +76,9 @@ export default {
     ...mapGetters(['nextKey', 'prevKey', 'pageKey']),
 
     goNext (event) {
-      let { pages, next } = this
-      let p = pages[pages.length - 1]
-      let page = p.page + 1
+      const { pages, next } = this
+      const p = pages[pages.length - 1]
+      const page = p.page + 1
       this.goToPage({ page, next })
     },
     goPrev (event) {
@@ -88,16 +88,16 @@ export default {
     },
 
     goToPage ({ next, prev, page }, event) {
-      let key = this.key
-      let nextKey = this.nextKey()(key)
-      let prevKey = this.prevKey()(key)
-      let pageKey = this.pageKey()(key)
-      let query = { [nextKey]: next, [prevKey]: prev, [pageKey]: page }
+      const key = this.key
+      const nextKey = this.nextKey()(key)
+      const prevKey = this.prevKey()(key)
+      const pageKey = this.pageKey()(key)
+      const query = { [nextKey]: next, [prevKey]: prev, [pageKey]: page }
       this.updateRouterQuery({ query, key })
     },
     findPage (page) {
-      let { pages } = this
-      let index = pages.findIndex(p => p.page === page)
+      const { pages } = this
+      const index = pages.findIndex(p => p.page === page)
       return (index > -1) ? pages[index] : null
     }
   }

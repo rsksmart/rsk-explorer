@@ -1,18 +1,18 @@
 import Vue from 'vue'
 
 export const SET_CONFIG = (state, payload) => {
-  let key = payload[0]
-  let value = payload[1]
+  const key = payload[0]
+  const value = payload[1]
   if (undefined !== state[key]) {
     Vue.set(state, key, value)
   }
 }
 
 export const SET_CONFIG_KEY = (state, payload) => {
-  let module = payload.module || null
-  let action = payload.action || null
-  let key = payload.key || null
-  let value = payload.value || null
+  const module = payload.module || null
+  const action = payload.action || null
+  const key = payload.key || null
+  const value = payload.value || null
 
   if (module && action && key && value) {
     if (undefined === state[key]) Vue.set(state, key, {})
@@ -37,7 +37,7 @@ export const SET_CONFIG_TABLES = (state, payload) => {
 }
 
 export const SET_TABLE = (state, payload) => {
-  let tableId = payload[0]
-  let config = payload[1]
+  const tableId = payload[0]
+  const config = payload[1]
   Vue.set(state.tables, tableId, config)
 }

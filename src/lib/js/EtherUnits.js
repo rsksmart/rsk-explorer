@@ -32,7 +32,7 @@ export class EtherUnits {
 
   getValueOfUnit (unit) {
     unit = unit ? unit.toLowerCase() : 'ether'
-    let unitValue = this.unitMap[unit]
+    const unitValue = this.unitMap[unit]
     if (unitValue === undefined) {
       // eslint-disable-next-line
       console.log('ERROR')
@@ -41,7 +41,7 @@ export class EtherUnits {
   }
 
   fiatToWei (number, pricePerEther) {
-    let returnValue = new BigNumber(String(number))
+    const returnValue = new BigNumber(String(number))
       .div(pricePerEther)
       .times(this.getValueOfUnit('ether'))
       .round(0)
@@ -49,19 +49,21 @@ export class EtherUnits {
   }
 
   toFiat (number, unit, multi) {
-    let returnValue = new BigNumber(this.toEther(number, unit))
+    const returnValue = new BigNumber(this.toEther(number, unit))
       .times(multi)
       .round(5)
     return returnValue.toString(10)
   }
+
   toEther (number, unit) {
-    let returnValue = new BigNumber(this.toWei(number, unit)).div(
+    const returnValue = new BigNumber(this.toWei(number, unit)).div(
       this.getValueOfUnit('ether')
     )
     return returnValue.toString(10)
   }
+
   toWei (number, unit) {
-    let returnValue = new BigNumber(String(number)).times(
+    const returnValue = new BigNumber(String(number)).times(
       this.getValueOfUnit(unit)
     )
     return returnValue.toString(10)

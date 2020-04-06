@@ -14,7 +14,7 @@ const formatLink = (data, parentData, link, key) => {
 }
 
 const accountFormatRow = (data, parentData) => {
-  let balance = data.balance
+  const balance = data.balance
   const contractData = data._contractData || parentData || {}
   let decimals = contractData.decimals || 0
   data.contractName = contractData.name
@@ -56,7 +56,7 @@ export const TokenAccounts = () => {
 }
 
 const TokenAccount = () => {
-  let tokenAccount = TokenAccounts()
+  const tokenAccount = TokenAccounts()
   tokenAccount.fields = Object.assign(TokenAccounts().fields, {
     address: {
       field: 'address',
@@ -77,12 +77,12 @@ const TokenAccount = () => {
 }
 
 const TokenByAddress = () => {
-  let taFields = TokenAccount().fields
+  const taFields = TokenAccount().fields
   return {
     link: accountLink,
     formatRow: (data, parentData) => {
-      let { decimals, name, symbol } = data
-      let row = accountFormatRow(data, { decimals, name, symbol })
+      const { decimals, name, symbol } = data
+      const row = accountFormatRow(data, { decimals, name, symbol })
       row.contractAddress = setThisContract(data.contract, data)
       return row
     },

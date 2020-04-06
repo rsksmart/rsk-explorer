@@ -45,7 +45,7 @@ export default {
     }
   },
   created () {
-    let { searchValue } = this
+    const { searchValue } = this
     if (searchValue) this.value = searchValue
   },
   methods: {
@@ -55,7 +55,7 @@ export default {
     },
     input (event, type) {
       this.selectResult(0)
-      let value = event.target.value
+      const value = event.target.value
       this.value = value
       this.emit(event, type, value)
     },
@@ -64,8 +64,8 @@ export default {
       this.$emit(type, { value, event })
     },
     changeInput (event) {
-      let { fullPath } = this.$route
-      let vm = this
+      const { fullPath } = this.$route
+      const vm = this
       setTimeout(() => {
         if (!vm.selectedResult) {
           if (fullPath === vm.$route.fullPath) {
@@ -78,7 +78,7 @@ export default {
       }, 200)
     },
     onChange (event) {
-      let value = this.value
+      const value = this.value
       this.emit(event, 'change', value)
       this.clear()
     },
@@ -86,8 +86,8 @@ export default {
       this.selectedResult = result
     },
     gotoResult (event, key) {
-      let result = this.results[key]
-      let { link } = result
+      const result = this.results[key]
+      const { link } = result
       if (link) this.$router.push(link)
       this.selectResult(key++)
       this.emitResult(event, result)
@@ -99,15 +99,15 @@ export default {
     onKey (event) {
       let { selectedResult, results } = this
       if (!results || results.length < 1) return
-      let { code } = event
+      const { code } = event
       // open result
       if (['Enter'].includes(code) && selectedResult) {
         this.gotoResult(event, (selectedResult - 1))
         return
       }
       // select results with arrows
-      let codes = { ArrowUp: -1, ArrowDown: 1 }
-      let direction = codes[code]
+      const codes = { ArrowUp: -1, ArrowDown: 1 }
+      const direction = codes[code]
       if (undefined === direction) return
       selectedResult = selectedResult || 0
       selectedResult = selectedResult + (1 * direction)
@@ -120,7 +120,7 @@ export default {
   },
   computed: {
     totalResults () {
-      let { results } = this
+      const { results } = this
       return (results) ? results.length : 0
     },
     isLoading () {

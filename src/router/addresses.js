@@ -44,7 +44,7 @@ export default [
           hideTabs: true,
           icon: data => {
             if (!data) return
-            let { verification } = data
+            const { verification } = data
             if (verification && verification.match === true) return 'check'
           }
         }
@@ -58,7 +58,7 @@ export default [
           module: 'transactions',
           msgs: [(data, parenData) => {
             const msgs = []
-            let { balance, txBalance } = parenData
+            const { balance, txBalance } = parenData
             if (txBalance !== balance) msgs.push('INTERNAL_TX_WARN')
             return msgs
           }]
@@ -88,7 +88,7 @@ export default [
           module: 'tokens',
           action: 'getTokenAccounts',
           render: data => {
-            let methods = data.contractMethods || []
+            const methods = data.contractMethods || []
             return methods.indexOf('balanceOf(address)') > -1
           }
         },

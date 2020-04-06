@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       value: undefined,
-      msg: `Search by: address / block / tx / name`,
+      msg: 'Search by: address / block / tx / name',
       msgTimeout: null,
       requestingTimeout: null
     }
@@ -43,7 +43,7 @@ export default {
       'isSearchPage'
     ]),
     results () {
-      let { getSearchedResults, isSearchPage, searched, value } = this
+      const { getSearchedResults, isSearchPage, searched, value } = this
       return (!isSearchPage && value === searched) ? getSearchedResults : []
     },
     searchBoxClass () {
@@ -75,13 +75,13 @@ export default {
       this.clearSearchedResults()
     },
     goTo ({ type, value }) {
-      let link = this.getSearchLink()({ type, value })
+      const link = this.getSearchLink()({ type, value })
       if (!link) return
       this.clearRequests()
       this.$router.push(link, () => { })
     },
     goToSearchPage (value) {
-      let link = `/${r.search}/${value}`
+      const link = `/${r.search}/${value}`
       this.$router.push(link, () => { })
     },
 
@@ -105,16 +105,16 @@ export default {
     async search ({ value, event }) {
       await this.prepareSearch({ value })
       value = this.searched
-      let { types } = this
+      const { types } = this
       if (!types || !types.length) {
         return this.goToSearchPage(value)
       } else if (types.length === 1) {
-        let type = types[0]
+        const type = types[0]
         return this.goTo({ type, value })
       } else {
         await this.searchTypes({ types, value })
         await this.waitForResults()
-        let { results } = this
+        const { results } = this
         // redirect when there is only one result
         if (results && results.length === 1) {
           return this.goTo(results[0])
@@ -124,7 +124,7 @@ export default {
       }
     },
     waitForResults () {
-      let vm = this
+      const vm = this
       return new Promise((resolve) => {
         return vm.createTimeout(() => {
           if (vm.isLoading) resolve(vm.waitForResults())
@@ -133,7 +133,7 @@ export default {
       })
     },
     createTimeout (cb) {
-      let { requestingTimeout } = this
+      const { requestingTimeout } = this
       if (requestingTimeout) clearTimeout(requestingTimeout)
       this.requestingTimeout = setTimeout(cb, 200)
     }

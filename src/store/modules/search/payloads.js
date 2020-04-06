@@ -1,6 +1,6 @@
 export const createPayloads = (payloads) => {
-  for (let p in payloads) {
-    let payload = payloads[p]
+  for (const p in payloads) {
+    const payload = payloads[p]
     let { fields, searchField, field, type } = payload
     payload.type = type || p
     fields = fields || {}
@@ -13,13 +13,13 @@ export const createPayloads = (payloads) => {
 }
 
 const getAddressName = data => {
-  let { address, name } = data
+  const { address, name } = data
   return `${name} ${address}`
 }
 
 const getAddressTime = data => {
-  let { createdByTx } = data
-  let { timestamp } = createdByTx || {}
+  const { createdByTx } = data
+  const { timestamp } = createdByTx || {}
   return timestamp
 }
 

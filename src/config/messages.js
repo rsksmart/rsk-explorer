@@ -1,9 +1,9 @@
 export default {
-  'DB_OUTDATED': {
-    'title': 'Warning:',
-    'txt': 'The database is not up to date',
-    'type': 'error',
-    'icon': 'warning'
+  DB_OUTDATED: {
+    title: 'Warning:',
+    txt: 'The database is not up to date',
+    type: 'error',
+    icon: 'warning'
   },
   INTERNAL_TX_WARN: {
     title: 'Note:',

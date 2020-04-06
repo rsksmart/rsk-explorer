@@ -91,7 +91,7 @@ export default {
     this.getData()
   },
   watch: {
-    '$route': 'onRouteChange'
+    $route: 'onRouteChange'
   },
   computed: {
     ...mapGetters({
@@ -100,11 +100,11 @@ export default {
       routeParams: 'getRouterParams'
     }),
     hideTabs () {
-      let active = this.activeContentTab || {}
+      const active = this.activeContentTab || {}
       return active.hideTabs
     },
     query () {
-      let key = this.reqKey
+      const key = this.reqKey
       return this.getQuery()(key)
     },
     error () {
@@ -126,7 +126,7 @@ export default {
       return this.page.total || null
     },
     isTable () {
-      let { data } = this.page
+      const { data } = this.page
       return (data && Array.isArray(data))
     },
     delayed () {
@@ -137,9 +137,9 @@ export default {
     },
     pageTitle () {
       if (undefined === this.title) return this.$route.name
-      let title = this.title
+      const title = this.title
       if (title) {
-        let data = this.data || {}
+        const data = this.data || {}
         return (typeof title === 'function') ? title(data) : title
       }
       return ''
@@ -152,8 +152,8 @@ export default {
       return this.isRequesting()(this.reqKey)
     },
     activeTab () {
-      let tabs = this.tabs || []
-      let tab = (tabs.length) ? tabs[0].name : null
+      const tabs = this.tabs || []
+      const tab = (tabs.length) ? tabs[0].name : null
       let name = this.getActiveTab || tab
       if (!this.selectTabByName(name)) {
         name = tab
@@ -162,23 +162,23 @@ export default {
       return name
     },
     activeContentTab () {
-      let tabs = this.mainContent || []
+      const tabs = this.mainContent || []
       if (!tabs.length) return
-      let tabName = this.getActiveContentTab || tabs[0].name
-      let tab = tabs.find(tab => tab.name === tabName) || tabs[0]
+      const tabName = this.getActiveContentTab || tabs[0].name
+      const tab = tabs.find(tab => tab.name === tabName) || tabs[0]
       // reset tab if don't exist
       if (tab.name !== tabName) this.setActiveContentTab(tab.name)
       return tab
     },
 
     mainContentTabs () {
-      let tabs = this.mainContent || []
+      const tabs = this.mainContent || []
       const { data } = this
       // execute count and render callbacks
       return tabs.filter(tab => {
-        let render = (typeof tab.render === 'function') ? tab.render(data) : true
-        let count = tab.count
-        let icon = (typeof tab.icon === 'function') ? tab.icon(data) : tab.icon
+        const render = (typeof tab.render === 'function') ? tab.render(data) : true
+        const count = tab.count
+        const icon = (typeof tab.icon === 'function') ? tab.icon(data) : tab.icon
         tab.buttonIcon = icon
         if (count && typeof count === 'function') tab.total = count(data)
         return render
@@ -186,7 +186,7 @@ export default {
     },
     tabsTotals () {
       return this.tabs.reduce((v, a, i) => {
-        let { name } = a
+        const { name } = a
         v[name] = this.getPageTotal()(name)
         return v
       }, {})
@@ -213,12 +213,12 @@ export default {
       this.updateRouterTabQuery('__ctab', name, event)
     },
     isActiveContentTab (tab) {
-      let active = this.activeContentTab || {}
+      const active = this.activeContentTab || {}
       return active.name === tab.name
     },
     updateRouterTabQuery (key, value, event) {
-      let hash = this.getRouterHashFromEvent(event)
-      let query = { [key]: value }
+      const hash = this.getRouterHashFromEvent(event)
+      const query = { [key]: value }
       this.updateRouterQuery({ query, hash, key })
     },
     renderTab (tab) {
@@ -229,8 +229,8 @@ export default {
     onRouteChange (to, from) {
       if (to.path === from.path) {
         // check for query changes
-        let diff = plainObjectChanges(to.query, from.query)
-        let keys = Object.keys(diff)
+        const diff = plainObjectChanges(to.query, from.query)
+        const keys = Object.keys(diff)
         // dont fetch
         if (!keys.length) return
         if (keys.length === 1 && keys[0].slice(0, 2) === '__') return
@@ -240,23 +240,23 @@ export default {
 
     async getData () {
       let { module, tabs, action, params } = this
-      let key = this.reqKey
+      const key = this.reqKey
       if (!module || !action) return
       await this.fetchRouteData({ action, params, module, key })
       if (tabs) {
-        let active = this.activeTab
+        const active = this.activeTab
         if (active) {
           await this.fetchTab(active)
           tabs = tabs.filter(tab => tab.name !== active)
         }
-        for (let tab of tabs) {
+        for (const tab of tabs) {
           this.fetchTab(tab.name)
         }
       }
     },
 
     async fetchTab (tabName) {
-      let tab = Object.assign({}, this.getTab(tabName))
+      const tab = Object.assign({}, this.getTab(tabName))
       let params = tab.params
       params = (params && typeof params === 'function') ? params(this.routeParams) : params
       params = params || {}
@@ -264,7 +264,7 @@ export default {
       tab.params = params
       tab.count = true
       if (tab) {
-        let req = await this.fetchRouteData(tab)
+        const req = await this.fetchRouteData(tab)
         return req
       }
     },

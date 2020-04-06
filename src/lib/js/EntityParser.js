@@ -6,22 +6,25 @@ export class EntityParser {
     this.entities = entities
     this.fieldsTypes = fields
   }
+
   setFields (fields) {
     this.fields = fields
   }
+
   parse () {
-    let res = {}
-    for (let name in this.entities) {
+    const res = {}
+    for (const name in this.entities) {
       res[name] = this.parseEntity(name, this.entities[name])
     }
     return res
   }
+
   parseEntity (name, entity) {
     entity.fields = entity.fields || {}
     entity.fieldsKeys = {}
-    for (let f in entity.fields) {
-      let field = entity.fields[f] || {}
-      let parsedField = this.parseField(f, field)
+    for (const f in entity.fields) {
+      const field = entity.fields[f] || {}
+      const parsedField = this.parseField(f, field)
       entity.fields[f] = parsedField
       entity.fieldsKeys[parsedField.field] = f
     }
@@ -34,7 +37,7 @@ export class EntityParser {
 }
 
 export const defValue = (field, keys, def) => {
-  for (let key of keys) {
+  for (const key of keys) {
     field[key] = field[key] || def[key]
   }
   return field
@@ -53,11 +56,11 @@ export const parseField = (name, field, fieldsTypes) => {
   field.titleIcon = field.titleIcon || false
   field.hideTitle = field.hideTitle || false
   field.title = field.title || name
-  let fieldDef = fieldsTypes[field.type]
+  const fieldDef = fieldsTypes[field.type]
   if (fieldDef) {
     field.description = field.description || fieldDef.description || null
     if (fieldDef.filters) {
-      let filters = field.filters || []
+      const filters = field.filters || []
       field.filters = filters.concat(fieldDef.filters)
     }
     field = defValue(

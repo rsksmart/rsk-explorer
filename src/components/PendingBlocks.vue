@@ -42,7 +42,7 @@ export default {
       now: 'getDate'
     }),
     mod () {
-      let max = (this.pending > 4) ? this.pending : 4
+      const max = (this.pending > 4) ? this.pending : 4
       return (max) ? Math.ceil(Math.cbrt(max)) : 0
     },
     step () {
@@ -51,8 +51,8 @@ export default {
       return step
     },
     badgeStyle () {
-      let width = (this.pending.toString().length) + 'em'
-      let height = width
+      const width = (this.pending.toString().length) + 'em'
+      const height = width
       return { width, height }
     }
   },
@@ -61,7 +61,7 @@ export default {
     ...mapGetters(['getBlockColor']),
 
     cubeStyle (cube) {
-      let fill = this.getBlockColor()(cube)
+      const fill = this.getBlockColor()(cube)
       return { fill }
     }
   }

@@ -17,21 +17,21 @@ export default {
   mixins: [dataMixin],
   computed: {
     exportData () {
-      let { data } = this
+      const { data } = this
       return (data) ? JSON.stringify(data, null, 4) : null
     },
     fileName () {
       let fileName = 'download'
-      let { entity, data, type } = this
-      let { key } = entity
-      let id = (key) ? data[key] : null
+      const { entity, data, type } = this
+      const { key } = entity
+      const id = (key) ? data[key] : null
       if (type && id) fileName = `${type}-${id}`
       return fileName
     },
     downloadData () {
-      let value = this.exportData
+      const value = this.exportData
       if (!value) return {}
-      let fileType = 'json'
+      const fileType = 'json'
       let fileName = this.fileName
       fileName = `${fileName}.${fileType}`
       return { fileType, value, fileName, title: 'download' }

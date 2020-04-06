@@ -20,8 +20,8 @@ export default {
   },
   created () {
     this.filterValues = this.q.txType || []
-    let filters = this.txFilters
-    let types = this.txTypes
+    const filters = this.txFilters
+    const types = this.txTypes
     Object.keys(types).forEach(v => { filters[types[v]] = (v === 'default') })
   },
   computed: {
@@ -33,9 +33,9 @@ export default {
     ...mapActions(['updateRouterQuery']),
     ...mapGetters(['removePaginationFromRoute', 'qKey']),
     update () {
-      let key = this.reqKey
-      let qKey = this.qKey()(key)
-      let q = Object.assign({}, this.q)
+      const key = this.reqKey
+      const qKey = this.qKey()(key)
+      const q = Object.assign({}, this.q)
       q.txType = this.filterValues
       let query = { [qKey]: q }
       query = this.removePaginationFromRoute()('data', query)

@@ -43,7 +43,7 @@ export default {
           type: 'MonotoneX',
           style: {
             'stroke-width': 2,
-            'opacity': 0.6
+            opacity: 0.6
           },
           gradient: {
             fill: false,
@@ -61,12 +61,12 @@ export default {
           }
         },
         colorCb: (x, d) => {
-          let color = this.blockColor(d.blockNumber)
+          const color = this.blockColor(d.blockNumber)
           return color
         },
         formatLabel: bar => {
-          let time = bar.d.timestamp
-          let fill = this.blockColor(bar.d.blockNumber)
+          const time = bar.d.timestamp
+          const fill = this.blockColor(bar.d.blockNumber)
           return [
             ({ style: { fill }, txt: `#${bar.d.blockNumber}` }),
             (`pending: ${bar.d.pending}`),
@@ -103,7 +103,7 @@ export default {
       chart: state => state.backend.txPoolChart
     }),
     txs () {
-      let data = this.txPool.txs || []
+      const data = this.txPool.txs || []
       return (data.length) ? { data } : null
     },
     options () {
@@ -116,7 +116,7 @@ export default {
     }),
 
     blockColor (block) {
-      let bc = this.getBlockColor()
+      const bc = this.getBlockColor()
       return bc(block)
     }
   }

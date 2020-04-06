@@ -3,7 +3,7 @@ export const firstListBlock = state => {
 }
 
 export const lastBlock = state => {
-  let { lastBlocks } = state
+  const { lastBlocks } = state
   return lastBlocks[0]
 }
 
@@ -48,19 +48,19 @@ export const getTxPoolPending = (state) => {
 }
 
 export const getTxPoolTxs = (state) => status => {
-  let txs = state.txPool.txs || []
+  const txs = state.txPool.txs || []
   return (status) ? txs.filter(tx => tx.status === status) : txs
 }
 
 export const contractVerifierEnabled = state => {
-  let modules = state.systemSettings.modules || {}
+  const modules = state.systemSettings.modules || {}
   return modules.contractVerifier
 }
 
 export const bcNet = state => state.systemSettings.net
 
 export const chainId = state => {
-  let net = state.systemSettings.net
+  const net = state.systemSettings.net
   return (net) ? net.id : undefined
 }
 
@@ -69,6 +69,6 @@ export const isConfigLoaded = state => {
 }
 
 export const netName = state => {
-  let { name } = state.systemSettings.net || {}
+  const { name } = state.systemSettings.net || {}
   return name
 }

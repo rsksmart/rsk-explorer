@@ -18,7 +18,7 @@ export const camelCaseTo = Vue.filter('camel-case-to', (value, to = ' ') => {
 })
 
 export const getTxStatus = value => {
-  let intValue = parseInt(value)
+  const intValue = parseInt(value)
   if (!isNaN(intValue)) {
     if (intValue === 1) value = 'SUCCESS'
     else value = 'FAIL'
@@ -34,6 +34,6 @@ export const txStatus = Vue.filter('tx-status', value => {
 export const txIcon = Vue.filter('tx-icon', value => STATUS_ICONS[getTxStatus(value)])
 
 export const checksumAddress = Vue.filter('checksum-address', address => {
-  let chainId = store.getters.chainId
+  const chainId = store.getters.chainId
   return toChecksumAddress(address, chainId)
 })

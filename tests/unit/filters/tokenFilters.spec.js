@@ -12,8 +12,8 @@ const tests = [
   ['1000', 0, '1000']
 ]
 
-describe(`Token decimals`, function () {
-  for (let [value, decimals, result] of tests) {
+describe('Token decimals', function () {
+  for (const [value, decimals, result] of tests) {
     it(`${value}/${decimals} should be ${result}`, () => {
       expect(tokenDecimals(value, decimals).toString(10)).to.be.equal(result)
     })

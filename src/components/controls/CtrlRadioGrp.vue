@@ -27,7 +27,7 @@ export default {
     }
   },
   created () {
-    let { values } = this
+    const { values } = this
     if (values) this.group = values
   },
   methods: {

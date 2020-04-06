@@ -1,6 +1,6 @@
 export const getDate = (state, getters) => {
   let date = state.date
-  let diff = getters.timeDifference
+  const diff = getters.timeDifference
   date += diff
   return date
 }
@@ -18,8 +18,8 @@ export const getColors = state => {
 }
 
 export const getBlockColor = state => (blockNumber, cKey = 'blocksColors') => {
-  let colors = state[cKey]
-  let c = blockNumber % 10
+  const colors = state[cKey]
+  const c = blockNumber % 10
   return colors[c]
 }
 
@@ -28,21 +28,21 @@ export const getBlockColor2 = (state, getters) => blockNumber => {
 }
 
 export const blockStyle = (state, getters) => blockNumber => {
-  let color = getters.getBlockColor(blockNumber)
+  const color = getters.getBlockColor(blockNumber)
   return { color, fill: color, 'border-color': color }
 }
 
 export const getTableId = (state) => tableName => {
   // if (!tableName) console.warn('missing table name')
   tableName = tableName || 'Table'
-  let routeName = state.route.name || 'unNamedRoute'
+  const routeName = state.route.name || 'unNamedRoute'
   return `${routeName}-${tableName}`
 }
 
 export const dbIsOutdated = (state) => {
-  let missing = state.backend.missingBlocks
-  let now = Date.now()
-  let time = missing.time
+  const missing = state.backend.missingBlocks
+  const now = Date.now()
+  const time = missing.time
   return (missing.blocks > 1) && (now - time > 5000)
 }
 

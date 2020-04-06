@@ -21,7 +21,7 @@ export default {
     Message
   },
   created () {
-    let { value, searched, search } = this
+    const { value, searched, search } = this
     if (searched !== value) search(value)
   },
   computed: {
@@ -42,7 +42,7 @@ export default {
       'searchTypes']),
     async search (value) {
       await this.prepareSearch({ value })
-      let { types } = this
+      const { types } = this
       if (types.length) await this.searchTypes({ types, value })
       else await this.fetchSearch({ value })
     }

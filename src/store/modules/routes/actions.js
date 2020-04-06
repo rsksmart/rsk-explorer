@@ -3,8 +3,8 @@ import router from '../../../router'
 import { Q, SORT } from '../../../config/types'
 
 export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
-  let { module, action, key } = req
-  let routerQuery = getters.getRouterQuery(key, true)
+  const { module, action, key } = req
+  const routerQuery = getters.getRouterQuery(key, true)
   let query = routerQuery[Q] || getters.getSavedQ(module, action) || null
 
   req.sort = routerQuery[SORT] || getters.getSavedSort(module, action) || null
@@ -22,7 +22,7 @@ export const fetchRouteData = ({ commit, getters, dispatch }, req) => {
 export const updateRouterQuery = ({ state, getters, dispatch }, { query, hash, key }) => {
   query = query || {}
   // update = getters.parseQuery(update)
-  let oldQuery = getters.getRouterQuery(key)
+  const oldQuery = getters.getRouterQuery(key)
   query = updateQuery(oldQuery, query)
   dispatch('routerPush', { query, hash, key })
 }
@@ -33,8 +33,8 @@ export const routerPush = ({ state, commit, getters }, { query, hash, key }) => 
 }
 
 export const updateQuery = (query, update) => {
-  for (let p in update) {
-    let value = update[p]
+  for (const p in update) {
+    const value = update[p]
     if (value === null) delete query[p]
     else query[p] = value
   }

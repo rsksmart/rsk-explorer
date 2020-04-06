@@ -16,17 +16,17 @@ export const normalizeSearch = value => {
 export const plainObjectChanges = (oldObj, newObj) => {
   oldObj = oldObj || {}
   if (!newObj) return oldObj
-  let diff = Object.assign(Object.assign({}, oldObj), newObj)
-  for (let p in diff) {
-    let newValue = newObj[p]
-    let oldValue = oldObj[p]
+  const diff = Object.assign(Object.assign({}, oldObj), newObj)
+  for (const p in diff) {
+    const newValue = newObj[p]
+    const oldValue = oldObj[p]
     if (oldValue === newValue) delete diff[p]
   }
   return diff
 }
 
 export const ObjectIdToDate = id => {
-  let timestamp = String(id).substr(0, 8)
+  const timestamp = String(id).substr(0, 8)
   return new Date(parseInt(timestamp, 16) * 1000)
 }
 

@@ -35,7 +35,7 @@ const Blocks = () => {
 }
 
 const Block = () => {
-  let block = Blocks()
+  const block = Blocks()
   block.fields = Object.assign(block.fields, {
     hash: {
       trim: 'auto'
@@ -93,7 +93,7 @@ const Block = () => {
 }
 
 const MiningFields = () => {
-  let miner = Block().fields
+  const miner = Block().fields
   return {
     miner,
     bitcoinMergedMiningHeader: { trim: 'auto' },
@@ -104,8 +104,8 @@ const MiningFields = () => {
 }
 
 const BlockBox = () => {
-  let blocks = Blocks()
-  let { txDensity, blockHashrate } = Block().fields
+  const blocks = Blocks()
+  const { txDensity, blockHashrate } = Block().fields
   blocks.fields = Object.assign(blocks.fields, {
     miner: {
       trim: 4
@@ -117,7 +117,7 @@ const BlockBox = () => {
 }
 
 const BlockMining = () => {
-  let block = Block()
+  const block = Block()
   block.fields = MiningFields()
   return block
 }

@@ -51,33 +51,33 @@ export default {
   ],
   computed: {
     delayedFields () {
-      let delayed = this.delayed || {}
+      const delayed = this.delayed || {}
       return delayed.fields || []
     }
   },
   methods: {
     value (field, format) {
-      let raw = !format
+      const raw = !format
       return this.getValue(field, this.data, raw)
     },
     isDelayed (field) {
-      let fields = this.delayedFields
+      const fields = this.delayedFields
       return fields.indexOf(field) > -1
     },
     itemClass (field, rowNumber) {
-      let css = []
-      let fieldName = field.fieldName
-      let pos = this.fieldPos(field)
+      const css = []
+      const fieldName = field.fieldName
+      const pos = this.fieldPos(field)
       if (this.isFrom(fieldName, pos)) css.push('from')
       if (this.isTo(fieldName, pos)) css.push('to')
       rowNumber = rowNumber || pos
-      let row = (rowNumber % 2) ? 'odd' : 'even'
+      const row = (rowNumber % 2) ? 'odd' : 'even'
       css.push(row)
       return css
     },
     componentProps (field) {
-      let tableName = `field-${field.fieldName}`
-      let delayed = this.isDelayed(field)
+      const tableName = `field-${field.fieldName}`
+      const delayed = this.isDelayed(field)
       let props = { tableName, delayed }
       props = (field.renderAsProps) ? Object.assign(props, field.renderAsProps) : props
       return props

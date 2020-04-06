@@ -31,7 +31,7 @@ export default [
     beforeEnter (t, f) {
       let url = statsUrl
       if (!url) {
-        let host = window.location.host.split('.')
+        const host = window.location.host.split('.')
         host[0] = 'stats'
         url = window.location.protocol + '//' + host.join('.')
       }

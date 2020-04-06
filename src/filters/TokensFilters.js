@@ -9,8 +9,8 @@ export const tokenAmount = (value, decimals = 18) => {
   decimals = decimals || 0
   // if (decimals === 0) return value
   decimals = newBigNumber(decimals)
-  let ret = newBigNumber(value)
-  let divisor = new BigNumber(10).exponentiatedBy(decimals.toNumber())
+  const ret = newBigNumber(value)
+  const divisor = new BigNumber(10).exponentiatedBy(decimals.toNumber())
   return ret.dividedBy(divisor)
 }
 

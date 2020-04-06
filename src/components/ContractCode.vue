@@ -65,7 +65,7 @@ export default {
     }
   },
   created () {
-    let first = this.imports[0]
+    const first = this.imports[0]
     if (first) this.selectFile(first.name)
   },
   computed: {
@@ -78,13 +78,13 @@ export default {
       return this.data.code
     },
     contractName () {
-      let { name, address } = this.data
+      const { name, address } = this.data
       return name || address
     },
 
     abi () {
-      let { verification } = this
-      let abi = (verification) ? verification.abi : null
+      const { verification } = this
+      const abi = (verification) ? verification.abi : null
       return (abi) ? JSON.stringify(abi, null, 2) : null
     },
 
@@ -101,7 +101,7 @@ export default {
     },
 
     imports () {
-      let sources = [...this.sources]
+      const sources = [...this.sources]
       return sources.splice(1)
     },
 
@@ -114,15 +114,15 @@ export default {
     },
 
     verificationData () {
-      let result = this.result || {}
-      let { name: contractName, usedSettings } = result
-      let { evmVersion, optimizer: optimization } = usedSettings
-      let { version: compilerVersion } = usedSettings.compiler
+      const result = this.result || {}
+      const { name: contractName, usedSettings } = result
+      const { evmVersion, optimizer: optimization } = usedSettings
+      const { version: compilerVersion } = usedSettings.compiler
       return { contractName, compilerVersion, evmVersion, optimization }
     },
 
     selected () {
-      let { fileSelected } = this
+      const { fileSelected } = this
       return this.imports.find(f => f.name === fileSelected)
     }
 

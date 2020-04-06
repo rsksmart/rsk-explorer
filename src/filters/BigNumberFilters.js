@@ -23,7 +23,7 @@ export const newBigNumber = value => {
     if (typeof value === 'object') {
       if (isSerializedBigNumber(value)) return unserializeBigNumber(value)
       if (typeof value === 'object' && undefined !== value.c && undefined !== value.e && undefined !== value.s) {
-        let bn = new BigNumber(0)
+        const bn = new BigNumber(0)
         bn.c = value.c
         bn.e = value.e
         bn.s = value.s

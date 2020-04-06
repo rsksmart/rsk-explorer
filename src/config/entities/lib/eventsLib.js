@@ -7,7 +7,7 @@ export const EVENTS_TYPES = {
 }
 
 export const EventTransferFields = (include) => {
-  let fields = {
+  const fields = {
     from: {
       type: 'eventAddress',
       trim: 'auto'
@@ -47,8 +47,8 @@ export const EVENTS = [
     type: EVENTS_TYPES.TRANSFER
   },
   {
-    'method': 'Transfer(address,address,uint256,bytes)',
-    'signature': 'e19260aff97b920c7df27010903aeb9c8d2be5d310a2c67824cf3f15396e4c16',
+    method: 'Transfer(address,address,uint256,bytes)',
+    signature: 'e19260aff97b920c7df27010903aeb9c8d2be5d310a2c67824cf3f15396e4c16',
     fields: EventTransferFields(['from', 'to', 'value', 'data']),
     type: EVENTS_TYPES.TRANSFER
   }
@@ -65,7 +65,7 @@ export const formatEvent = (event, data) => {
 
   // non-standard remasc events
   if (isRemascEvent(event)) config = remascEventConfig()
-  let args = eventArgs(event, config)
+  const args = eventArgs(event, config)
   if (args) event._arguments = args
   if (config) event._config = config
   return event
@@ -78,18 +78,18 @@ export const getEventConfig = (event) => {
 }
 
 export const getEventInputs = event => {
-  let inputs = (event.abi) ? event.abi.inputs : []
+  const inputs = (event.abi) ? event.abi.inputs : []
   return inputs || []
 }
 
 export const eventArgs = (event, { fields }) => {
-  let inputs = getEventInputs(event)
+  const inputs = getEventInputs(event)
   fields = fields || {}
-  let names = Object.keys(fields) || []
+  const names = Object.keys(fields) || []
   if (event.abi) {
     event.args = event.args || []
     return inputs.map(i => i.name).reduce((v, a, i) => {
-      let name = names[i] || a
+      const name = names[i] || a
       v[name] = event.args[i]
       return v
     }, {})
@@ -97,11 +97,11 @@ export const eventArgs = (event, { fields }) => {
 }
 
 export const getEventConfigBySignature = signature => {
-  let config = EVENTS.find(e => e.signature === signature) || {}
-  let fields = config.fields
+  const config = EVENTS.find(e => e.signature === signature) || {}
+  const fields = config.fields
   if (fields) {
-    for (let name in fields) {
-      let field = fields[name] || {}
+    for (const name in fields) {
+      const field = fields[name] || {}
       field.field = ['_arguments', name]
       fields[name] = field
     }
@@ -110,11 +110,11 @@ export const getEventConfigBySignature = signature => {
 }
 
 export const getEventAbiFields = event => {
-  let inputs = getEventInputs(event)
+  const inputs = getEventInputs(event)
   return inputs.reduce((v, a, i) => {
-    let { type, name } = a
-    let trim = (type === 'address') ? 'auto' : 0
-    let field = ['_arguments', name]
+    const { type, name } = a
+    const trim = (type === 'address') ? 'auto' : 0
+    const field = ['_arguments', name]
     v[name] = { type, field, trim }
     return v
   }, {})

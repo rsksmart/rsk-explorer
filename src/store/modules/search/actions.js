@@ -8,7 +8,7 @@ const createSearchKey = (value, type) => {
 }
 
 export const clearSearchedResults = async ({ commit, dispatch, getters }) => {
-  let keys = getters.searchKeysRequested
+  const keys = getters.searchKeysRequested
   commit('CLEAR_SEARCH_REQUEST')
   await dispatch('clearRequests', keys)
   return dispatch('clearResponses', keys)
@@ -16,7 +16,7 @@ export const clearSearchedResults = async ({ commit, dispatch, getters }) => {
 
 export const updateSearchedValue = async ({ commit, dispatch, state }, value) => {
   value = String(value).replace(/[\W_]+/g, '')
-  let lcValue = value.toLowerCase()
+  const lcValue = value.toLowerCase()
   value = (isHexString(value) && isTxOrBlockHash(lcValue)) ? lcValue : value
   if (state.value !== value) {
     commit('SET_SEARCH_VALUE', value)
@@ -29,8 +29,8 @@ export const fetchSearch = async ({ commit, dispatch, getters }, { value, type }
   value = await dispatch('updateSearchedValue', value)
   if (!value) return
   type = type || DEFAULT_TYPE
-  let key = createSearchKey(value, type)
-  let payload = Object.assign({}, getters.getSearchPayloadByType(type))
+  const key = createSearchKey(value, type)
+  const payload = Object.assign({}, getters.getSearchPayloadByType(type))
   if (!payload) return
   let { params, searchField } = payload
   params = params || {}
@@ -44,16 +44,16 @@ export const fetchSearch = async ({ commit, dispatch, getters }, { value, type }
 export const prepareSearch = async ({ commit, dispatch, rootGetters }, { value }) => {
   value = await dispatch('updateSearchedValue', value)
   if (!value) return
-  let chainId = rootGetters.chainId
+  const chainId = rootGetters.chainId
   let { number: lastBlock } = rootGetters.lastBlock || {}
   if (lastBlock) lastBlock += 2
-  let types = testSearchedValue(value, { chainId, lastBlock })
+  const types = testSearchedValue(value, { chainId, lastBlock })
   commit('SET_SEARCH_TYPES', types)
   return { value, types }
 }
 
 export const searchTypes = async ({ dispatch }, { types, value }) => {
-  for (let type of types) {
+  for (const type of types) {
     await dispatch('fetchSearch', { value, type })
   }
 }

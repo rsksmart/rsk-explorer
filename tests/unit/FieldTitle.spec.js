@@ -5,29 +5,29 @@ import FieldTitle from '@/components/FieldTitle.vue'
 const fieldDescriptionSelector = '.field-description'
 
 describe('FieldTitle.vue', () => {
-  let field = {
+  const field = {
     name: 'test field',
     description: 'test field description'
   }
   it('render field title with description', () => {
-    let wrapper = shallowMount(FieldTitle, { propsData: { field } })
+    const wrapper = shallowMount(FieldTitle, { propsData: { field } })
     expect(wrapper.contains(fieldDescriptionSelector)).equal(true)
   })
 
   it('render field title without description', () => {
-    let field = {
+    const field = {
       description: 'test',
       hideDescription: true
     }
-    let wrapper = shallowMount(FieldTitle, { propsData: { field } })
+    const wrapper = shallowMount(FieldTitle, { propsData: { field } })
     expect(wrapper.contains(fieldDescriptionSelector)).equal(false)
   })
   it('render field title without description', () => {
-    let field = {
+    const field = {
       description: '',
       hideDescription: false
     }
-    let wrapper = shallowMount(FieldTitle, { propsData: { field } })
+    const wrapper = shallowMount(FieldTitle, { propsData: { field } })
     expect(wrapper.contains(fieldDescriptionSelector)).equal(false)
   })
 })
