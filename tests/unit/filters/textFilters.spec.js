@@ -50,21 +50,21 @@ function addQuotes (value) {
 }
 
 describe('txtTemplate', function () {
-  let name = 'test'
-  let value = 1234
-  let cases = [
+  const name = 'test'
+  const value = 1234
+  const cases = [
     ['name: @name, value: @value', `name: ${name}, value: ${value}`],
     ['@name', `${name}`],
     ['@value', `${value}`]
   ]
-  let txt = 'test @value'
-  it(`should return txt`, () => {
+  const txt = 'test @value'
+  it('should return txt', () => {
     expect(textFilters.textTemplate(txt, undefined)).to.be.equal(txt)
     expect(textFilters.textTemplate(txt, null)).to.be.equal(txt)
     expect(textFilters.textTemplate(txt, [])).to.be.equal(txt)
   })
-  for (let t of cases) {
-    let [test, expected] = t
+  for (const t of cases) {
+    const [test, expected] = t
     it(`${test} should be ${expected}`, () => {
       expect(textFilters.textTemplate(test, { name, value })).to.be.equal(expected)
     })

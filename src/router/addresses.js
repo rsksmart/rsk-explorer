@@ -30,10 +30,10 @@ export default [
       module: 'addresses',
       action: 'getAddress',
       msgs: (data) => {
-        let msgs = []
+        const msgs = []
         data = data || {}
-        let { address } = data
-        let checksumError = store.getters.getChecksumError(address)
+        const { address } = data
+        const checksumError = store.getters.getChecksumError(address)
         if (checksumError) {
           msgs.push(fillMessage(CHECKSUM_WARN, { address: checksumError }))
         }

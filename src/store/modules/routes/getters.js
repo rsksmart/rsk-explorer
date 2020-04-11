@@ -100,6 +100,6 @@ export const getNewRoute = (state, getters, rootState) => (key, dest) => {
 export const getRouterPath = (state, getters, rootState) => rootState.route.path
 
 export const getChecksumError = state => address => {
-  let { checksumError } = state
+  const { checksumError } = state
   return (checksumError && checksumError.toLowerCase() === address) ? checksumError : undefined
 }
