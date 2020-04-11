@@ -1,26 +1,31 @@
-<template lang="pug">
+  <template lang="pug">
   .check-address
     h2 Check address
     .address {{address}}
-    .error(v-if='!isAddress')
+    //- Address
+    template(v-if='!isAddress')
+      .error
         p {{messages.IS_NOT_ADDRESS}}
-    div(v-else)
+    .txt-box(v-else)
       .valid(v-if="isValid")
         h3 {{messages.VALID_ADDRESS}}
       .invalid.error(v-else)
         h3.error {{messages.INVALID_ADDRESS}}
+      //-Checksum
       .checksum
-        h3(:class="checkClass") Checksum
+        //-h3(:class="checkClass") Checksum
         p
           span {{messages.CHECKSUM_IS}} &nbsp;
           strong(:class="checkClass") {{(checksumValid) ? messages.VALID:messages.INVALID }}&nbsp;
           span {{messages.FOR_NET}}:&nbsp;
           strong {{netName}} ({{chainId}})
-      .pa(v-if='!isValid && isAddress')
-        h3.warn Proceed anyway
-        p {{messages.PA_MESSAGE}}&nbsp;
-          a.btn.btn-brand(:href='unchecksummedPath') {{messages.GOTO_UNCHECKSUMED}}
-      .networks(v-if="networks.length")
+    .txt-box(v-if='!isValid && isAddress')
+      h3.brand {{messages.PROCEED}}
+      p {{messages.PA_MESSAGE}}
+      p
+        a(:href='unchecksummedPath') {{messages.IGNORE}} {{messages.GOTO_ADDRESS}}
+      .networks.txt-box(v-if='Object.keys(networks).length')
+        h3 {{messages.NETWORKS}}
         p.info {{messages.MATCH}}:
         template(v-for="net in networks")
           ul.net.plain
