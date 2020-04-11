@@ -5,7 +5,8 @@ import {
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
 
-const linkAddress = address => (!isAddress(address)) ? null : `/${r.address}/${address}`
+export const linkAddress = address => (!isAddress(address)) ? null : `/${r.address}/${address}`
+export const addressFilters = ['checksum-address']
 
 const hashrate = {
   icon: 'flame',
@@ -48,7 +49,8 @@ export default {
     icon: 'miner',
     titleIcon: true,
     hideTitle: true,
-    link: (data, value) => linkAddress(value)
+    link: (data, value) => linkAddress(value),
+    filters: addressFilters
   },
   hash: {
     icon: 'hash',
@@ -66,10 +68,11 @@ export default {
   },
   address: {
     link: (data, value) => linkAddress(value),
-    filters: ['checksum-address']
+    filters: addressFilters
   },
   token: {
-    link: `/${r.address}/`
+    link: value => linkAddress,
+    filters: addressFilters
   },
   date: {
     icon: 'calendar',
@@ -83,15 +86,17 @@ export default {
   },
   tokenAddress: {
     trim: 'auto',
-    filters: ['checksum-address']
+    filters: addressFilters
   },
   tokenName: {
     default: CONTRACT_UNKNOWN_NAME,
     trim: 'auto',
-    link: ({ address }, value) => linkAddress(address)
+    link: ({ address }, value) => linkAddress(address),
+    filters: addressFilters
   },
   eventAddress: {
     link: (data, value) => linkAddress(value),
+    filters: addressFilters,
     default: NOT_AVAILABLE
   },
   eventId: {

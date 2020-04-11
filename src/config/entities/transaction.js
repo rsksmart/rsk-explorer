@@ -1,7 +1,6 @@
 
 import {
   ROUTES as r,
-  THIS_ADDRESS,
   STATUS,
   CONTRACT_CREATED,
   CONTRACT_FAILED
@@ -12,6 +11,7 @@ import { txStatus } from '../../filters/TextFilters'
 import { round } from '../../filters/NumberFilters'
 import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
 import { isAddress } from '../../lib/js/utils'
+import { linkAddress, addressFilters } from './lib/fieldsTypes'
 
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
@@ -43,10 +43,6 @@ const transactionFormatRow = (tx, parentData) => {
   return tx
 }
 
-const txLink = (value) => {
-  return (value === THIS_ADDRESS) ? null : `/${r.address}/${value}`
-}
-
 export const txStatusCss = status => {
   const css = {
     FAIL: 'error',
@@ -75,7 +71,8 @@ const TxFields = () => {
       default: 0
     },
     from: {
-      link: (data, value) => txLink(value)
+      link: (data, value) => linkAddress(value),
+      filters: addressFilters
     },
     to: {
       css: (value, filtered, data) => {
@@ -84,8 +81,9 @@ const TxFields = () => {
       },
       link: (tx, value) => {
         const contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
-        return txLink(contractAddress || value)
-      }
+        return linkAddress(contractAddress || value)
+      },
+      filters: addressFilters
     },
     value: {
       filters: ['tx-value',
