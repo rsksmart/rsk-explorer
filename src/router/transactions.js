@@ -3,13 +3,15 @@ import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
 import { filterTransferEvents } from '../config/entities/lib/eventsLib'
 
+const module = 'transactions'
+
 export default [
   {
     path: `/${r.transactions}`,
     name: 'Transactions',
     component: DataPage,
     props: {
-      module: 'transactions',
+      module,
       title: 'Transactions',
       dataType: 'transactions',
       action: 'getTransactions'
@@ -45,13 +47,21 @@ export default [
           }
         }
       ],
-      module: 'transactions',
+      module,
       title: 'Transaction',
       dataType: 'transaction',
       action: 'getTransactionWithAddressData',
       params: {
         getPrevNext: true
-      }
+      },
+      tabs: [
+        {
+          name: 'internal transactions',
+          dataType: 'internalTransactions',
+          module: 'internalTransactions',
+          action: 'getInternalTransactionsByTxHash'
+        }
+      ]
     }
   }
 ]
