@@ -17,7 +17,9 @@ export const ROUTES = {
   txPool: 'txpool',
   verifyContract: 'verify',
   checkAddress: 'check-address',
-  search: 'search'
+  search: 'search',
+  internalTransactions: 'itxs',
+  internalTx: 'itx'
 }
 
 export const STATUS = {

@@ -31,6 +31,7 @@ import { event, events, eventData, transferEvents } from './event'
 import { txPool } from './txPool'
 import { compilationSettings, externalLibraries } from './verifiedContracts'
 import { stats } from './stats'
+import { internalTransaction, internalTransactions } from './internalTransaction'
 
 export default {
   block,
@@ -57,5 +58,7 @@ export default {
   transferEvents,
   compilationSettings,
   externalLibraries,
-  stats
+  stats,
+  internalTransaction,
+  internalTransactions
 }

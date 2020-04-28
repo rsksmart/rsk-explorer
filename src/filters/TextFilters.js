@@ -26,12 +26,16 @@ export const getTxStatus = value => {
   return value
 }
 
+export const getItxStatus = error => (error) ? 'FAIL' : 'SUCCESS'
+
 export const txStatus = Vue.filter('tx-status', value => {
   value = getTxStatus(value)
   return STATUS[value] || value
 })
 
 export const txIcon = Vue.filter('tx-icon', value => STATUS_ICONS[getTxStatus(value)])
+
+export const itxIcon = Vue.filter('itx-icon', value => STATUS_ICONS[getItxStatus(value)])
 
 export const checksumAddress = Vue.filter('checksum-address', address => {
   const chainId = store.getters.chainId

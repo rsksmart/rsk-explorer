@@ -45,6 +45,12 @@ export default {
     titleIcon: true,
     hideTitle: true
   },
+  internalTransaction: {
+    icon: 'transaction',
+    link: `/${r.internalTx}/`,
+    titleIcon: true,
+    hideTitle: true
+  },
   miner: {
     icon: 'miner',
     titleIcon: true,
