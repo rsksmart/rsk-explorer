@@ -76,6 +76,12 @@ export default [
           }]
         },
         {
+          name: 'internal transactions',
+          dataType: 'internalTransactions',
+          module: 'internalTransactions',
+          action: 'getInternalTransactionsByAddress'
+        },
+        {
           name: 'tokens',
           dataType: 'tokenByAddress',
           module: 'tokens',
