@@ -43,6 +43,12 @@ export default [
           dataType: 'transactions',
           module: 'transactions',
           action: 'getTransactionsByBlock'
+        },
+        {
+          name: 'internal transactions',
+          dataType: 'internalTransactions',
+          module: 'internalTransactions',
+          action: 'getInternalTransactionsByBlock'
         }
       ]
     }
