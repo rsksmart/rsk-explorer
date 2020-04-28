@@ -57,6 +57,12 @@ const Address = () => {
       hideIfEmpty: true,
       trim: 'auto'
     },
+    internalTx: {
+      field: 'createdByTx.internalTxId',
+      type: 'internalTransaction',
+      hideIfEmpty: true,
+      trim: 'auto'
+    },
     decimals: {
       filters: ['big-number'],
       default: '',
