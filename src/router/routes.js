@@ -9,6 +9,7 @@ import transactions from './transactions'
 import addresses from './addresses'
 import tokens from './tokens'
 import contracts from './contracts'
+import internalTransactions from './internalTransactions'
 const statsUrl = process.env.STATS_URL
 
 export default [
@@ -60,6 +61,7 @@ export default [
   ...addresses,
   ...tokens,
   ...contracts,
+  ...internalTransactions,
   {
     path: '*',
     name: 'Error',
