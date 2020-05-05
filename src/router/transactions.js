@@ -22,6 +22,9 @@ export default [
     name: 'Transaction',
     component: DataPage,
     props: {
+      updateOnNewBlock: ({ receipt }) => {
+        return !receipt
+      },
       mainContent: [
         {
           name: 'Transaction',
