@@ -5,6 +5,7 @@ export default function () {
     systemSettings: {},
     requesting: {},
     responses: {},
+    responsesMetadata: {},
     totals: {},
     blocks: [],
     lastBlocks: [],
@@ -26,4 +27,9 @@ export default function () {
     txPoolChart: [],
     stats: {}
   }
+}
+
+export const getLastBlock = state => {
+  const { lastBlocks } = state
+  return lastBlocks[0]
 }

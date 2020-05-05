@@ -1,11 +1,10 @@
+import { getLastBlock } from './state'
+
 export const firstListBlock = state => {
   return state.blocks[0]
 }
 
-export const lastBlock = state => {
-  const { lastBlocks } = state
-  return lastBlocks[0]
-}
+export const lastBlock = state => getLastBlock(state)
 
 export const transactions = state => {
   return state.transactions
@@ -71,4 +70,14 @@ export const isConfigLoaded = state => {
 export const netName = state => {
   const { name } = state.systemSettings.net || {}
   return name
+}
+
+export const responseMetadata = state => key => {
+  return state.responsesMetadata[key]
+}
+
+export const isResponseBlockUpdated = (state, getters) => key => {
+  const metadata = getters.responseMetadata(key) || {}
+  const lastBlock = getters.lastBlock
+  if (metadata.block && lastBlock) return metadata.block.hash === lastBlock.hash
 }

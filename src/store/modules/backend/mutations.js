@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { getLastBlock } from './state'
 // catch socket emit
 export const SOCKET_EMIT = payload => { }
 
@@ -48,10 +49,14 @@ export const SET_RESPONSE = (state, [key, data]) => {
   for (const p in data) {
     Vue.set(state.responses[key], p, data[p])
   }
+  const time = Date.now()
+  const block = getLastBlock(state)
+  Vue.set(state.responsesMetadata, key, { time, block })
 }
 
 export const CLEAR_RESPONSE = (state, key) => {
   Vue.delete(state.responses, key)
+  Vue.delete(state.responsesMetadata, key)
 }
 
 export const SET_TOTAL = (state, { key, total }) => {
