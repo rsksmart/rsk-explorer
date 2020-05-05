@@ -24,10 +24,10 @@
             export-controls(v-if='data' :data='page.data' :type='dataType')
         data-section( v-if='activeContentTab'
           :component='activeContentTab.component' :reqKey='reqKey' :module='module'
-          :dataType='activeContentTab.dataType || dataType' :action='action')
+          :dataType='activeContentTab.dataType || dataType' :action='action' :updateOnNewBlock='updateOnNewBlock' @update='updateSection')
       .page(v-if='data')
         data-section(v-if='!tabs && !activeContentTab' :module='module' :dataType='dataType'
-          :reqKey='reqKey' :component='component' :action='action')
+          :reqKey='reqKey' :component='component' :action='action' :updateOnNewBlock='updateOnNewBlock' @update='updateSection')
         .tabs(v-if='tabs && data && !hideTabs')
           //- Tabs titles
           .tabs-titles(v-if='page.data')
@@ -85,7 +85,8 @@ export default {
     'headType',
     'tabs',
     'rKey',
-    'msgs'
+    'msgs',
+    'updateOnNewBlock'
   ],
   created () {
     this.getData()
@@ -300,6 +301,9 @@ export default {
         title = title(this.data)
       }
       return title || name
+    },
+    updateSection () {
+      return this.getData()
     }
   }
 }

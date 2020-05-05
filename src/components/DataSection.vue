@@ -23,7 +23,7 @@
 
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import ToolTip from './ToolTip'
 import DataTable from './DataTable'
 import DataItem from './DataItem'
@@ -43,8 +43,32 @@ export default {
     Message
   },
   props: [
-    'module', 'dataType', 'component', 'action', 'reqKey', 'msgs'
+    'module', 'dataType', 'component', 'action', 'reqKey', 'msgs', 'updateOnNewBlock'
   ],
+  data () {
+    return {
+      unwatch: undefined
+    }
+  },
+  created () {
+    const { updateOnNewBlock, $store, reqKey, data } = this
+    const vm = this
+    if (updateOnNewBlock) {
+      this.unwatch = $store.watch(
+        (state, getters) => getters.isResponseBlockUpdated(reqKey),
+        (newValue, oldValue) => {
+          if (newValue === false && oldValue === true) {
+            const isCb = (typeof updateOnNewBlock === 'function')
+            const update = (isCb) ? updateOnNewBlock(data || {}) : true
+            if (update) vm.$emit('update')
+          }
+        }
+      )
+    }
+  },
+  beforeDestroy () {
+    if (this.unwatch) this.unwatch()
+  },
   computed: {
     page () {
       return this.getPage()(this.reqKey)
@@ -89,9 +113,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'fetchRouteData'
-    ]),
     ...mapGetters([
       'dataKey',
       'getSavedSort',
@@ -106,5 +127,4 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-</style>
+<style lang="stylus"></style>
