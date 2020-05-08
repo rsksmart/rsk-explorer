@@ -66,4 +66,19 @@ Serve ./dist folder on web server
 location / {
   try_files $uri $uri/ /index.html;
 }
+
+```
+
+#### Double slashed paths
+
+  Double slashed paths fail on router resolution
+
+  E.g. *https://explorer.rsk.co//block/123*
+  To avoid this errors use the HTTP Server to rewrite the paths.
+
+ nginx:
+
+``` javascript
+  merge_slashes off;
+  rewrite ^(.*?)//+(.*?)$ $1/$2 permanent;
 ```
