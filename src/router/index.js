@@ -29,6 +29,11 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const configLoaded = store.getters.isConfigLoaded
+
+  // avoid double slash paths
+  const { fullPath } = to
+  if (/\/\//.test(fullPath)) next(fullPath.replace('//', '/'))
+
   // Checks if backend configuration is loaded
   if (!configLoaded) {
     const unwatch = store.watch((state, getters) => getters.isConfigLoaded,
