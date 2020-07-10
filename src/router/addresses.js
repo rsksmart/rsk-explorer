@@ -67,13 +67,7 @@ export default [
           name: 'transactions',
           dataType: 'transactions',
           action: 'getTransactionsByAddress',
-          module: 'transactions',
-          msgs: [(data, parenData) => {
-            const msgs = []
-            const { balance, txBalance } = parenData
-            if (txBalance !== balance) msgs.push('INTERNAL_TX_WARN')
-            return msgs
-          }]
+          module: 'transactions'
         },
         {
           name: 'internal transactions',
