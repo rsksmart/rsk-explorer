@@ -97,3 +97,7 @@ export const SET_TX_POOL_CHART = (state, data) => {
 export const SET_STATS = (state, data) => {
   Vue.set(state, 'stats', data)
 }
+
+export const SET_BALANCES_STATUS = (state, data) => {
+  Vue.set(state, 'balancesStatus', data)
+}

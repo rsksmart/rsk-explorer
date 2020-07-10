@@ -11,6 +11,7 @@ export default function () {
     lastBlocks: [],
     pendingBlocks: {},
     dbStatus: {},
+    balancesStatus: {},
     missingBlocks: {
       blocks: 1,
       time: 0

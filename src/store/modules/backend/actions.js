@@ -8,6 +8,7 @@ export const init = ({ commit, dispatch }, data) => {
   dispatch('subscribe', 'status')
   dispatch('subscribe', 'txpool')
   dispatch('subscribe', 'stats')
+  dispatch('subscribe', 'balances')
 }
 
 export const connectionUpdate = ({ commit }, connected) => {
@@ -93,6 +94,10 @@ export const socketData = ({ state, commit, dispatch }, res) => {
 // handle status from status channel
 export const socketDbStatus = ({ state, commit }, data) => {
   commit('SET_DB_STATUS', data)
+}
+
+export const socketBalancesStatus = ({ state, commit }, data) => {
+  commit('SET_BALANCES_STATUS', data)
 }
 
 export const fetchData = ({ state, commit, getters }, req) => {

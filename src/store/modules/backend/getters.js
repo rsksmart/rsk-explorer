@@ -81,3 +81,5 @@ export const isResponseBlockUpdated = (state, getters) => key => {
   const lastBlock = getters.lastBlock
   if (metadata.block && lastBlock) return metadata.block.hash === lastBlock.hash
 }
+
+export const getBalancesStatus = state => state.balancesStatus
