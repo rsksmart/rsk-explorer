@@ -5,6 +5,7 @@ import { ROUTES as r } from '../config/types'
 import { TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 import store from '../store/'
 import { fillMessage, CHECKSUM_WARN } from '../config/messages'
+import { balancesMessages } from './balances'
 
 export default [
   {
@@ -103,6 +104,13 @@ export default [
             const methods = data.contractMethods || []
             return methods.indexOf('balanceOf(address)') > -1
           }
+        },
+        {
+          name: 'balances',
+          dataType: 'balances',
+          module: 'balances',
+          action: 'getBalances',
+          msgs: balancesMessages
         },
         {
           name: 'mined blocks',

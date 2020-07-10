@@ -19,7 +19,9 @@ export const ROUTES = {
   checkAddress: 'check-address',
   search: 'search',
   internalTransactions: 'itxs',
-  internalTx: 'itx'
+  internalTx: 'itx',
+  balance: 'balance',
+  balances: 'balances'
 }
 
 export const STATUS = {
