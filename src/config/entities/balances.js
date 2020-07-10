@@ -1,25 +1,30 @@
 import { ROUTES as r } from '../types'
-import { Address, Addresses } from './address'
+import { Addresses, Address } from './address'
+import { round } from '../../filters/NumberFilters'
+
+const balanceLink = ({ address, blockNumber }) => `/${r.balance}/${address}/${blockNumber}`
 
 const Balances = () => {
   const { balance } = Addresses().fields
+  balance.filters = ['tx-value', value => round(value, 8), 'rbtc']
+  balance.link = balanceLink
   return {
     icon: 'credit-card',
     key: 'address',
-    formatLink: ({ address, blockNumber }) => `/${r.balance}/${address}/${blockNumber}`,
+    formatLink: balanceLink,
     listLink: `/${r.balances}`,
     titleField: 'address',
     fields: {
       block: {
         field: 'blockNumber'
       },
-      blockHash: {
-        type: 'hash',
-        trim: 8
-      },
       date: {
         field: 'timestamp',
         type: 'date'
+      },
+      time: {
+        field: 'timestamp',
+        type: 'timestamp'
       },
       balance
     }
