@@ -4,7 +4,7 @@
       h2 {{error.error || 'ERROR'}}
     template(v-if='!error')
       .messages(v-if='msgs')
-        message(v-for='msg,key in msgs' :message='msg' :key='key' :data='data' :parentData='parentData')
+        message(v-for='msg,key in messages' :message='msg' :key='key' :data='data' :parentData='parentData')
       //- Transactions filters
       tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module' :reqKey='reqKey')
       paginator(v-if='isTable' :options='pageOptions' :link='0')
@@ -110,6 +110,11 @@ export default {
     },
     error () {
       return (this.page) ? this.page.error : null
+    },
+    messages () {
+      let { msgs, data, parentData } = this
+      if (typeof msgs === 'function') msgs = msgs(data, parentData)
+      return msgs || []
     }
   },
   methods: {
