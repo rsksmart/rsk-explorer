@@ -32,6 +32,7 @@ import { txPool } from './txPool'
 import { compilationSettings, externalLibraries } from './verifiedContracts'
 import { stats } from './stats'
 import { internalTransaction, internalTransactions } from './internalTransaction'
+import { balance, balances } from './balances'
 
 export default {
   block,
@@ -60,5 +61,7 @@ export default {
   externalLibraries,
   stats,
   internalTransaction,
-  internalTransactions
+  internalTransactions,
+  balance,
+  balances
 }

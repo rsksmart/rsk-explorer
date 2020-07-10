@@ -8,7 +8,7 @@ const addressFormatRow = (data, parentData) => {
   return data
 }
 
-const Addresses = () => {
+export const Addresses = () => {
   return {
     icon: 'credit-card',
     key: 'address',
@@ -27,7 +27,7 @@ const Addresses = () => {
 }
 // type
 
-const Address = () => {
+export const Address = () => {
   const address = Addresses()
   address.formatRow = addressFormatRow
   const fields = Object.assign(address.fields, {
