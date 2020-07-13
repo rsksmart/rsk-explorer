@@ -229,7 +229,9 @@ export default {
     },
     renderTab (tab) {
       const render = tab.render
-      if (typeof render === 'function') return render(this.data)
+      const { name } = tab
+      const { data, tabsTotals } = this
+      if (typeof render === 'function') return render(data, tabsTotals[name])
       return (undefined === render) ? true : render
     },
     onRouteChange (to, from) {
