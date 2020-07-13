@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0] 2020-07-13
+
+## Breaking changes
+
+- This version requires explorer-api v 1.1.0+
+
+### Fixed
+
+- TxDensity chart overflow
+- Address checksum messages
+
+### Added
+
+- Internal Transactions
+- Address Balances
+- User feedback
+- Auto refresh of pending transactions when new block arrives
+
 ## [1.1.2] 2020-03-11
 
 ### Changed
