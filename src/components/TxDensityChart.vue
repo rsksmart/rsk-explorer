@@ -54,7 +54,7 @@ export default {
         },
         marks: false,
         getY (d) {
-          return Math.round((d.txDensity) * 10) / 10
+          return Math.round((d.txDensity) * 100) / 100
         },
         formatLabel (bar) {
           const label = []
