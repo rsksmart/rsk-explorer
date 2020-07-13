@@ -11,17 +11,16 @@ npm install
 # serve with hot reload at localhost:8080
 npm run dev
 
-# serve with google tag tracking
+# serve with tracking
 npm run dev-with-tracking
 
 # build for production with minification
 npm run build
 
-# build for production with google tag tracking
-# you must set the GA-TAG first, see 'Settings'
+# build for production with google tracking and hotjar 
+# you must set the GA-TAG and HOTJAR_ID first, see 'Settings'
 npm run build-with-tracking
 
-```
 
 ## Deployment
 
@@ -40,6 +39,7 @@ The configuration is provided through this environment variables:
 - **WS_URL**: rsk-explorer-api WS url (backend)
 - **STATS_URL**: rsk stats web (link redirect the 'stats' link)
 - **GA_TAG**: (optional) Google analytics tag.
+- **HOTJAR_ID**: (optional) Hotjar ID.
 
 E.g. *to change the backend url :*
 
