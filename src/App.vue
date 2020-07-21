@@ -1,6 +1,6 @@
 
 <template lang="pug">
-  .wrapper#app
+  .wrapper#app.app
     .top-page(v-if='topMsg')
       message.top-msg(:message='topMsg')
     //-.header(:class='(bigMenu) ? "big-menu" : ""')
