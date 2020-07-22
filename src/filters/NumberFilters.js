@@ -6,8 +6,11 @@ export const numerals = Vue.filter('numerals', (num, fixed) => {
   num = Number(num)
   if (!fixed) fixed = 1
   fixed++
-  const prefix = d3.format('.' + fixed + 's')
-  return prefix(num)
+  let value = d3.format('.' + fixed + 's')(num)
+  // insert space between number and SI unit
+  const number = value.match(/[+-]?\d+(?:\.\d+)?/g)[0]
+  if (number) value = value.replace(number, `${number} `)
+  return value
 })
 
 export const numeralsSuffix = Vue.filter('numerals-suffix', (num) => {
@@ -40,11 +43,11 @@ export const H = Vue.filter('H', (value, fixed) => {
 })
 
 export const gas = Vue.filter('gas', (value) => {
-  return locale(value) + 'gas'
+  return locale(value) + ' gas'
 })
 
 export const wei = Vue.filter('wei', (value) => {
-  return locale(value) + 'wei'
+  return locale(value) + ' wei'
 })
 
 export const gwei = Vue.filter('gwei', (value) => {
