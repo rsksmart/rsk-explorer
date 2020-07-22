@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       value: undefined,
-      msg: 'Search by: address / block / tx / name',
+      msg: 'Search by: address / block / tx / token name',
       msgTimeout: null,
       requestingTimeout: null
     }
