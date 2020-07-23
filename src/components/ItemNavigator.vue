@@ -1,12 +1,12 @@
 <template lang="pug">
   ul.prev-next
-    li.prev(v-if='prev')
+    li.prev(v-if='prevLink')
       router-link(:to='linkTo(prev)')
         icon(name='triangle-arrow-left')
         small previous
     li.total(v-if='total')
       span {{total}}
-    li.next(v-if='next')
+    li.next(v-if='nextLink')
       router-link(:to='linkTo(next)')
         small next
         icon(name='triangle-arrow-right')
@@ -24,7 +24,14 @@ export default {
   beforeDestroy () {
     window.removeEventListener('keyup', this.keyPress, { passive: true })
   },
-
+  computed: {
+    prevLink () {
+      return this.linkTo(this.prev)
+    },
+    nextLink () {
+      return this.linkTo(this.next)
+    }
+  },
   methods: {
     ...mapGetters(['getNewRoute']),
 
@@ -36,6 +43,7 @@ export default {
 
     linkTo (dest) {
       const { regKey } = this
+      if (!dest || !regKey) return
       return this.getNewRoute()(regKey, dest)
     },
 
