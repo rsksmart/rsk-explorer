@@ -72,6 +72,11 @@ export const netName = state => {
   return name
 }
 
+export const networkName = (state, getters) => {
+  const name = getters.netName || ''
+  return (name) ? name.replace('RSK', '').trim().toLowerCase() : name
+}
+
 export const responseMetadata = state => key => {
   return state.responsesMetadata[key]
 }

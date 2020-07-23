@@ -89,16 +89,12 @@ export default {
       appSize: 'getSize',
       dbIsOutdated: 'dbIsOutdated'
     }),
-    ...mapGetters(['netName']),
+    ...mapGetters(['networkName']),
     bigMenu () {
       return this.isRoute('home')
     },
     topMsg () {
       return (this.dbIsOutdated) ? 'DB_OUTDATED' || null : null
-    },
-    networkName () {
-      const name = this.netName || ''
-      return (name) ? name.replace('RSK', '').trim().toLowerCase() : name
     }
   },
   methods: {
