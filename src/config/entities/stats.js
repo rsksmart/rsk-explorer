@@ -19,7 +19,8 @@ export const stats = {
       type: 'rbtcBalance'
     },
     activeAccounts: {
-      icon: 'buffer'
+      icon: 'buffer',
+      filters: ['locale']
     }
   }
 }
