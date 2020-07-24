@@ -10,10 +10,10 @@ apply-color($col, $val)
     background $val
 
   // colors classes
-  .{$col}, .{$col} a, textarea.{$col}, textarea.{$col}:disabled
+  .{$col}, .{$col} a, .app button.{$col}, textarea.{$col}, textarea.{$col}:disabled
     color $val
     fill $val
-  
+
   input.{$col}, select.{$col}, {$col}.input:focus
     color $val !important
 
@@ -21,13 +21,14 @@ apply-color($col, $val)
   .border-{$col}
     border-color $val
     stroke $val
-  
+
   input.{$col}, select.{$col}
     border-color $val !important
+
   // frames
   .frame-{$col}
     frame($val)
-  
+
   // icons
   .icon.{$col} svg *
     fill $val
@@ -94,13 +95,15 @@ badge(size)
 link()
   color $color
   cursor pointer
-  .svg-icon , svg
+
+  .svg-icon, svg
     path
       fill $color !important
-  
+
   &:hover
     transition unquote('color') 1s ease
-    color color2 
+    color color2
+
     & .svg-icon, svg
       path
         transition fill 1s ease
@@ -108,7 +111,7 @@ link()
 
   &:active
     color $color
-    
+
 table($c1, $c2)
   $bc = $c1
   $bg-color = red
@@ -189,12 +192,14 @@ pill()
   border-radius 0.25em
   margin 0 0 0 0.5em
   color $darkness
-  
-  button 
+
+  button
     svg *
       fill $midlight
+
     &:hover svg *
       fill $darkness
+
   & :first-child
     margin 0 0.25em 0 0.5em
 
@@ -221,9 +226,8 @@ pill()
 
 frame($col)
   // border $col dashed 1px
-  padding .5em 1em
-  margin 0 0 .5rem 0
-
+  padding 0.5em 1em
+  margin 0 0 0.5rem 0
 
 flex-table()
   tr
@@ -235,72 +239,75 @@ flex-table()
   td, th
     flex 1 1 5%
     flex-centered()
+
   td
     flex-flow column wrap
-    .td-title, .data-field 
+
+    .td-title, .data-field
       display flex
       flex-flow column
-      justify-content center !important 
-      align-items  center !important
+      justify-content center !important
+      align-items center !important
       // flex 0 0 50%
+
   td.from-to-arrow
     display none
-  //td.field-from
-    // align-self flex-start
 
   td.row-header
     flex 1 1 100%
     padding 0 !important
     flex-centered()
+
   td.hidden
     display none
 
   td.row-header, td.row-icon
     font-size 1.0625em
+
   thead
     display none
-  
+
 break-word()
   word-wrap break-word
   overflow-wrap break-word
   word-break break-word
 
 raw()
-  font-size .7em
+  font-size 0.7em
   font-family $monospace-font
 
-hover($bg,$c)
-  background lighten($bg,10%)
-  color lighten($c,5%)
-
+hover($bg, $c)
+  background lighten($bg, 10%)
+  color lighten($c, 5%)
 
 focus($bg)
-  transition border-color .5 ease
+  transition border-color 0.5 ease
   border $focus-border
   background $bg
   box-shadow 0 0 0 1px black inset
 
-active($bg,$c)
+active($bg, $c)
   transition all 2s ease
-  background lighten($bg,25%)
+  background lighten($bg, 25%)
 
-buttonColors($c,$bg)
-  transition all .5s ease
+buttonColors($c, $bg)
+  transition all 0.5s ease
   color $c
   background $bg
-  
+
   &:hover
-    hover($bg,$c)
-    //text-shadow $txt-sh
-    // box-shadow 0 0 0 1px darken($bg,50%) inset  
+    hover($bg, $c)
+    // text-shadow $txt-sh
+    // box-shadow 0 0 0 1px darken($bg,50%) inset
+
   &:focus
-   focus($bg,$c)
-  
+    focus($bg, $c)
+
   &:active, &:focus:active
-    active($bg,$c)
+    active($bg, $c)
 
   svg, .icon, .svg-icon
     fill $c
-  span 
+
+  span
     font-weight bold
-  
