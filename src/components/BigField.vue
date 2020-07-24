@@ -1,10 +1,10 @@
 <template lang="pug">
   .big-field
-    textarea.field(disabled='true' :rows='rows') {{value}}
+    textarea.field(disabled='true' :rows='rows' :class='css') {{value}}
     .decode(v-if='decoded')
       .small
         label.inline show as:
-        select.small(v-model='field')
+        select.small(v-model='fieldType')
           option(v-for='val,field in decoded') {{field}}
 </template>
 <script>
@@ -13,20 +13,21 @@ export default {
   name: 'big-field',
   props: {
     data: {},
+    field: {},
     options: {
       type: Object
     }
   },
   data () {
     return {
-      field: 'raw'
+      fieldType: 'raw'
     }
   },
   created () {
     const { decoded } = this
     // select rlp if is available
     if (decoded && decoded.rlp) {
-      this.field = 'rlp'
+      this.fieldType = 'rlp'
     }
   },
   computed: {
@@ -41,11 +42,17 @@ export default {
       return (this.decode) ? decodeField(this.data) : null
     },
     value () {
-      const { decoded, field, data } = this
-      return (decoded && field) ? decoded[field] || data : data
+      const { decoded, fieldType, data } = this
+      return (decoded && fieldType) ? decoded[fieldType] || data : data
     },
     rows () {
       return Array.isArray(this.value) ? this.value.length + 2 : 1
+    },
+    css () {
+      let { css } = this.field
+      css = Array.isArray(css) ? css : [css]
+      css.unshift('txt-color')
+      return css
     }
   }
 }
@@ -64,6 +71,7 @@ export default {
       padding 0
       font-size 0.75em
       font-family $monospace-font
+      color inherit
 
     .field
       raw()
@@ -74,7 +82,4 @@ export default {
       color $color
       border none
       margin 0 0 2em 0
-
-      &:disabled
-        color $txt-color
 </style>
