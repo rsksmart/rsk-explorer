@@ -111,7 +111,7 @@ export default {
       this.menu = !this.menu
     },
     goHome (event) {
-      this.$router.push({ path: '/Home' })
+      this.$router.push({ path: '/Home' }).catch(() => { })
     },
     getIcon (name) {
       if (name === 'home') return 'rsk'
