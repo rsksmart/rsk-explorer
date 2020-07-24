@@ -4,6 +4,8 @@ import { addressFilters, linkAddress } from './lib/fieldsTypes'
 import { setThisAddress } from './lib/eventsLib'
 import { round } from '../../filters/NumberFilters'
 
+const key = 'internalTxId'
+
 const internalTransactionFormatRow = (itx, parentData) => {
   const { address } = parentData || {}
   const { error, result, type, action } = itx
@@ -34,7 +36,7 @@ const InternalTransactions = () => {
   return {
     link: `/${r.internalTx}`,
     listLink: `/${r.internalTransactions}`,
-    key: 'internalTxId',
+    key,
     formatRow,
     fields: {
       from: {
@@ -131,6 +133,8 @@ const InternalTransaction = () => {
     },
     error: {
       hideIfEmpty: true,
+      trim: 0,
+      renderAs: 'big-field',
       css: 'error'
     },
     init: {
@@ -144,7 +148,7 @@ const InternalTransaction = () => {
       hideIfEmpty: true
     }
   }
-  return { fields, formatRow }
+  return { fields, formatRow, key }
 }
 
 export const internalTransactions = InternalTransactions()

@@ -11,8 +11,8 @@ export default [
     props: {
       module,
       title: 'Internal transactions',
-      dataType: 'internalTransactions',
-      action: 'getInternalTransactions'
+      action: 'getInternalTransactions',
+      dataType: 'internalTransactions'
     }
   },
   {
