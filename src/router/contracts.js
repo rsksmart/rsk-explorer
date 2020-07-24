@@ -5,7 +5,7 @@ export default [
 
   {
     path: `/${r.verifyContract}/:contractAddress?/:id?`,
-    name: 'VerifyContract',
+    name: 'Verify contract',
     component: VerifyContract
   }
 ]

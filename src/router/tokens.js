@@ -17,7 +17,7 @@ export default [
   },
   {
     path: `/${r.token}/:contract/${r.accounts}`,
-    name: 'tokenAddresses',
+    name: 'Token Accounts',
     component: DataPage,
     props: {
       title: 'Token Accounts',
@@ -28,7 +28,7 @@ export default [
   },
   {
     path: `/${r.token}/:contract/${r.account}/:address`,
-    name: 'tokenAddress',
+    name: 'Token Account',
     component: DataPage,
     props: {
       title: (data) => {

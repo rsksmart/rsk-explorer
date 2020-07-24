@@ -15,7 +15,7 @@ export const balancesMessages = data => {
 export default [
   {
     path: `/${r.balances}/:address`,
-    name: 'Balances',
+    name: 'Accounts Balances',
     component: DataPage,
     props: {
       module,
@@ -27,7 +27,7 @@ export default [
   },
   {
     path: `/${r.balance}/:address/:block`,
-    name: 'Balance',
+    name: 'Account Balance',
     component: DataPage,
     props: {
       module,

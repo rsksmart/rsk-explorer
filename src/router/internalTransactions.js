@@ -7,7 +7,7 @@ const module = 'internalTransactions'
 export default [
   {
     path: `/${r.internalTransactions}`,
-    name: 'internalTransactions',
+    name: 'Internal transactions',
     component: DataPage,
     props: {
       module,
@@ -18,7 +18,7 @@ export default [
   },
   {
     path: `/${r.internalTx}/:internalTxId`,
-    name: 'internalTransaction',
+    name: 'Internal transaction',
     component: DataPage,
     props: {
       module,
