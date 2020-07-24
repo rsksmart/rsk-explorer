@@ -29,3 +29,8 @@ export const updateBlocks = ({ state, commit }) => {
   commit('SET_BLOCKS', blocks.slice())
   commit('SET_TRANSACTIONS', transactions.slice())
 }
+
+export const changePageTitle = ({ getters }, page) => {
+  const title = getters.getPageTitle(page)
+  document.title = title
+}

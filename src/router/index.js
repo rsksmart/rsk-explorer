@@ -49,6 +49,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
+  store.dispatch('changePageTitle', getPageTitleFromRoute(to))
   const r = Object.assign({}, to)
   r.hash = ''
   router.replace(r).catch(() => { })
@@ -84,6 +85,11 @@ function checkBeforeEnter (to, from, next) {
 
 function isAddressPath ({ path }, address) {
   return `/${r.address}/${address}` === path
+}
+
+function getPageTitleFromRoute (route) {
+  const { name, params } = route
+  return name + ' - ' + Object.values(params).join(',')
 }
 
 export default router

@@ -65,3 +65,11 @@ export const connectionEnd = state => {
 export const connectionStart = state => {
   return (state.socketConnected) ? state.socketConnectionStart : 0
 }
+
+export const getPageTitle = (state, getters) => page => {
+  const { appName } = state
+  const netName = getters.networkName
+  let title = `${appName} :: ${netName}`
+  if (page) title += ` - ${page}`
+  return title
+}
