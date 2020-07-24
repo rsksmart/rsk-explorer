@@ -3,11 +3,13 @@ import menuItems from '../lib/js/menuItems.js'
 import messages from '../config/messages'
 import content from '../config/content'
 import mediaBreakpoints from '../config/media_breakpoints.json'
+import { APP_NAME } from '../config/types'
 
 export default function () {
   return {
     loadingConfig: null,
     APP: process.env.APP,
+    appName: APP_NAME,
     menuItems,
     mediaBreakpoints,
     messages,

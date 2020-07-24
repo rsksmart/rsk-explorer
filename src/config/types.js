@@ -1,4 +1,6 @@
 
+export const APP_NAME = 'RSK explorer'
+
 export const ROUTES = {
   home: 'home',
   block: 'block',
