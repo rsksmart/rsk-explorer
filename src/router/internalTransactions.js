@@ -1,4 +1,5 @@
 import DataPage from '@/components/DataPage'
+import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
 
 const module = 'internalTransactions'
@@ -26,8 +27,15 @@ export default [
       action: 'getInternalTransaction',
       params: {
         getPrevNext: true
-      }
+      },
+      mainContent: [
+        {
+          name: '',
+          dataType: 'internalTransaction',
+          component: DataItem
+        }
+      ]
     }
-  }
 
+  }
 ]
