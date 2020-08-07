@@ -1,7 +1,7 @@
 <template lang="pug">
   .data-field(:style='cellStyle(field,value)' :class='fieldClass')
     template(v-if='field.renderAs')
-      component(:is='field.renderAs' v-bind='renderAsProps({field,value,filteredValue})' )
+      component(:is='field.renderAs' v-bind='renderAsProps({field,value,filteredValue,row})' )
     template(v-else)
       //- arrays (uncomplete)
       template(v-if='filteredType === "array"')
