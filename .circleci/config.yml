@@ -26,9 +26,9 @@ jobs:
       - run:
           name: Unit test
           command: npm run test:unit
-      - run:
-          name: e2e test
-          command: npm run test:e2e -- --headless --browser chrome
+      #- run:
+      #   name: e2e test
+      #    command: npm run test:e2e -- --headless --browser chrome
       - run:
           name: build
           command: npm run build
