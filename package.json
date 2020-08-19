@@ -34,11 +34,11 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.3",
-    "@vue/cli-plugin-e2e-cypress": "^4.5.3",
-    "@vue/cli-plugin-eslint": "^4.5.3",
-    "@vue/cli-plugin-unit-mocha": "^4.5.3",
-    "@vue/cli-service": "^4.5.3",
+    "@vue/cli-plugin-babel": "^4.5.4",
+    "@vue/cli-plugin-e2e-cypress": "^4.5.4",
+    "@vue/cli-plugin-eslint": "^4.5.4",
+    "@vue/cli-plugin-unit-mocha": "^4.5.4",
+    "@vue/cli-service": "^4.5.4",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
@@ -55,7 +55,7 @@
     "raw-loader": "^0.5.1",
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
-    "vue-svgicon": "^4.0.1-alpha.0",
+    "vue-svgicon": "^3.2.8",
     "vue-template-compiler": "^2.6.11"
   }
 }
