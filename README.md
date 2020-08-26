@@ -20,16 +20,14 @@ npm run build
 # build for production with google tracking and hotjar 
 # you must set the GA-TAG and HOTJAR_ID first, see 'Settings'
 npm run build-with-tracking
-
+```
 
 ## Deployment
 
 ### Install dependencies
 
   ``` bash
-
   npm install
-
   ```
 
 ### Settings
