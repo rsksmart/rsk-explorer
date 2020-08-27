@@ -21,6 +21,7 @@ npm run build
 # you must set the GA-TAG and HOTJAR_ID first, see 'Settings'
 npm run build-with-tracking
 
+```
 
 ## Deployment
 
