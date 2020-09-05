@@ -1,13 +1,17 @@
 import ToolTip from '../components/ToolTip.vue'
 import BigField from '../components/BigField.vue'
 import FieldIcon from '../components/FieldIcon.vue'
+import FieldList from '../components/FieldList.vue'
 import { mSecondsAgo } from '../filters/TimeFilters'
 import { mapGetters } from 'vuex'
+import fieldsTypes from '../config/entities/lib/fieldsTypes'
+import { parseField, PARSED } from '../lib/js/EntityParser'
 export default {
   components: {
     ToolTip,
     BigField,
-    FieldIcon
+    FieldIcon,
+    FieldList
   },
   filers: {
     mSecondsAgo
@@ -48,6 +52,11 @@ export default {
       const pos = this.getEventPosition(event)
       const hash = (pos) ? `${pos.x}:${pos.y}` : ''
       return hash
+    },
+    parseField (name, field) {
+      field = field || {}
+      if (field[PARSED]) return field
+      return parseField(name, field, fieldsTypes)
     }
   }
 }

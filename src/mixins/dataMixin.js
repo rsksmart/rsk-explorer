@@ -1,8 +1,6 @@
 import { mapGetters } from 'vuex'
 import common from './common'
 import { txValue } from '../filters/TokensFilters'
-import fieldsTypes from '../config/entities/lib/fieldsTypes'
-import { parseField, PARSED } from '../lib/js/EntityParser'
 export default {
   filters: { txValue },
   mixins: [common],
@@ -98,11 +96,6 @@ export default {
       'dataKey',
       'dataKeyValue'
     ]),
-    parseField (name, field) {
-      field = field || {}
-      if (field[PARSED]) return field
-      return parseField(name, field, fieldsTypes)
-    },
     fieldFromKey (key) {
       const entity = this.entity
       const keys = entity.fieldsKeys
