@@ -60,11 +60,12 @@ export const TRANFER_EVENTS_SIGNATURES = TRANSFER_EVENTS.map(e => e.signature)
 
 export const filterTransferEvents = events => events.filter(e => TRANFER_EVENTS_SIGNATURES.includes(e.signature))
 
-export const formatEvent = (event, data) => {
+export const formatEvent = (event, addressData) => {
   const config = getEventConfig(event)
   const args = eventArgs(event, config)
   if (args) event._arguments = args
   if (config) event._config = config
+  event._addressData = addressData
   return event
 }
 
