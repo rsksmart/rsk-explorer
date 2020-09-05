@@ -56,7 +56,9 @@
                       .sort-icon(v-if='isSorted(field.path) && !isDefaultSort')
                         icon.small(:name='sortIcon(field.path)')
                 field-title.td-title(v-else :field='field')
-              data-field(:field='field' :row='row')
+              template(v-if="field.renderAs")
+                component(:is='field.renderAs' v-bind='renderAsProps({field,row})' )
+              data-field(v-else :field='field' :row='row')
             td.from-to-arrow(v-if='isFrom(fieldName,index)')
               icon(name='arrow-right')
 </template>
