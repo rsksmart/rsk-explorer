@@ -1,8 +1,8 @@
 <template lang="pug">
   .item(:class='css')
-    field-title(:field='field')
+    field-title(:field='parsedField')
     data-field(
-      :field='field'
+      :field='parsedField'
       :row='data'
       :style='cellStyle(field,getValue(field,data,true))'
       :delayed='delayed')
@@ -21,6 +21,12 @@ export default {
   mixins: [
     dataMixin
   ],
-  props: ['field', 'css', 'data', 'delayed']
+  props: ['field', 'fieldName', 'css', 'data', 'delayed'],
+  computed: {
+    parsedField () {
+      const { field, fieldName } = this
+      return this.parseField(fieldName, field)
+    }
+  }
 }
 </script>
