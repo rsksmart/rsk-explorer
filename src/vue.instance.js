@@ -6,11 +6,15 @@ import VueSVGIcon from 'vue-svgicon'
 import store from './store'
 import App from './App'
 import router from './router'
+import DataField from './components/DataField'
+import FieldItem from './components/FieldItem'
 import DataItem from './components/DataItem'
 
 Vue.use(VueSVGIcon, { tagName: 'icon' })
 Vue.use(Vuex)
 Vue.config.productionTip = false
+Vue.component('data-field', DataField)
+Vue.component('field-item', FieldItem)
 Vue.component('data-item', DataItem)
 
 export const config = {
