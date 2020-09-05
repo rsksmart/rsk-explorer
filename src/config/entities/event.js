@@ -7,6 +7,7 @@ import {
   setThisAddress
 } from './lib/eventsLib'
 import { TxLogItem } from './transaction'
+import { isAddress } from '../../lib/js/utils'
 
 export const setThisContract = (val, { address, type }) => {
   const txt = (type === 'contract') ? THIS_CONTRACT : THIS_ADDRESS
@@ -16,10 +17,26 @@ export const setThisContract = (val, { address, type }) => {
 export const eventFormatRow = (event, parentData) => {
   const addressData = (parentData.address) ? parentData : event._addressData || {}
   event = formatEvent(event, addressData)
-  // event.address = setThisContract(event.address, addressData)
   const contractAddress = event.address
   event._contractAddress = contractAddress
   return event
+}
+
+const eventArgumentData = ({ value, row }) => {
+  const { _config, _arguments } = row
+  const values = _arguments
+  let { fields } = _config
+  if (!fields && _arguments) {
+    fields = {}
+    for (const fieldName in _arguments) {
+      const value = _arguments[fieldName]
+      const field = { showTitle: true, field: ['_arguments', fieldName] }
+      if (isAddress(value)) field.type = 'eventAddress'
+      fields[fieldName] = field
+    }
+  }
+  for (const f in fields) fields[f].trim = 4
+  return { data: row, fields, values }
 }
 
 export const Events = () => {
@@ -40,7 +57,9 @@ export const Events = () => {
       arguments: {
         field: '_arguments',
         css: ['raw'],
-        hideIfEmpty: true
+        hideIfEmpty: true,
+        renderAs: 'field-list',
+        renderAsProps: eventArgumentData
       },
       timestamp: null,
       blockNumber: {
