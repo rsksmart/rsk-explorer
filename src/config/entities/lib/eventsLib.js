@@ -61,10 +61,7 @@ export const TRANFER_EVENTS_SIGNATURES = TRANSFER_EVENTS.map(e => e.signature)
 export const filterTransferEvents = events => events.filter(e => TRANFER_EVENTS_SIGNATURES.includes(e.signature))
 
 export const formatEvent = (event, data) => {
-  let config = getEventConfig(event)
-
-  // non-standard remasc events
-  if (isRemascEvent(event)) config = remascEventConfig()
+  const config = getEventConfig(event)
   const args = eventArgs(event, config)
   if (args) event._arguments = args
   if (config) event._config = config
@@ -72,9 +69,8 @@ export const formatEvent = (event, data) => {
 }
 
 export const getEventConfig = (event) => {
-  let config = getEventConfigBySignature(event.signature) || {}
-  if (isRemascEvent(event)) config = remascEventConfig()
-  return config
+  if (isRemascEvent(event)) return remascEventConfig()
+  return getEventConfigBySignature(event.signature) || {}
 }
 
 export const getEventInputs = event => {
@@ -97,7 +93,8 @@ export const eventArgs = (event, { fields }) => {
 }
 
 export const getEventConfigBySignature = signature => {
-  const config = EVENTS.find(e => e.signature === signature) || {}
+  const config = EVENTS.find(e => e.signature === signature)
+  if (!config) return
   const fields = config.fields
   if (fields) {
     for (const name in fields) {

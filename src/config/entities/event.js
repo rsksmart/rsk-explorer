@@ -105,7 +105,7 @@ export const EventFields = () => {
 
 const eventFieldsFormatter = (fields, event) => {
   const config = getEventConfig(event)
-  const cFields = config.fields || getEventAbiFields(event)
+  const cFields = config.fields ? config.fields : getEventAbiFields(event)
   const hide = !cFields
   fields.eventArguments.fields = cFields
   fields.eventArguments.hide = hide
