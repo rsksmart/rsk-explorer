@@ -21,7 +21,12 @@ export const Addresses = () => {
         default: 0,
         trim: 0
       },
-      type: null
+      type: null,
+      blockNumber: {
+        field: 'blockNumber',
+        type: 'block',
+        title: 'Updated at block'
+      }
     }
   }
 }
