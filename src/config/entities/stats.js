@@ -11,7 +11,8 @@ export const stats = {
     circulatingSupply: {
       icon: 'rbtc',
       showTitle: true,
-      type: 'rbtcBalance'
+      type: 'rbtcBalance',
+      title: 'BTC Locked in 2WP'
     },
     bridgeBalance: {
       icon: 'btc',
