@@ -56,7 +56,7 @@ export const EVENTS = [
 
 export const TRANSFER_EVENTS = EVENTS.filter(e => e.type === EVENTS_TYPES.TRANSFER)
 
-export const TRANFER_EVENTS_SIGNATURES = TRANSFER_EVENTS.map(e => e.signature)
+export const TRANSFER_EVENTS_SIGNATURES = TRANSFER_EVENTS.map(e => e.signature)
 
 export const filterTransferEvents = events => events.filter(e => TRANFER_EVENTS_SIGNATURES.includes(e.signature))
 

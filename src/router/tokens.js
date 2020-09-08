@@ -1,7 +1,7 @@
 import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
 import { ROUTES as r } from '../config/types'
-import { TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
+import { TRANSFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 
 export default [
   {
@@ -49,7 +49,7 @@ export default [
           dataType: 'transferEvents',
           module: 'events',
           action: 'getEventsByAddress',
-          params: { signatures: TRANFER_EVENTS_SIGNATURES },
+          params: { signatures: TRANSFER_EVENTS_SIGNATURES },
           title: ({ contractName }) => (contractName) ? `${contractName} transfers` : 'Contract transfers'
         }
       ]

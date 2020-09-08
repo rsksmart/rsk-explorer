@@ -2,7 +2,7 @@ import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
 import ContractCode from '@/components/ContractCode'
 import { ROUTES as r } from '../config/types'
-import { TRANFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
+import { TRANSFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 import store from '../store/'
 import { fillMessage, CHECKSUM_WARN } from '../config/messages'
 import { balancesMessages } from './balances'
@@ -93,7 +93,7 @@ export default [
           dataType: 'transferEvents',
           module: 'events',
           action: 'getEventsByAddress',
-          params: { signatures: TRANFER_EVENTS_SIGNATURES }
+          params: { signatures: TRANSFER_EVENTS_SIGNATURES }
         },
         {
           name: 'accounts',
