@@ -14,11 +14,10 @@ export const tokenAmount = (value, decimals = 18) => {
   return ret.dividedBy(divisor)
 }
 
-export const eventValue = (value, { decimals, symbol } = {}) => {
-  symbol = symbol || ''
+export const eventValue = (value, { decimals } = {}) => {
   decimals = parseInt(decimals)
   value = (decimals) ? tokenAmount(value, decimals) : new BigNumber(value).toString()
-  value = (decimals) ? `${value} ${symbol}` : value
+  value = (decimals) ? `${value.toString(10)}` : value
   return value
 }
 
