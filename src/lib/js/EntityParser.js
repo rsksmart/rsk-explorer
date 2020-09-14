@@ -65,7 +65,7 @@ export const parseField = (name, field, fieldsTypes) => {
     }
     field = defValue(
       field,
-      ['titleIcon', 'hideTitle', 'icon', 'link', 'default', 'css', 'trim'],
+      ['titleIcon', 'hideTitle', 'icon', 'link', 'default', 'css', 'trim', 'suffix'],
       fieldDef
     )
   }
