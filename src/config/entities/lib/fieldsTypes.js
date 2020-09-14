@@ -4,6 +4,7 @@ import {
   NOT_AVAILABLE
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
+import { eventValue } from '../../../filters/TokensFilters'
 
 export const linkAddress = address => (!isAddress(address)) ? null : `/${r.address}/${address}`
 export const addressFilters = ['checksum-address']
@@ -104,6 +105,10 @@ export default {
     link: (data, value) => linkAddress(value),
     filters: addressFilters,
     default: NOT_AVAILABLE
+  },
+  eventValue: {
+    suffix: (value, filteredValue, { _addressData }) => _addressData.symbol,
+    filters: [(value, data) => eventValue(value, data._addressData)]
   },
   eventId: {
     icon: 'zap',
