@@ -208,10 +208,11 @@ export default {
       value = filteredValue || value
       field = field || {}
       value = value || ''
+      value = `${value}`
       const { trim } = field
       if (trim === 'forced-auto') return 'auto'
       if (trim === 0) return 0
-      if (String(value.length) > this.trimIf) {
+      if (value.length > this.trimIf) {
         return trim || this.defaultTrim
       }
     }

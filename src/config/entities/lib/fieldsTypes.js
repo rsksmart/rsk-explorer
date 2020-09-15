@@ -5,9 +5,22 @@ import {
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
 import { eventValue } from '../../../filters/TokensFilters'
+import { round } from '../../../filters/NumberFilters'
 
 export const linkAddress = address => (!isAddress(address)) ? null : `/${r.address}/${address}`
 export const addressFilters = ['checksum-address']
+
+export const eventValueField = (decimals) => {
+  decimals = parseInt(decimals)
+  const suffix = (value, filteredValue, { _addressData }) => _addressData.symbol
+  const filters = [(value, data) => eventValue(value, data._addressData)]
+  if (decimals && !isNaN(decimals)) {
+    filters.push((value) => {
+      return round(value, decimals)
+    })
+  }
+  return { suffix, filters }
+}
 
 const hashrate = {
   icon: 'flame',
@@ -106,10 +119,8 @@ export default {
     filters: addressFilters,
     default: NOT_AVAILABLE
   },
-  eventValue: {
-    suffix: (value, filteredValue, { _addressData }) => _addressData.symbol,
-    filters: [(value, data) => eventValue(value, data._addressData)]
-  },
+  eventValue: eventValueField(),
+  eventValueRounded: eventValueField(2),
   eventId: {
     icon: 'zap',
     titleIcon: true,
