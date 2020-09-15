@@ -1,24 +1,24 @@
-import { eventValue } from '../../../filters/TokensFilters'
 import { THIS_ADDRESS } from '../../types'
 import { isRemascEvent, remascEventConfig } from './remascEvents'
 
 export const EVENTS_TYPES = {
-  TRANSFER: 'Transfer'
+  TRANSFER: 'Transfer',
+  APPROVAL: 'Approval'
+}
+
+const EVENT_ADDRESS_FIELD = () => {
+  return {
+    type: 'eventAddress',
+    trim: 'auto'
+  }
 }
 
 export const EventTransferFields = (include) => {
   const fields = {
-    from: {
-      type: 'eventAddress',
-      trim: 'auto'
-    },
-    to: {
-      type: 'eventAddress',
-      trim: 'auto'
-    },
+    from: EVENT_ADDRESS_FIELD(),
+    to: EVENT_ADDRESS_FIELD(),
     value: {
-      trim: 0,
-      filters: (value, data) => eventValue(value, data._addressData)
+      type: 'eventValue'
     },
     data: {
       renderAs: 'big-field'
@@ -51,6 +51,18 @@ export const EVENTS = [
     signature: 'e19260aff97b920c7df27010903aeb9c8d2be5d310a2c67824cf3f15396e4c16',
     fields: EventTransferFields(['from', 'to', 'value', 'data']),
     type: EVENTS_TYPES.TRANSFER
+  },
+  {
+    method: 'Approval(address,address,uint256)',
+    signature: '8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
+    fields: {
+      owner: EVENT_ADDRESS_FIELD(),
+      spender: EVENT_ADDRESS_FIELD(),
+      value: {
+        type: 'eventValue'
+      }
+    },
+    type: EVENTS_TYPES.APPROVAL
   }
 ]
 
@@ -58,7 +70,7 @@ export const TRANSFER_EVENTS = EVENTS.filter(e => e.type === EVENTS_TYPES.TRANSF
 
 export const TRANSFER_EVENTS_SIGNATURES = TRANSFER_EVENTS.map(e => e.signature)
 
-export const filterTransferEvents = events => events.filter(e => TRANFER_EVENTS_SIGNATURES.includes(e.signature))
+export const filterTransferEvents = events => events.filter(e => TRANSFER_EVENTS_SIGNATURES.includes(e.signature))
 
 export const formatEvent = (event, addressData) => {
   const config = getEventConfig(event)
@@ -111,7 +123,7 @@ export const getEventAbiFields = event => {
   const inputs = getEventInputs(event)
   return inputs.reduce((v, a, i) => {
     const { type, name } = a
-    const trim = (type === 'address') ? 'auto' : 0
+    const trim = (type === 'address') ? 'auto' : undefined
     const field = ['_arguments', name]
     v[name] = { type, field, trim }
     return v

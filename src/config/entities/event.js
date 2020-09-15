@@ -25,8 +25,8 @@ export const eventFormatRow = (event, parentData) => {
 const eventArgumentData = ({ value, row }) => {
   const { _config, _arguments } = row
   const values = _arguments
-  let { fields } = _config
-  if (!fields && _arguments) {
+  let fields = Object.assign({}, _config.fields)
+  if ((!fields || !Object.keys(fields).length) && _arguments) {
     fields = {}
     for (const fieldName in _arguments) {
       const value = _arguments[fieldName]
@@ -35,7 +35,16 @@ const eventArgumentData = ({ value, row }) => {
       fields[fieldName] = field
     }
   }
-  for (const f in fields) fields[f].trim = 4
+  for (const f in fields) {
+    let field = fields[f]
+    const { type } = field
+    if (type === 'eventValue') {
+      field = Object.assign({}, field)
+      field.type = 'eventValueRounded'
+    }
+    field.trim = 4
+    fields[f] = field
+  }
   return { data: row, fields, values }
 }
 
@@ -167,9 +176,9 @@ export const TransferEvents = () => {
       created
     },
     formatRow: (data, parentData) => {
-      const eventData = formatEvent(data)
-      const event = eventData._arguments
       const { _addressData, address } = data
+      const eventData = formatEvent(data, _addressData || {})
+      const event = eventData._arguments
       if (!event) return
       event.eventId = eventData.eventId
       event.event = eventData.event
