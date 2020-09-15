@@ -20,7 +20,7 @@
           router-link(v-if='link' :to='link')
             .field-value {{ filteredValue || field.default }}
           .field-value(v-else) {{ filteredValue || field.default }}
-        span(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
+        span.field-suffix(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
         progress-bar(v-if='delayed')
 </template>
 <script>
@@ -120,6 +120,9 @@ export default {
     -moz-hyphens auto
     -webkit-hyphens auto
     hyphens auto
+
+  .field-suffix
+    white-space pre
 
   .flex-table
     & td .data-field
