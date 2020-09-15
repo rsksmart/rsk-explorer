@@ -49,7 +49,7 @@ export const TokenAccounts = () => {
       },
       balance: {
         field: 'balanceParsed',
-        filters: ['big-number']
+        filters: ['big-number', 'round', 'locale']
       }
     }
   }
