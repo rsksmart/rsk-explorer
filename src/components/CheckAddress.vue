@@ -47,7 +47,7 @@ import {
   isValidAddress,
   toChecksumAddress,
   isAddress
-} from 'rsk-utils/dist/addresses'
+} from '@rsksmart/rsk-utils/dist/addresses'
 export default {
   name: 'check-address',
   props: ['address'],

@@ -1,6 +1,6 @@
 
 import { testSearchedValue } from '../../../lib/js/validate'
-import { isHexString, isTxOrBlockHash } from 'rsk-utils/dist/strings'
+import { isHexString, isTxOrBlockHash } from '@rsksmart/rsk-utils/dist/strings'
 const DEFAULT_TYPE = 'addressByName'
 
 const createSearchKey = (value, type) => {

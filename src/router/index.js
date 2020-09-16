@@ -3,7 +3,7 @@ import store from '../store/'
 import Router from 'vue-router'
 import routes from './routes'
 import { normalizeSearch } from '../lib/js/utils'
-import { isValidAddress } from 'rsk-utils/dist/addresses'
+import { isValidAddress } from '@rsksmart/rsk-utils/dist/addresses'
 import { ROUTES as r } from '../config/types'
 
 Vue.use(Router)

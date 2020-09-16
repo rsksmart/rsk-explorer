@@ -1,6 +1,6 @@
 import { decodeField } from '../../src/lib/js/decodeField'
 import { expect } from 'chai'
-import { rlp } from 'rsk-utils'
+import { rlp } from '@rsksmart/rsk-utils'
 
 describe('decodeField()', () => {
   it('should decode data', () => {

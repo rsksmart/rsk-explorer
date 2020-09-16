@@ -1,5 +1,5 @@
-import { isAddress } from 'rsk-utils/dist/addresses'
-import { isHexString, isTxOrBlockHash, add0x } from 'rsk-utils/dist/strings'
+import { isAddress } from '@rsksmart/rsk-utils/dist/addresses'
+import { isHexString, isTxOrBlockHash, add0x } from '@rsksmart/rsk-utils/dist/strings'
 
 export const isValidBlockNumber = (value, lastBlock) => {
   const number = parseInt(value)

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { isDigits } from './NumberFilters.js'
 import { STATUS, STATUS_ICONS } from '../config/types'
-import { toChecksumAddress, isAddress } from 'rsk-utils/dist/addresses'
+import { toChecksumAddress, isAddress } from '@rsksmart/rsk-utils/dist/addresses'
 import store from '../store/'
 
 export const yesNo = Vue.filter('yes-no', (value) => {

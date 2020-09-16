@@ -1,4 +1,4 @@
-import { rlp, isHexString, toBuffer } from 'rsk-utils'
+import { rlp, isHexString, toBuffer } from '@rsksmart/rsk-utils'
 import { BigNumber } from 'bignumber.js'
 
 const DECODERS = {

@@ -15,7 +15,7 @@
     "svg": "npx vsvg -s ./public/svg/icons -t ./src/icons --es6"
   },
   "dependencies": {
-    "@rsksmart/rsk-utils": "git+https://github.com/rsksmart/rsk-utils.git",
+    "@rsksmart/rsk-utils": "^1.1.0",
     "bignumber.js": "^7.2.1",
     "chroma-js": "^1.4.1",
     "core-js": "^3.6.4",
@@ -23,7 +23,6 @@
     "highlight.js": "^9.18.3",
     "highlightjs-solidity": "git+https://github.com/highlightjs/highlightjs-solidity.git",
     "moment": "^2.27.0",
-    "rsk-utils": "git+https://github.com/rsksmart/rsk-utils.git",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.11",
     "vue-d3-barchart": "0.0.28",

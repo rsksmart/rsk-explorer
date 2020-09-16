@@ -1,5 +1,5 @@
-import { add0x, isHexString } from 'rsk-utils/dist/strings'
-import { isAddress } from 'rsk-utils/dist/addresses'
+import { add0x, isHexString } from '@rsksmart/rsk-utils/dist/strings'
+import { isAddress } from '@rsksmart/rsk-utils/dist/addresses'
 
 export { add0x, isHexString, isAddress }
 
