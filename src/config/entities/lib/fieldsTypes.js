@@ -4,8 +4,15 @@ import {
   NOT_AVAILABLE
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
-import { eventValue } from '../../../filters/TokensFilters'
 import { round } from '../../../filters/NumberFilters'
+import { eventValue } from '../../../filters/TokensFilters'
+
+export const txValueFilters = decimals => {
+  const filters = ['tx-value']
+  if (decimals) filters.push((value, data) => round(value, decimals))
+  filters.push('rbtc')
+  return filters
+}
 
 export const linkAddress = address => (!isAddress(address)) ? null : `/${r.address}/${address}`
 export const addressFilters = ['checksum-address']

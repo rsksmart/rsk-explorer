@@ -1,8 +1,7 @@
 
 import { ROUTES as r, STATUS, CONTRACT_CREATED, CONTRACT_FAILED } from '../types'
-import { addressFilters, linkAddress } from './lib/fieldsTypes'
+import { addressFilters, linkAddress, txValueFilters } from './lib/fieldsTypes'
 import { setThisAddress } from './lib/eventsLib'
-import { round } from '../../filters/NumberFilters'
 
 const key = 'internalTxId'
 
@@ -58,7 +57,7 @@ const InternalTransactions = () => {
       timestamp: null,
       value: {
         field: 'action.value',
-        filters: ['tx-value', value => round(value, 4), 'rbtc'],
+        filters: txValueFilters(2),
         trim: 'auto'
       },
       status: {
@@ -85,7 +84,7 @@ const InternalTransactions = () => {
 
 const InternalTransaction = () => {
   const { from, to, timestamp, value } = InternalTransactions().fields
-  value.filters = ['tx-value', 'rbtc']
+  value.filters = txValueFilters()
   const fields = {
     from,
     to,

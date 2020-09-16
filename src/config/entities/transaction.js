@@ -8,10 +8,9 @@ import {
 import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
-import { round } from '../../filters/NumberFilters'
 import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
 import { isAddress } from '../../lib/js/utils'
-import { linkAddress, addressFilters } from './lib/fieldsTypes'
+import { linkAddress, addressFilters, txValueFilters } from './lib/fieldsTypes'
 
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
@@ -86,10 +85,7 @@ const TxFields = () => {
       filters: addressFilters
     },
     value: {
-      filters: ['tx-value',
-        (value, data) => round(value, 4),
-        'rbtc'
-      ]
+      filters: txValueFilters()
     },
     gasUsed: {
       type: 'gas',
@@ -133,6 +129,7 @@ const Txs = () => {
     type: null,
     showTitle: false
   })
+  fields.value.filters = txValueFilters(2)
   return {
     key: 'hash',
     icon: 'transaction',
