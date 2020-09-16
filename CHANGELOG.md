@@ -1,5 +1,26 @@
 # Changelog
 
+## [Unreleased] 
+
+### Fixed
+
+- Hotjar button style collision
+- Home, new block message
+
+### Added
+
+- InternalTransaction view, copy & download buttons
+- Network name to document title, closes #87
+- Formatted arguments to event list, closes #98
+- BlockNumber to address balance, closes #102
+- Approval event formatter
+
+### Changed
+
+- SearchBox placeholder, 'name' by 'token name'
+- NumberFilters, add space before unit
+- Circulating supply title to 'BTC Value Locked in 2WP'
+
 ## [1.2.0] 2020-07-13
 
 ## Breaking changes
