@@ -30,6 +30,13 @@ test('txStatus', [
   [2, 'FAILED']
 ])
 
+test('fieldTitleFilter', [
+  ['fooBarBaz', 'foo bar baz'],
+  ['FOO bar baz', 'FOO bar baz'],
+  ['foo bar BAZ', 'foo bar BAZ'],
+  ['fooBarBAZ', 'foo bar baz']
+])
+
 function test (name, values) {
   describe(`# ${name}`, () => {
     for (const c of values) {

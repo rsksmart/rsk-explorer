@@ -17,6 +17,10 @@ export const camelCaseTo = Vue.filter('camel-case-to', (value, to = ' ') => {
   return value.replace(/([a-z])([A-Z])/g, '$1' + to + '$2').toLowerCase()
 })
 
+export const fieldTitleFilter = Vue.filter('field-title-filter', (value) => {
+  return (value.indexOf(' ') >= 0) ? value : camelCaseTo(value)
+})
+
 export const getTxStatus = value => {
   const intValue = parseInt(value)
   if (!isNaN(intValue)) {
