@@ -42,6 +42,7 @@ export default {
         justify-content flex-start
     .box-field-icon
       flex-centered()
+      align-self start
       .svg-icon
         width 2em
         height @width
