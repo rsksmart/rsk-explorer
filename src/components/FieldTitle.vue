@@ -2,7 +2,7 @@
   .field-title
     field-icon.field-description(v-if='description' icon="help" :title='description' )
     field-icon(v-if='showIcon' :icon='field.icon' :title='(showTitle) ? null: field.title' )
-    span.title(v-if='showTitle && field.title') {{ field.title | camel-case-to }}
+    span.title(v-if='showTitle && field.title') {{ field.title | field-title-filter }}
     slot
 </template>
 <script>
