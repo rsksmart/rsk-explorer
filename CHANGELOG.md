@@ -1,11 +1,12 @@
 # Changelog
 
-## [Unreleased] 
+## [1.2.1] - 2020-09-25
 
 ### Fixed
 
 - Hotjar button style collision
 - Home, new block message
+- Home stats, equalize boxes heights
 
 ### Added
 
