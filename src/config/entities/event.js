@@ -37,6 +37,7 @@ const eventArgumentData = ({ value, row }) => {
   }
   for (const f in fields) {
     let field = fields[f]
+    delete field.renderAs
     const { type } = field
     if (type === 'eventValue') {
       field = Object.assign({}, field)
