@@ -49,6 +49,7 @@ export default {
       return Array.isArray(this.value) ? this.value.length + 2 : 1
     },
     css () {
+      if (!this.field) return
       let { css } = this.field
       css = Array.isArray(css) ? css : [css]
       css.unshift('txt-color')
