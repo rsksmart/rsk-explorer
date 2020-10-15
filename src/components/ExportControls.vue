@@ -1,6 +1,6 @@
 <template lang="pug">
   .export-controls(v-if='data')
-    copy-button.button.med(:value='exportData' title='copy')
+    copy-button.button.med(:value='exportData(filteredData)' title='copy')
     download-button.button.med(v-bind='downloadData')
 </template>
 <script>
@@ -16,9 +16,16 @@ export default {
   },
   mixins: [dataMixin],
   computed: {
-    exportData () {
-      const { data } = this
-      return (data) ? JSON.stringify(data, null, 4) : null
+    filteredData () {
+      const fData = {}
+      const { fields, filterFieldValue, data } = this
+      for (const f in fields) {
+        const field = fields[f]
+        const value = this.getValue(field, data, true)
+        const filtered = filterFieldValue()(field, value, data)
+        fData[f] = filtered
+      }
+      return fData
     },
     fileName () {
       let fileName = 'download'
@@ -29,12 +36,20 @@ export default {
       return fileName
     },
     downloadData () {
-      const value = this.exportData
+      const value = this.exportData(this.filteredData)
       if (!value) return {}
       const fileType = 'json'
-      let fileName = this.fileName
-      fileName = `${fileName}.${fileType}`
+      const fileName = this.getFileName(fileType)
       return { fileType, value, fileName, title: 'download' }
+    }
+  },
+  methods: {
+    exportData (data) {
+      return (data) ? JSON.stringify(data, null, 4) : null
+    },
+    getFileName (type) {
+      const { fileName } = this
+      return `${fileName}.${type}`
     }
   }
 }
