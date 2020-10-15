@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import * as d3format from 'd3-format'
+import { bignumber } from './BigNumberFilters'
 const d3 = Object.assign({}, d3format)
 
 export const numerals = Vue.filter('numerals', (num, fixed) => {
@@ -28,9 +29,32 @@ export const toInt = Vue.filter('to-int', (value) => {
   return parseInt(value)
 })
 
+export const separateDigits = (value, digits = 3) => {
+  if (typeof value !== 'string') throw new Error('Value must be a string')
+  const parts = []
+  while (value.length > digits) {
+    const pos = value.length - digits
+    const sub = value.substr(pos, value.length)
+    parts.unshift(sub)
+    value = value.substr(0, pos)
+  }
+  parts.unshift(value)
+  return parts
+}
+
 export const locale = Vue.filter('locale', (value) => {
-  const format = d3.format(',d')
-  return format(value)
+  value = bignumber(`${value}`)
+  const parts = value.split('.')
+  if (parts.length > 2) throw new Error(`Invalid number ${value}`)
+  value = parts.shift()
+  value = separateDigits(value)
+  parts.unshift(value.join(','))
+  value = parts.join('.')
+  return value
+})
+
+export const localeRound = Vue.filter('locale-round', (value) => {
+  return d3.format(',d')(value)
 })
 
 // Format with suffix
@@ -43,11 +67,11 @@ export const H = Vue.filter('H', (value, fixed) => {
 })
 
 export const gas = Vue.filter('gas', (value) => {
-  return locale(value) + ' gas'
+  return localeRound(value) + ' gas'
 })
 
 export const wei = Vue.filter('wei', (value) => {
-  return locale(value) + ' wei'
+  return localeRound(value) + ' wei'
 })
 
 export const gwei = Vue.filter('gwei', (value) => {

@@ -42,7 +42,7 @@ export default {
     titleIcon: true,
     hideTitle: true,
     link: `/${r.block}/`,
-    filters: ['locale'],
+    filters: ['locale-round'],
     default: 0
   },
   blockHash: {
@@ -86,7 +86,7 @@ export default {
     trim: 'auto'
   },
   gas: {
-    filters: ['locale']
+    filters: ['locale-round']
   },
   gasPrice: {
     filters: ['tx-gas-price', 'rbtc'],
@@ -108,7 +108,7 @@ export default {
     hideTitle: true
   },
   tokenBalance: {
-    filters: ['big-number', 'locale', 'rbtc'],
+    filters: ['big-number', 'locale-round', 'rbtc'],
     default: 0
   },
   tokenAddress: {
@@ -142,7 +142,7 @@ export default {
     filters: ['tx-density', 'txs-s']
   },
   rbtcBalance: {
-    filters: ['round', 'locale', 'rbtc']
+    filters: ['round', 'locale-round', 'rbtc']
   },
   hashrate,
   blockHashrate: hashrate

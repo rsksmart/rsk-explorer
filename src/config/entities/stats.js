@@ -21,7 +21,7 @@ export const stats = {
     },
     activeAccounts: {
       icon: 'buffer',
-      filters: ['locale']
+      filters: ['locale-round']
     }
   }
 }
