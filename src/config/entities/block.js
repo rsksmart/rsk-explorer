@@ -90,7 +90,10 @@ const Block = () => {
     },
     uncleCount: {
       field: 'uncles',
-      filters: [uncles => uncles.length]
+      filters: [uncles => uncles.length.toString()]
+    },
+    uncles: {
+      hideIfEmpty: true
     }
   })
   block.itemTitle = false
