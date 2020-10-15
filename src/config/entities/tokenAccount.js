@@ -2,8 +2,12 @@
 import { ROUTES as r, THIS_CONTRACT } from '../types'
 import { tokenAmount } from '../../filters/TokensFilters'
 import { setThisContract } from './event'
+import { round } from '../../filters/NumberFilters'
 
 const accountLink = `/${r.token}/:contract/${r.account}/:address`
+
+const balanceListFilters = ['big-number', value => round(value, 4), 'locale']
+const balanceFilters = ['big-number', 'locale']
 
 const formatLink = (data, parentData, link, key) => {
   const address = data.address || ''
@@ -33,6 +37,19 @@ const accountFormatFields = (fields, data, parentData) => {
   return fields
 }
 
+export const TokenAccountsFields = () => {
+  return {
+    address: {
+      type: 'tokenAddress',
+      trim: 'auto'
+    },
+    balance: {
+      field: 'balanceParsed',
+      filters: balanceListFilters
+    }
+  }
+}
+
 export const TokenAccounts = () => {
   return {
     key: 'address',
@@ -42,42 +59,39 @@ export const TokenAccounts = () => {
     formatLink,
     itemTitle: true,
     titleField: 'name',
-    fields: {
-      address: {
-        type: 'tokenAddress',
-        trim: 'auto'
-      },
-      balance: {
-        field: 'balanceParsed',
-        filters: ['big-number', 'round', 'locale']
-      }
-    }
+    fields: TokenAccountsFields()
   }
 }
 
 const TokenAccount = () => {
   const tokenAccount = TokenAccounts()
-  tokenAccount.fields = Object.assign(TokenAccounts().fields, {
-    address: {
-      field: 'address',
-      trim: 'auto',
-      link: `/${r.address}/`
-    },
-    contract: {
-      type: 'address',
-      trim: 'auto'
-    },
-    token: {
-      field: 'contractName',
-      link: (data) => `/${r.address}/${data.contract}`,
-      hideIfEmpty: true
-    }
-  })
+  const { balance } = TokenAccountsFields()
+  balance.filters = balanceFilters
+  tokenAccount.fields = Object.assign(TokenAccountsFields(),
+    {
+      address: {
+        field: 'address',
+        trim: 'auto',
+        link: `/${r.address}/`
+      },
+      contract: {
+        type: 'address',
+        trim: 'auto'
+      },
+      token: {
+        field: 'contractName',
+        link: (data) => `/${r.address}/${data.contract}`,
+        hideIfEmpty: true
+      }
+    })
+  tokenAccount.fields.balance = balance
   return tokenAccount
 }
 
 const TokenByAddress = () => {
-  const taFields = TokenAccount().fields
+  const { balance, token, contract } = TokenAccount().fields
+  balance.suffix = (value, filtered, row) => row.symbol
+  balance.filters = balanceListFilters
   return {
     link: accountLink,
     formatRow: (data, parentData) => {
@@ -89,13 +103,12 @@ const TokenByAddress = () => {
     formatLink,
     key: 'tokenAddress',
     fields: {
-      name: Object.assign(taFields.token, { field: 'name', type: 'tokenName' }),
-      address: Object.assign(taFields.contract, {
+      name: Object.assign(token, { field: 'name', type: 'tokenName' }),
+      address: Object.assign(contract, {
         field: 'contractAddress',
         link: (data, value, link) => value === THIS_CONTRACT ? null : value
       }),
-      balance: Object.assign(taFields.balance,
-        { suffix: (value, filtered, row) => row.symbol })
+      balance
     }
   }
 }
