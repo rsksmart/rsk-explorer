@@ -48,9 +48,7 @@ const Block = () => {
       trim: 'auto',
       link: `/${r.block}/`
     },
-    sha3Uncles: {
-      trim: 'auto'
-    },
+
     miner: {
       trim: 'auto'
     },
@@ -86,6 +84,13 @@ const Block = () => {
     extraData: {
       renderAs: 'big-field',
       renderAsProps: { options: { decode: true } }
+    },
+    sha3Uncles: {
+      trim: 'auto'
+    },
+    uncleCount: {
+      field: 'uncles',
+      filters: [uncles => uncles.length]
     }
   })
   block.itemTitle = false
