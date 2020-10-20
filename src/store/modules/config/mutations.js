@@ -41,3 +41,7 @@ export const SET_TABLE = (state, payload) => {
   const config = payload[1]
   Vue.set(state.tables, tableId, config)
 }
+
+export const SET_CONFIG_EXPORT_FORMAT = (state, value) => {
+  Vue.set(state, 'exportFormat', value)
+}

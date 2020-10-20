@@ -16,3 +16,7 @@ export const updateTableConfig = ({ state, commit, rootState }, payload) => {
     commit('SET_TABLE', [id, config])
   }
 }
+
+export const updateExportFormat = ({ state, commit }, value) => {
+  commit('SET_CONFIG_EXPORT_FORMAT', value)
+}

@@ -3,6 +3,7 @@ export default function () {
     autoUpdateBlocks: false,
     sort: {},
     tables: {},
+    exportFormat: 'JSON',
     q: {
       txs: {
         getTransactions: {
