@@ -1,34 +1,42 @@
 <template lang="pug">
-  .export-controls(v-if="data")
+  .export-controls(v-if="data" label="test label")
     menu-button
       template(v-slot:button)
         icon(name="dots")
       template(v-slot:elements)
-        copy-button.button.med(:value="getFilteredData()" title="copy json")
-          small copy JSON
-        copy-button.button.med(:value='getFilteredData(true)' title="copy csv")
-          small copy CSV
-        download-button.button.med(v-bind="downloadData()")
-          small download JSON
-        download-button.button.med(v-bind="downloadData(true)")
-          small download CSV
+        copy-button.button.med(:value="getFilteredData(isCsv)" title="copy json")
+          small copy
+        download-button.button.med(v-bind="downloadData(isCsv)")
+          small download
+        .row
+          ctrl-switch(:value="isCsv" @change='changeFormat' :square='true')
+          small(:class="(!isCsv) ? 'disabled':''") csv
 </template>
 <script>
 import MenuButton from './controls/MenuButton'
 import CopyButton from './controls/CopyButton'
 import DownloadButton from './controls/DownloadButton'
+import CtrlSwitch from './controls/CtrlSwitch'
 import dataMixin from '../mixins/dataMixin'
 import { json2Csv } from '../lib/js/json2csv'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'export-controls',
   props: ['data', 'type', 'id'],
   components: {
     MenuButton,
     CopyButton,
-    DownloadButton
+    DownloadButton,
+    CtrlSwitch
   },
   mixins: [dataMixin],
   computed: {
+    ...mapState({
+      format: state => state.config.exportFormat
+    }),
+    isCsv () {
+      return this.format === 'CSV'
+    },
     fileName () {
       let fileName = 'download'
       const { entity, data, type } = this
@@ -39,6 +47,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['updateExportFormat']),
     filterData () {
       const fData = {}
       const { fields, filterFieldValue, data } = this
@@ -72,6 +81,13 @@ export default {
       if (csv) value = json2Csv(value)
       const fileName = this.getFileName(fileType)
       return { fileType, value, fileName, title: `download ${fileType}` }
+    },
+    switchFormat (format) {
+      return (format === 'CSV') ? 'JSON' : 'CSV'
+    },
+    changeFormat () {
+      const newFormat = this.switchFormat(this.format)
+      return this.updateExportFormat(newFormat)
     }
   }
 }
@@ -85,6 +101,8 @@ export default {
     justify-content flex-end
 
     .button
-      margin 0 0.5em
+      margin  0.5em
       flex 0
+      small
+        margin 0 0 0 1em
 </style>
