@@ -12,6 +12,18 @@ import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsL
 import { isAddress } from '../../lib/js/utils'
 import { linkAddress, addressFilters, txValueFilters } from './lib/fieldsTypes'
 
+const TX_STATUS_CSS = Object.freeze({
+  FAIL: 'error',
+  SUCCESS: 'brand',
+  QUEUED: 'blue',
+  PENDING: 'yellow'
+})
+
+const TX_STATUS_MESSAGES = Object.freeze({
+  QUEUED: 'The transaction nonce is not in sequence. Waiting for transaction(s) with previous nonces to be received.',
+  PENDING: 'The transaction is ready to be processed and included in a block.'
+})
+
 const transactionFormatFields = (fields, data, parentData) => {
   return fields
 }
@@ -42,16 +54,11 @@ const transactionFormatRow = (tx, parentData) => {
   return tx
 }
 
-export const txStatusCss = status => {
-  const css = {
-    FAIL: 'error',
-    SUCCESS: 'brand',
-    QUEUED: 'blue',
-    PENDING: 'yellow'
-  }
-  const key = Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
-  return css[key] || ''
-}
+export const txStatusKey = status => Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
+
+export const txStatusCss = status => TX_STATUS_CSS[txStatusKey(status)] || ''
+
+export const txStatusMessage = status => TX_STATUS_MESSAGES[txStatusKey(status)] || ''
 
 const TxFields = () => {
   return {
@@ -105,7 +112,8 @@ const TxFields = () => {
       filters: ['tx-status'],
       trim: 'auto',
       css: (value, filtered, data) => txStatusCss(filtered),
-      hideIfEmpty: true
+      hideIfEmpty: true,
+      valueDescription: (value, filtered, data) => txStatusMessage(filtered)
     }
   }
 }
