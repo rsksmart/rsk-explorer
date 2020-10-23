@@ -59,6 +59,8 @@ export const parseField = (name, field, fieldsTypes) => {
   const fieldDef = fieldsTypes[field.type]
   if (fieldDef) {
     field.description = field.description || fieldDef.description || null
+    field.valueDescription = field.valueDescription || fieldDef.valueDescription || null
+
     if (fieldDef.filters) {
       const filters = field.filters || []
       field.filters = filters.concat(fieldDef.filters)

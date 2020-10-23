@@ -148,6 +148,9 @@ export default {
       }
       return pv
     },
+    fieldValueDescription (field, value, filteredValue, row) {
+      return this.fieldFormatProp('valueDescription', field, value, filteredValue, row)
+    },
 
     fieldCss (field, value, filteredValue, row) {
       return this.fieldFormatProp('css', field, value, filteredValue, row)
