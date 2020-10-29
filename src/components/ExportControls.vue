@@ -9,15 +9,15 @@
         download-button.button.med(v-bind="downloadData(fileName,data,isCsv)")
           small download
         .row
-          ctrl-switch(:value="isCsv" @change='changeFormat' :square='true')
-          small(:class="(!isCsv) ? 'disabled':''") csv
+          export-format
 </template>
 <script>
 import MenuButton from './controls/MenuButton'
 import CopyButton from './controls/CopyButton'
 import DownloadButton from './controls/DownloadButton'
-import CtrlSwitch from './controls/CtrlSwitch'
+import ExportFormat from './controls/ExportFormat'
 import exportMixin from '../mixins/export'
+import { mapGetters } from 'vuex'
 export default {
   name: 'export-controls',
   props: ['data', 'type', 'id'],
@@ -25,10 +25,13 @@ export default {
     MenuButton,
     CopyButton,
     DownloadButton,
-    CtrlSwitch
+    ExportFormat
   },
   mixins: [exportMixin],
   computed: {
+    ...mapGetters({
+      isCsv: 'isCsvExport'
+    }),
     fileName () {
       let fileName = 'download'
       const { entity, data, type } = this

@@ -1,18 +1,8 @@
 import dataMixin from '../mixins/dataMixin'
 import { json2Csv } from '../lib/js/json2csv'
-import { mapState, mapActions } from 'vuex'
 export default {
   mixins: [dataMixin],
-  computed: {
-    ...mapState({
-      format: state => state.config.exportFormat
-    }),
-    isCsv () {
-      return this.format === 'CSV'
-    }
-  },
   methods: {
-    ...mapActions(['updateExportFormat']),
     filterData (data) {
       const fData = {}
       const { fields, filterFieldValue } = this
@@ -29,7 +19,7 @@ export default {
     },
     getFilteredData (data, csv) {
       let value = this.jsonFilteredData(data)
-      if (csv) value = json2Csv(value)
+      if (csv) value = this.toCsv(value)
       return value
     },
     exportData (data) {

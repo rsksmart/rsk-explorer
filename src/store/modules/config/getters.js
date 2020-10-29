@@ -21,3 +21,5 @@ export const getSavedQ = (state, getters) => (module, action) => {
 export const getTableConfig = (state) => (tableId) => {
   return state.tables[tableId] || {}
 }
+
+export const isCsvExport = state => state.exportFormat === 'CSV'
