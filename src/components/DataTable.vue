@@ -6,6 +6,15 @@
         icon(name='grid')
       button.switch(@click='switchTableGrid(true)' :disabled='renderTable')
         icon(name='table')
+      //- Menu
+      menu-button
+        template(v-slot:button)
+          icon(name="dots")
+        template(v-slot:elements)
+          button.btn(v-if="!showExportMenu" @click='switchExportMenu') export
+    //- Export Menu
+    .export-menu.row(v-if='showExportMenu')
+      export-pages(v-if='exportParams' v-bind='exportParams' @close='switchExportMenu')
     table.dark(v-if='data' ref='table' :class='tableClass')
       thead(:class='theadClass')
         tr
@@ -66,12 +75,16 @@
 import dataMixin from '../mixins/dataMixin'
 import DataField from './DataField'
 import FieldTitle from './FieldTitle'
+import MenuButton from './controls/MenuButton'
+import ExportPages from './ExportPages'
 import { mapGetters, mapActions, mapState } from 'vuex'
 export default {
   name: 'data-table',
   components: {
     DataField,
-    FieldTitle
+    FieldTitle,
+    MenuButton,
+    ExportPages
   },
   mixins: [
     dataMixin
@@ -94,6 +107,7 @@ export default {
     return {
       editSorts: false,
       sortChanged: false,
+      showExportMenu: false,
       sortDialog: {
         field: null,
         x: 0,
@@ -186,6 +200,12 @@ export default {
       const page = this.page
       const req = (page) ? page.req : {}
       return (req) ? req.key : null
+    },
+    exportParams () {
+      const { page, type, key, parentData } = this
+      if (!page || !page.req || !type || !key) return
+      const req = Object.assign({ type, dataKey: key, parentData }, page.req)
+      return req
     }
   },
   methods: {
@@ -250,6 +270,9 @@ export default {
       const css = [`field__${name}`]
       if (this.key === name) css.push('row-header')
       return css
+    },
+    switchExportMenu () {
+      this.showExportMenu = !this.showExportMenu
     }
   }
 }
@@ -266,7 +289,7 @@ export default {
   .table-ctrls
     display flex
     justify-content flex-end
-    margin  1em
+    margin 1em
 
   .unsortable > .field-title
     color gray
