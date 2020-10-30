@@ -1,6 +1,7 @@
 <template lang="pug">
   svg.progress-bar(:width='width' :height='height')
-    rect(x='0' y='0' :height='height' :width='barWidth')
+    rect.bg(x='0' y='0' :height='height' :width='width')
+    rect.bar(x='0' y='0' :height='height' :width='barWidth')
 </template>
 <script>
 export default {
@@ -17,6 +18,9 @@ export default {
     duration: {
       type: Number,
       default: 5000
+    },
+    progress: {
+      type: Number
     }
   },
   data () {
@@ -39,10 +43,10 @@ export default {
   },
   methods: {
     animate () {
+      const { progress, duration } = this
       if (!this.startTime) this.startTime = Date.now()
       const time = Date.now() - this.startTime
-      const duration = this.duration
-      this.percent = parseInt((time * 100) / duration)
+      this.percent = progress || parseInt((time * 100) / duration)
       if (this.percent < 100) this.interval = requestAnimationFrame(this.animate)
     },
     removeInterval () {
@@ -57,6 +61,12 @@ export default {
   .progress-bar
     margin-left 1em
 
-    rect
+    rect.bar
       fill green
+
+    rect.bg
+      fill gray
+      opacity 0.15
+    text
+      fill red
 </style>
