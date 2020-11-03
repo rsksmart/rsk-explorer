@@ -1,4 +1,5 @@
 import streamSaver from 'streamsaver'
+streamSaver.mitm = process.env.STREAM_MITM_URL || streamSaver.mitm
 
 export function FileStream (fileName) {
   const fileStream = streamSaver.createWriteStream(fileName)

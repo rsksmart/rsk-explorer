@@ -1,8 +1,8 @@
 <template lang="pug">
-  .export-pages
+  .export-pages.section
     .export-options.frame(v-if='!inProgress')
       export-format
-    .export-progress(v-if='inProgress')
+    .export-progress.center(v-if='inProgress')
       span {{metadata.progress}}%
       progress-bar(:progress='metadata.progress || 0.1' :width='progressBarWidth')
     .export.frame(v-if='inProgress')
@@ -104,7 +104,7 @@ export default {
               excludeTitles = true
               return d
             })
-            filtered = filtered.join('\n')
+            filtered = filtered.join('\n') + '\n'
             writer.write(filtered)
           }
           if (next !== undefined && next !== null) {
