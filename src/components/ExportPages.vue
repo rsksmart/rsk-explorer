@@ -1,19 +1,20 @@
 <template lang="pug">
   .export-pages
-    .export-options(v-if='!inProgress')
+    .export-options.frame(v-if='!inProgress')
       export-format
     .export-progress(v-if='inProgress')
       span {{metadata.progress}}%
       progress-bar(:progress='metadata.progress || 0.1' :width='progressBarWidth')
-    .export(v-if='inProgress')
+    .export.frame(v-if='inProgress')
       ul.plain.small
         li Received: {{metadata.received}} of {{metadata.total}}
         li
           span(v-if='metadata.elapsed') {{metadata.elapsed | t-seconds-ago }}
           span(v-if='metadata.estimated') &nbsp;/ {{metadata.estimated | m-to-seconds | s-seconds}}
-    .export-buttons.row
-      button.btn(v-if='!inProgress' @click='exportPages') Export
-      button.btn(@click='close') Cancel
+    .export-buttons.frame
+      .col
+        button.btn(v-if='!inProgress' @click='exportPages') Export
+        button.btn(@click='close') Cancel
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -21,7 +22,7 @@ import { keccak256 } from '@rsksmart/rsk-utils'
 import ExportMixin from '../mixins/export'
 import ExportFormat from './controls/ExportFormat'
 import ProgressBar from './controls/ProgressBar'
-import { downloadText } from '../lib/js/io'
+import { FileStream } from '../lib/js/fileStream'
 export default {
   name: 'export-pages',
   components: {
@@ -35,13 +36,15 @@ export default {
       exportKey: undefined,
       unsubscribe: undefined,
       computedWidth: 0,
-      inProgress: false
+      inProgress: false,
+      writer: undefined
     }
   },
   mounted () {
     this.computedWidth = this.$el.offsetWidth
   },
   beforeDestroy () {
+    if (this.writer) this.writer.abort()
     this.reset()
   },
   computed: {
@@ -84,27 +87,30 @@ export default {
       payload.key = exportKey
       const fileType = this.getFileType(isCsv)
       const fileName = this.getFileName(exportKey, fileType)
-      let content = []
+      const writer = FileStream(fileName)
+      this.writer = writer
+      let excludeTitles
       this.unsubscribe = this.$store.subscribeAction(({ type, payload }) => {
         if (type === 'exportPages' && payload.req && payload.req.key === exportKey) {
           const { data, pages, req } = payload
           const { next } = pages
+          const { rowCb, filterData, parentData, isCsv, toCsv } = this
+          const convert = isCsv ? v => toCsv(v, { excludeTitles }) : JSON.stringify
           if (data) {
-            const { rowCb, filterData, parentData } = this
-            const filtered = data.map(d => {
+            let filtered = data.map(d => {
               if (rowCb) d = rowCb(d, parentData)
               d = filterData(d)
+              d = convert(d)
+              excludeTitles = true
               return d
             })
-            content = content.concat(filtered)
+            filtered = filtered.join('\n')
+            writer.write(filtered)
           }
           if (next !== undefined && next !== null) {
             req.next = next
             this.fetchExportData(req)
           } else {
-            content = this.exportData(content)
-            if (isCsv) content = this.toCsv(content)
-            downloadText(content, fileName, fileType)
             this.close()
           }
         }
@@ -112,11 +118,16 @@ export default {
       this.getPages(payload)
     },
     reset () {
-      const { unsubscribe } = this
+      const { unsubscribe, writer } = this
       if (unsubscribe) unsubscribe()
+      if (writer) {
+        writer.abort()
+      }
       this.inProgress = false
     },
-    close () {
+    async close () {
+      const { writer } = this
+      if (writer) await this.writer.close()
       this.reset()
       this.$emit('close')
     }
