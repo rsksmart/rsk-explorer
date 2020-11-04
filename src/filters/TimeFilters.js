@@ -105,3 +105,5 @@ export const miliseconds = Vue.filter('miliseconds', time => {
   const seconds = Math.floor(time / 1000)
   return sAgo(seconds)
 })
+
+export const mToTime = Vue.filter('m-to-time', miliseconds => new Date(miliseconds).toISOString().substr(11, 8))
