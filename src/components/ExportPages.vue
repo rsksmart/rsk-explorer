@@ -1,20 +1,25 @@
 <template lang="pug">
   .export-pages.section
-    .export-options.frame(v-if='!inProgress')
-      export-format
-    .export-progress.center(v-if='inProgress')
-      span {{metadata.progress}}%
-      progress-bar(:progress='metadata.progress || 0.1' :width='progressBarWidth')
-    .export.frame(v-if='inProgress')
-      ul.plain.small
-        li Received: {{metadata.received}} of {{metadata.total}}
-        li
-          span(v-if='metadata.elapsed') {{metadata.elapsed | t-seconds-ago }}
-          span(v-if='metadata.estimated') &nbsp;/ {{metadata.estimated | m-to-seconds | s-seconds}}
-    .export-buttons.frame
-      .col
-        button.btn(v-if='!inProgress' @click='exportPages') Export
-        button.btn(@click='close') Cancel
+    //-h4.brand Export
+    .odd
+      .export-options.frame.row(v-if='!inProgress')
+        export-format
+      .export-progress.txt-center(v-if='inProgress')
+        .center.brand
+          small {{metadata.progress}}%
+        .row.txt-center
+          progress-bar(:progress='metadata.progress || 0.1' :width='progressBarWidth')
+      .export.frame(v-if='inProgress')
+        ul.plain.small.txt-center
+          li
+            small(v-if='metadata.received') Received: {{metadata.received}} of {{metadata.total}} items
+          li
+            small(v-if='metadata.elapsed') {{metadata.elapsed | t-seconds-ago }}
+            small(v-if='metadata.estimated') &nbsp;/ {{metadata.estimated | m-to-seconds | s-seconds}}
+      .export-buttons.frame
+        .col
+          button.btn(v-if='!inProgress' @click='exportPages') Export
+          button.btn(@click='close') Cancel
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -97,15 +102,16 @@ export default {
           const { rowCb, filterData, parentData, isCsv, toCsv } = this
           const convert = isCsv ? v => toCsv(v, { excludeTitles }) : JSON.stringify
           if (data) {
-            let filtered = data.map(d => {
+            const filtered = data.map(d => {
               if (rowCb) d = rowCb(d, parentData)
               d = filterData(d)
               d = convert(d)
               excludeTitles = true
               return d
             })
-            filtered = filtered.join('\n') + '\n'
-            writer.write(filtered)
+            for (const line of filtered) {
+              writer.write(line + '\n')
+            }
           }
           if (next !== undefined && next !== null) {
             req.next = next
@@ -139,6 +145,7 @@ export default {
   @import '../lib/styl/mixins.styl'
 
   .export-pages
+    margin 0 0 2em 0
     width 100%
     height auto
     flex-centered()
