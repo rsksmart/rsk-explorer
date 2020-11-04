@@ -1,7 +1,8 @@
 <template lang="pug">
 .export-format.row
-  ctrl-switch(:value="isCsv" @change='changeFormat' :square='true')
-  small(:class="(!isCsv) ? 'disabled':''") csv
+  small.label(:class='formatCss("json")') json
+  ctrl-switch(:value="isCsv" @change='changeFormat' :square='true' css='enabled')
+  small.label(:class='formatCss("csv")') csv
 </template>
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
@@ -25,7 +26,16 @@ export default {
     changeFormat () {
       const newFormat = this.switchFormat(this.format)
       return this.updateExportFormat(newFormat)
+    },
+    formatCss (value) {
+      const format = this.format.toLowerCase()
+      return (value === format) ? ['brand', 'bold'] : 'disabled'
     }
   }
 }
 </script>
+<style lang="stylus">
+  .export-format
+    .switch
+      margin 0 0.5em
+</style>
