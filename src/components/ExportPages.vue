@@ -14,7 +14,7 @@
           li
             small(v-if='metadata.received') Received: {{metadata.received}} of {{metadata.total}} items
           li
-            small(v-if='metadata.elapsed') {{metadata.elapsed | t-seconds-ago }}
+            small(v-if='metadata.elapsed') {{metadata.elapsed | m-to-time }}
             small(v-if='metadata.estimated') &nbsp;/ {{metadata.estimated | m-to-seconds | s-seconds}}
       .export-buttons.frame
         .col
@@ -28,12 +28,14 @@ import ExportMixin from '../mixins/export'
 import ExportFormat from './controls/ExportFormat'
 import ProgressBar from './controls/ProgressBar'
 import { FileStream } from '../lib/js/fileStream'
+import { mToTime, mToSeconds, sSeconds } from '../filters/TimeFilters'
 export default {
   name: 'export-pages',
   components: {
     ExportFormat,
     ProgressBar
   },
+  filters: { mToTime, mToSeconds, sSeconds },
   mixins: [ExportMixin],
   props: ['module', 'action', 'params', 'type', 'parentData'],
   data () {
