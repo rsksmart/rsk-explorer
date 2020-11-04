@@ -59,7 +59,7 @@ export default {
   @import '../../lib/styl/vars.styl'
 
   .progress-bar
-    margin-left 1em
+    margin 0 1em
 
     rect.bar
       fill green
