@@ -1,7 +1,7 @@
 <template lang="pug">
   .switch
     label.ctrl
-      input(type='checkbox' :checked='value' @change='updateValue' :class="(enabled) ? 'enabled': '' ")
+      input(type='checkbox' :checked='value' @change='updateValue' :class="inputClass")
       span.slider(:class='ctrlClass')
     label.label(v-if='label' :class='labelClass') {{ label }}
 
@@ -9,13 +9,20 @@
 <script>
 export default {
   name: 'ctrl-switch',
-  props: ['label', 'value', 'square', 'enabled'],
+  props: ['label', 'value', 'square', 'enabled', 'css'],
   computed: {
     ctrlClass () {
       return (!this.square) ? 'round' : 'square'
     },
     labelClass () {
       return (this.value) ? '' : 'gray'
+    },
+    inputClass () {
+      let { css, enabled } = this
+      css = css || []
+      css = Array.isArray(css) ? css : [css]
+      if (enabled) css.push('enabled')
+      return css
     }
   },
   methods: {
