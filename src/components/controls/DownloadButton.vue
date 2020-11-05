@@ -6,6 +6,7 @@
 <script>
 import { downloadText } from '../../lib/js/io'
 import BurpButton from './BurpButton'
+import icons from '../../config/icons'
 export default {
   name: 'download-button',
   components: {
@@ -31,7 +32,7 @@ export default {
   },
   computed: {
     iconName () {
-      return (undefined === this.icon) ? 'clowd-down' : this.icon
+      return (undefined === this.icon) ? icons.download : this.icon
     }
   },
   methods: {

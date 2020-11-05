@@ -7,6 +7,7 @@
 <script>
 import { copyText } from '../../lib/js/io'
 import BurpButton from './BurpButton'
+import icons from '../../config/icons'
 export default {
   name: 'copy-button',
   components: {
@@ -21,7 +22,7 @@ export default {
   },
   computed: {
     iconName () {
-      return (undefined === this.icon) ? 'copy' : this.icon
+      return (undefined === this.icon) ? icons.copy : this.icon
     },
     targetNode () {
       const { refName, target } = this
