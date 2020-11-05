@@ -11,7 +11,9 @@
         template(v-slot:button)
           icon(name="dots")
         template(v-slot:elements)
-          button.btn(v-if="!showExportMenu" @click='switchExportMenu') export
+          button.button(v-if="!showExportMenu" @click='switchExportMenu')
+            icon(:name='icons.download' )
+            small download
     //- Export Menu
     .export-menu.row(v-if='showExportMenu')
       export-pages(v-if='exportParams' v-bind='exportParams' @close='switchExportMenu')
@@ -77,6 +79,7 @@ import DataField from './DataField'
 import FieldTitle from './FieldTitle'
 import MenuButton from './controls/MenuButton'
 import ExportPages from './ExportPages'
+import icons from '../config/icons'
 import { mapGetters, mapActions, mapState } from 'vuex'
 export default {
   name: 'data-table',
@@ -112,7 +115,8 @@ export default {
         field: null,
         x: 0,
         y: 0
-      }
+      },
+      icons
     }
   },
   mounted () {

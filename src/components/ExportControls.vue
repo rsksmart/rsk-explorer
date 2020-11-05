@@ -51,10 +51,4 @@ export default {
     flex-flow row nowrap
     justify-content flex-end
 
-    .button
-      margin 0.5em
-      flex 0
-
-      small
-        margin 0 0 0 1em
 </style>
