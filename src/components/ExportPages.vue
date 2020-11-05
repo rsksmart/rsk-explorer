@@ -1,6 +1,6 @@
 <template lang="pug">
   .export-pages.section
-    //-h4.brand Export
+    h4.brand Dowload
     .odd
       .export-options.frame.row(v-if='!inProgress')
         export-format
@@ -18,8 +18,8 @@
             small(v-if='metadata.estimated') &nbsp;/ {{metadata.estimated | m-to-seconds | s-seconds}}
       .export-buttons.frame
         .col
-          button.btn(v-if='!inProgress' @click='exportPages') Export
-          button.btn(@click='close') Cancel
+          button.btn.brand(v-if='!inProgress' @click='exportPages') Export
+          button.btn.brand(@click='close') Cancel
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
