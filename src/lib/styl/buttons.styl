@@ -28,112 +28,112 @@
 
     .arrow
       border-color color2
-
-button.icon
-  width 1.5em
-  height @width
-  padding 0.25em
-
-  .svg-icon, .icon
-    width 1em
-    height 1em
-
-.btn
-  padding 0.25em 0.5em
-  border-radius 0.1em
-  box-shadow 1px 1px 1px rgba(0, 0, 0, 0.5)
-  margin 0 0.25em
-  font-weight bold
-  buttonColors($color,$bg-odd)
-
-button.big
-  font-size 1em
-  width auto
-  height @width
-  padding 0.4em .8em
-  border-radius 0.15em
-
-  .svg-icon
-    width 1.75em
+.app
+  button.icon
+    width 1.5em
     height @width
+    padding 0.25em
 
-  .badge
-    font-size 0.8em !important
+    .svg-icon, .icon
+      width 1em
+      height 1em
 
-button.big-txt
-  font-size 1.25em
+  .btn
+    padding 0.25em 0.5em
+    border-radius 0.1em
+    box-shadow 1px 1px 1px rgba(0, 0, 0, 0.5)
+    margin 0 0.25em
+    font-weight bold
+    buttonColors($color,$bg-odd)
 
-button.menu
-  width 2.5em
-  height 2.5em
-  padding 0
+  button.big
+    font-size 1em
+    width auto
+    height @width
+    padding 0.4em .8em
+    border-radius 0.15em
 
-  .svg-icon
-    width 2em
-    height 2em
+    .svg-icon
+      width 1.75em
+      height @width
 
-button.circle
-  border-radius 50%
-
-
-.btn.badge, .w-badge
-  position relative
-  margin 0.75em 0.5em 0.75em 0.25em
-  display inline-block
-
-  .badge
-    badge(1.5em)
-    position absolute
-    bottom -0.75em
-    right @bottom
-
-    .arrow
-      border-color $white
-
-  & hover
     .badge
-      background $color2
+      font-size 0.8em !important
 
-button.close
-  min-width $button-close-size
-  min-width @min-height
+  button.big-txt
+    font-size 1.25em
 
-  svg
+  button.menu
+    width 2.5em
+    height 2.5em
+    padding 0
+
+    .svg-icon
+      width 2em
+      height 2em
+
+  button.circle
+    border-radius 50%
+
+
+  .btn.badge, .w-badge
+    position relative
+    margin 0.75em 0.5em 0.75em 0.25em
     display inline-block
-    min-height $button-close-size
+
+    .badge
+      badge(1.5em)
+      position absolute
+      bottom -0.75em
+      right @bottom
+
+      .arrow
+        border-color $white
+
+    & hover
+      .badge
+        background $color2
+
+  button.close
+    min-width $button-close-size
     min-width @min-height
 
-button.btn.selected, button.btn.dark.selected
-  color $selected
-  fill @color
-
-button.delete
-  delete()
-  border-color $warn-light
-
-button.btn.dark
-  color-darkness()
-
-button.link
-  link()
-
-button.brand, .btn-brand
-  buttonColors($white,$color)
-button.switch
-  display inline-flex
-  color $gray
-  background $quasi-bg
-  padding 0.25em
-  margin 0.125em
-  border-radius 0.125em
-  box-shadow $hard-sh
-  svg
-    fill $gray
-
-  &:disabled
-    color $disabled
     svg
-      fill $disabled
+      display inline-block
+      min-height $button-close-size
+      min-width @min-height
+
+  button.btn.selected, button.btn.dark.selected
+    color $selected
+    fill @color
+
+  button.delete
+    delete()
+    border-color $warn-light
+
+  button.btn.dark
+    color-darkness()
+
+  button.link
+    link()
+
+  button.brand, .btn-brand
+    buttonColors($white,$color)
+  button.switch
+    display inline-flex
+    color $gray
+    background $quasi-bg
+    padding 0.25em
+    margin 0.125em
+    border-radius 0.125em
+    box-shadow $hard-sh
+    svg
+      fill $gray
+
+    &:disabled
+      color $disabled
+      svg
+        fill $disabled
 
 button
   .svg-icon+span
