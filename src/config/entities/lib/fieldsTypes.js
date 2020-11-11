@@ -108,7 +108,7 @@ export default {
     hideTitle: true
   },
   tokenBalance: {
-    filters: ['big-number', 'locale-round', 'rbtc'],
+    filters: ['tx-value', 'round', 'rbtc'],
     default: 0
   },
   tokenAddress: {
