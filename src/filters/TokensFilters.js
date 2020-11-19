@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { BigNumber } from 'bignumber.js'
 import { newBigNumber } from './BigNumberFilters'
 import etherUnits from '../lib/js/EtherUnits'
+
 // const Ether = new BigNumber(10e17)
 
 export const applyDecimals = (value, decimals = 18) => {
@@ -23,6 +24,10 @@ export const eventValue = (value, { decimals } = {}) => {
 
 export const tokenDecimals = Vue.filter('token-decimals', (value, decimals) => {
   return applyDecimals(value, decimals)
+})
+
+export const satoshiToBtc = Vue.filter('satoshi-to-btc', (value) => {
+  return applyDecimals(value, 8)
 })
 
 export const tokenValue = Vue.filter('token-value', value => {
