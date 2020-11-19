@@ -22,6 +22,12 @@ export const stats = {
     activeAccounts: {
       icon: 'buffer',
       filters: ['locale-round']
+    },
+    lockingCap: {
+      icon: 'btc',
+      showTitle: true,
+      filters: ['satoshi-to-btc', 'locale-round', 'btc'],
+      title: '2WP Locking Cap'
     }
   }
 }
