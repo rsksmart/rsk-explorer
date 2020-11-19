@@ -4,7 +4,7 @@ import { newBigNumber } from './BigNumberFilters'
 import etherUnits from '../lib/js/EtherUnits'
 // const Ether = new BigNumber(10e17)
 
-export const tokenAmount = (value, decimals = 18) => {
+export const applyDecimals = (value, decimals = 18) => {
   if (!value) value = 0
   decimals = decimals || 0
   // if (decimals === 0) return value
@@ -16,13 +16,13 @@ export const tokenAmount = (value, decimals = 18) => {
 
 export const eventValue = (value, { decimals } = {}) => {
   decimals = parseInt(decimals)
-  value = (decimals) ? tokenAmount(value, decimals) : new BigNumber(value).toString()
+  value = (decimals) ? applyDecimals(value, decimals) : new BigNumber(value).toString()
   value = (decimals) ? `${value.toString(10)}` : value
   return value
 }
 
 export const tokenDecimals = Vue.filter('token-decimals', (value, decimals) => {
-  return tokenAmount(value, decimals)
+  return applyDecimals(value, decimals)
 })
 
 export const tokenValue = Vue.filter('token-value', value => {

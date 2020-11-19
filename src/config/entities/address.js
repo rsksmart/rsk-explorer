@@ -1,5 +1,5 @@
 import { ROUTES as r } from '../types'
-import { tokenAmount } from '../../filters/TokensFilters'
+import { applyDecimals } from '../../filters/TokensFilters'
 
 const addressFormatRow = (data, parentData) => {
   data._totalSupplyResult = totalSupplyField(data)
@@ -101,7 +101,7 @@ export const totalSupplyField = data => {
   const totalSupply = data.totalSupply
   const decimals = data.decimals
   if ((totalSupply && totalSupply !== '0x0') && decimals) {
-    return tokenAmount(totalSupply, decimals)
+    return applyDecimals(totalSupply, decimals)
   }
   return null
 }

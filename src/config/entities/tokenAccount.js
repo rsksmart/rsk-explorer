@@ -1,6 +1,6 @@
 
 import { ROUTES as r, THIS_CONTRACT } from '../types'
-import { tokenAmount } from '../../filters/TokensFilters'
+import { applyDecimals } from '../../filters/TokensFilters'
 import { setThisContract } from './event'
 import { round } from '../../filters/NumberFilters'
 
@@ -23,7 +23,7 @@ const accountFormatRow = (data, parentData) => {
   let decimals = contractData.decimals || 0
   data.contractName = contractData.name
   decimals = parseInt(decimals)
-  data.balanceParsed = tokenAmount(balance, decimals)
+  data.balanceParsed = applyDecimals(balance, decimals)
   return data
 }
 
