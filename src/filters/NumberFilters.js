@@ -82,6 +82,10 @@ export const rbtc = Vue.filter('rbtc', (value) => {
   return value + ' RBTC'
 })
 
+export const btc = Vue.filter('btc', (value) => {
+  return value + ' BTC'
+})
+
 export const round = Vue.filter('round', (value, decimals) => {
   decimals = decimals || 2
   return (value) ? d3.format(`.${decimals}f`)(value) : 0
