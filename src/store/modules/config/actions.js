@@ -17,6 +17,10 @@ export const updateTableConfig = ({ state, commit, rootState }, payload) => {
   }
 }
 
-export const updateExportFormat = ({ state, commit }, value) => {
+export const updateExportFormat = ({ commit }, value) => {
   commit('SET_CONFIG_EXPORT_FORMAT', value)
+}
+
+export const updateDecimalPlaces = ({ commit }, value) => {
+  commit('SET_CONFIG_DECIMAL_PLACES', value)
 }

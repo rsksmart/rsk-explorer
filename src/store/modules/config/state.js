@@ -4,6 +4,7 @@ export default function () {
     sort: {},
     tables: {},
     exportFormat: 'JSON',
+    decimalPlaces: 4,
     q: {
       txs: {
         getTransactions: {
