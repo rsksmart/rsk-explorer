@@ -8,6 +8,11 @@ import { round } from '../../../filters/NumberFilters'
 import { eventValue } from '../../../filters/TokensFilters'
 import { store } from '../../../store/index'
 
+export const timeElapsedFromTs = (value) => {
+  if (!value) return value
+  return store.getters.getDate - value * 1000
+}
+
 export const fixDecimals = (value, data) => round(value, store.getters.getDecimalPlaces)
 
 const addDecimalFilters = (filters, { fixedDecimals } = {}) => {
@@ -59,7 +64,7 @@ export default {
   },
   timestamp: {
     icon: 'stopwatch',
-    filters: ['m-seconds-ago', 'add-ago'],
+    filters: [timeElapsedFromTs, 'm-seconds-ago', 'add-ago'],
     titleIcon: true,
     hideTitle: true
   },

@@ -31,16 +31,10 @@ export const getFieldFilteredValue = (state, getters) => (field, data, raw) => {
   }
 }
 
-export const filterFieldValue = (state, getters) => (field, value, data) => {
+export const filterFieldValue = (state, getters) => (field, value, data, context = 'view') => {
   field = field || {}
-  const type = field.type
-  const now = getters.getDate
-  if (type === 'timestamp' && value) value = now - value * 1000
-  const filters = field.filters
-  if (filters) {
-    value = getters.applyFilters(filters, value, data)
-  }
-  return value
+  const { filters } = field
+  return filters ? getters.applyFilters({ filters, value, data, context }) : value
 }
 
 export const getFieldValue = state => (field, data) => {
@@ -53,12 +47,12 @@ export const getFieldValue = state => (field, data) => {
   }
 }
 
-export const applyFilters = state => (filters, value, data) => {
+export const applyFilters = state => ({ filters, value, data, context } = {}) => {
   if (filters) {
     filters = Array.isArray(filters) ? filters : [filters]
     for (const f of filters) {
       if (typeof f === 'function') {
-        value = f(value, data)
+        value = f(value, data, context)
       } else {
         value = applyFilter(f, value)
       }
