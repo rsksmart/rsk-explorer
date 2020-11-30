@@ -3,5 +3,6 @@ export default [
   'transactions',
   'addresses',
   'tokens',
-  'stats'
+  'stats',
+  'mining'
 ]

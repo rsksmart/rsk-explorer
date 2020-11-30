@@ -17,6 +17,8 @@
   "dependencies": {
     "@rsksmart/rsk-utils": "^1.1.0",
     "bignumber.js": "^7.2.1",
+    "chart.js": "^2.9.4",
+    "chartjs-plugin-datalabels": "^0.7.0",
     "chroma-js": "^1.4.1",
     "core-js": "^3.6.4",
     "d3-format": "^1.4.3",
@@ -25,6 +27,7 @@
     "moment": "^2.27.0",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.11",
+    "vue-chartjs": "^3.5.1",
     "vue-d3-barchart": "0.0.28",
     "vue-gtag": "^1.8.0",
     "vue-hotjar": "^1.2.0",

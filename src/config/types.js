@@ -1,4 +1,3 @@
-
 export const APP_NAME = 'RSK explorer'
 
 export const ROUTES = {
@@ -23,7 +22,8 @@ export const ROUTES = {
   internalTransactions: 'itxs',
   internalTx: 'itx',
   balance: 'balance',
-  balances: 'balances'
+  balances: 'balances',
+  mining: 'mining'
 }
 
 export const STATUS = {
