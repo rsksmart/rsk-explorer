@@ -5,16 +5,19 @@ import * as actions from './actions'
 import * as mutations from './mutations'
 import state from './state'
 import backend from './modules/backend/'
+import mining from './modules/mining/'
 import entities from './modules/entities/'
 import config from './modules/config/'
 import routes from './modules/routes/'
 import search from './modules/search/'
-import socket from '../socket.js'
+import socket, { miningSocket } from '../socket.js'
 import socketPlugin from './plugins/socketPlugin'
+import miningSocketPlugin from './plugins/miningSocketPlugin'
 import storagePlugin from './plugins/localStorage'
 import { sync } from 'vuex-router-sync'
 import router from '../router'
 const wsPlugin = socketPlugin(socket)
+const wsPluginM = miningSocketPlugin(miningSocket)
 Vue.use(Vuex)
 backend.namespaced = false
 entities.namespaced = false
@@ -27,6 +30,7 @@ const store = new Vuex.Store({
   mutations,
   plugins: [
     wsPlugin,
+    wsPluginM,
     storagePlugin
   ],
   modules: {
@@ -34,7 +38,8 @@ const store = new Vuex.Store({
     entities,
     config,
     routes,
-    search
+    search,
+    mining
   }
 })
 

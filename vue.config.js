@@ -20,7 +20,7 @@ module.exports = {
       .plugin('define')
       .tap(args => {
         const env = args[0]['process.env']
-        const props = ['WS_URL', 'STATS_URL', 'GA_TAG', 'HOTJAR_ID']
+        const props = ['WS_URL', 'WS_M_URL', 'STATS_URL', 'GA_TAG', 'HOTJAR_ID']
         props.forEach((v) => {
           env[v] = (process.env[v]) ? JSON.stringify(process.env[v]) : env['VUE_APP_' + v] || '""'
         })
