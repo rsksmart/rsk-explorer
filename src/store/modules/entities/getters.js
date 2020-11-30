@@ -25,13 +25,13 @@ export const getFieldFilteredValue = (state, getters) => (field, data, raw) => {
   if (field && field.field) {
     let value = getters.getFieldValue(field.field, data)
     if (value && !raw) {
-      value = getters.filterFieldValue(field, value, data)
+      value = getters.filterFieldValue({ field, value, data })
     }
     return value
   }
 }
 
-export const filterFieldValue = (state, getters) => (field, value, data, context = 'view') => {
+export const filterFieldValue = (state, getters) => ({ field, value, data, context } = {}) => {
   field = field || {}
   const { filters } = field
   return filters ? getters.applyFilters({ filters, value, data, context }) : value

@@ -139,12 +139,12 @@ export default {
 
       return style
     },
-    fieldFormatProp (prop, field, value, filteredValue, row) {
+    fieldFormatProp (prop, field, value, filteredValue, data) {
       if (undefined === value) value = this.getValue(field, this.data, true)
-      if (undefined === filteredValue) filteredValue = this.filterFieldValue()(field, value, row)
+      if (undefined === filteredValue) filteredValue = this.filterFieldValue()({ field, value, data })
       const pv = field[prop]
       if (typeof pv === 'function') {
-        return pv(value, filteredValue, row)
+        return pv(value, filteredValue, data)
       }
       return pv
     },

@@ -57,7 +57,8 @@ export default {
   },
   computed: {
     filteredValue () {
-      return this.filterFieldValue()(this.field, this.value, this.row)
+      const { field, value, row } = this
+      return this.filterFieldValue()({ field, value, data: row })
     },
     value () {
       return this.getValue(this.field, this.row, true)

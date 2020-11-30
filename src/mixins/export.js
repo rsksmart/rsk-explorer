@@ -9,7 +9,7 @@ export default {
       for (const f in fields) {
         const field = fields[f]
         const value = this.getValue(field, data, true)
-        const filtered = filterFieldValue()(field, value, data)
+        const filtered = filterFieldValue()({ field, value, data })
         fData[f] = filtered
       }
       return fData
