@@ -6,26 +6,29 @@ import {
 import { isAddress } from '../../../lib/js/utils'
 import { round } from '../../../filters/NumberFilters'
 import { eventValue } from '../../../filters/TokensFilters'
+import { store } from '../../../store/index'
 
-export const txValueFilters = decimals => {
-  const filters = ['tx-value']
-  if (decimals) filters.push((value, data) => round(value, decimals))
-  filters.push('rbtc')
+export const fixDecimals = (value, data) => round(value, store.getters.getDecimalPlaces)
+
+const addDecimalFilters = (filters, { fixedDecimals } = {}) => {
+  filters = filters || []
+  if (fixedDecimals) filters.push(fixDecimals)
   return filters
 }
+
+export const valueFilters = fixedDecimals => addDecimalFilters(['tx-value'], { fixedDecimals }).concat(['rbtc'])
+
+export const balanceListFilters = addDecimalFilters(['big-number'], { fixedDecimals: true }).concat(['locale'])
+
+export const balanceFilters = ['big-number', 'locale']
 
 export const linkAddress = address => (!isAddress(address)) ? null : `/${r.address}/${address}`
 export const addressFilters = ['checksum-address']
 
-export const eventValueField = (decimals) => {
-  decimals = parseInt(decimals)
+export const eventValueField = (fixedDecimals) => {
   const suffix = (value, filteredValue, { _addressData }) => _addressData.symbol
-  const filters = [(value, data) => eventValue(value, data._addressData)]
-  if (decimals && !isNaN(decimals)) {
-    filters.push((value) => {
-      return round(value, decimals)
-    })
-  }
+  let filters = [(value, data) => eventValue(value, data._addressData)]
+  filters = addDecimalFilters(filters, { fixedDecimals })
   return { suffix, filters }
 }
 
@@ -127,7 +130,7 @@ export default {
     default: NOT_AVAILABLE
   },
   eventValue: eventValueField(),
-  eventValueRounded: eventValueField(2),
+  eventValueRounded: eventValueField(true),
   eventId: {
     icon: 'zap',
     titleIcon: true,

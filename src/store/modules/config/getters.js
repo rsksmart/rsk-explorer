@@ -23,3 +23,5 @@ export const getTableConfig = (state) => (tableId) => {
 }
 
 export const isCsvExport = state => state.exportFormat === 'CSV'
+
+export const getDecimalPlaces = state => state.decimalPlaces

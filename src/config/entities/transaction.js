@@ -10,7 +10,7 @@ import { txGasPrice } from '../../filters/TokensFilters'
 import { txStatus } from '../../filters/TextFilters'
 import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
 import { isAddress } from '../../lib/js/utils'
-import { linkAddress, addressFilters, txValueFilters } from './lib/fieldsTypes'
+import { linkAddress, addressFilters, valueFilters } from './lib/fieldsTypes'
 
 const TX_STATUS_CSS = Object.freeze({
   FAIL: 'error',
@@ -92,7 +92,7 @@ const TxFields = () => {
       filters: addressFilters
     },
     value: {
-      filters: txValueFilters()
+      filters: valueFilters()
     },
     gasUsed: {
       type: 'gas',
@@ -137,7 +137,7 @@ const Txs = () => {
     type: null,
     showTitle: false
   })
-  fields.value.filters = txValueFilters(2)
+  fields.value.filters = valueFilters(true)
   return {
     key: 'hash',
     icon: 'transaction',

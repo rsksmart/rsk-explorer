@@ -19,7 +19,7 @@ Vue.use(Vuex)
 backend.namespaced = false
 entities.namespaced = false
 
-const store = new Vuex.Store({
+export const store = new Vuex.Store({
   strict: false, // <-- set true to debug mutations, Do not enable strict mode when deploying for production!
   state: state(),
   getters,

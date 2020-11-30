@@ -1,5 +1,6 @@
 import { ROUTES as r } from '../types'
 import { applyDecimals } from '../../filters/TokensFilters'
+import { valueFilters } from './lib/fieldsTypes'
 
 const addressFormatRow = (data, parentData) => {
   data._totalSupplyResult = totalSupplyField(data)
@@ -17,7 +18,7 @@ export const Addresses = () => {
     fields: {
       address: null,
       balance: {
-        filters: ['tx-value', 'round', 'rbtc'],
+        filters: valueFilters(true),
         default: 0,
         trim: 0
       },
@@ -90,7 +91,7 @@ export const Address = () => {
       hideIfEmpty: true
     }
   }, fields)
-  address.fields.balance.filters = ['tx-value', 'rbtc']
+  address.fields.balance.filters = valueFilters(false)
   return address
 }
 

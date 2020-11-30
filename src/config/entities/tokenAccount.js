@@ -2,12 +2,9 @@
 import { ROUTES as r, THIS_CONTRACT } from '../types'
 import { applyDecimals } from '../../filters/TokensFilters'
 import { setThisContract } from './event'
-import { round } from '../../filters/NumberFilters'
+import { balanceFilters, balanceListFilters } from './lib/fieldsTypes'
 
 const accountLink = `/${r.token}/:contract/${r.account}/:address`
-
-const balanceListFilters = ['big-number', value => round(value, 4), 'locale']
-const balanceFilters = ['big-number', 'locale']
 
 const formatLink = (data, parentData, link, key) => {
   const address = data.address || ''
