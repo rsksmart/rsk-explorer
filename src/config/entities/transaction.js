@@ -124,6 +124,7 @@ const Txs = () => {
     filters: ['tx-icon'],
     renderAs: 'field-icon',
     renderAsProps: ({ filteredValue, value }) => {
+      if (!filteredValue) return // skip DataField custom component
       return {
         icon: filteredValue,
         title: `status: ${txStatus(value)}`,

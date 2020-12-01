@@ -164,7 +164,7 @@ export default {
       return this.fieldFormatProp('suffix', field, value, filteredValue, row)
     },
 
-    renderAsProps (payload) {
+    renderAsProps (payload = {}) {
       const field = payload.field || {}
       const props = field.renderAsProps
       return (typeof props === 'function') ? props(payload) : props
@@ -218,6 +218,10 @@ export default {
       if (value.length > this.trimIf) {
         return trim || this.defaultTrim
       }
+    },
+    getCustomRenderProps (field, row) {
+      if (!field.renderAs) return
+      return field.renderAsProps({ field, row })
     }
   }
 }
