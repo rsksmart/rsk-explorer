@@ -7,10 +7,10 @@ import {
 } from '../types'
 import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
-import { txStatus } from '../../filters/TextFilters'
+import { txIcon, txStatus } from '../../filters/TextFilters'
 import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
 import { isAddress } from '../../lib/js/utils'
-import { linkAddress, addressFilters, valueFilters } from './lib/fieldsTypes'
+import { linkAddress, addressFilters, valueFilters, isExport } from './lib/fieldsTypes'
 
 const TX_STATUS_CSS = Object.freeze({
   FAIL: 'error',
@@ -121,10 +121,13 @@ const Txs = () => {
   const fields = TxFields()
   delete (fields.index)
   fields.status = Object.assign(fields.status, {
-    filters: ['tx-icon'],
+    filters: [(value, data, context) => {
+      if (isExport(context)) return txStatus(value)
+      return txIcon(value)
+    }],
     renderAs: 'field-icon',
     renderAsProps: ({ filteredValue, value }) => {
-      if (!filteredValue) return // skip DataField custom component
+      if (!filteredValue) return // skips DataField custom component
       return {
         icon: filteredValue,
         title: `status: ${txStatus(value)}`,
