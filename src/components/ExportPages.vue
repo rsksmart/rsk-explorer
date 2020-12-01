@@ -101,11 +101,11 @@ export default {
         if (type === 'exportPages' && payload.req && payload.req.key === exportKey) {
           const { data, pages, req } = payload
           const { next } = pages
-          const { rowCb, filterData, parentData, isCsv, toCsv } = this
+          const { rowCb, filterData, parentData, isCsv, toCsv, context } = this
           const convert = isCsv ? v => toCsv(v, { excludeTitles }) : JSON.stringify
           if (data) {
             const filtered = data.map(d => {
-              if (rowCb) d = rowCb({ data: d, parentData })
+              if (rowCb) d = rowCb({ data: d, parentData, context })
               d = filterData(d)
               d = convert(d)
               excludeTitles = true
