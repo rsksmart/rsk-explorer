@@ -176,7 +176,7 @@ export const TransferEvents = () => {
       date,
       created
     },
-    formatRow: ({ data, parentData }) => {
+    formatRow: ({ data, parentData, context }) => {
       const { _addressData, address } = data
       const eventData = formatEvent(data, _addressData || {})
       const event = eventData._arguments
@@ -188,8 +188,8 @@ export const TransferEvents = () => {
       if (_addressData) {
         event.contract = _addressData.name
         event._addressData = _addressData
-        event.from = setThisAddress(event.from, parentData)
-        event.to = setThisAddress(event.to, parentData)
+        event.from = setThisAddress(event.from, parentData, context)
+        event.to = setThisAddress(event.to, parentData, context)
       }
       return event
     },

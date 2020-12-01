@@ -38,13 +38,13 @@ const transactionFee = tx => {
   }
 }
 
-const transactionFormatRow = ({ data, parentData }) => {
+const transactionFormatRow = ({ data, parentData, context }) => {
   let address
   const contractAddress = (data.receipt) ? data.receipt.contractAddress : null
   if (parentData) address = parentData.address
   if (address) {
-    data.from = setThisAddress(data.from, { address })
-    data.to = setThisAddress(data.to, { address })
+    data.from = setThisAddress(data.from, { address }, context)
+    data.to = setThisAddress(data.to, { address }, context)
   }
   data.status = (data.receipt) ? data.receipt.status : data.status
   if (contractAddress) {

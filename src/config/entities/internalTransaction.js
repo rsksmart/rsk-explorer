@@ -5,7 +5,7 @@ import { setThisAddress } from './lib/eventsLib'
 
 const key = 'internalTxId'
 
-const internalTransactionFormatRow = ({ data, parentData }) => {
+const internalTransactionFormatRow = ({ data, parentData, context }) => {
   const { address } = parentData || {}
   const { error, result, type, action } = data
   const { callType } = action
@@ -13,8 +13,8 @@ const internalTransactionFormatRow = ({ data, parentData }) => {
   data.status = (error) ? STATUS.FAIL : STATUS.SUCCESS
   if (address) {
     const { from, to } = action
-    data.action.from = setThisAddress(from, { address })
-    data.action.to = setThisAddress(to, { address })
+    data.action.from = setThisAddress(from, { address }, context)
+    data.action.to = setThisAddress(to, { address }, context)
   }
   if (contractAddress) {
     data.action.to = (data.status === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
