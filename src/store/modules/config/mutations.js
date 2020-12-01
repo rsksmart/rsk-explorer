@@ -1,8 +1,6 @@
 import Vue from 'vue'
 
-export const SET_CONFIG = (state, payload) => {
-  const key = payload[0]
-  const value = payload[1]
+export const SET_CONFIG = (state, [key, value]) => {
   if (undefined !== state[key]) {
     Vue.set(state, key, value)
   }
