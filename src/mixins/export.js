@@ -1,5 +1,7 @@
 import dataMixin from '../mixins/dataMixin'
 import { json2Csv } from '../lib/js/json2csv'
+import { CONTEXT } from '../config/types'
+const context = CONTEXT.export
 export default {
   mixins: [dataMixin],
   methods: {
@@ -9,7 +11,7 @@ export default {
       for (const f in fields) {
         const field = fields[f]
         const value = this.getValue(field, data, true)
-        const filtered = filterFieldValue()({ field, value, data })
+        const filtered = filterFieldValue()({ field, value, data, context })
         fData[f] = filtered
       }
       return fData

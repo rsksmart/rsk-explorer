@@ -65,3 +65,7 @@ export const CONNECTION_STATUS = {
   LOST: 'Connection lost',
   UNABLE: 'Cannot connect to backend'
 }
+
+export const CONTEXT = {
+  export: 'export'
+}
