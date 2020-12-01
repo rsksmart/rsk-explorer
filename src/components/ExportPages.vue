@@ -105,7 +105,7 @@ export default {
           const convert = isCsv ? v => toCsv(v, { excludeTitles }) : JSON.stringify
           if (data) {
             const filtered = data.map(d => {
-              if (rowCb) d = rowCb(d, parentData)
+              if (rowCb) d = rowCb({ data: d, parentData })
               d = filterData(d)
               d = convert(d)
               excludeTitles = true

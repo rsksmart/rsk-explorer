@@ -1,7 +1,7 @@
 /**
  * type:{
  *    key: item key field
- *    formatRow(data,parentData)
+ *    formatRow({data,parentData,fields,context})
  *    formatFields(fields,data,parentData)
  *    formatLink(data,parentData,link,key)
       fields:{

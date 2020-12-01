@@ -2,7 +2,7 @@ import { ROUTES as r } from '../types'
 import { applyDecimals } from '../../filters/TokensFilters'
 import { valueFilters } from './lib/fieldsTypes'
 
-const addressFormatRow = (data, parentData) => {
+const addressFormatRow = ({ data, parentData }) => {
   data._totalSupplyResult = totalSupplyField(data)
   const decimals = data.decimals
   data.decimals = (decimals && decimals !== '0x0') ? decimals : null

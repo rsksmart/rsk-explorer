@@ -38,20 +38,20 @@ const transactionFee = tx => {
   }
 }
 
-const transactionFormatRow = (tx, parentData) => {
+const transactionFormatRow = ({ data, parentData }) => {
   let address
-  const contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
+  const contractAddress = (data.receipt) ? data.receipt.contractAddress : null
   if (parentData) address = parentData.address
   if (address) {
-    tx.from = setThisAddress(tx.from, { address })
-    tx.to = setThisAddress(tx.to, { address })
+    data.from = setThisAddress(data.from, { address })
+    data.to = setThisAddress(data.to, { address })
   }
-  tx.status = (tx.receipt) ? tx.receipt.status : tx.status
+  data.status = (data.receipt) ? data.receipt.status : data.status
   if (contractAddress) {
-    tx.to = (txStatus(tx.status) === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
+    data.to = (txStatus(data.status) === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
   }
-  tx._fee = transactionFee(tx)
-  return tx
+  data._fee = transactionFee(data)
+  return data
 }
 
 export const txStatusKey = status => Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
@@ -242,7 +242,7 @@ export const TxLogFormatter = tx => {
 export const TxLogs = () => {
   const tx = Tx()
   return {
-    formatRow: (tx) => TxLogFormatter(tx),
+    formatRow: ({ data, parentData }) => TxLogFormatter(data),
     fields: {
       hash: tx.fields.hash,
       logs: {

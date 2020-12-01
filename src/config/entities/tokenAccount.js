@@ -14,7 +14,7 @@ const formatLink = (data, parentData, link, key) => {
     .replace(':address', address)
 }
 
-const accountFormatRow = (data, parentData) => {
+const accountFormatRow = ({ data, parentData }) => {
   const balance = data.balance
   const contractData = data._contractData || parentData || {}
   let decimals = contractData.decimals || 0
@@ -91,9 +91,9 @@ const TokenByAddress = () => {
   balance.filters = balanceListFilters
   return {
     link: accountLink,
-    formatRow: (data, parentData) => {
+    formatRow: ({ data, parentData }) => {
       const { decimals, name, symbol } = data
-      const row = accountFormatRow(data, { decimals, name, symbol })
+      const row = accountFormatRow({ data, parentData: { decimals, name, symbol } })
       row.contractAddress = setThisContract(data.contract, data)
       return row
     },

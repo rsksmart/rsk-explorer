@@ -14,12 +14,12 @@ export const setThisContract = (val, { address, type }) => {
   return val !== address ? val : txt
 }
 
-export const eventFormatRow = (event, parentData) => {
-  const addressData = (parentData.address) ? parentData : event._addressData || {}
-  event = formatEvent(event, addressData)
-  const contractAddress = event.address
-  event._contractAddress = contractAddress
-  return event
+export const eventFormatRow = ({ data, parentData }) => {
+  const addressData = (parentData.address) ? parentData : data._addressData || {}
+  data = formatEvent(data, addressData)
+  const contractAddress = data.address
+  data._contractAddress = contractAddress
+  return data
 }
 
 const eventArgumentData = ({ value, row }) => {
@@ -176,7 +176,7 @@ export const TransferEvents = () => {
       date,
       created
     },
-    formatRow: (data, parentData) => {
+    formatRow: ({ data, parentData }) => {
       const { _addressData, address } = data
       const eventData = formatEvent(data, _addressData || {})
       const event = eventData._arguments

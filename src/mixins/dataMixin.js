@@ -62,10 +62,10 @@ export default {
       if (this.rowCb) {
         if (Array.isArray(data)) {
           data = data.map(row => {
-            return this.rowCb(row, parentData, fields)
+            return this.rowCb({ data: row, parentData, fields })
           })
         } else {
-          data = this.rowCb(data, parentData, fields)
+          data = this.rowCb({ data, parentData, fields })
         }
       }
       return data

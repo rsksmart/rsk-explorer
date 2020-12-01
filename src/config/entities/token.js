@@ -2,7 +2,7 @@
 import { ROUTES as r } from '../types'
 import { totalSupplyField } from './address'
 
-const tokenFormatRow = (data, parentData) => {
+const tokenFormatRow = ({ data, parentData }) => {
   data._totalSupplyResult = totalSupplyField(data)
   return data
 }
