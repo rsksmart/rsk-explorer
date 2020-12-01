@@ -1,12 +1,16 @@
 import {
   ROUTES as r,
   CONTRACT_UNKNOWN_NAME,
-  NOT_AVAILABLE
+  NOT_AVAILABLE,
+  CONTEXT
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
 import { round } from '../../../filters/NumberFilters'
 import { eventValue } from '../../../filters/TokensFilters'
+import { addAgo, mSecondsAgo } from '../../../filters/TimeFilters'
 import { store } from '../../../store/index'
+
+export const isExport = context => context === CONTEXT.export
 
 export const timeElapsedFromTs = (value) => {
   if (!value) return value
@@ -64,7 +68,10 @@ export default {
   },
   timestamp: {
     icon: 'stopwatch',
-    filters: [timeElapsedFromTs, 'm-seconds-ago', 'add-ago'],
+    filters: (value, data, context) => {
+      if (isExport(context)) return value
+      return addAgo(mSecondsAgo(timeElapsedFromTs(value, data, context)))
+    },
     titleIcon: true,
     hideTitle: true
   },
