@@ -2,36 +2,24 @@ import Vue from 'vue'
 import * as moment from 'moment'
 import { isDigits } from './NumberFilters.js'
 
-export const tSecondsAgo = Vue.filter('t-seconds-ago', timestamp => {
-  const time = moment(timestamp).format('s')
-  return sAgo(time)
-})
-
-export const mSecondsAgo = Vue.filter('m-seconds-ago', miliseconds => {
-  if (!miliseconds) return 0
-  const seconds = mToSeconds(miliseconds)
-  return sAgo(seconds)
-})
-
-export const addAgo = Vue.filter('add-ago', value => {
-  if (!value) return value
-  return value + ' ago'
-})
-
 export const mToSeconds = Vue.filter('m-to-seconds', miliseconds => {
   let seconds = Math.floor(miliseconds / 1000)
   seconds = seconds >= 0 ? seconds : 0
   return seconds
 })
 
-const sAgo = time => {
-  if (time > 60) {
-    time = moment.duration(time, 'seconds').humanize()
-  } else {
-    time += 's'
-  }
-  return time
+export const sAgo = seconds => {
+  return (seconds > 60) ? moment.duration(seconds, 'seconds').humanize() : `${seconds}s`
 }
+
+export const mSecondsAgo = Vue.filter('m-seconds-ago', miliseconds => {
+  return (!miliseconds) ? 0 : sAgo(mToSeconds(miliseconds))
+})
+
+export const addAgo = Vue.filter('add-ago', value => {
+  if (!value) return value
+  return value + ' ago'
+})
 
 export const abbreviatedTimeObj = time => {
   if (!isDigits(time)) return { time, suffix: '' }
@@ -69,22 +57,16 @@ export const abbrTime = Vue.filter('abbr-time', time => {
   return obj.time + '' + obj.suffix
 })
 
-export const abbrTimeSeconds = Vue.filter('abbr-time-seconds', time => {
-  if (time < 900) return '0s'
-  const obj = abbreviatedTimeObj(time)
-  return obj.time + '' + obj.suffix
-})
-
 export const sSeconds = Vue.filter('s-seconds', time => {
-  if (time < 60) return parseFloat(time).toFixed(2) + 's'
+  if (time < 60) return `${time}s`
   return moment.duration(Math.round(time), 's').humanize()
 })
 
-export const formatDate = Vue.filter('format-date', (timestamp, format = 'YYYY/MM/DD HH:mm:ss') => {
+export const formatDate = (timestamp, format = 'YYYY/MM/DD HH:mm:ss Z') => {
   timestamp = Number(timestamp)
   const date = new Date(timestamp)
   return moment(String(date.toISOString())).format(format)
-})
+}
 
 export const dateFromTs = Vue.filter('date-from-ts', timestamp => formatDate(timestamp))
 
@@ -98,12 +80,4 @@ export const dateFromUnixTs = Vue.filter('date-from-unix-ts', time => {
   return formatDate(date)
 })
 
-export const miliseconds = Vue.filter('miliseconds', time => {
-  time = parseInt(time)
-  if (time === 0) return time
-  if (time < 1000) return time + 'ms'
-  const seconds = Math.floor(time / 1000)
-  return sAgo(seconds)
-})
-
-export const mToTime = Vue.filter('m-to-time', miliseconds => new Date(miliseconds).toISOString().substr(11, 8))
+export const mToTime = Vue.filter('m-to-time', miliseconds => new Date(parseInt(miliseconds)).toISOString().substr(11, 8))
