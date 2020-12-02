@@ -120,7 +120,8 @@ export default {
     icon: 'calendar',
     filters: ['date-from-unix-ts'],
     titleIcon: true,
-    hideTitle: true
+    hideTitle: true,
+    trim: 'auto'
   },
   tokenBalance: {
     filters: ['tx-value', 'round', 'rbtc'],
