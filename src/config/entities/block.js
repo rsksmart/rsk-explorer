@@ -2,6 +2,7 @@ import { ROUTES as r } from '../types'
 
 const Blocks = () => {
   return {
+    itemEntity: 'block',
     key: 'number',
     icon: 'cube',
     link: `/${r.block}/`,

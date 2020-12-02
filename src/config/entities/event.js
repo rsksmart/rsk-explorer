@@ -51,6 +51,7 @@ const eventArgumentData = ({ value, row }) => {
 
 export const Events = () => {
   return {
+    itemEntity: 'event',
     key: 'eventId',
     icon: 'zap',
     link: `/${r.event}/`,

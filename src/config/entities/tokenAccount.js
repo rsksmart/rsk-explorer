@@ -49,6 +49,7 @@ export const TokenAccountsFields = () => {
 
 export const TokenAccounts = () => {
   return {
+    itemEntity: 'tokenAccount',
     key: 'address',
     link: accountLink,
     formatRow: accountFormatRow,

@@ -320,7 +320,7 @@ export const TxTransferEvents = () => {
   return te
 }
 
-export const Transactions = () => Object.assign(Txs(), { formatRow: transactionFormatRow })
+export const Transactions = () => Object.assign(Txs(), { itemEntity: 'transaction', formatRow: transactionFormatRow })
 
 export const transactionsBox = TxBox()
 export const transactions = Transactions()

@@ -11,6 +11,7 @@ const addressFormatRow = ({ data, parentData }) => {
 
 export const Addresses = () => {
   return {
+    itemEntity: 'address',
     icon: 'credit-card',
     key: 'address',
     link: `/${r.address}`,

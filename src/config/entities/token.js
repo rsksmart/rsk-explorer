@@ -9,6 +9,7 @@ const tokenFormatRow = ({ data, parentData }) => {
 
 const Tokens = () => {
   return {
+    itemEntity: 'address',
     icon: 'ellipsis',
     key: 'address',
     link: `/${r.address}/`,

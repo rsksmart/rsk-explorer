@@ -9,6 +9,7 @@ const Balances = () => {
   balance.filters = valueFilters(true)
   balance.link = balanceLink
   return {
+    itemEntity: 'balance',
     icon: 'credit-card',
     key: 'address',
     formatLink: balanceLink,

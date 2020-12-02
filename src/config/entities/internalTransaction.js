@@ -33,6 +33,7 @@ const formatRow = internalTransactionFormatRow
 
 const InternalTransactions = () => {
   return {
+    itemEntity: 'internalTransaction',
     link: `/${r.internalTx}`,
     listLink: `/${r.internalTransactions}`,
     key,
