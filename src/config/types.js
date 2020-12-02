@@ -69,3 +69,8 @@ export const CONNECTION_STATUS = {
 export const CONTEXT = {
   export: 'export'
 }
+
+export const EXPORT_FORMATS = {
+  JSON: 'json',
+  CSV: 'csv'
+}

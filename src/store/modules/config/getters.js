@@ -1,3 +1,4 @@
+import { EXPORT_FORMATS } from '../../../config/types'
 
 export const autoUpdate = state => {
   return state.autoUpdateBlocks
@@ -22,6 +23,6 @@ export const getTableConfig = (state) => (tableId) => {
   return state.tables[tableId] || {}
 }
 
-export const isCsvExport = state => state.exportFormat === 'CSV'
+export const isCsvExport = state => state.exportFormat === EXPORT_FORMATS.CSV
 
 export const getDecimalPlaces = state => state.decimalPlaces
