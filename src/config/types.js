@@ -48,6 +48,8 @@ export const NOT_AVAILABLE = 'N/A'
 export const CONTRACT_CREATED = 'contract created'
 export const CONTRACT_FAILED = 'creation failed'
 
+export const POOL_UNKNOWN_NAME = '(Not provided)'
+
 export const PAGE_NOT_FOUND = 'Page not found'
 
 export const NEXT = 'next'

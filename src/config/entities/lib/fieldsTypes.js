@@ -1,7 +1,8 @@
 import {
   ROUTES as r,
   CONTRACT_UNKNOWN_NAME,
-  NOT_AVAILABLE
+  NOT_AVAILABLE,
+  POOL_UNKNOWN_NAME
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
 import { round } from '../../../filters/NumberFilters'
@@ -145,5 +146,10 @@ export default {
     filters: ['round', 'locale', 'rbtc']
   },
   hashrate,
-  blockHashrate: hashrate
+  blockHashrate: hashrate,
+  pool: {
+    default: POOL_UNKNOWN_NAME,
+    trim: 'auto',
+    filters: addressFilters
+  }
 }

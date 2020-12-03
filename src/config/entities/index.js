@@ -33,6 +33,7 @@ import { compilationSettings, externalLibraries } from './verifiedContracts'
 import { stats } from './stats'
 import { internalTransaction, internalTransactions } from './internalTransaction'
 import { balance, balances } from './balances'
+import { lastBtcBlocks, lastRskBlocks, miningSummary } from './mining'
 
 export default {
   block,
@@ -63,5 +64,8 @@ export default {
   internalTransaction,
   internalTransactions,
   balance,
-  balances
+  balances,
+  lastBtcBlocks,
+  lastRskBlocks,
+  miningSummary
 }
