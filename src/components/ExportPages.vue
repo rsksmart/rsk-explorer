@@ -1,9 +1,14 @@
 <template lang="pug">
   .export-pages.section
     h4.brand Dowload
-    .odd
-      .export-options.frame.row(v-if='!inProgress')
-        export-format
+    form.odd
+      .export-options(v-if='!inProgress')
+        fieldset.frame.row(v-if='itemEntity')
+          legend Fields
+          export-items
+        fieldset.frame.row
+          legend Format
+          export-format
       .export-progress.txt-center(v-if='inProgress')
         .center.brand
           small {{metadata.progress}}%
@@ -26,18 +31,21 @@ import { mapActions, mapGetters } from 'vuex'
 import { keccak256 } from '@rsksmart/rsk-utils'
 import ExportMixin from '../mixins/export'
 import ExportFormat from './controls/ExportFormat'
+import ExportItems from './controls/ExportItems'
 import ProgressBar from './controls/ProgressBar'
 import { FileStream } from '../lib/js/fileStream'
 import { mToTime, mToSeconds, sSeconds } from '../filters/TimeFilters'
+import { EXPORT_ITEMS } from '../config/types'
 export default {
   name: 'export-pages',
   components: {
     ExportFormat,
-    ProgressBar
+    ProgressBar,
+    ExportItems
   },
   filters: { mToTime, mToSeconds, sSeconds },
   mixins: [ExportMixin],
-  props: ['module', 'action', 'params', 'type', 'parentData'],
+  props: ['module', 'action', 'params', 'entityName', 'parentData', 'itemEntity'],
   data () {
     return {
       exportKey: undefined,
@@ -58,6 +66,10 @@ export default {
     ...mapGetters({
       isCsv: 'isCsvExport'
     }),
+    type () {
+      const { itemEntity, entityName, exportItems } = this
+      return (itemEntity && exportItems === EXPORT_ITEMS.ALL) ? itemEntity : entityName
+    },
     payload () {
       const { module, action, params } = this
       if (!module || !action || !params) return
@@ -74,10 +86,13 @@ export default {
     },
     progressBarWidth () {
       return parseInt(this.computedWidth / 2)
+    },
+    exportItems () {
+      return this.getUserConfig()('exportItems')
     }
   },
   methods: {
-    ...mapGetters(['getExportMetadata']),
+    ...mapGetters(['getExportMetadata', 'getUserConfig']),
     ...mapActions(['getPages', 'fetchExportData']),
     createKey (payload) {
       const { type } = this

@@ -206,9 +206,10 @@ export default {
       return (req) ? req.key : null
     },
     exportParams () {
-      const { page, type, key, parentData } = this
+      const { page, type, key, parentData, entity } = this
+      const { itemEntity } = entity
       if (!page || !page.req || !type || !key) return
-      const req = Object.assign({ type, dataKey: key, parentData }, page.req)
+      const req = Object.assign({ entityName: type, dataKey: key, parentData, itemEntity }, page.req)
       return req
     }
   },
