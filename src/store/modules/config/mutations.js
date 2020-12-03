@@ -40,10 +40,6 @@ export const SET_TABLE = (state, payload) => {
   Vue.set(state.tables, tableId, config)
 }
 
-export const SET_CONFIG_EXPORT_FORMAT = (state, value) => {
-  Vue.set(state, 'exportFormat', value)
-}
-
 export const SET_CONFIG_DECIMAL_PLACES = (state, value) => {
   value = parseInt(value)
   value = (!isNaN(value)) ? value : 4

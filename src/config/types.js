@@ -74,3 +74,8 @@ export const EXPORT_FORMATS = {
   JSON: 'json',
   CSV: 'csv'
 }
+
+export const EXPORT_ITEMS = {
+  LIST: 'listed',
+  ALL: 'all'
+}
