@@ -11,7 +11,8 @@ export default {
   methods: {
     filterData (data) {
       const fData = {}
-      const { fields, filterFieldValue, context } = this
+      const { getFields, filterFieldValue, context, entity } = this
+      const fields = getFields({ data, context, entity })
       for (const f in fields) {
         const field = fields[f]
         const value = this.getValue(field, data, true)
