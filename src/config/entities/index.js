@@ -2,7 +2,7 @@
  * type:{
  *    key: item key field
  *    formatRow({data,parentData,fields,context})
- *    formatFields(fields,data,parentData)
+ *    formatFields({fields, data, parentData, context})
  *    formatLink(data,parentData,link,key)
       fields:{
         field: null | object: {

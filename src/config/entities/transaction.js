@@ -24,7 +24,7 @@ const TX_STATUS_MESSAGES = Object.freeze({
   PENDING: 'The transaction is ready to be processed and included in a block.'
 })
 
-const transactionFormatFields = (fields, data, parentData) => {
+const transactionFormatFields = ({ fields }) => {
   return fields
 }
 

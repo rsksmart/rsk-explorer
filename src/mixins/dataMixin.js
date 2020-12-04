@@ -215,7 +215,7 @@ export default {
         if (fields) {
           const fcb = this.fieldsCb
           if (fcb) {
-            fields = fcb(fields, data, parentData)
+            fields = fcb({ fields, data, parentData, context })
             for (const name in fields) {
               fields[name] = this.parseField(name, fields[name])
             }

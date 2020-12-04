@@ -24,7 +24,7 @@ const accountFormatRow = ({ data, parentData }) => {
   return data
 }
 
-const accountFormatFields = (fields, data, parentData) => {
+const accountFormatFields = ({ fields, data, parentData }) => {
   const contract = data.address || parentData.address
   const contractData = data._contractData || parentData || {}
   fields.balance.suffix = contractData.symbol || ''

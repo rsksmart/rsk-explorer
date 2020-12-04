@@ -1,6 +1,6 @@
 export const externalLibraries = {
   fields: {},
-  formatFields: (fields, data) => {
+  formatFields: ({ fields, data }) => {
     for (const fieldName in data) {
       fields[fieldName] = { type: 'address', trim: 'auto' }
     }
