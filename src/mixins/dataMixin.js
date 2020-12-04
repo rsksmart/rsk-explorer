@@ -26,23 +26,9 @@ export default {
       }
     },
     fields () {
+      const { data, parentData, context } = this
       const entity = this.entity || {}
-      let fields = entity.fields
-      if (entity) {
-        const parentData = this.parentData
-        const data = this.data
-        if (fields) {
-          const fcb = this.fieldsCb
-          if (fcb) {
-            fields = fcb(fields, data, parentData)
-            for (const name in fields) {
-              fields[name] = this.parseField(name, fields[name])
-            }
-          }
-        }
-        fields = fields || this.dataKeys
-      }
-      return Object.assign({}, fields)
+      return this.getFields({ entity, data, parentData, context })
     },
     visibleFields () {
       return Object.values(this.fields)
@@ -222,6 +208,22 @@ export default {
     getCustomRenderProps (field, row) {
       if (!field.renderAs) return
       return field.renderAsProps({ field, row })
+    },
+    getFields ({ entity, data, parentData, context }) {
+      let fields = entity.fields
+      if (entity) {
+        if (fields) {
+          const fcb = this.fieldsCb
+          if (fcb) {
+            fields = fcb(fields, data, parentData)
+            for (const name in fields) {
+              fields[name] = this.parseField(name, fields[name])
+            }
+          }
+        }
+        fields = fields || this.dataKeys
+      }
+      return Object.assign({}, fields)
     }
   }
 }
