@@ -118,19 +118,37 @@ export default {
       ]
 
       const hashrateDistributionDataInRange = this.hashrateDistribution[this.range.hashrateDistribution]
+        .reduce((acc, dist) => {
+          if (Number(dist.hashratePercentageInRskNetwork) < 5) {
+            if (acc.others) {
+              acc.others.percentage = acc.others.percentage + Number(dist.hashratePercentageInRskNetwork)
+              acc.others.value = acc.others.value + dist.hashrateInRskNetwork
+              acc.others.unit = dist.hashrateInRskNetworkUnit
+            } else {
+              acc.others = {
+                percentage: Number(dist.hashratePercentageInRskNetwork),
+                value: dist.hashrateInRskNetwork,
+                unit: dist.hashrateInRskNetworkUnit
+              }
+            }
+          } else {
+            acc[dist.minerName || 'unknown'] = {
+              value: dist.hashrateInRskNetwork,
+              percentage: dist.hashratePercentageInRskNetwork,
+              unit: dist.hashrateInRskNetworkUnit,
+              address: dist.minerAddress
+            }
+          }
+          return acc
+        }, {})
 
       const hashrateDistributionValues =
-        hashrateDistributionDataInRange.map(dist => {
-          return this.isPercentage ? dist.hashratePercentageInRskNetwork : dist.hashrateInRskNetwork
-        })
-
-      const hashrateDistributionLabels =
-        hashrateDistributionDataInRange.map(dist => {
-          return dist.minerName
+        Object.values(hashrateDistributionDataInRange).map(value => {
+          return this.isPercentage ? value.percentage : value.value
         })
 
       return {
-        labels: hashrateDistributionLabels,
+        labels: Object.keys(hashrateDistributionDataInRange),
         datasets: [
           {
             data: hashrateDistributionValues,

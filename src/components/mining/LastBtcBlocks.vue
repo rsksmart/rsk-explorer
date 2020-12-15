@@ -35,9 +35,7 @@ export default {
       type: 'lastBtcBlocks'
     }
   },
-  mounted () {
-    console.log(this.lastBtcBlocks)
-  },
+  mounted () { },
   computed: {
     ...mapState({
       size: state => state.size,
