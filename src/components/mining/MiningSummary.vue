@@ -20,7 +20,7 @@
 import dataMixin from '../../mixins/dataMixin'
 import DataField from '../DataField'
 import FieldTitle from '../FieldTitle'
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'data-table',
   components: {
@@ -45,23 +45,9 @@ export default {
     }),
     data () {
       return []
-    },
-    tableId () {
-      return this.getTableId()(this.tableName)
-    },
-    tableConfig () {
-      return this.getTableConfig()(this.tableId)
     }
   },
   methods: {
-    ...mapActions([
-      'updateRouterQuery',
-      'updateTableConfig'
-    ]),
-    ...mapGetters([
-      'getTableId',
-      'getTableConfig'
-    ]),
     tdClass (name) {
       const css = [`field__${name}`]
       if (this.key === name) css.push('row-header')

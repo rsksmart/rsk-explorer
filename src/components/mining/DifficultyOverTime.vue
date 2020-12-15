@@ -56,7 +56,7 @@ export default {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Eh/s',
+              labelString: 'Eh',
               fontFamily: 'Titillium Web',
               fontColor: '#9fdfd1'
             }

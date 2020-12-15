@@ -36,7 +36,6 @@ export const lastRskBlocks = {
       default: 0
     },
     rskTag: {
-      field: 'hash',
       type: 'hash',
       icon: 'rsk',
       title: 'RSK Tag'
@@ -70,7 +69,6 @@ export const lastBtcBlocks = {
       type: 'timestamp'
     },
     rskTag: {
-      field: 'hash',
       type: 'hash',
       icon: 'rsk',
       title: 'RSK Tag'
