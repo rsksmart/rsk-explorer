@@ -1,5 +1,35 @@
 # Changelog
 
+## [Unreleased]
+
+## Breaking changes
+
+- This version requires rsk-explorer-api v 1.1.7+
+
+### Fixed
+
+- Data in event argument
+- Token account decimals
+- Form button style
+- Navbar style
+
+### Added
+
+- User settings
+- Csv export
+- List export
+- Uncle count field to block
+- Uncles list to block
+- User's managed lists decimals
+- Home: Add 2WP Locking cap
+- Status field description of txs in pool
+
+### Changed
+
+- Export filtered data instead of raw API's data.
+- Home: Remove bridge balance stats
+- RBTC icon
+
 ## [1.2.1] - 2020-09-25
 
 ### Fixed
