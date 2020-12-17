@@ -17,8 +17,11 @@
         template(v-if='trim && !options.noTrim')
           tool-tip.field-value(:value='filteredValue || value' :trim='trim' :options='trimOptions' :router-link='link')
         template(v-else)
-          router-link(v-if='link' :to='link')
-            .field-value {{ filteredValue || field.default }}
+          template(v-if='link' :to='link')
+            a(v-if='link[0] !== "/"' :href="link" target="_blank")
+              .field-value {{ filteredValue || field.default }}
+            router-link(v-else :to='link')
+              .field-value {{ filteredValue || field.default }}
           .field-value(v-else) {{ filteredValue || field.default }}
         span.field-suffix(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
         progress-bar(v-if='delayed')

@@ -46,6 +46,13 @@ export default {
     filters: ['locale'],
     default: 0
   },
+  btcBlock: {
+    icon: 'btc',
+    titleIcon: true,
+    hideTitle: true,
+    link: 'https://btc.com/block/',
+    filters: ['not-applicable-locale']
+  },
   blockHash: {
     link: `/${r.block}/`
   },

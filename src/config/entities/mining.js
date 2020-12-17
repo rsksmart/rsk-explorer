@@ -26,9 +26,9 @@ export const lastRskBlocks = {
       title: 'miner'
     },
     blockInBtc: {
-      type: 'block',
+      type: 'btcBlock',
       icon: 'btc',
-      title: 'block',
+      title: 'height',
       showTitle: true
     },
     numberOfUncles: {
@@ -56,6 +56,7 @@ export const lastBtcBlocks = {
     },
     height: {
       icon: 'btc',
+      type: 'btcBlock',
       title: 'height',
       showTitle: true
     },

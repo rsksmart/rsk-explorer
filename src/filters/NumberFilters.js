@@ -33,6 +33,14 @@ export const locale = Vue.filter('locale', (value) => {
   return format(value)
 })
 
+export const notApplicable = Vue.filter('not-applicable-locale', (value) => {
+  if (!value) {
+    return 'N/A'
+  }
+  const format = d3.format(',d')
+  return format(value)
+})
+
 // Format with suffix
 export const Hs = Vue.filter('Hs', (value) => {
   return numerals(value) + 'Hs'
