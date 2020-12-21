@@ -8,11 +8,11 @@ export const getLastRskBlocks = (state) => state.lastRskBlocks.map(
 export const getMiningSummary = (state) => {
   const { miningSummary: summary } = state
 
-  return [{
+  return {
     bestBtcBlock: summary.btc.bestBlock,
     bestRskBlock: summary.rsk.bestBlock,
     btcHashrate: summary.btc.hashrate,
     rskHashrate: summary.rsk.hashrate,
     rskOverBtcHashrate: summary.rskOverBtcHashrate
-  }]
+  }
 }

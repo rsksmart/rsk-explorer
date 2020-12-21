@@ -89,14 +89,12 @@ export const miningSummary = {
   name: 'mining-summary',
   fields: {
     bestBtcBlock: {
-      type: 'block',
-      title: 'Best BTC Block',
-      showTitle: true
+      type: 'btcBlock',
+      title: 'Best BTC Block'
     },
     bestRskBlock: {
       type: 'block',
-      title: 'Best RSK Block',
-      showTitle: true
+      title: 'Best RSK Block'
     },
     btcHashrate: {
       title: 'BTC Hashrate'
