@@ -1,7 +1,7 @@
 <template lang="pug">
   .box.w-full
     .summary(v-if="data")
-      h3.summary-title MiningSummary
+      h3.summary-title Mining Summary
       .summary-wrapper
         .box
           .summary-box
@@ -30,7 +30,7 @@
             icon(name="flame")
             .summary-content
               h3.summary-header Rsk Over Btc Hashrate
-              p {{miningSummary.btcHashrate}}
+              p(style="fontSize: 1.5em") {{miningSummary.rskOverBtcHashrate}}
 </template>
 <script>
 import dataMixin from '../../mixins/dataMixin'

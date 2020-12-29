@@ -9,9 +9,9 @@
             span.title {{ tab.name }}
         button.btn.tab-title(@click='toggleUnit')
           span.title {{ isPercentage ? 'Unit' : '%' }}
-        select.btn.tab-title.select(@change="setDataset($event)")
-          option(v-for="index in maxDataset.hashrateDistributionOverTime" :value="index") {{ index }}
-        span.tab-title Dataset
+        //- select.btn.tab-title.select(@change="setDataset($event)")
+        //-   option(v-for="index in maxDataset.hashrateDistributionOverTime" :value="index") {{ index }}
+        //- span.tab-title Dataset
     .chart-container
       line-chart.chart(v-if="chartData.datasets.length !== 0" :styles="styles" :chart-data="chartData" :options="options")
       div(v-else) No data
@@ -46,7 +46,7 @@ export default {
           isActive: false
         }
       ],
-      isPercentage: true,
+      isPercentage: false,
       showLegend: false
     }
   },
@@ -57,9 +57,9 @@ export default {
     }),
 
     ...mapState({
+      // dataset: state => state.mining.dataset,
+      // maxDataset: state => state.mining.maxDataset,
       hashrateOverTime: state => state.mining.hashrateOverTime,
-      dataset: state => state.mining.dataset,
-      maxDataset: state => state.mining.maxDataset,
       range: state => state.mining.dataRange
     }),
 
@@ -203,11 +203,11 @@ export default {
 
     toggleUnit () {
       this.isPercentage = !this.isPercentage
-    },
-
-    setDataset (e) {
-      this.triggerRandomDataset({ dataset: 'hashrateDistributionOverTime', value: Number(e.target.value) })
     }
+
+    // setDataset (e) {
+    //   this.triggerRandomDataset({ dataset: 'hashrateDistributionOverTime', value: Number(e.target.value) })
+    // }
   }
 }
 </script>

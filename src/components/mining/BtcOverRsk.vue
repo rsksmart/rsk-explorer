@@ -7,11 +7,9 @@
           button.btn.tab-title(@click='setActiveTab(tab, $event)'
             :class="{active: activeTab.name === tab.name}")
             span.title {{ tab.name }}
-        button.btn.tab-title(v-if="false" @click='toggleUnit')
-          span.title {{ isPercentage ? 'Unit' : '%' }}
-        select.btn.tab-title.select(@change="setDataset($event)")
-          option(v-for="index in maxDataset.btcVsRskHROverTime" :value="index") {{ index }}
-        span.tab-title Dataset
+        //- select.btn.tab-title.select(@change="setDataset($event)")
+        //-   option(v-for="index in maxDataset.btcVsRskHROverTime" :value="index") {{ index }}
+        //- span.tab-title Dataset
     .chart-container
       line-chart.chart(v-if="chartData.datasets.length !== 0" :styles="styles" :chart-data="chartData" :options="options")
       div(v-else) No data
@@ -101,10 +99,10 @@ export default {
     }),
 
     ...mapState({
+      // maxDataset: state => state.mining.maxDataset
+      // dataset: state => state.mining.dataset,
       btcVsRskHROverTime: state => state.mining.btcVsRskHROverTime,
-      dataset: state => state.mining.dataset,
-      range: state => state.mining.dataRange,
-      maxDataset: state => state.mining.maxDataset
+      range: state => state.mining.dataRange
     }),
 
     styles () {
@@ -182,11 +180,11 @@ export default {
 
     toggleUnit () {
       this.isPercentage = !this.isPercentage
-    },
-
-    setDataset (e) {
-      this.triggerRandomDataset({ dataset: 'btcVsRskHROverTime', value: Number(e.target.value) })
     }
+
+    // setDataset (e) {
+    //   this.triggerRandomDataset({ dataset: 'btcVsRskHROverTime', value: Number(e.target.value) })
+    // }
   }
 }
 </script>

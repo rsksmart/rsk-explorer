@@ -9,9 +9,9 @@
             span.title {{ tab.name }}
         button.btn.tab-title(@click='toggleUnit')
           span.title {{ isPercentage ? 'Unit' : '%' }}
-        select.btn.tab-title.select(@change="setDataset($event)")
-          option(v-for="index in maxDataset.hashrateDistribution" :value="index") {{ index }}
-        span.tab-title Dataset
+        //- select.btn.tab-title.select(@change="setDataset($event)")
+        //-   option(v-for="index in maxDataset.hashrateDistribution" :value="index") {{ index }}
+        //- span.tab-title Dataset
     .chart-container
       doughnut-chart.chart(v-if="chartData.datasets[0].data.length !== 0" :chart-data="chartData" :styles="styles" :options="options")
       div(v-else) No data
@@ -89,9 +89,9 @@ export default {
     }),
 
     ...mapState({
+      // dataset: state => state.mining.dataset,
+      // maxDataset: state => state.mining.maxDataset,
       hashrateDistribution: state => state.mining.hashrateDistribution,
-      dataset: state => state.mining.dataset,
-      maxDataset: state => state.mining.maxDataset,
       range: state => state.mining.dataRange
     }),
 
@@ -117,7 +117,8 @@ export default {
         this.colors.color2
       ]
 
-      const hashrateDistributionDataInRange = this.hashrateDistribution[this.range.hashrateDistribution]
+      const hashrateDistributionDataInRange = { ...this.hashrateDistribution }[this.range.hashrateDistribution]
+        .sort((a, b) => b.hashrateInRskNetwork - a.hashrateInRskNetwork)
         .reduce((acc, dist) => {
           if (Number(dist.hashratePercentageInRskNetwork) < 5) {
             if (acc.others) {
@@ -172,11 +173,11 @@ export default {
 
     toggleUnit () {
       this.isPercentage = !this.isPercentage
-    },
-
-    setDataset (e) {
-      this.triggerRandomDataset({ dataset: 'hashrateDistribution', value: Number(e.target.value) })
     }
+
+    // setDataset (e) {
+    //   this.triggerRandomDataset({ dataset: 'hashrateDistribution', value: Number(e.target.value) })
+    // }
   }
 }
 </script>
