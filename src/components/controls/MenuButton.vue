@@ -32,6 +32,7 @@ export default {
 
   .menu-button
     position relative
+    display inline-flex
 
     .menu-elements
       display flex
