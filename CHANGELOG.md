@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [1.2.2] 2021-01-08
 
 ## Breaking changes
 

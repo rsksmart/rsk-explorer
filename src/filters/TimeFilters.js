@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import * as moment from 'moment'
+import moment from 'moment'
 import { isDigits } from './NumberFilters.js'
 
 export const mToSeconds = Vue.filter('m-to-seconds', miliseconds => {
@@ -64,8 +64,9 @@ export const sSeconds = Vue.filter('s-seconds', time => {
 
 export const formatDate = (timestamp, format = 'YYYY/MM/DD HH:mm:ss Z') => {
   timestamp = Number(timestamp)
-  const date = new Date(timestamp)
-  return moment(String(date.toISOString())).format(format)
+  let date = new Date(timestamp)
+  date = String(date.toISOString())
+  return moment(date).format(format)
 }
 
 export const dateFromTs = Vue.filter('date-from-ts', timestamp => formatDate(timestamp))
