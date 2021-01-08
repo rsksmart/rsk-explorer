@@ -119,21 +119,23 @@
 
   button.brand, .btn-brand
     buttonColors($white,$color)
-  button.switch
+
+  button.switch, .menu-button > .btn
     display inline-flex
     color $gray
     background $quasi-bg
-    padding 0.25em
-    margin 0.125em
-    border-radius 0.125em
-    box-shadow $hard-sh
-    svg
-      fill $gray
 
     &:disabled
       color $disabled
       svg
         fill $disabled
+
+  button.switch, .menu-button .btn
+    display inline-flex
+    padding 0.25em
+    margin 0.125em
+    border-radius 0.125em
+    box-shadow $hard-sh
 
 button
   .svg-icon+span
