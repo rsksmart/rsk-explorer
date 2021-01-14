@@ -266,7 +266,7 @@ export const TxLogs = () => {
 export const TxLogItem = () => {
   return {
     name: 'tx-log-item',
-    formatRow: formatEvent,
+    formatRow: ({ data, parentData }) => formatEvent(data, parentData),
     fields: {
       logIndex: {
         default: 0
@@ -307,8 +307,8 @@ export const TxLogItem = () => {
 
 export const TxTransferEvents = () => {
   const te = TxLogs()
-  te.formatRow = (tx) => {
-    tx = TxLogFormatter(tx)
+  te.formatRow = ({ data }) => {
+    const tx = TxLogFormatter(data)
     let logs = (tx.receipt && tx.receipt.logs) ? tx.receipt.logs : []
     logs = filterTransferEvents(logs)
     tx._transferEvents = logs
