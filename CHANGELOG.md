@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3] 2021-01-14
+
+### Fixed
+
+- Tx logs tab
+- Tx transfer events tab
+
 ## [1.2.2] 2021-01-08
 
 ## Breaking changes
