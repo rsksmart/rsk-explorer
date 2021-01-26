@@ -86,15 +86,22 @@
           ul.small
             li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
 
-      .col(v-if='verificationDone || verificationErrors')
+      .done(v-if='verificationDone || verificationErrors')
         template(v-if='verificationSuccessful')
           h3.brand {{messages().VERIFICATION_DONE}}
           .row
             button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
 
         template(v-else)
-          p.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
-          .try-again
+          .row
+            h3.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
+          .row(v-if='verificationTry')
+            h4.info Try adding some of this parameters:
+          ul
+            li(v-for='v,p in verificationTry')
+              strong {{p}}:
+              pre {{v}}
+          .row.try-again
             button.big.brand.btn.flex(@click.prevent='tryAgain') Try again
 
 </template>
@@ -183,6 +190,12 @@ export default {
       const data = this.verificationResultData || {}
       const { result } = data
       return (result) ? result.errors : null
+    },
+
+    verificationTry () {
+      const data = this.verificationResultData || {}
+      const { result } = data
+      return (result) ? result.tryThis : undefined
     },
 
     verificationDone () {
@@ -280,13 +293,13 @@ export default {
         }
         return v
       }, {})
-      const params = Object.assign({}, { address, settings, version, name, constructorArguments, encodedConstructorArguments })
+      const params = Object.assign({}, { address, settings, version, name })
       let ready = !Object.values(params).filter(v => undefined === v).length
       ready = (files.length) ? ready : false
       if (!ready) return false
       const imports = [...files]
       const source = imports[0].contents
-      return Object.assign(params, { imports, source, libraries })
+      return Object.assign(params, { imports, source, libraries, constructorArguments, encodedConstructorArguments })
     },
     hasFiles () {
       return !!this.files.length
@@ -330,6 +343,16 @@ export default {
     },
 
     tryAgain (event) {
+      const { verificationTry } = this
+      if (verificationTry) {
+        const { constructorArguments, encodedConstructorArguments } = verificationTry
+        if (encodedConstructorArguments) {
+          this.abiEncodedArgs = true
+          this.constructorArguments = encodedConstructorArguments
+        } else if (constructorArguments) {
+          this.constructorArguments = constructorArguments.join(',')
+        }
+      }
       this.setVerificationId(undefined)
     },
     addLibrary () {
