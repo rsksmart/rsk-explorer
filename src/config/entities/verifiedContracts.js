@@ -16,3 +16,12 @@ export const compilationSettings = {
     optimization: null
   }
 }
+
+export const constructorArguments = {
+  fields: {
+    encoded: {
+      renderAs: 'big-field'
+    },
+    decoded: null
+  }
+}
