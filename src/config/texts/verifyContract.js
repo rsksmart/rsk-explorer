@@ -31,5 +31,8 @@ export const formFields = {
   EVM: add('EVM version', ''),
   LIBRARIES: add('Contract Libraries', 'If the contract uses external libraries, add them here'),
   LIB_NAME: add('Library name', 'The name of the library called by contract', { placeholder: 'MyLibrary' }),
-  LIB_ADDRESS: add('Library Address', 'Address of deployed library', { placeholder: '0x1000000000000000000000000000000000000001' })
+  LIB_ADDRESS: add('Library Address', 'Address of deployed library', { placeholder: '0x1000000000000000000000000000000000000001' }),
+  CONSTRUCTOR_ARGUMENTS: add('Constructor Arguments', 'Constructor arguments separated by commas.'),
+  ENCODED_ARGUMENTS: add('Constructor arguments (encoded)', 'ABI encoded constructor arguments.'),
+  ABI_ENCODED_ARGUMENTS: add('ABI encoded arguments', 'Enable to use ABI encoded constructor arguments instead of plain arguments')
 }
