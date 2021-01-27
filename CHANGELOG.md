@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0] 2021-01-26
+
+### Added
+
+- Constructor arguments to verify contract form.
+- Contract verifier suggestions in contract's verification result.
+
 ## [1.2.3] 2021-01-14
 
 ### Fixed
