@@ -50,7 +50,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "mocha": "^6.2.2",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "raw-loader": "^0.5.1",
     "stylus": "^0.54.8",
