@@ -20,7 +20,7 @@
     "chroma-js": "^1.4.1",
     "core-js": "^3.6.4",
     "d3-format": "^1.4.3",
-    "highlight.js": "^9.18.3",
+    "highlight.js": "^10.4.1",
     "highlightjs-solidity": "git+https://github.com/highlightjs/highlightjs-solidity.git",
     "moment": "^2.27.0",
     "socket.io-client": "^2.3.0",
