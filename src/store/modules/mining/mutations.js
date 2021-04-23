@@ -15,11 +15,11 @@ export const SET_MINING_HASHRATE_DISTRIBUTION = (state, payload) => {
 }
 
 export const SET_MINING_OVER_TIME = (state, payload) => {
-  state.hashrateOverTime = payload
+  state.hashrateDistributionOverTime = payload
 }
 
 export const SET_MINING_HASHRATE_OVER_TIME = (state, payload) => {
-  state.hashrateOverTime = payload
+  state.hashrateDistributionOverTime = payload
 }
 
 export const SET_MINING_DIFFICULTY_OVER_TIME = (state, payload) => {
@@ -27,13 +27,10 @@ export const SET_MINING_DIFFICULTY_OVER_TIME = (state, payload) => {
 }
 
 export const SET_MINING_BTC_VS_RSK_HR_OVER_TIME = (state, payload) => {
+  console.log('payload', payload)
   state.btcVsRskHROverTime = payload
 }
 
 export const SET_DATA_RANGE = (state, payload) => {
   state.dataRange = { ...state.dataRange, ...payload }
-}
-
-export const SET_DATASET = (state, payload) => {
-  state.dataset = payload
 }

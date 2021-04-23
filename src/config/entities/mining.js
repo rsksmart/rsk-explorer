@@ -2,6 +2,36 @@ export const lastRskBlocks = {
   name: 'last-rsk-blocks',
   icon: 'cube',
   fields: {
+    guessedMiner: {
+      type: 'pool',
+      title: 'Guessed Miner'
+    },
+    btcHash: {
+      trim: 'auto',
+      field: 'hash',
+      type: 'hash'
+    },
+    btcHeight: {
+      icon: 'btc',
+      type: 'btcBlock',
+      title: 'height'
+    },
+    BN: {
+      icon: 'rsk',
+      type: 'block',
+      title: 'BN'
+    },
+    CPV: {
+      title: 'CPV'
+    },
+    NU: {
+      title: 'NU'
+    },
+    prefixHash: {
+      trim: 'auto',
+      field: 'hash',
+      type: 'hash'
+    },
     height: {
       icon: 'rsk',
       type: 'block',
@@ -25,18 +55,19 @@ export const lastRskBlocks = {
       type: 'pool',
       title: 'miner'
     },
-    blockInBtc: {
-      type: 'btcBlock',
-      icon: 'btc',
-      title: 'height',
-      showTitle: true
-    },
+    // blockInBtc: {
+    //   type: 'btcBlock',
+    //   icon: 'btc',
+    //   title: 'height',
+    //   showTitle: true
+    // },
     numberOfUncles: {
       title: 'uncles',
       default: 0
     },
     rskTag: {
       type: 'hash',
+      field: 'hash',
       icon: 'rsk',
       title: 'RSK Tag'
     },

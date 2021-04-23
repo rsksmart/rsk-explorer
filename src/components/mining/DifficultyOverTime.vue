@@ -7,9 +7,6 @@
           button.btn.tab-title(@click='setActiveTab(tab, $event)'
             :class="{active: activeTab.name === tab.name}")
             span.title {{ tab.name }}
-        //- select.btn.tab-title.select(@change="setDataset($event)")
-        //-   option(v-for="index in maxDataset.difficultyOverTime" :value="index") {{ index }}
-        //- span.tab-title Dataset
     .chart-container
       line-chart.chart(v-if="chartData.datasets.length !== 0" :styles="styles" :chart-data="chartData" :options="options")
       div(v-else) No data
@@ -93,8 +90,6 @@ export default {
     }),
 
     ...mapState({
-      // dataset: state => state.mining.dataset,
-      // maxDataset: state => state.mining.maxDataset
       difficultyOverTime: state => state.mining.difficultyOverTime,
       range: state => state.mining.dataRange
     }),
@@ -142,7 +137,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['triggerRandomDataset', 'setDataRange']),
+    ...mapActions(['setDataRange']),
     setActiveTab (tab, e) {
       this.setDataRange({ difficultyOverTime: tab.range })
       this.tabs = this.tabs.map(t => ({ ...t, isActive: tab.name === t.name }))
@@ -151,10 +146,6 @@ export default {
     toggleUnit () {
       this.isPercentage = !this.isPercentage
     }
-
-    // setDataset (e) {
-    //   this.triggerRandomDataset({ dataset: 'difficultyOverTime', value: Number(e.target.value) })
-    // }
   }
 }
 </script>

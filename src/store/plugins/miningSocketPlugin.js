@@ -5,9 +5,9 @@ export default function (socket) {
       ['lastRskBlocks', 'setMiningLastRskBlocks'],
       ['lastBtcBlocks', 'setMiningLastBtcBlocks'],
       ['hashrateDistribution', 'setMiningHashrateDistribution'],
-      ['hashrateOverTime', 'setMiningHashrateOverTime'],
+      ['hashrateDistributionOverTime', 'setMiningHashrateOverTime'],
       ['difficultyOverTime', 'setMiningDifficultyOverTime'],
-      ['btcVsRskHROverTime', 'setMiningBtcVsRskHROverTime']
+      ['rskOverBtcOverTime', 'setMiningBtcVsRskHROverTime']
     ]
 
     channels.forEach(([channel, action]) => {

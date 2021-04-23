@@ -29,17 +29,3 @@ export const setMiningBtcVsRskHROverTime = (context, res) => {
 export const setDataRange = (context, res) => {
   context.commit('SET_DATA_RANGE', res)
 }
-
-export const triggerRandomDataset = async (context, { dataset, value }) => {
-  const randomDataset = { ...context.state.dataset, [dataset]: value }
-
-  context.commit('SET_DATASET', randomDataset)
-
-  await fetch(process.env.VUE_APP_M_POST_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(randomDataset)
-  })
-}

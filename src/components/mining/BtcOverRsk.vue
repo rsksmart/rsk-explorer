@@ -7,17 +7,14 @@
           button.btn.tab-title(@click='setActiveTab(tab, $event)'
             :class="{active: activeTab.name === tab.name}")
             span.title {{ tab.name }}
-        //- select.btn.tab-title.select(@change="setDataset($event)")
-        //-   option(v-for="index in maxDataset.btcVsRskHROverTime" :value="index") {{ index }}
-        //- span.tab-title Dataset
     .chart-container
-      line-chart.chart(v-if="chartData.datasets.length !== 0" :styles="styles" :chart-data="chartData" :options="options")
+      line-chart.chart(v-if="chartData && chartData.datasets.length !== 0" :styles="styles" :chart-data="chartData" :options="options")
       div(v-else) No data
 </template>
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import * as moment from 'moment'
+import moment from 'moment'
 
 import LineChart from './LineChart'
 import BlockBox from '../BlockBox'
@@ -28,14 +25,9 @@ export default {
     return {
       tabs: [
         {
-          name: 'Hour',
-          range: 'oneHour',
-          isActive: true
-        },
-        {
           name: 'Day',
           range: 'oneDay',
-          isActive: false
+          isActive: true
         },
         {
           name: 'Week',
@@ -99,8 +91,6 @@ export default {
     }),
 
     ...mapState({
-      // maxDataset: state => state.mining.maxDataset
-      // dataset: state => state.mining.dataset,
       btcVsRskHROverTime: state => state.mining.btcVsRskHROverTime,
       range: state => state.mining.dataRange
     }),
@@ -113,18 +103,18 @@ export default {
     },
 
     chartData: function () {
-      if (!this.btcVsRskHROverTime) {
+      const btcVsRskHROverTimeDataInRange = this.btcVsRskHROverTime[this.range.btcVsRskHROverTime]
+
+      if (!btcVsRskHROverTimeDataInRange) {
         return { labels: [], datasets: [] }
       }
-
-      const btcVsRskHROverTimeDataInRange = this.btcVsRskHROverTime[this.range.btcVsRskHROverTime]
 
       const btcVsRskHROverTimeDatesets = btcVsRskHROverTimeDataInRange.reduce((acc, { time, data }) => {
         const { btcHashrate, rskHashrate, rskObjectiveHashrate } = data
 
         const btcData = { borderColor: this.colors.orange, label: 'BTC Hashrate', data: [btcHashrate.value] }
         const rskData = { borderColor: this.colors.green, label: 'RSK Hashrate', data: [rskHashrate.value] }
-        const rskObjectiveData = { borderColor: this.colors.orange, borderDash: [1, 2], label: '51% BTC', data: [rskObjectiveHashrate.value] }
+        const rskObjectiveData = { borderColor: this.colors.red, borderDash: [1, 2], label: '51% BTC', data: [rskObjectiveHashrate.value] }
 
         const existingBtcData = acc.find(item => item.label === 'BTC Hashrate')
         const existingRskData = acc.find(item => item.label === 'RSK Hashrate')
@@ -172,19 +162,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['triggerRandomDataset', 'setDataRange']),
+    ...mapActions(['setDataRange']),
     setActiveTab (tab, e) {
       this.setDataRange({ btcVsRskHROverTime: tab.range })
-      this.tabs = this.tabs.map(t => ({ ...t, isActive: tab.name === t.name }))
+      this.tabs = this.tabs.map(t => ({ ...t, isActive: tab?.name === t.name }))
     },
 
     toggleUnit () {
       this.isPercentage = !this.isPercentage
     }
-
-    // setDataset (e) {
-    //   this.triggerRandomDataset({ dataset: 'btcVsRskHROverTime', value: Number(e.target.value) })
-    // }
   }
 }
 </script>

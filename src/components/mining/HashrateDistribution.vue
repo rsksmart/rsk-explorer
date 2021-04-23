@@ -9,11 +9,8 @@
             span.title {{ tab.name }}
         button.btn.tab-title(@click='toggleUnit')
           span.title {{ isPercentage ? 'Unit' : '%' }}
-        //- select.btn.tab-title.select(@change="setDataset($event)")
-        //-   option(v-for="index in maxDataset.hashrateDistribution" :value="index") {{ index }}
-        //- span.tab-title Dataset
     .chart-container
-      doughnut-chart.chart(v-if="chartData.datasets[0].data.length !== 0" :chart-data="chartData" :styles="styles" :options="options")
+      doughnut-chart.chart(v-if="chartData.datasets[0] && chartData.datasets[0].data.length !== 0" :chart-data="chartData" :styles="styles" :options="options")
       div(v-else) No data
 </template>
 
@@ -89,8 +86,6 @@ export default {
     }),
 
     ...mapState({
-      // dataset: state => state.mining.dataset,
-      // maxDataset: state => state.mining.maxDataset,
       hashrateDistribution: state => state.mining.hashrateDistribution,
       range: state => state.mining.dataRange
     }),
@@ -117,37 +112,39 @@ export default {
         this.colors.color2
       ]
 
+      if (!this.hashrateDistribution) {
+        return {
+          labels: [],
+          datasets: []
+        }
+      }
+
       const hashrateDistributionDataInRange = { ...this.hashrateDistribution }[this.range.hashrateDistribution]
-        .sort((a, b) => b.hashrateInRskNetwork - a.hashrateInRskNetwork)
+        ?.sort((a, b) => b.hashrateInRskNetwork - a.hashrateInRskNetwork)
         .reduce((acc, dist) => {
+          const minerName = dist.minerName.match(/0x*/) ? 'Unknown' : dist.minerName
           if (Number(dist.hashratePercentageInRskNetwork) < 5) {
             if (acc.others) {
-              acc.others.percentage = acc.others.percentage + Number(dist.hashratePercentageInRskNetwork)
+              acc.others.percentage = acc.others.percentage + dist.hashratePercentageInRskNetwork
               acc.others.value = acc.others.value + dist.hashrateInRskNetwork
-              acc.others.unit = dist.hashrateInRskNetworkUnit
             } else {
               acc.others = {
-                percentage: Number(dist.hashratePercentageInRskNetwork),
-                value: dist.hashrateInRskNetwork,
-                unit: dist.hashrateInRskNetworkUnit
+                percentage: dist.hashratePercentageInRskNetwork,
+                value: dist.hashrateInRskNetwork
               }
             }
           } else {
-            acc[dist.minerName || 'unknown'] = {
+            acc[minerName] = {
               value: dist.hashrateInRskNetwork,
-              percentage: dist.hashratePercentageInRskNetwork,
-              unit: dist.hashrateInRskNetworkUnit,
-              address: dist.minerAddress
+              percentage: dist.hashratePercentageInRskNetwork
             }
           }
           return acc
         }, {})
-
       const hashrateDistributionValues =
         Object.values(hashrateDistributionDataInRange).map(value => {
           return this.isPercentage ? value.percentage : value.value
         })
-
       return {
         labels: Object.keys(hashrateDistributionDataInRange),
         datasets: [
@@ -165,7 +162,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['triggerRandomDataset', 'setDataRange']),
+    ...mapActions(['setDataRange']),
     setActiveTab (tab, e) {
       this.setDataRange({ hashrateDistribution: tab.range })
       this.tabs = this.tabs.map(t => ({ ...t, isActive: tab.name === t.name }))
@@ -174,10 +171,6 @@ export default {
     toggleUnit () {
       this.isPercentage = !this.isPercentage
     }
-
-    // setDataset (e) {
-    //   this.triggerRandomDataset({ dataset: 'hashrateDistribution', value: Number(e.target.value) })
-    // }
   }
 }
 </script>

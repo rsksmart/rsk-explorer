@@ -57,9 +57,7 @@ export default {
     }),
 
     ...mapState({
-      // dataset: state => state.mining.dataset,
-      // maxDataset: state => state.mining.maxDataset,
-      hashrateOverTime: state => state.mining.hashrateOverTime,
+      hashrateDistributionOverTime: state => state.mining.hashrateDistributionOverTime,
       range: state => state.mining.dataRange
     }),
 
@@ -144,18 +142,18 @@ export default {
         this.colors.color2
       ]
 
-      if (!this.hashrateOverTime) {
+      if (!this.hashrateDistributionOverTime) {
         return { labels: [], datasets: [] }
       }
 
-      const hashrateOverTimeDataInRange = this.hashrateOverTime[this.range.hashrateOverTime]
+      const hashrateDistributionOverTimeDataInRange = this.hashrateDistributionOverTime[this.range.hashrateDistributionOverTime]
 
-      const hashrateOverTimeDatesets = hashrateOverTimeDataInRange.reduce((acc, { time, data: miners }) => {
+      const hashrateDistributionOverTimeDatesets = hashrateDistributionOverTimeDataInRange.reduce((acc, { time, data: miners }) => {
         miners.forEach((miner, index) => {
           const hashrateData = miner.hashrateInRskNetwork
           const hashratePercentage = miner.hashratePercentageInRskNetwork
           const minerData = {
-            label: miner.minerName,
+            label: miner.minerName.match(/0x*/) ? 'Unknown' : miner.minerName,
             backgroundColor: chartColors[index],
             borderColor: chroma(chartColors[index]).darken(0.5),
             data: [this.isPercentage ? hashratePercentage : hashrateData],
@@ -174,15 +172,15 @@ export default {
         return acc
       }, [])
 
-      const hashrateOverTimeLabels =
-        hashrateOverTimeDataInRange.map(({ time }) => {
+      const hashrateDistributionOverTimeLabels =
+        hashrateDistributionOverTimeDataInRange.map(({ time }) => {
           const format = this.activeTab.name === 'Week' ? 'MMMM D' : 'h:mm a'
           return moment(time).format(format)
         })
 
       return {
-        labels: hashrateOverTimeLabels,
-        datasets: hashrateOverTimeDatesets
+        labels: hashrateDistributionOverTimeLabels,
+        datasets: hashrateDistributionOverTimeDatesets || []
       }
     },
 
@@ -195,19 +193,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['triggerRandomDataset', 'setDataRange']),
+    ...mapActions(['setDataRange']),
     setActiveTab (tab, e) {
-      this.setDataRange({ hashrateOverTime: tab.range })
+      this.setDataRange({ hashrateDistributionOverTime: tab.range })
       this.tabs = this.tabs.map(t => ({ ...t, isActive: tab.name === t.name }))
     },
 
     toggleUnit () {
       this.isPercentage = !this.isPercentage
     }
-
-    // setDataset (e) {
-    //   this.triggerRandomDataset({ dataset: 'hashrateDistributionOverTime', value: Number(e.target.value) })
-    // }
   }
 }
 </script>
