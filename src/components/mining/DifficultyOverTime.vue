@@ -51,7 +51,7 @@ export default {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Eh',
+              labelString: 'Zh',
               fontFamily: 'Titillium Web',
               fontColor: '#9fdfd1'
             }
@@ -110,11 +110,10 @@ export default {
 
       const difficultyOverTimeDatesets = difficultyOverTimeDataInRange.map(difficulty => difficulty.data.value)
 
-      const difficultyOverTimeLabels =
-        difficultyOverTimeDataInRange.map(({ time }) => {
-          const format = this.activeTab.name === 'Week' ? 'MMMM D' : 'h:mm a'
-          return moment(time).format(format)
-        })
+      const difficultyOverTimeLabels = difficultyOverTimeDataInRange.map(({ time }) => {
+        const format = this.activeTab.name === 'Week' ? 'MMMM D' : 'h:mm a'
+        return moment(time).format(format)
+      })
 
       return {
         labels: difficultyOverTimeLabels,

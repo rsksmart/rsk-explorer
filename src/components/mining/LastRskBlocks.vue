@@ -2,14 +2,16 @@
   .section-wrapper
     .overflow-auto
       .box
-        //- .main-dialog(v-if='lastBlock && hasBTCInfo')
-        //-   dialog-drag(:options="dialogOptions" id="test", title="Post" @move='move')
-        //-     icon.close-button(name='close' slot='button-close')
-        //-     .dialog-content
-        //-       div(v-for='field,fieldName,index in fields.blockInBTC')
-        //-         field-icon(:icon='ent.icon' :title='ent.tooltip')
-        //-         span {{ blockInBTC[ent.field] }}
-        //-           data-field(:field='field' :row='blockInBTC')
+        .main-dialog(v-if='lastBlock && hasBTCInfo')
+          dialog-drag(:options="dialogOptions", title="BTC Info" @close="close")
+            icon.close-button(name='close' slot='button-close')
+            //- TODO: improve modal
+            .dialog-content
+              p Btc Height: {{lastRskBlocks[infoIndex].blockInBtc.btcHeight}}
+              p BN: {{lastRskBlocks[infoIndex].blockInBtc.BN}}
+              p CPV: {{lastRskBlocks[infoIndex].blockInBtc.CPV}}
+              p NU: {{lastRskBlocks[infoIndex].blockInBtc.NU}}
+              p Prefix Hash: {{lastRskBlocks[infoIndex].blockInBtc.prefixHash}}
         .data-table.overflow-auto
           h3 Last Rsk Blocks
           //- Table
@@ -54,8 +56,8 @@ export default {
   data () {
     return {
       type: 'lastRskBlocks',
-      infoIndex: 0,
-      dialogOptions: { width: 660, height: 600, left: null, top: -210, id: 'btc-info-dialog', zIndex: 1500 }
+      infoIndex: this.infoIndex,
+      dialogOptions: { width: 660, height: 200, left: null, top: 200, id: 'btc-info-dialog', zIndex: 1500, buttonClose: true }
     }
   },
   mounted () {},
@@ -83,8 +85,8 @@ export default {
     loadInfo (index, event) {
       this.infoIndex = index
     },
-    move (e) {
-      this.dialogOptions = e
+    close () {
+      this.infoIndex = null
     }
   }
 }
@@ -106,10 +108,4 @@ export default {
 
   .table-body
     position relative
-
-  .dialog-content
-    display grid
-    grid-gap 1px
-    grid-template-columns repeat(3, 100px)
-    grid-template-rows repeat(3, 100px)
 </style>

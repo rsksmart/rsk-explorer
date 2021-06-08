@@ -1,3 +1,5 @@
+import { NOT_AVAILABLE } from '../types'
+
 export const lastRskBlocks = {
   name: 'last-rsk-blocks',
   icon: 'cube',
@@ -55,12 +57,6 @@ export const lastRskBlocks = {
       type: 'pool',
       title: 'miner'
     },
-    // blockInBtc: {
-    //   type: 'btcBlock',
-    //   icon: 'btc',
-    //   title: 'height',
-    //   showTitle: true
-    // },
     numberOfUncles: {
       title: 'uncles',
       default: 0
@@ -87,7 +83,7 @@ export const lastBtcBlocks = {
     },
     height: {
       icon: 'btc',
-      type: 'btcBlock',
+      type: 'miningBtcBlock',
       title: 'height',
       showTitle: true
     },
@@ -103,14 +99,14 @@ export const lastBtcBlocks = {
     rskTag: {
       type: 'hash',
       icon: 'rsk',
-      title: 'RSK Tag'
+      title: 'RSK Tag',
+      default: NOT_AVAILABLE
     },
     rskHeight: {
-      type: 'block',
-      icon: 'block',
-      title: 'RSK height',
-      showTitle: true,
-      default: 0
+      type: 'miningRskBlock',
+      icon: 'rsk',
+      title: 'height',
+      showTitle: true
     },
     status: null
   }

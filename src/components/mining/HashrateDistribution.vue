@@ -71,7 +71,7 @@ export default {
         },
         plugins: {
           datalabels: {
-            formatter: (data) => this.isPercentage ? data + '%' : data + ' Ehs',
+            formatter: (data) => this.isPercentage ? data.toFixed(2) + '%' : data.toFixed(2) + ' Ehs',
             color: 'white',
             font: { size: 14, weight: 'bold', family: 'Titillium Web' }
           }
@@ -120,7 +120,6 @@ export default {
       }
 
       const hashrateDistributionDataInRange = { ...this.hashrateDistribution }[this.range.hashrateDistribution]
-        ?.sort((a, b) => b.hashrateInRskNetwork - a.hashrateInRskNetwork)
         .reduce((acc, dist) => {
           const minerName = dist.minerName.match(/0x*/) ? 'Unknown' : dist.minerName
           if (Number(dist.hashratePercentageInRskNetwork) < 5) {
@@ -141,10 +140,12 @@ export default {
           }
           return acc
         }, {})
+
       const hashrateDistributionValues =
-        Object.values(hashrateDistributionDataInRange).map(value => {
+        Object.values(hashrateDistributionDataInRange).sort((a, b) => b.value - a.value).map(value => {
           return this.isPercentage ? value.percentage : value.value
         })
+
       return {
         labels: Object.keys(hashrateDistributionDataInRange),
         datasets: [
@@ -176,14 +177,14 @@ export default {
 </script>
 
 <style lang="stylus">
-  .chart-container
-    position relative
-    width 100%
-    display flex
-    justify-content center
-    align-items center
-    min-height 300px
+.chart-container
+  position relative
+  width 100%
+  display flex
+  justify-content center
+  align-items center
+  min-height 300px
 
-  .chart
-    width 100%
+.chart
+  width 100%
 </style>

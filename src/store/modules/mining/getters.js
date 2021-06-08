@@ -1,14 +1,14 @@
 export const getLastRskBlocks = (state) => state.lastRskBlocks?.map(
   block => {
-    const guessedMiner = block.blockInBTC?.btcInfo?.guessedMiner
-    const btcHash = block.blockInBTC?.btcInfo?.hash
-    const btcHeight = block.blockInBTC?.btcInfo?.height
-    const BN = block.blockInBTC?.rskTag?.BN
-    const CPV = block.blockInBTC?.rskTag?.CPV
-    const NU = block.blockInBTC?.rskTag?.NU
-    const prefixHash = block.blockInBTC?.rskTag?.prefixHash
+    const guessedMiner = block.blockInBtc?.btcInfo?.guessedMiner
+    const btcHash = block.blockInBtc?.btcInfo?.hash
+    const btcHeight = block.blockInBtc?.btcInfo?.height
+    const BN = block.blockInBtc?.rskTag?.BN
+    const CPV = block.blockInBtc?.rskTag?.CPV
+    const NU = block.blockInBtc?.rskTag?.NU
+    const prefixHash = block.blockInBtc?.rskTag?.prefixHash
 
-    const blockInBTC = {
+    const blockInBtc = {
       guessedMiner,
       btcHash,
       btcHeight,
@@ -21,8 +21,8 @@ export const getLastRskBlocks = (state) => state.lastRskBlocks?.map(
     const { height, hash, timestamp, minerAddress, minerName, numberOfUncles, rskTag, rskNodeVersion } = block
 
     const lastRskBlocks = {
-      hasBTCInfo: !!block.blockInBTC,
-      ...blockInBTC,
+      hasBTCInfo: !!block.blockInBtc,
+      blockInBtc,
       height,
       hash,
       timestamp,

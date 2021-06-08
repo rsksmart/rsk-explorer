@@ -27,7 +27,6 @@ export const SET_MINING_DIFFICULTY_OVER_TIME = (state, payload) => {
 }
 
 export const SET_MINING_BTC_VS_RSK_HR_OVER_TIME = (state, payload) => {
-  console.log('payload', payload)
   state.btcVsRskHROverTime = payload
 }
 

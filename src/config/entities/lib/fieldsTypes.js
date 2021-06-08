@@ -46,11 +46,18 @@ export default {
     filters: ['locale'],
     default: 0
   },
-  btcBlock: {
+  miningBtcBlock: {
     icon: 'btc',
     titleIcon: true,
     hideTitle: true,
     link: 'https://btc.com/block/',
+    filters: ['not-applicable-locale']
+  },
+  miningRskBlock: {
+    icon: 'rsk',
+    titleIcon: true,
+    hideTitle: true,
+    link: `/${r.block}/`,
     filters: ['not-applicable-locale']
   },
   blockHash: {

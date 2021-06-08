@@ -13,7 +13,7 @@
           tbody
             tr(v-for='row, rowIndex in lastBtcBlocks' :class='rowClass(rowIndex)')
               template(v-for='field,fieldName,index in fields')
-                td
+                td(:style="{ backgroundColor: row.status === 'NotInNetwork' ? 'rgba(255, 255, 0, 0.1)' : 'inherit' }")
                   data-field(:field='field' :row='row')
 </template>
 <script>
