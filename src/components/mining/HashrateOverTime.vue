@@ -148,15 +148,17 @@ export default {
 
       const hashrateDistributionOverTimeDataInRange = this.hashrateDistributionOverTime[this.range.hashrateDistributionOverTime]
 
-      const hashrateDistributionOverTimeDatesets = hashrateDistributionOverTimeDataInRange.reduce((acc, { time, data: miners }) => {
+      const hashrateDistributionOverTimeDatesets = hashrateDistributionOverTimeDataInRange.reduce((acc, dataRange) => {
+        const miners = dataRange.data.map(miner => ({ ...miner, minername: miner.minerName.match(/0x*/) ? 'Unknown' : miner.name }))
         miners.forEach((miner, index) => {
-          const hashrateData = miner.hashrateInRskNetwork
-          const hashratePercentage = miner.hashratePercentageInRskNetwork
+          const label = miner.minerName
+          const data = this.isPercentage ? miner.hashratePercentageInRskNetwork : miner.hashrateInRskNetwork
+
           const minerData = {
-            label: miner.minerName.match(/0x*/) ? 'Unknown' : miner.minerName,
+            label,
             backgroundColor: chartColors[index],
             borderColor: chroma(chartColors[index]).darken(0.5),
-            data: [this.isPercentage ? hashratePercentage : hashrateData],
+            data: [data],
             fill: true
           }
 
