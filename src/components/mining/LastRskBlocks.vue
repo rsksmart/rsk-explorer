@@ -19,7 +19,7 @@
             thead
               tr
                 th.unsortable
-                  field-title(:field="{title: 'BTC Info'}")
+                  field-title(:field="{title: 'rsk tag info'}")
                 template(v-for='field,fieldName,index in fields')
                   th.unsortable(v-if="!btcInfoFields.includes(fieldName)")
                     field-title(:field='field')
