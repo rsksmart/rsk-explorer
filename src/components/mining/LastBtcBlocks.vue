@@ -1,20 +1,21 @@
 <template lang="pug">
-  .overflow-auto
+  .overflow-hidden
     .box
-      .data-table.overflow-auto
+      .data-table
         h3 Last Btc Blocks
         //- Table
-        table.dark(v-if='data' ref='table')
-          thead
-            tr
-              template(v-for='field,fieldName,index in fields')
-                th.unsortable
-                  field-title(:field='field')
-          tbody
-            tr(v-for='row, rowIndex in lastBtcBlocks' :class='rowClass(rowIndex)')
-              template(v-for='field,fieldName,index in fields')
-                td(:style="{ backgroundColor: row.status === 'NotInNetwork' ? 'rgba(255, 255, 0, 0.1)' : 'inherit' }")
-                  data-field(:field='field' :row='row')
+        .table-wrapper
+          table.dark(v-if='data' ref='table')
+            thead
+              tr
+                template(v-for='field,fieldName,index in fields')
+                  th.unsortable
+                    field-title(:field='field')
+            tbody
+              tr(v-for='row, rowIndex in lastBtcBlocks' :class='rowClass(rowIndex)')
+                template(v-for='field,fieldName,index in fields')
+                  td(:style="{ backgroundColor: row.status === 'NotInNetwork' ? 'rgba(255, 255, 0, 0.1)' : 'inherit' }")
+                    data-field(:field='field' :row='row')
 </template>
 <script>
 import dataMixin from '../../mixins/dataMixin'
@@ -56,7 +57,17 @@ export default {
 </script>
 
 <style lang="stylus">
-  .overflow-auto
-    overflow auto
+  .overflow-hidden
     width 100%
+    overflow hidden
+
+    & .data-table
+      justify-content flex-start
+
+      & .table-wrapper
+        height 400px
+        overflow auto
+
+        & table
+          width -webkit-fill-available
 </style>

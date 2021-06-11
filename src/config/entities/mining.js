@@ -41,7 +41,7 @@ export const lastRskBlocks = {
       showTitle: true
     },
     hash: {
-      trim: 'auto',
+      trim: '3',
       field: 'hash',
       type: 'hash'
     },
@@ -51,6 +51,7 @@ export const lastRskBlocks = {
     },
     minerAddress: {
       type: 'address',
+      trim: '3',
       title: 'miner address'
     },
     minerName: {
@@ -62,8 +63,7 @@ export const lastRskBlocks = {
       default: 0
     },
     rskTag: {
-      type: 'hash',
-      field: 'hash',
+      trim: '3',
       icon: 'rsk',
       title: 'RSK Tag'
     },
@@ -88,16 +88,14 @@ export const lastBtcBlocks = {
       showTitle: true
     },
     hash: {
-      trim: 'auto',
-      field: 'hash',
-      type: 'hash'
+      trim: '3'
     },
     timeStamp: {
       field: 'timestamp',
       type: 'timestamp'
     },
     rskTag: {
-      type: 'hash',
+      trim: '3',
       icon: 'rsk',
       title: 'RSK Tag',
       default: NOT_AVAILABLE

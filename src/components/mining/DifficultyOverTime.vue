@@ -47,7 +47,8 @@ export default {
           yAxes: [{
             ticks: {
               fontColor: '#9fdfd1',
-              fontFamily: 'Titillium Web'
+              fontFamily: 'Titillium Web',
+              min: 0.8
             },
             scaleLabel: {
               display: true,

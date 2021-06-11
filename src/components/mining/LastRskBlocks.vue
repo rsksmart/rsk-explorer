@@ -1,6 +1,6 @@
 <template lang="pug">
   .section-wrapper
-    .overflow-auto
+    .overflow-hidden
       .box
         .main-dialog(v-if='lastBlock && hasBTCInfo')
           dialog-drag(:options="dialogOptions", title="BTC Info" @close="close")
@@ -12,28 +12,29 @@
               p CPV: {{lastRskBlocks[infoIndex].blockInBtc.CPV}}
               p NU: {{lastRskBlocks[infoIndex].blockInBtc.NU}}
               p Prefix Hash: {{lastRskBlocks[infoIndex].blockInBtc.prefixHash}}
-        .data-table.overflow-auto
+        .data-table
           h3 Last Rsk Blocks
           //- Table
-          table.dark(v-if='data' ref='table')
-            thead
-              tr
-                th.unsortable
-                  field-title(:field="{title: 'rsk tag info'}")
-                template(v-for='field,fieldName,index in fields')
-                  th.unsortable(v-if="!btcInfoFields.includes(fieldName)")
-                    field-title(:field='field')
-            tbody.table-body
-              tr(v-for='row, rowIndex in lastRskBlocks' :class='rowClass(rowIndex)')
-                td
-                  template(v-if='row.hasBTCInfo')
-                    button(@click="loadInfo(rowIndex, $event)")
-                      icon(name='cubes')
-                  div(v-else) N/A
-                template(v-for='field,fieldName,index in fields')
-                  td(v-if="!btcInfoFields.includes(fieldName)")
-                    //- pre(style='text-align: left;') {{row}}
-                    data-field(:field='field' :row='row')
+          .table-wrapper
+            table.dark(v-if='data' ref='table')
+              thead
+                tr
+                  th.unsortable
+                    field-title(:field="{title: 'info'}")
+                  template(v-for='field,fieldName,index in fields')
+                    th.unsortable(v-if="!btcInfoFields.includes(fieldName)")
+                      field-title(:field='field')
+              tbody.table-body
+                tr(v-for='row, rowIndex in lastRskBlocks' :class='rowClass(rowIndex)')
+                  td
+                    template(v-if='row.hasBTCInfo')
+                      button(style={margin: 'auto'})(@click="loadInfo(rowIndex, $event)")
+                        icon(name='cubes')
+                    div(v-else) N/A
+                  template(v-for='field,fieldName,index in fields')
+                    td(v-if="!btcInfoFields.includes(fieldName)")
+                      //- pre(style='text-align: left;') {{row}}
+                      data-field(:field='field' :row='row')
 </template>
 <script>
 import dataMixin from '../../mixins/dataMixin'
@@ -57,7 +58,7 @@ export default {
     return {
       type: 'lastRskBlocks',
       infoIndex: this.infoIndex,
-      dialogOptions: { width: 660, height: 200, left: null, top: 200, id: 'btc-info-dialog', zIndex: 1500, buttonClose: true }
+      dialogOptions: { width: 660, height: 200, left: null, top: 150, id: 'btc-info-dialog', zIndex: 1500, buttonClose: true }
     }
   },
   mounted () {},
@@ -97,10 +98,6 @@ export default {
 
   .section-wrapper
     position relative
-
-  .overflow-auto
-    overflo auto
-    width 100%
 
     & .dialog-drag
       transform translateX(-50%)
