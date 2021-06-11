@@ -101,3 +101,14 @@ export const SET_STATS = (state, data) => {
 export const SET_BALANCES_STATUS = (state, data) => {
   Vue.set(state, 'balancesStatus', data)
 }
+
+export const SET_EXPORT_KEY = (state, key) => {
+  Vue.set(state.exports, key, { total: undefined, received: 0, timestamp: undefined })
+}
+
+export const SET_EXPORT_METADATA = (state, [key, metadata]) => {
+  if (!state.exports[key]) return
+  for (const prop in metadata) {
+    Vue.set(state.exports[key], prop, metadata[prop])
+  }
+}

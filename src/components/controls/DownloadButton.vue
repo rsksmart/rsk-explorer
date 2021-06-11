@@ -1,10 +1,12 @@
 <template lang="pug">
   .download-button
-    burp-button(icon='clowd-down' v-bind='{message,title,text}' @click='download' :class='css' )
+    burp-button(:icon='iconName' v-bind='{message,title,text}' @click='download' :class='css' )
+      slot()
 </template>
 <script>
 import { downloadText } from '../../lib/js/io'
 import BurpButton from './BurpButton'
+import icons from '../../config/icons'
 export default {
   name: 'download-button',
   components: {
@@ -24,7 +26,14 @@ export default {
       type: String,
       default: ''
     },
-    css: {}
+    css: {},
+    icon: {
+    }
+  },
+  computed: {
+    iconName () {
+      return (undefined === this.icon) ? icons.download : this.icon
+    }
   },
   methods: {
     download (event) {

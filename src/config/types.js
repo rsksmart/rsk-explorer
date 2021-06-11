@@ -23,7 +23,8 @@ export const ROUTES = {
   internalTx: 'itx',
   balance: 'balance',
   balances: 'balances',
-  mining: 'mining'
+  mining: 'mining',
+  settings: 'settings'
 }
 
 export const STATUS = {
@@ -65,4 +66,18 @@ export const CONNECTION_STATUS = {
   WAITING: 'Waiting for connection',
   LOST: 'Connection lost',
   UNABLE: 'Cannot connect to backend'
+}
+
+export const CONTEXT = {
+  export: 'export'
+}
+
+export const EXPORT_FORMATS = {
+  JSON: 'json',
+  CSV: 'csv'
+}
+
+export const EXPORT_ITEMS = {
+  LIST: 'listed',
+  ALL: 'all'
 }

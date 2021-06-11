@@ -3,6 +3,7 @@ export default function () {
     serverTime: Date.now(),
     clientTime: Date.now(),
     systemSettings: {},
+    exports: {},
     requesting: {},
     responses: {},
     responsesMetadata: {},

@@ -24,17 +24,20 @@
               .field-value {{ filteredValue || field.default }}
           .field-value(v-else) {{ filteredValue || field.default }}
         span.field-suffix(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
+        field-icon.field-value-description(v-if='valueDescription' icon="help" :title="valueDescription")
         progress-bar(v-if='delayed')
 </template>
 <script>
 import common from '../mixins/common'
 import dataMixin from '../mixins/dataMixin'
 import { getType } from '../lib/js/utils'
-import ProgressBar from './ProgressBar'
+import ProgressBar from './controls/ProgressBar'
+import FieldIcon from './FieldIcon'
 export default {
   name: 'data-field',
   components: {
-    ProgressBar
+    ProgressBar,
+    FieldIcon
   },
   mixins: [common, dataMixin],
   props: {
@@ -57,7 +60,8 @@ export default {
   },
   computed: {
     filteredValue () {
-      return this.filterFieldValue()(this.field, this.value, this.row)
+      const { field, value, row } = this
+      return this.filterFieldValue()({ field, value, data: row })
     },
     value () {
       return this.getValue(this.field, this.row, true)
@@ -82,6 +86,9 @@ export default {
     },
     suffix () {
       return this.fieldSuffix(this.field, this.value, this.filteredValue, this.row)
+    },
+    valueDescription () {
+      return this.fieldValueDescription(this.field, this.value, this.filteredValue, this.row)
     }
   }
 }
@@ -126,6 +133,12 @@ export default {
 
   .field-suffix
     white-space pre
+
+  .field-value-description
+    position relative
+    display inline-flex
+    margin 0 0 0 1em
+    white-space nowrap
 
   .flex-table
     & td .data-field

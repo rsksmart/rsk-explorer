@@ -7,12 +7,24 @@ import {
 } from '../types'
 import { BigNumber } from 'bignumber.js'
 import { txGasPrice } from '../../filters/TokensFilters'
-import { txStatus } from '../../filters/TextFilters'
+import { txIcon, txStatus } from '../../filters/TextFilters'
 import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
 import { isAddress } from '../../lib/js/utils'
-import { linkAddress, addressFilters, txValueFilters } from './lib/fieldsTypes'
+import { linkAddress, addressFilters, valueFilters, isExport } from './lib/fieldsTypes'
 
-const transactionFormatFields = (fields, data, parentData) => {
+const TX_STATUS_CSS = Object.freeze({
+  FAIL: 'error',
+  SUCCESS: 'brand',
+  QUEUED: 'blue',
+  PENDING: 'yellow'
+})
+
+const TX_STATUS_MESSAGES = Object.freeze({
+  QUEUED: 'The transaction nonce is not in sequence. Waiting for transaction(s) with previous nonces to be received.',
+  PENDING: 'The transaction is ready to be processed and included in a block.'
+})
+
+const transactionFormatFields = ({ fields }) => {
   return fields
 }
 
@@ -26,32 +38,27 @@ const transactionFee = tx => {
   }
 }
 
-const transactionFormatRow = (tx, parentData) => {
+const transactionFormatRow = ({ data, parentData, context }) => {
   let address
-  const contractAddress = (tx.receipt) ? tx.receipt.contractAddress : null
+  const contractAddress = (data.receipt) ? data.receipt.contractAddress : null
   if (parentData) address = parentData.address
   if (address) {
-    tx.from = setThisAddress(tx.from, { address })
-    tx.to = setThisAddress(tx.to, { address })
+    data.from = setThisAddress(data.from, { address }, context)
+    data.to = setThisAddress(data.to, { address }, context)
   }
-  tx.status = (tx.receipt) ? tx.receipt.status : tx.status
+  data.status = (data.receipt) ? data.receipt.status : data.status
   if (contractAddress) {
-    tx.to = (txStatus(tx.status) === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
+    data.to = (txStatus(data.status) === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
   }
-  tx._fee = transactionFee(tx)
-  return tx
+  data._fee = transactionFee(data)
+  return data
 }
 
-export const txStatusCss = status => {
-  const css = {
-    FAIL: 'error',
-    SUCCESS: 'brand',
-    QUEUED: 'blue',
-    PENDING: 'yellow'
-  }
-  const key = Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
-  return css[key] || ''
-}
+export const txStatusKey = status => Object.keys(STATUS).map(k => k).find(k => STATUS[k] === status)
+
+export const txStatusCss = status => TX_STATUS_CSS[txStatusKey(status)] || ''
+
+export const txStatusMessage = status => TX_STATUS_MESSAGES[txStatusKey(status)] || ''
 
 const TxFields = () => {
   return {
@@ -85,7 +92,7 @@ const TxFields = () => {
       filters: addressFilters
     },
     value: {
-      filters: txValueFilters()
+      filters: valueFilters()
     },
     gasUsed: {
       type: 'gas',
@@ -105,7 +112,8 @@ const TxFields = () => {
       filters: ['tx-status'],
       trim: 'auto',
       css: (value, filtered, data) => txStatusCss(filtered),
-      hideIfEmpty: true
+      hideIfEmpty: true,
+      valueDescription: (value, filtered, data) => txStatusMessage(filtered)
     }
   }
 }
@@ -113,9 +121,13 @@ const Txs = () => {
   const fields = TxFields()
   delete (fields.index)
   fields.status = Object.assign(fields.status, {
-    filters: ['tx-icon'],
+    filters: [(value, data, context) => {
+      if (isExport(context)) return txStatus(value)
+      return txIcon(value)
+    }],
     renderAs: 'field-icon',
     renderAsProps: ({ filteredValue, value }) => {
+      if (!filteredValue) return // skips DataField custom component
       return {
         icon: filteredValue,
         title: `status: ${txStatus(value)}`,
@@ -129,7 +141,7 @@ const Txs = () => {
     type: null,
     showTitle: false
   })
-  fields.value.filters = txValueFilters(2)
+  fields.value.filters = valueFilters(true)
   return {
     key: 'hash',
     icon: 'transaction',
@@ -230,7 +242,7 @@ export const TxLogFormatter = tx => {
 export const TxLogs = () => {
   const tx = Tx()
   return {
-    formatRow: (tx) => TxLogFormatter(tx),
+    formatRow: ({ data, parentData }) => TxLogFormatter(data),
     fields: {
       hash: tx.fields.hash,
       logs: {
@@ -254,7 +266,7 @@ export const TxLogs = () => {
 export const TxLogItem = () => {
   return {
     name: 'tx-log-item',
-    formatRow: formatEvent,
+    formatRow: ({ data, parentData }) => formatEvent(data, parentData),
     fields: {
       logIndex: {
         default: 0
@@ -295,8 +307,8 @@ export const TxLogItem = () => {
 
 export const TxTransferEvents = () => {
   const te = TxLogs()
-  te.formatRow = (tx) => {
-    tx = TxLogFormatter(tx)
+  te.formatRow = ({ data }) => {
+    const tx = TxLogFormatter(data)
     let logs = (tx.receipt && tx.receipt.logs) ? tx.receipt.logs : []
     logs = filterTransferEvents(logs)
     tx._transferEvents = logs
@@ -308,7 +320,7 @@ export const TxTransferEvents = () => {
   return te
 }
 
-export const Transactions = () => Object.assign(Txs(), { formatRow: transactionFormatRow })
+export const Transactions = () => Object.assign(Txs(), { itemEntity: 'transaction', formatRow: transactionFormatRow })
 
 export const transactionsBox = TxBox()
 export const transactions = Transactions()

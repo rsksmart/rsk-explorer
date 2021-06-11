@@ -1,8 +1,8 @@
 /**
  * type:{
  *    key: item key field
- *    formatRow(data,parentData)
- *    formatFields(fields,data,parentData)
+ *    formatRow({data,parentData,fields,context})
+ *    formatFields({fields, data, parentData, context})
  *    formatLink(data,parentData,link,key)
       fields:{
         field: null | object: {
@@ -29,7 +29,7 @@ import { token, tokens } from './token'
 import { tokenAccount, tokenAccounts, tokenByAddress } from './tokenAccount'
 import { event, events, eventData, transferEvents } from './event'
 import { txPool } from './txPool'
-import { compilationSettings, externalLibraries } from './verifiedContracts'
+import { compilationSettings, externalLibraries, constructorArguments } from './verifiedContracts'
 import { stats } from './stats'
 import { internalTransaction, internalTransactions } from './internalTransaction'
 import { balance, balances } from './balances'
@@ -67,5 +67,6 @@ export default {
   balances,
   lastBtcBlocks,
   lastRskBlocks,
-  miningSummary
+  miningSummary,
+  constructorArguments
 }

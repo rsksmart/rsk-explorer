@@ -88,3 +88,13 @@ export const isResponseBlockUpdated = (state, getters) => key => {
 }
 
 export const getBalancesStatus = state => state.balancesStatus
+
+export const isExportKey = state => key => {
+  const value = state.exports[key]
+  return value !== undefined && value !== null
+}
+
+export const getExportMetadata = state => key => {
+  if (!key) return
+  return state.exports[key]
+}
