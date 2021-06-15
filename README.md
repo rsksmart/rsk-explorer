@@ -38,6 +38,7 @@ npm run build-with-tracking
 The configuration is provided through this environment variables:
 
 - **WS_URL**: rsk-explorer-api WS url (backend)
+- **WS_M_URL**: mining stats-api WS url (backend)
 - **STATS_URL**: rsk stats web (link redirect the 'stats' link)
 - **GA_TAG**: (optional) Google analytics tag.
 - **HOTJAR_ID**: (optional) Hotjar ID.
@@ -46,6 +47,7 @@ E.g. *to change the backend url :*
 
 ``` shell
   export WS_URL=wss://backend.rsk.co
+  export WS_M_URL=<mining-backend-ws-api>
 ```
 
 ### Building for production
