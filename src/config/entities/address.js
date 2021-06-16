@@ -23,6 +23,12 @@ export const Addresses = () => {
         default: 0,
         trim: 0
       },
+      balanceUsd: {
+        title: 'Balance Value',
+        filters: ['tx-value', 'round', 'locale', 'usd'],
+        default: 0,
+        trim: 0
+      },
       type: null,
       blockNumber: {
         field: 'blockNumber',
