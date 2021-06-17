@@ -506,7 +506,7 @@ export default {
 
   svg.loading-circle
     fill none
-    stroke green
+    stroke color1
 
   .try-again
     padding 2em

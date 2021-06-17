@@ -45,7 +45,7 @@ export default {
         },
         bars: false,
         padding: 0.25,
-        colors: [colors.green, colors.green],
+        colors: [colors.color2, colors.color2],
         axis: {
           valuesY: true,
           valuesX: true,

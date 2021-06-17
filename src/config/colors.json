@@ -1,17 +1,18 @@
 {
   "brand1": "#00a14b",
-  "brand2": "#497d3b",
+  "brand2": "#fff",
   "brand3": "#414042",
   "blue": "#357ccc",
-  "gray": "#568475",
+  "gray": "#d9d9d9",
+  "gray2": "#a9bacd",
   "red": "#be4d5a",
   "green": "#1aad8d",
-  "color1": "#1aad8d",
+  "color1": "#fff",
   "orange": "#e59b4d",
-  "color2": "#e59b4d",
+  "color2": "#fec004",
   "yellow": "#f2c755",
   "violet": "#6e5fc4",
   "cyan": "#1faec2",
   "white": "#fff",
-  "txt-color": "#9fdfd1"
+  "txt-color": "#fff"
 }

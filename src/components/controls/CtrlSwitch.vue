@@ -89,7 +89,7 @@ export default {
       transition 0.4s
 
     input:checked + .slider, input.enabled + .slider
-      background-color $color
+      background-color $gray2
 
     input:focus + .slider
       box-shadow 0 0 1px $brand

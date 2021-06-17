@@ -1,7 +1,7 @@
   @import './mixins.styl'
 
 .txt-box
-  border-color green
+  border-color color1
   border-style none 
   border-top-style solid
   margin 2em 0 1em 0
@@ -13,9 +13,7 @@
   display flex
   flex-flow column wrap
   width auto
-  background $quasi-bg
-  // background darken($bg-color, 2%)
-  // background lightness($bg-color, 100%)
+  background: radial-gradient(circle, rgba(233, 234, 233, 0.12) 3%, rgb(34, 34, 34) 83%);
   box-shadow $box-sh
   padding .75em 1em
   margin 0.5em

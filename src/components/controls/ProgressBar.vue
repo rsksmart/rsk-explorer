@@ -62,7 +62,7 @@ export default {
     margin 0 1em
 
     rect.bar
-      fill green
+      fill color1
 
     rect.bg
       fill gray
