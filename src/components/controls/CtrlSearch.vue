@@ -150,9 +150,10 @@ export default {
       ::placeholder
         transition $trans-fade
         opacity 1
+        font-style normal
 
       :focus::placeholder
-        opacity 0.25
+        opacity 0.4
 
       button
         display flex
@@ -162,9 +163,9 @@ export default {
         border none
         background none
         text-align center
-        padding 0.3em
+        padding 0.5em
         box-shadow none
-        font-size 0.7em
+        font-size 0.8em
         margin 0 0.5em 0 0
         flex 1
 

@@ -4,15 +4,18 @@
     .top-page(v-if='topMsg')
       message.top-msg(:message='topMsg')
     //-.header(:class='(bigMenu) ? "big-menu" : ""')
-    .header
+    .header.sticky-header
       transition(name='head-trans')
         header.w-trans
           .brand(@click='goHome' @touchstart.passive='goHome')
-              .iso.plain-color
-                include assets/svg/logo-alt.svg
+              .logo
+                include assets/svg/sovryn-logo-white.svg
               .title
-                h1.logo.link rsk explorer
-                sub.net.gray {{networkName}}
+                h1.logo.green
+                  icon(:name='"rsk"')
+                  span rsk
+                  span.title-comment explorer
+                sub.net.yellow {{networkName}}
           .header-content
             search-box
           .nav(:class='(menu) ? "open":""')
@@ -31,9 +34,6 @@
       router-view
     .footer
       footer
-        .logo
-          .iso.plain-color
-            include assets/svg/iso-logo-v.svg
         .text
           ul.plain
             li(v-for='item in content.footer')

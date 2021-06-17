@@ -6,13 +6,13 @@
   "gray": "#d9d9d9",
   "gray2": "#a9bacd",
   "red": "#be4d5a",
-  "green": "#1aad8d",
-  "color1": "#fff",
+  "green": "#28ab8b",
+  "color1": "#e9eae9",
   "orange": "#e59b4d",
   "color2": "#fec004",
   "yellow": "#f2c755",
   "violet": "#6e5fc4",
   "cyan": "#1faec2",
   "white": "#fff",
-  "txt-color": "#fff"
+  "txt-color": "#e9eae9"
 }

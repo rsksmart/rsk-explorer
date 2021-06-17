@@ -311,6 +311,7 @@ export default {
 }
 </script>
 <style lang="stylus">
+  @import '../lib/styl/vars.styl'
   .data-page
     align-self flex-start
 
@@ -319,7 +320,7 @@ export default {
 
   .data-page h2.title
     text-transform uppercase
-    color white
+    color $color
     // align-self flex-start
 
   .page-header

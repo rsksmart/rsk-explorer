@@ -1,9 +1,9 @@
 export default {
   footer: [
+    'The Sovryn explorer is currently being developed for the Sovrython',
     {
-      text: 'Privacy Policy',
-      link: 'https://www.rsk.co/privacy-policy'
-    },
-    'Copyright © 2015-2020 IOV Labs. All rights reserved.'
+      text: 'Learn more about Sovryn, the Bitcoin-native DeFi',
+      link: 'https://www.sovryn.app/'
+    }
   ]
 }
