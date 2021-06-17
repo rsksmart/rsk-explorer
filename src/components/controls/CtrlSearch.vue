@@ -162,9 +162,9 @@ export default {
         border none
         background none
         text-align center
-        padding 0
+        padding 0.3em
         box-shadow none
-        font-size 0.75em
+        font-size 0.7em
         margin 0 0.5em 0 0
         flex 1
 

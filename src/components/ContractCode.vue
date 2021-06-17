@@ -167,12 +167,12 @@ export default {
     justify-content flex-start
 
     .sel
-      font-weight bold
+      font-weight 600
       border-bottom solid 1px $color
 
     button
       margin 0 0.5em
-      font-weight bold
+      font-weight 600
 
   .selected-file-enter-active, .selected-file-leave-active
     transition opacity 0.2s ease-in

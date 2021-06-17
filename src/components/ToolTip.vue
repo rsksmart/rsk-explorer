@@ -285,7 +285,7 @@ export default {
         overflow visible
         display inline
         margin 0
-        font-size 0.9em
+        font-size 1.1em
         font-weight normal
 
     .tip:after, .tip:before

@@ -78,8 +78,8 @@ export default {
     will-change opacity
 
     .title
-      padding 0
-      margin 0
+      padding 0 !important
+      margin 0 !important
 
   .blockbox-enter-active
     transition opacity 0.5s

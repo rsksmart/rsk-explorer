@@ -153,7 +153,7 @@ export default {
 
   .field-title
     text-transform capitalize
-    font-weight bold
+    font-weight 600
 
   .item-title
     text-transform capitalize

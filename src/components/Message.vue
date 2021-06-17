@@ -26,6 +26,6 @@ export default {
 <style lang="stylus">
   .message
     .title
-      font-weight bold
+      font-weight 600
       margin 0 0.5em 0 0.25em
 </style>

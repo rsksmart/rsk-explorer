@@ -3,9 +3,9 @@
 @import 'mixins.styl'
 @import 'big-header.styl'
 
-$head-h = 3.25em
+$head-h = 4em
 $head-margin = 3em
-$head-bg = $bg-color
+$head-bg = $bg-dark
 $nav-margin = 1em
 
 .logo
@@ -32,7 +32,7 @@ $nav-margin = 1em
 
 .sticky-header
   position fixed
-  z-index 1000
+  z-index 10000
   min-width 100%
 
 header
@@ -44,7 +44,7 @@ header
   align-items center
   min-height $head-h
   justify-content flex-start
-  margin-right $head-margin
+  padding-right $head-margin
   // flex 2
 
   .brand
@@ -120,6 +120,7 @@ header
       padding 0
       margin 0
       flex-flow column nowrap
+      text-transform capitalize
 
       li
         margin 0 1em
@@ -146,7 +147,7 @@ header
     display none
 
     ul
-      background $bg-color
+      background $head-bg
       li
         display flex
 

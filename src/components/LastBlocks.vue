@@ -56,4 +56,11 @@ export default {
       .block-box
         .block:first-child
           margin-top 0 !important
+  .last-block
+    .box
+      background transparent
+      border none
+      box-shadow none
+      margin 0
+      padding 0
 </style>

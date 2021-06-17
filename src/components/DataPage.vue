@@ -318,7 +318,8 @@ export default {
     width 100%
 
   .data-page h2.title
-    text-transform capitalize
+    text-transform uppercase
+    color white
     // align-self flex-start
 
   .page-header

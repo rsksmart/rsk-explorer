@@ -123,6 +123,7 @@ export default {
     display flex
     justify-content space-between
     max-width 100%
+    margin-top 1em
 
   .tx-chart
     max-height 100%

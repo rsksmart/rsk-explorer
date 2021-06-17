@@ -33,7 +33,7 @@ export default {
       font-size .8em
 
     li.event-name
-      font-weight bold
+      font-weight 600
       color $info
 
     ul
@@ -54,7 +54,7 @@ export default {
       display flex
 
       &:last-child:after
-        font-weight bold
+        font-weight 600
 
     .args
       &::before
