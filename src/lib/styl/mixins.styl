@@ -13,6 +13,7 @@ apply-color($col, $val)
   .{$col}, .{$col} a, .app button.{$col}, textarea.{$col}, textarea.{$col}:disabled
     color $val
     fill $val
+    background transparent
 
   input.{$col}, select.{$col}, {$col}.input:focus
     color $val !important
@@ -96,7 +97,7 @@ link()
   color $color
   cursor pointer
 
-  .svg-icon, svg
+  +.svg-icon, svg
     path
       fill $color !important
 
@@ -282,12 +283,12 @@ hover($bg, $c)
 
 focus($bg)
   transition border-color 0.5 ease
-  border $focus-border
+  // border $focus-border
   background $bg
   box-shadow 0 0 0 1px black inset
 
 active($bg, $c)
-  transition all 2s ease
+  transition all 1s ease
   background lighten($bg, 25%)
 
 buttonColors($c, $bg)

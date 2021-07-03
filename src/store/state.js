@@ -1,10 +1,9 @@
 import { colors, blocksColors, blocksColors2 } from '../lib/js/colors.js'
-import menuItems from '../lib/js/menuItems.js'
+import { menuItems } from '../config/menu'
 import messages from '../config/messages'
 import content from '../config/content'
 import mediaBreakpoints from '../config/media_breakpoints.json'
 import { APP_NAME } from '../config/types'
-
 export default function () {
   return {
     loadingConfig: null,

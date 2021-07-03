@@ -1,25 +1,37 @@
 <template lang="pug">
-  .export-controls(v-if='data')
-    copy-button.button.med(:value='exportData' title='copy')
-    download-button.button.med(v-bind='downloadData')
+  .export-controls(v-if="data" label="test label")
+    menu-button
+      template(v-slot:button)
+        icon(name="dots")
+      template(v-slot:elements)
+        copy-button.button.med(:value="getFilteredData(data,isCsv)" title="copy json")
+          small copy
+        download-button.button.med(v-bind="downloadData(fileName,data,isCsv)")
+          small download
+        .row
+          export-format
 </template>
 <script>
+import MenuButton from './controls/MenuButton'
 import CopyButton from './controls/CopyButton'
 import DownloadButton from './controls/DownloadButton'
-import dataMixin from '../mixins/dataMixin'
+import ExportFormat from './controls/ExportFormat'
+import exportMixin from '../mixins/export'
+import { mapGetters } from 'vuex'
 export default {
   name: 'export-controls',
   props: ['data', 'type', 'id'],
   components: {
+    MenuButton,
     CopyButton,
-    DownloadButton
+    DownloadButton,
+    ExportFormat
   },
-  mixins: [dataMixin],
+  mixins: [exportMixin],
   computed: {
-    exportData () {
-      const { data } = this
-      return (data) ? JSON.stringify(data, null, 4) : null
-    },
+    ...mapGetters({
+      isCsv: 'isCsvExport'
+    }),
     fileName () {
       let fileName = 'download'
       const { entity, data, type } = this
@@ -27,14 +39,6 @@ export default {
       const id = (key) ? data[key] : null
       if (type && id) fileName = `${type}-${id}`
       return fileName
-    },
-    downloadData () {
-      const value = this.exportData
-      if (!value) return {}
-      const fileType = 'json'
-      let fileName = this.fileName
-      fileName = `${fileName}.${fileType}`
-      return { fileType, value, fileName, title: 'download' }
     }
   }
 }
@@ -42,11 +46,9 @@ export default {
 <style lang="stylus">
   .export-controls
     display flex
+    position relative
     flex 1
     flex-flow row nowrap
     justify-content flex-end
 
-    .button
-      margin 0 0.5em
-      flex 0
 </style>

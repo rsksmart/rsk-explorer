@@ -26,23 +26,9 @@ export default {
       }
     },
     fields () {
+      const { data, parentData, context } = this
       const entity = this.entity || {}
-      let fields = entity.fields
-      if (entity) {
-        const parentData = this.parentData
-        const data = this.data
-        if (fields) {
-          const fcb = this.fieldsCb
-          if (fcb) {
-            fields = fcb(fields, data, parentData)
-            for (const name in fields) {
-              fields[name] = this.parseField(name, fields[name])
-            }
-          }
-        }
-        fields = fields || this.dataKeys
-      }
-      return Object.assign({}, fields)
+      return this.getFields({ entity, data, parentData, context })
     },
     visibleFields () {
       return Object.values(this.fields)
@@ -62,10 +48,10 @@ export default {
       if (this.rowCb) {
         if (Array.isArray(data)) {
           data = data.map(row => {
-            return this.rowCb(row, parentData, fields)
+            return this.rowCb({ data: row, parentData, fields })
           })
         } else {
-          data = this.rowCb(data, parentData, fields)
+          data = this.rowCb({ data, parentData, fields })
         }
       }
       return data
@@ -139,14 +125,17 @@ export default {
 
       return style
     },
-    fieldFormatProp (prop, field, value, filteredValue, row) {
+    fieldFormatProp (prop, field, value, filteredValue, data) {
       if (undefined === value) value = this.getValue(field, this.data, true)
-      if (undefined === filteredValue) filteredValue = this.filterFieldValue()(field, value, row)
+      if (undefined === filteredValue) filteredValue = this.filterFieldValue()({ field, value, data })
       const pv = field[prop]
       if (typeof pv === 'function') {
-        return pv(value, filteredValue, row)
+        return pv(value, filteredValue, data)
       }
       return pv
+    },
+    fieldValueDescription (field, value, filteredValue, row) {
+      return this.fieldFormatProp('valueDescription', field, value, filteredValue, row)
     },
 
     fieldCss (field, value, filteredValue, row) {
@@ -161,7 +150,7 @@ export default {
       return this.fieldFormatProp('suffix', field, value, filteredValue, row)
     },
 
-    renderAsProps (payload) {
+    renderAsProps (payload = {}) {
       const field = payload.field || {}
       const props = field.renderAsProps
       return (typeof props === 'function') ? props(payload) : props
@@ -215,6 +204,26 @@ export default {
       if (value.length > this.trimIf) {
         return trim || this.defaultTrim
       }
+    },
+    getCustomRenderProps (field, row) {
+      if (!field.renderAs) return
+      return field.renderAsProps({ field, row })
+    },
+    getFields ({ entity, data, parentData, context }) {
+      let fields = entity.fields
+      if (entity) {
+        if (fields) {
+          const fcb = this.fieldsCb
+          if (fcb) {
+            fields = fcb({ fields, data, parentData, context })
+            for (const name in fields) {
+              fields[name] = this.parseField(name, fields[name])
+            }
+          }
+        }
+        fields = fields || this.dataKeys
+      }
+      return Object.assign({}, fields)
     }
   }
 }

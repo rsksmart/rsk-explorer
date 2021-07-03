@@ -49,6 +49,10 @@
             select(v-if='evmVersions' name='evm-version' v-model='settings.evmVersion')
               option(:value='undefined') latest
               option(v-for='evm in evmVersions' :value='evm') {{evm}}
+          form-row(v-bind='abiEncodedArgs ? formFields.ENCODED_ARGUMENTS:formFields.CONSTRUCTOR_ARGUMENTS')
+            input(type='text' v-model='constructorArguments')
+          form-row(v-bind='formFields.ABI_ENCODED_ARGUMENTS')
+            ctrl-radio-grp.frow(name='encoded' @change='(value)=>abiEncodedArgs=value' :selected='abiEncodedArgs')
           form-row(v-bind='formFields.LIBRARIES')
             .frow
               button.btn.brand(type="button" @click='addLibrary' name="add-library")
@@ -82,15 +86,22 @@
           ul.small
             li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
 
-      .col(v-if='verificationDone || verificationErrors')
+      .done(v-if='verificationDone || verificationErrors')
         template(v-if='verificationSuccessful')
           h3.brand {{messages().VERIFICATION_DONE}}
           .row
             button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
 
         template(v-else)
-          p.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
-          .try-again
+          .row
+            h3.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
+          .row(v-if='verificationTry')
+            h4.info Try adding some of this parameters:
+          ul
+            li(v-for='v,p in verificationTry')
+              strong {{p}}:
+              pre {{v}}
+          .row.try-again
             button.big.brand.btn.flex(@click.prevent='tryAgain') Try again
 
 </template>
@@ -145,6 +156,8 @@ export default {
       },
       version: undefined,
       libs: [],
+      constructorArguments: undefined,
+      abiEncodedArgs: false,
       inputErrors: new Set(),
       errors: [],
       timer: undefined
@@ -177,6 +190,12 @@ export default {
       const data = this.verificationResultData || {}
       const { result } = data
       return (result) ? result.errors : null
+    },
+
+    verificationTry () {
+      const data = this.verificationResultData || {}
+      const { result } = data
+      return (result) ? result.tryThis : undefined
     },
 
     verificationDone () {
@@ -265,6 +284,7 @@ export default {
     },
 
     isReadyToSend () {
+      const { constructorArguments, encodedConstructorArguments } = this.getConstructorArguments()
       const { address, settings, files, version, name, libs } = this
       const libraries = libs.reduce((v, a, i) => {
         const { name, address } = a
@@ -279,7 +299,7 @@ export default {
       if (!ready) return false
       const imports = [...files]
       const source = imports[0].contents
-      return Object.assign(params, { imports, source, libraries })
+      return Object.assign(params, { imports, source, libraries, constructorArguments, encodedConstructorArguments })
     },
     hasFiles () {
       return !!this.files.length
@@ -323,11 +343,24 @@ export default {
     },
 
     tryAgain (event) {
+      const { verificationTry } = this
+      if (verificationTry) {
+        const { constructorArguments, encodedConstructorArguments } = verificationTry
+        if (encodedConstructorArguments) {
+          this.abiEncodedArgs = true
+          this.constructorArguments = encodedConstructorArguments
+        } else if (constructorArguments) {
+          this.constructorArguments = constructorArguments.join(',')
+        }
+      }
       this.setVerificationId(undefined)
     },
     addLibrary () {
       const empty = this.libs.find(l => l.name === '')
       if (!empty) this.libs.push({ name: '', address: '' })
+    },
+    addConstructorArgumet () {
+      this.constructorArguments.push('')
     },
     cssClass (input) {
       return (this.inputErrors.has(input)) ? ['error'] : []
@@ -444,27 +477,37 @@ export default {
       const path = `/${ROUTES.address}/${address}`
       const query = { __ctab: 'code' }
       this.$router.push({ path, query })
+    },
+    getConstructorArguments () {
+      let encodedConstructorArguments
+      let { constructorArguments, abiEncodedArgs } = this
+      if (abiEncodedArgs) {
+        encodedConstructorArguments = constructorArguments
+        constructorArguments = undefined
+      }
+      if (constructorArguments) constructorArguments = constructorArguments.split(',')
+      return { constructorArguments, encodedConstructorArguments }
     }
   }
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/vars.styl'
+@import '../lib/styl/vars.styl'
 
-  .verify-contracts
-    flex-flow column nowrap !important
+.verify-contracts
+  flex-flow column nowrap !important
 
-    .loading
-      display block
-      text-align center
+  .loading
+    display block
+    text-align center
 
-      svg
-        margin auto
+    svg
+      margin auto
 
-    svg.loading-circle
-      fill none
-      stroke green
+  svg.loading-circle
+    fill none
+    stroke green
 
-    .try-again
-      padding 2em
+  .try-again
+    padding 2em
 </style>

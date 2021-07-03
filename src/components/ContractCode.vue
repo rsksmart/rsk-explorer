@@ -29,8 +29,13 @@
 
         //- Compilation settings
         template(v-if='verificationData')
-         h3.subtitle Compilation settings
-        data-item(:data='verificationData' type='compilationSettings')
+          h3.subtitle Compilation settings
+          data-item(:data='verificationData' type='compilationSettings')
+
+      //-Consturctor Arguments
+      template(v-if='constructorArgs')
+        h3.subtitle Constructor Arguments
+        data-item(:data='constructorArgs' type='constructorArguments')
 
       //- bytecode
       .section
@@ -120,12 +125,15 @@ export default {
       const { version: compilerVersion } = usedSettings.compiler
       return { contractName, compilerVersion, evmVersion, optimization }
     },
-
     selected () {
       const { fileSelected } = this
       return this.imports.find(f => f.name === fileSelected)
+    },
+    constructorArgs () {
+      const result = this.result || {}
+      const { constructorArguments: decoded, encodedConstructorArguments: encoded } = result
+      return (encoded || decoded) ? { encoded, decoded } : undefined
     }
-
   },
   methods: {
     verifyContract () {
@@ -141,34 +149,34 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/vars.styl'
+@import '../lib/styl/vars.styl'
 
-  .contract-details
-    .verify
-      display block
-      margin 1em
-      width 100%
-      text-align right
+.contract-details
+  .verify
+    display block
+    margin 1em
+    width 100%
+    text-align right
 
-    .files
-      display flex
-      flex-flow row wrap
-      position relative
-      min-width 100%
-      width 100%
-      justify-content flex-start
+  .files
+    display flex
+    flex-flow row wrap
+    position relative
+    min-width 100%
+    width 100%
+    justify-content flex-start
 
-      .sel
-        font-weight bold
-        border-bottom solid 1px $color
+    .sel
+      font-weight bold
+      border-bottom solid 1px $color
 
-      button
-        margin 0 0.5em
-        font-weight bold
+    button
+      margin 0 0.5em
+      font-weight bold
 
-    .selected-file-enter-active, .selected-file-leave-active
-      transition opacity 0.2s ease-in
+  .selected-file-enter-active, .selected-file-leave-active
+    transition opacity 0.2s ease-in
 
-    .selected-file-enter, .selected-file-leave-to
-      opacity 0
+  .selected-file-enter, .selected-file-leave-to
+    opacity 0
 </style>

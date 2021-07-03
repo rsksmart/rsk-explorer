@@ -22,7 +22,7 @@
           :class="{selected: selectedResult === i+1 }"
           :key="`${result.value}${i}`"
           :ref="`result-${i}`")
-          a.button(
+          a(
             :href="result.link"
             @touchend.passive="gotoResult($event,i)"
             @click="gotoResult($event,i)") {{result.name || result.value }}

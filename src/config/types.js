@@ -1,4 +1,3 @@
-
 export const APP_NAME = 'RSK explorer'
 
 export const ROUTES = {
@@ -23,7 +22,9 @@ export const ROUTES = {
   internalTransactions: 'itxs',
   internalTx: 'itx',
   balance: 'balance',
-  balances: 'balances'
+  balances: 'balances',
+  mining: 'mining',
+  settings: 'settings'
 }
 
 export const STATUS = {
@@ -47,6 +48,7 @@ export const CONTRACT_UNKNOWN_NAME = '(Not provided)'
 export const NOT_AVAILABLE = 'N/A'
 export const CONTRACT_CREATED = 'contract created'
 export const CONTRACT_FAILED = 'creation failed'
+export const POOL_UNKNOWN_NAME = '(Not provided)'
 
 export const PAGE_NOT_FOUND = 'Page not found'
 
@@ -63,4 +65,18 @@ export const CONNECTION_STATUS = {
   WAITING: 'Waiting for connection',
   LOST: 'Connection lost',
   UNABLE: 'Cannot connect to backend'
+}
+
+export const CONTEXT = {
+  export: 'export'
+}
+
+export const EXPORT_FORMATS = {
+  JSON: 'json',
+  CSV: 'csv'
+}
+
+export const EXPORT_ITEMS = {
+  LIST: 'listed',
+  ALL: 'all'
 }

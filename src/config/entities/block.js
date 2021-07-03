@@ -2,6 +2,7 @@ import { ROUTES as r } from '../types'
 
 const Blocks = () => {
   return {
+    itemEntity: 'block',
     key: 'number',
     icon: 'cube',
     link: `/${r.block}/`,
@@ -48,9 +49,7 @@ const Block = () => {
       trim: 'auto',
       link: `/${r.block}/`
     },
-    sha3Uncles: {
-      trim: 'auto'
-    },
+
     miner: {
       trim: 'auto'
     },
@@ -86,6 +85,16 @@ const Block = () => {
     extraData: {
       renderAs: 'big-field',
       renderAsProps: { options: { decode: true } }
+    },
+    sha3Uncles: {
+      trim: 'auto'
+    },
+    uncleCount: {
+      field: 'uncles',
+      filters: [uncles => uncles.length.toString()]
+    },
+    uncles: {
+      hideIfEmpty: true
     }
   })
   block.itemTitle = false

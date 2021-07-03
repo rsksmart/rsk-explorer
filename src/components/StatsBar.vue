@@ -13,7 +13,7 @@
         .cols
           //- third box
           .col-a
-            box-field(:field='fields.bridgeBalance' :row='circulating' :style='colStyle')
+            box-field(:field='fields.lockingCap' :row='bridge' :style='colStyle')
           //- fourth box
           .col-b
             box-field(:field='fields.activeAccounts' :row='stats' :style='colStyle')
@@ -61,6 +61,9 @@ export default {
     }),
     circulating () {
       return this.stats.circulating || {}
+    },
+    bridge () {
+      return this.stats.bridge || {}
     },
     colStyle () {
       return { 'min-height': this.colHeight + 'px' }

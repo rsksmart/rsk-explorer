@@ -1,0 +1,169 @@
+{
+  "oneHour": [
+    {
+      "minerName": "ViaBTC",
+      "hashrateInRskNetwork": 4,
+      "hashingPower": 4.8,
+      "hashratePercentageInRskNetwork": 26.94,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "Poolin",
+      "hashrateInRskNetwork": 3.88,
+      "hashingPower": 4.66,
+      "hashratePercentageInRskNetwork": 26.12,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "AntPool",
+      "hashrateInRskNetwork": 2.97,
+      "hashingPower": 3.57,
+      "hashratePercentageInRskNetwork": 20,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "Binance",
+      "hashrateInRskNetwork": 1.46,
+      "hashingPower": 1.75,
+      "hashratePercentageInRskNetwork": 9.8,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "SlushPool",
+      "hashrateInRskNetwork": 1.4,
+      "hashingPower": 1.67,
+      "hashratePercentageInRskNetwork": 9.39,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "HuobiPool",
+      "hashrateInRskNetwork": 0.73,
+      "hashingPower": 0.87,
+      "hashratePercentageInRskNetwork": 4.9,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "F2Pool",
+      "hashrateInRskNetwork": 0.42,
+      "hashingPower": 0.51,
+      "hashratePercentageInRskNetwork": 2.86,
+      "hashrateInRskNetworkUnit": "EHs"
+    }
+  ],
+  "oneDay": [
+    {
+      "minerName": "ViaBTC",
+      "hashrateInRskNetwork": 2.32,
+      "hashingPower": 4.99,
+      "hashratePercentageInRskNetwork": 27.98,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "Poolin",
+      "hashrateInRskNetwork": 1.88,
+      "hashingPower": 4.03,
+      "hashratePercentageInRskNetwork": 22.58,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "AntPool",
+      "hashrateInRskNetwork": 1.82,
+      "hashingPower": 3.9,
+      "hashratePercentageInRskNetwork": 21.87,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "SlushPool",
+      "hashrateInRskNetwork": 0.9,
+      "hashingPower": 1.92,
+      "hashratePercentageInRskNetwork": 10.78,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "Binance",
+      "hashrateInRskNetwork": 0.78,
+      "hashingPower": 1.67,
+      "hashratePercentageInRskNetwork": 9.36,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "HuobiPool",
+      "hashrateInRskNetwork": 0.41,
+      "hashingPower": 0.87,
+      "hashratePercentageInRskNetwork": 4.88,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "F2Pool",
+      "hashrateInRskNetwork": 0.2,
+      "hashingPower": 0.44,
+      "hashratePercentageInRskNetwork": 2.44,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "1THash",
+      "hashrateInRskNetwork": 0.01,
+      "hashingPower": 0.02,
+      "hashratePercentageInRskNetwork": 0.1,
+      "hashrateInRskNetworkUnit": "EHs"
+    }
+  ],
+  "oneWeek": [
+    {
+      "minerName": "ViaBTC",
+      "hashrateInRskNetwork": 12.36,
+      "hashingPower": 29.62,
+      "hashratePercentageInRskNetwork": 31.14,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "AntPool",
+      "hashrateInRskNetwork": 10.06,
+      "hashingPower": 24.12,
+      "hashratePercentageInRskNetwork": 25.35,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "Poolin",
+      "hashrateInRskNetwork": 9,
+      "hashingPower": 21.57,
+      "hashratePercentageInRskNetwork": 22.67,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "SlushPool",
+      "hashrateInRskNetwork": 3.87,
+      "hashingPower": 9.27,
+      "hashratePercentageInRskNetwork": 9.75,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "HuobiPool",
+      "hashrateInRskNetwork": 2.02,
+      "hashingPower": 4.84,
+      "hashratePercentageInRskNetwork": 5.09,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "Binance",
+      "hashrateInRskNetwork": 1.24,
+      "hashingPower": 2.98,
+      "hashratePercentageInRskNetwork": 3.13,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "F2Pool",
+      "hashrateInRskNetwork": 1.12,
+      "hashingPower": 2.69,
+      "hashratePercentageInRskNetwork": 2.83,
+      "hashrateInRskNetworkUnit": "EHs"
+    },
+    {
+      "minerName": "1THash",
+      "hashrateInRskNetwork": 0.02,
+      "hashingPower": 0.04,
+      "hashratePercentageInRskNetwork": 0.04,
+      "hashrateInRskNetworkUnit": "EHs"
+    }
+  ]
+}

@@ -1,8 +1,6 @@
 import Vue from 'vue'
 
-export const SET_CONFIG = (state, payload) => {
-  const key = payload[0]
-  const value = payload[1]
+export const SET_CONFIG = (state, [key, value]) => {
   if (undefined !== state[key]) {
     Vue.set(state, key, value)
   }
@@ -40,4 +38,10 @@ export const SET_TABLE = (state, payload) => {
   const tableId = payload[0]
   const config = payload[1]
   Vue.set(state.tables, tableId, config)
+}
+
+export const SET_CONFIG_DECIMAL_PLACES = (state, value) => {
+  value = parseInt(value)
+  value = (!isNaN(value)) ? value : 4
+  Vue.set(state, 'decimalPlaces', value)
 }

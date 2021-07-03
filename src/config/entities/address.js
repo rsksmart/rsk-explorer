@@ -1,7 +1,8 @@
 import { ROUTES as r } from '../types'
-import { tokenAmount } from '../../filters/TokensFilters'
+import { applyDecimals } from '../../filters/TokensFilters'
+import { valueFilters } from './lib/fieldsTypes'
 
-const addressFormatRow = (data, parentData) => {
+const addressFormatRow = ({ data, parentData }) => {
   data._totalSupplyResult = totalSupplyField(data)
   const decimals = data.decimals
   data.decimals = (decimals && decimals !== '0x0') ? decimals : null
@@ -10,6 +11,7 @@ const addressFormatRow = (data, parentData) => {
 
 export const Addresses = () => {
   return {
+    itemEntity: 'address',
     icon: 'credit-card',
     key: 'address',
     link: `/${r.address}`,
@@ -17,7 +19,7 @@ export const Addresses = () => {
     fields: {
       address: null,
       balance: {
-        filters: ['tx-value', 'round', 'rbtc'],
+        filters: valueFilters(true),
         default: 0,
         trim: 0
       },
@@ -90,7 +92,7 @@ export const Address = () => {
       hideIfEmpty: true
     }
   }, fields)
-  address.fields.balance.filters = ['tx-value', 'rbtc']
+  address.fields.balance.filters = valueFilters(false)
   return address
 }
 
@@ -101,7 +103,7 @@ export const totalSupplyField = data => {
   const totalSupply = data.totalSupply
   const decimals = data.decimals
   if ((totalSupply && totalSupply !== '0x0') && decimals) {
-    return tokenAmount(totalSupply, decimals)
+    return applyDecimals(totalSupply, decimals)
   }
   return null
 }

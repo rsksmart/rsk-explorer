@@ -1,27 +1,27 @@
 
 import { ROUTES as r, STATUS, CONTRACT_CREATED, CONTRACT_FAILED } from '../types'
-import { addressFilters, linkAddress, txValueFilters } from './lib/fieldsTypes'
+import { addressFilters, linkAddress, valueFilters } from './lib/fieldsTypes'
 import { setThisAddress } from './lib/eventsLib'
 
 const key = 'internalTxId'
 
-const internalTransactionFormatRow = (itx, parentData) => {
+const internalTransactionFormatRow = ({ data, parentData, context }) => {
   const { address } = parentData || {}
-  const { error, result, type, action } = itx
+  const { error, result, type, action } = data
   const { callType } = action
   const contractAddress = (result) ? result.address : undefined
-  itx.status = (error) ? STATUS.FAIL : STATUS.SUCCESS
+  data.status = (error) ? STATUS.FAIL : STATUS.SUCCESS
   if (address) {
     const { from, to } = action
-    itx.action.from = setThisAddress(from, { address })
-    itx.action.to = setThisAddress(to, { address })
+    data.action.from = setThisAddress(from, { address }, context)
+    data.action.to = setThisAddress(to, { address }, context)
   }
   if (contractAddress) {
-    itx.action.to = (itx.status === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
-    itx.contractAddress = contractAddress
+    data.action.to = (data.status === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
+    data.contractAddress = contractAddress
   }
-  itx._type = (type === 'call') ? callType : type
-  return itx
+  data._type = (type === 'call') ? callType : type
+  return data
 }
 
 const itxCss = (value, filtered, data) => {
@@ -33,6 +33,7 @@ const formatRow = internalTransactionFormatRow
 
 const InternalTransactions = () => {
   return {
+    itemEntity: 'internalTransaction',
     link: `/${r.internalTx}`,
     listLink: `/${r.internalTransactions}`,
     key,
@@ -57,7 +58,7 @@ const InternalTransactions = () => {
       timestamp: null,
       value: {
         field: 'action.value',
-        filters: txValueFilters(2),
+        filters: valueFilters(true),
         trim: 'auto'
       },
       status: {
@@ -84,7 +85,7 @@ const InternalTransactions = () => {
 
 const InternalTransaction = () => {
   const { from, to, timestamp, value } = InternalTransactions().fields
-  value.filters = txValueFilters()
+  value.filters = valueFilters()
   const fields = {
     from,
     to,

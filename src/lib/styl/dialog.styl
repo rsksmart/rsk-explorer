@@ -1,0 +1,132 @@
+@import 'vars.styl'
+
+ $buttons-margin = $action-btn-size / 8   
+ dialog()
+  border: 3px solid $color
+  
+ dialog-pinned()
+  border: 3px solid $color2
+
+.dialog-drag
+  will-change trasform
+  transform translate3d(0,0,0)
+  z-index: 101
+  width: auto
+  height: auto
+  position: absolute
+  overflow: visible
+  display: flex
+  flex-direction: column
+  background-color: $bg-color
+  box-shadow: $dialog-sh
+  animation-duration: 0.2s
+  animation-name: dialog-anim
+  animation-timing-function: ease-in
+  border-radius: 1px
+  border: 1px solid $color
+
+
+  .dialog-header
+    width: auto
+    background-color $txt-color
+    font-size: 0.9em
+    display flex
+    flex-flow row nowrap
+    align-items center
+    justify-content space-between
+    padding .3rem .7rem
+    height: auto
+    .buttons 
+      text-align:  right
+      margin: $buttons-margin $buttons-margin * 2 0 0
+      text-align: right
+      button svg
+         width: $action-btn-size
+         height: @width
+      button.close, button.pin
+        background: transparent
+        box-shadow: none
+        border:none
+      
+      &:hover
+        color: $color2 
+    button.pin
+      width: $action-btn-size / 1.2
+  
+  .dialog-body
+     padding:  0 .25em .35em .25em
+
+
+.dialog-drag.fixed  // dialog pinned
+  dialog-pinned()
+  user-select: auto 
+  
+  button.pin // pinned button
+    color: $color2
+
+@keyframes dialog-anim
+  0%
+    opacity: 0
+    transform: scaleX(.1) 
+  50%
+    transform: rotate(1deg)
+  100%
+    opacity: 1  
+
+$searchBg = $darkness
+// Nodes Table
+.table-dialog
+  .buttons 
+    margin-right: 1em
+  input
+    background $darkness
+    color: $color
+    border: $dark solid 1px
+  .search
+    overflow: visible
+    top: .5em
+    left 1em
+    input
+      color: $color2
+      margin-left: .25em
+    .svg-icon
+      fill: $dark
+
+// Nodes Dialogs
+.main-dialog
+  .chart-dialog
+    .dialog-header
+      position absolute
+      top .25rem
+      right .25rem
+      z-index 150
+    .dialog-body
+      padding: 0 !important
+    .dialog-header
+      .node-title
+        display none
+
+.nodes-dialog, .table-dialog
+   border solid 1px $dark
+
+.nodes-dialog 
+  .dialog-drag.fixed
+    dialog-pinned() 
+  .node-title
+    margin: 0
+  .dialog-header
+    .title
+      color: $dark
+  .node-header
+    display: flex
+    align-items: center
+    margin-top: .25em
+    padding .5em 0 .5em 1em
+    .title
+      margin-left .5em
+    .svg-icon
+      width: 1em
+      height: @width
+      fill: $color
+
+

@@ -1,0 +1,262 @@
+{
+  "oneHour": null,
+  "oneDay": [
+    {
+      "time": "2021-07-02 08:00",
+      "data": {
+        "rskHashrate": {
+          "value": 53.51,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 89.18,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 45.48,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-02 11:00",
+      "data": {
+        "rskHashrate": {
+          "value": 41.97,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 89.18,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 45.48,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-02 14:00",
+      "data": {
+        "rskHashrate": {
+          "value": 71.34,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 89.18,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 45.48,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-02 17:00",
+      "data": {
+        "rskHashrate": {
+          "value": 48.64,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 89.18,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 45.48,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-02 20:00",
+      "data": {
+        "rskHashrate": {
+          "value": 41.16,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 89.18,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 45.48,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-02 23:00",
+      "data": {
+        "rskHashrate": {
+          "value": 50.96,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 89.18,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 45.48,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-03 02:00",
+      "data": {
+        "rskHashrate": {
+          "value": 1.49,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 17.84,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 9.1,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-03 05:00",
+      "data": {
+        "rskHashrate": {
+          "value": 14.86,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 17.84,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 9.1,
+          "unit": "EHs"
+        }
+      }
+    }
+  ],
+  "oneWeek": [
+    {
+      "time": "2021-06-27",
+      "data": {
+        "rskHashrate": {
+          "value": 21.8,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 57.47,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 29.31,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-06-28",
+      "data": {
+        "rskHashrate": {
+          "value": 34.68,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 87.2,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 44.47,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-06-29",
+      "data": {
+        "rskHashrate": {
+          "value": 39.63,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 89.18,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 45.48,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-06-30",
+      "data": {
+        "rskHashrate": {
+          "value": 32.7,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 87.2,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 44.47,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-01",
+      "data": {
+        "rskHashrate": {
+          "value": 44.59,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 95.12,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 48.51,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-02",
+      "data": {
+        "rskHashrate": {
+          "value": 39.63,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 89.18,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 45.48,
+          "unit": "EHs"
+        }
+      }
+    },
+    {
+      "time": "2021-07-03",
+      "data": {
+        "rskHashrate": {
+          "value": 5.95,
+          "unit": "EHs"
+        },
+        "btcHashrate": {
+          "value": 17.84,
+          "unit": "EHs"
+        },
+        "rskObjectiveHashrate": {
+          "value": 9.1,
+          "unit": "EHs"
+        }
+      }
+    }
+  ]
+}

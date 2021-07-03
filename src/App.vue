@@ -21,11 +21,11 @@
                 icon(:name='(!menu) ? "menu" : "close"')
             nav.menu(:class='(menu) ? "enabled":""')
               ul
-                template(v-for='path,menu in menuItems')
-                  li(v-if='menu !== "home" || !isRoute("home")' @click='toggleMenu')
-                    router-link(:to='"/" + path')
-                      icon.icon(:name='getIcon(menu)')
-                      span {{menu}}
+                template(v-for='m in menuItems')
+                  li(v-if='m.key !== "home" || !isRoute("home")' @click='toggleMenu')
+                    router-link(:to='"/" + m.path' :title='(!m.title)?m.key:null')
+                      icon.icon(v-if='m.icon' :name='getIcon(m.icon)')
+                      span(v-if='m.title') {{m.title}}
     connection-status(v-if='!connected')
     .main
       router-view
@@ -143,23 +143,23 @@ export default {
 </script>
 <style src="vue-d3-barchart/dist/vue-d3-barchart.css"></style>
 <style lang="stylus">
-  @import 'lib/styl/style.styl'
-  @import 'lib/styl/mixins.styl'
+@import 'lib/styl/style.styl'
+@import 'lib/styl/mixins.styl'
 
-  .w-trans
-    transition opacity 1s ease
-    opacity 1
+.w-trans
+  transition opacity 1s ease
+  opacity 1
 
-  .head-trans-enter-active
-    opacity 0
+.head-trans-enter-active
+  opacity 0
 
-  .top-page
-    flex-centered()
-    font-size 0.9em
-    text-shadow $txt-sh
-    background $darkness-odd
-    border-bottom 1px solid $darkness-even
+.top-page
+  flex-centered()
+  font-size 0.9em
+  text-shadow $txt-sh
+  background $darkness-odd
+  border-bottom 1px solid $darkness-even
 
-  .menu
-    font-size 0.9em
+.menu
+  font-size 0.9em
 </style>

@@ -1,4 +1,5 @@
 import { THIS_ADDRESS } from '../../types'
+import { isExport } from './fieldsTypes'
 import { isRemascEvent, remascEventConfig } from './remascEvents'
 
 export const EVENTS_TYPES = {
@@ -130,6 +131,7 @@ export const getEventAbiFields = event => {
   }, {})
 }
 
-export const setThisAddress = (val, { address }) => {
+export const setThisAddress = (val, { address }, context) => {
+  if (isExport(context)) return val
   return val !== address ? val : THIS_ADDRESS
 }

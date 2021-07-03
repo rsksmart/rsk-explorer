@@ -73,7 +73,9 @@ export default {
       return this.makeLink(this.bField, this.tx)
     },
     blockNumber () {
-      return this.filterFieldValue()(this.bField, this.tx.blockNumber)
+      const field = this.bField
+      const value = this.tx.blockNumber
+      return this.filterFieldValue()({ field, value })
     }
   }
 }
@@ -94,8 +96,8 @@ export default {
     display flex
     flex-flow row nowrap
     justify-content space-between
+
     .from, .to
       max-width 50% !important
       flex 1
-
 </style>

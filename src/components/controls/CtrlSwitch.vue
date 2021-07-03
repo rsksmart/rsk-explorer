@@ -1,7 +1,7 @@
 <template lang="pug">
   .switch
     label.ctrl
-      input(type='checkbox' :checked='value' @change='updateValue')
+      input(type='checkbox' :checked='value' @change='updateValue' :class="inputClass")
       span.slider(:class='ctrlClass')
     label.label(v-if='label' :class='labelClass') {{ label }}
 
@@ -9,13 +9,20 @@
 <script>
 export default {
   name: 'ctrl-switch',
-  props: ['label', 'value', 'square'],
+  props: ['label', 'value', 'square', 'enabled', 'css'],
   computed: {
     ctrlClass () {
       return (!this.square) ? 'round' : 'square'
     },
     labelClass () {
       return (this.value) ? '' : 'gray'
+    },
+    inputClass () {
+      let { css, enabled } = this
+      css = css || []
+      css = Array.isArray(css) ? css : [css]
+      if (enabled) css.push('enabled')
+      return css
     }
   },
   methods: {
@@ -44,17 +51,17 @@ export default {
       width $sw-width
       max-width $sw-width
       height $sw-height
-      margin 0 .5em 0 0
+      margin 0 0.5em 0 0
       padding 0
 
     .label
-      margin-left .5em
-      font-size .9em
+      margin-left 0.5em
+      font-size 0.9em
       display inline
       margin 0
       padding 0
 
-    input[type="checkbox"]
+    input[type='checkbox']
       display none
       border none
 
@@ -81,7 +88,7 @@ export default {
       box-shadow $tip-sh
       transition 0.4s
 
-    input:checked + .slider
+    input:checked + .slider, input.enabled + .slider
       background-color $color
 
     input:focus + .slider
