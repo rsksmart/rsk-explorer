@@ -1,0 +1,115 @@
+[
+  {
+    "height": 689458,
+    "hash": "0000000000000000000b0a6ba7e207f97cf3e86d1666d140bb80272b46d5a168",
+    "timestamp": 1625284081,
+    "minerName": "SlushPool",
+    "rskTag": "933916ae58907d43e0982a119701843be3a3ad7279fad16b3a70b02b00352c03",
+    "rskHeight": 3484675,
+    "status": "OnRskUncle"
+  },
+  {
+    "height": 689457,
+    "hash": "00000000000000000009f437be08b14e737afdb16ea1fe91c2e7f3bfb15eb067",
+    "timestamp": 1625283916,
+    "minerName": "Poolin",
+    "rskTag": "da6d6eff5ac5fbedd5f598489931b3e0dc55d1d9fad16b3a70b0b82800352bfd",
+    "rskHeight": 3484669,
+    "status": "OnRskUncle"
+  },
+  {
+    "height": 689456,
+    "hash": "00000000000000000008d88fd6975c51f1d58076959ab5f9fe728c747c40167e",
+    "timestamp": 1625283287,
+    "minerName": "AntPool",
+    "rskTag": "69c1e0f7758512417bdb7eb09dc749a4afb81cbdfad16b3a70b0b82600352be8",
+    "rskHeight": 3484648,
+    "status": "OnRskMainchain"
+  },
+  {
+    "height": 689455,
+    "hash": "00000000000000000007bc743c6df4a71e171ab69d1bda265c5fdee8ff45d48a",
+    "timestamp": 1625283242,
+    "minerName": "Binance Pool",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689454,
+    "hash": "0000000000000000000882fa57d938a54c55664bed8947b3903460ac15df9a71",
+    "timestamp": 1625281007,
+    "minerName": "F2Pool",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689453,
+    "hash": "00000000000000000004b4e876658f09bad56ec03658ff818c6dec02dbcd9c24",
+    "timestamp": 1625280537,
+    "minerName": "unknown",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689452,
+    "hash": "0000000000000000000b8301657e5adc59e8b7ceba8e5e22d2d469a43bb4271b",
+    "timestamp": 1625277204,
+    "minerName": "unknown",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689451,
+    "hash": "00000000000000000002c6d01bdea313b016bd3ed2694aa95266869c9ce7e71f",
+    "timestamp": 1625276269,
+    "minerName": "Binance Pool",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689450,
+    "hash": "000000000000000000098ee0667c41f7bc462e8446e036aec9c1b7bafd982f68",
+    "timestamp": 1625273304,
+    "minerName": "unknown",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689449,
+    "hash": "000000000000000000057e2efcbf407959ebfafd271548422c4e6510ec75541b",
+    "timestamp": 1625272806,
+    "minerName": "ViaBTC",
+    "rskTag": "efaf7c555b090c2c61d57b6bcba64138d4adf0c5b0b8addcf7437f2600352aa0",
+    "rskHeight": 3484320,
+    "status": "OnRskMainchain"
+  },
+  {
+    "height": 689448,
+    "hash": "000000000000000000056841059563d7f7b39c1e05f7958a78f45a59ce28a649",
+    "timestamp": 1625272507,
+    "minerName": "BTC.com",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689447,
+    "hash": "00000000000000000000ad7a47c2da102e3cc152e6187a4c49a83329f52d5180",
+    "timestamp": 1625272256,
+    "minerName": "BTC.com",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689446,
+    "hash": "00000000000000000009827441a337551d025fde51a049e82723f4f664d4bf85",
+    "timestamp": 1625272206,
+    "minerName": "unknown",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689445,
+    "hash": "00000000000000000002c9e70c1460233b3b9136f888035d1c1884b182629061",
+    "timestamp": 1625271617,
+    "minerName": "unknown",
+    "status": "NotMergedMined"
+  },
+  {
+    "height": 689444,
+    "hash": "00000000000000000009664dce525e8728891234601118a80eb30957669a6bce",
+    "timestamp": 1625271438,
+    "minerName": "unknown",
+    "status": "NotMergedMined"
+  }
+]

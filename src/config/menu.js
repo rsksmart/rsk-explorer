@@ -20,6 +20,7 @@ const items = [
   'addresses',
   'tokens',
   'stats',
+  'mining',
   { key: 'settings', title: false }
 ]
 export const menuItems = parseMenu(items)

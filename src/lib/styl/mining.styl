@@ -1,0 +1,80 @@
+.mining-page
+  width: 100%
+
+  & .chart-container
+    position relative
+    width 100%
+    display flex
+    justify-content center
+    align-items center
+    min-height 300px
+
+  & .chart
+    width 100%
+
+  & .overflow-hidden
+    width 100%
+    overflow hidden
+
+    & > .box
+      overflow-x auto
+
+    & .data-table
+      justify-content flex-start
+
+      & .table-wrapper
+        height 400px
+        overflow auto
+
+        & table
+          width -webkit-fill-available
+          position relative
+
+          & th
+            position sticky
+            top 0
+            background-color  $darkness
+            z-index 10000
+
+  & .section-wrapper
+    position relative
+
+    & .dialog-drag
+      transform translateX(-50%)
+      left 50%
+
+  & .table-body
+    position relative
+
+  & .box.w-full
+    width 100%
+
+    & .summary
+      width 100%
+
+      &-box
+        display flex
+
+        & > .svg-icon
+          font-size 3rem
+          margin-right 1rem
+
+      &-title
+        margin 0
+        padding 0.75em 1em
+
+      &-header
+        margin-top 0.5rem
+
+      &-header,
+      &-field
+        display flex
+        align-items center
+        margin-bottom 0.5rem
+
+        & .svg-icon
+          margin-right 1rem
+
+      &-wrapper
+        display grid
+        grid-template-columns repeat(auto-fit, minmax(300px, 1fr))

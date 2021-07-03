@@ -1,4 +1,3 @@
-
 export const APP_NAME = 'RSK explorer'
 
 export const ROUTES = {
@@ -24,6 +23,7 @@ export const ROUTES = {
   internalTx: 'itx',
   balance: 'balance',
   balances: 'balances',
+  mining: 'mining',
   settings: 'settings'
 }
 
@@ -48,6 +48,7 @@ export const CONTRACT_UNKNOWN_NAME = '(Not provided)'
 export const NOT_AVAILABLE = 'N/A'
 export const CONTRACT_CREATED = 'contract created'
 export const CONTRACT_FAILED = 'creation failed'
+export const POOL_UNKNOWN_NAME = '(Not provided)'
 
 export const PAGE_NOT_FOUND = 'Page not found'
 

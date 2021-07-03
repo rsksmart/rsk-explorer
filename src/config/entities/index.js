@@ -33,6 +33,7 @@ import { compilationSettings, externalLibraries, constructorArguments } from './
 import { stats } from './stats'
 import { internalTransaction, internalTransactions } from './internalTransaction'
 import { balance, balances } from './balances'
+import { lastBtcBlocks, lastRskBlocks, miningSummary } from './mining'
 
 export default {
   block,
@@ -64,5 +65,8 @@ export default {
   internalTransactions,
   balance,
   balances,
-  constructorArguments
+  constructorArguments,
+  lastBtcBlocks,
+  lastRskBlocks,
+  miningSummary
 }

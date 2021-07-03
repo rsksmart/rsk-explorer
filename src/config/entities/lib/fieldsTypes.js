@@ -2,6 +2,7 @@ import {
   ROUTES as r,
   CONTRACT_UNKNOWN_NAME,
   NOT_AVAILABLE,
+  POOL_UNKNOWN_NAME,
   CONTEXT
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
@@ -56,6 +57,20 @@ export default {
     link: `/${r.block}/`,
     filters: ['locale-round'],
     default: 0
+  },
+  miningBtcBlock: {
+    icon: 'btc',
+    titleIcon: true,
+    hideTitle: true,
+    link: 'https://btc.com/block/',
+    filters: ['not-applicable-locale']
+  },
+  miningRskBlock: {
+    icon: 'rsk',
+    titleIcon: true,
+    hideTitle: true,
+    link: `/${r.block}/`,
+    filters: ['not-applicable-locale']
   },
   blockHash: {
     link: `/${r.block}/`
@@ -161,5 +176,10 @@ export default {
     filters: ['round', 'locale-round', 'rbtc']
   },
   hashrate,
-  blockHashrate: hashrate
+  blockHashrate: hashrate,
+  pool: {
+    default: POOL_UNKNOWN_NAME,
+    trim: 'auto',
+    filters: addressFilters
+  }
 }
