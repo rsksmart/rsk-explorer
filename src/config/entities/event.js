@@ -14,12 +14,12 @@ export const setThisContract = (val, { address, type }) => {
   return val !== address ? val : txt
 }
 
-export const eventFormatRow = (event, parentData) => {
-  const addressData = (parentData.address) ? parentData : event._addressData || {}
-  event = formatEvent(event, addressData)
-  const contractAddress = event.address
-  event._contractAddress = contractAddress
-  return event
+export const eventFormatRow = ({ data, parentData }) => {
+  const addressData = (parentData.address) ? parentData : data._addressData || {}
+  data = formatEvent(data, addressData)
+  const contractAddress = data.address
+  data._contractAddress = contractAddress
+  return data
 }
 
 const eventArgumentData = ({ value, row }) => {
@@ -51,6 +51,7 @@ const eventArgumentData = ({ value, row }) => {
 
 export const Events = () => {
   return {
+    itemEntity: 'event',
     key: 'eventId',
     icon: 'zap',
     link: `/${r.event}/`,
@@ -132,9 +133,9 @@ export const EventFields = () => {
   return fields
 }
 
-const eventFieldsFormatter = (fields, event) => {
-  const config = getEventConfig(event)
-  const cFields = config.fields ? config.fields : getEventAbiFields(event)
+const eventFieldsFormatter = ({ fields, data }) => {
+  const config = getEventConfig(data)
+  const cFields = config.fields ? config.fields : getEventAbiFields(data)
   const hide = !cFields
   fields.eventArguments.fields = cFields
   fields.eventArguments.hide = hide
@@ -176,7 +177,7 @@ export const TransferEvents = () => {
       date,
       created
     },
-    formatRow: (data, parentData) => {
+    formatRow: ({ data, parentData, context }) => {
       const { _addressData, address } = data
       const eventData = formatEvent(data, _addressData || {})
       const event = eventData._arguments
@@ -188,8 +189,8 @@ export const TransferEvents = () => {
       if (_addressData) {
         event.contract = _addressData.name
         event._addressData = _addressData
-        event.from = setThisAddress(event.from, parentData)
-        event.to = setThisAddress(event.to, parentData)
+        event.from = setThisAddress(event.from, parentData, context)
+        event.to = setThisAddress(event.to, parentData, context)
       }
       return event
     },

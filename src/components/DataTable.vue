@@ -6,6 +6,17 @@
         icon(name='grid')
       button.switch(@click='switchTableGrid(true)' :disabled='renderTable')
         icon(name='table')
+      //- Menu
+      menu-button
+        template(v-slot:button)
+          icon(name="dots")
+        template(v-slot:elements)
+          button.button(v-if="!showExportMenu" @click='switchExportMenu')
+            icon(:name='icons.download' )
+            small download
+    //- Export Menu
+    .export-menu.row(v-if='showExportMenu')
+      export-pages(v-if='exportParams' v-bind='exportParams' @close='switchExportMenu')
     table.dark(v-if='data' ref='table' :class='tableClass')
       thead(:class='theadClass')
         tr
@@ -56,8 +67,8 @@
                       .sort-icon(v-if='isSorted(field.path) && !isDefaultSort')
                         icon.small(:name='sortIcon(field.path)')
                 field-title.td-title(v-else :field='field')
-              template(v-if="field.renderAs")
-                component(:is='field.renderAs' v-bind='renderAsProps({field,row})' )
+              template(v-if="getCustomRenderProps(field,row)")
+                component(:is='field.renderAs' v-bind='getCustomRenderProps(field,row)' )
               data-field(v-else :field='field' :row='row')
             td.from-to-arrow(v-if='isFrom(fieldName,index)')
               icon(name='arrow-right')
@@ -66,12 +77,17 @@
 import dataMixin from '../mixins/dataMixin'
 import DataField from './DataField'
 import FieldTitle from './FieldTitle'
+import MenuButton from './controls/MenuButton'
+import ExportPages from './ExportPages'
+import icons from '../config/icons'
 import { mapGetters, mapActions, mapState } from 'vuex'
 export default {
   name: 'data-table',
   components: {
     DataField,
-    FieldTitle
+    FieldTitle,
+    MenuButton,
+    ExportPages
   },
   mixins: [
     dataMixin
@@ -94,11 +110,13 @@ export default {
     return {
       editSorts: false,
       sortChanged: false,
+      showExportMenu: false,
       sortDialog: {
         field: null,
         x: 0,
         y: 0
-      }
+      },
+      icons
     }
   },
   mounted () {
@@ -186,6 +204,13 @@ export default {
       const page = this.page
       const req = (page) ? page.req : {}
       return (req) ? req.key : null
+    },
+    exportParams () {
+      const { page, type, key, parentData, entity } = this
+      const { itemEntity } = entity
+      if (!page || !page.req || !type || !key) return
+      const req = Object.assign({ entityName: type, dataKey: key, parentData, itemEntity }, page.req)
+      return req
     }
   },
   methods: {
@@ -250,6 +275,9 @@ export default {
       const css = [`field__${name}`]
       if (this.key === name) css.push('row-header')
       return css
+    },
+    switchExportMenu () {
+      this.showExportMenu = !this.showExportMenu
     }
   }
 }
@@ -266,7 +294,7 @@ export default {
   .table-ctrls
     display flex
     justify-content flex-end
-    margin  1em
+    margin 1em
 
   .unsortable > .field-title
     color gray

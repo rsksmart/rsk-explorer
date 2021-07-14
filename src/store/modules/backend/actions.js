@@ -41,7 +41,7 @@ export const socketNewBlocks = ({ state, commit, getters }, result) => {
   if (!autoUpdate) commit('SET_PENDING_BLOCKS', blocks)
 }
 
-export const socketData = ({ state, commit, dispatch }, res) => {
+export const socketData = ({ state, commit, getters, dispatch }, res) => {
   const { req, pages, error, next, prev, delayed } = res
   const key = req.key
   const total = (pages) ? pages.total : null
@@ -50,44 +50,47 @@ export const socketData = ({ state, commit, dispatch }, res) => {
   const requested = state.requesting[key]
   const module = req.module || null
   const action = req.action || null
-  if (key && requested && requested === req.time) {
-    const response = Object.assign({}, state.responses[key])
-    const updating = Object.assign(delayedObject(), response.delayed)
-    const isUpdating = Boolean(!updating.registry && updating.fields.length)
-    if (!delayed) {
-      commit('SET_REQUESTING', [key, null])
-      commit('SET_RESPONSE', [key, { delayed: delayedObject() }])
-    } else {
-      commit('SET_RESPONSE', [key, { delayed }])
-    }
 
-    const data = { req, pages, prev, next, sort, data: res.data }
-    if (error) {
-      if (!response.data) {
-        // Switch error Not Found to Updating Registry
-        commit('SET_RESPONSE', [key, { error }])
-      } else {
-        commit('SET_RESPONSE', [key, { updateError: error }])
-      }
+  if (!key || !requested || requested !== req.time) return
+
+  const isExport = getters.isExportKey(key)
+  if (isExport) return dispatch('exportPages', res)
+  const response = Object.assign({}, state.responses[key])
+  const updating = Object.assign(delayedObject(), response.delayed)
+  const isUpdating = Boolean(!updating.registry && updating.fields.length)
+  if (!delayed) {
+    commit('SET_REQUESTING', [key, null])
+    commit('SET_RESPONSE', [key, { delayed: delayedObject() }])
+  } else {
+    commit('SET_RESPONSE', [key, { delayed }])
+  }
+
+  const data = { req, pages, prev, next, sort, data: res.data }
+  if (error) {
+    if (!response.data) {
+      // Switch error Not Found to Updating Registry
+      commit('SET_RESPONSE', [key, { error }])
     } else {
-      commit('SET_RESPONSE', [key, { error: null }])
-      commit('SET_TOTAL', { key, total })
-      if (isUpdating) {
-        const dFields = Object.keys(data.data)
-        const fields = updating.fields.filter(f => dFields.indexOf(f) < 0)
-        if (!delayed) commit('SET_RESPONSE', [key, { delayed: delayedObject({ fields }) }])
-        const sData = response.data || {}
-        for (const f in res.data) {
-          sData[f] = res.data[f]
-        }
-        data.data = sData
-      }
-      data.time = Date.now()
-      commit('SET_RESPONSE', [key, data])
-      commit('SET_CONFIG_Q', { module, action, value: q })
-      commit('SET_CONFIG_SORT', { module, action, value: sort })
-      commit('SET_TIME', { server: res.data.time })
+      commit('SET_RESPONSE', [key, { updateError: error }])
     }
+  } else {
+    commit('SET_RESPONSE', [key, { error: null }])
+    commit('SET_TOTAL', { key, total })
+    if (isUpdating) {
+      const dFields = Object.keys(data.data)
+      const fields = updating.fields.filter(f => dFields.indexOf(f) < 0)
+      if (!delayed) commit('SET_RESPONSE', [key, { delayed: delayedObject({ fields }) }])
+      const sData = response.data || {}
+      for (const f in res.data) {
+        sData[f] = res.data[f]
+      }
+      data.data = sData
+    }
+    data.time = Date.now()
+    commit('SET_RESPONSE', [key, data])
+    commit('SET_CONFIG_Q', { module, action, value: q })
+    commit('SET_CONFIG_SORT', { module, action, value: sort })
+    commit('SET_TIME', { server: res.data.time })
   }
 }
 
@@ -104,16 +107,15 @@ export const fetchData = ({ state, commit, getters }, req) => {
   req.params = req.params || {}
   const { next, prev, query, sort, action, count, page, fields } = req
   const module = req.module || null
-
-  const limit = req.limit
-  const getPages = true
+  const limit = req.limit || req.params.limit
+  const getPages = (undefined === req.getPages) ? true : req.getPages
 
   const key = (req.key || 'data')
   const time = Date.now()
   // count = (undefined === count)
-
   const params = Object.assign(req.params, { next, prev, query, sort, count, limit, page, getPages, fields })
-  const data = { module, action, params, key, time, getDelayed: true }
+  const getDelayed = (undefined === req.getDelayed) ? true : req.getDelayed
+  const data = { module, action, params, key, time, getDelayed }
   commit('SET_REQUESTING', [key, time])
   // Fix next 2 lines
   commit('SET_RESPONSE', [key, { data: null }])
@@ -168,4 +170,35 @@ export const clearRequests = ({ commit }, keys) => {
   for (const key of keys) {
     commit('CLEAR_REQUEST', key)
   }
+}
+
+// calls fethData with parameters to export
+export const fetchExportData = ({ dispatch }, data) => {
+  const count = (undefined === data.count) ? false : data.count
+  const { query, sort } = data.params
+  data = Object.assign(data, { limit: 500, getDelayed: false, getPages: false, count, query, sort })
+  dispatch('fetchData', data)
+}
+
+// Handles export data events
+export const exportPages = ({ commit, dispatch, getters }, res) => {
+  const { pages, error, req, data } = res
+  const { key } = req
+  const { total } = pages
+
+  if (error) return
+  const timestamp = Date.now()
+  if (total) commit('SET_EXPORT_METADATA', [key, { total, started: timestamp }])
+  if (data) {
+    let { received } = getters.getExportMetadata(key)
+    received += data.length
+    commit('SET_EXPORT_METADATA', [key, { received, timestamp }])
+  }
+}
+// Starts export
+export const getPages = ({ commit, dispatch }, data) => {
+  const { key } = data
+  commit('SET_EXPORT_KEY', key)
+  data.count = true
+  dispatch('fetchExportData', data)
 }

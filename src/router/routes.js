@@ -3,6 +3,8 @@ import ErrorPage from '@/components/ErrorPage'
 import TxPool from '@/components/TxPool'
 import CheckAddress from '@/components/CheckAddress'
 import SearchPage from '@/components/SearchPage'
+import MiningPage from '@/components/mining/MiningPage'
+import UserConfig from '@/components/UserConfig'
 import { ROUTES as r, PAGE_NOT_FOUND } from '../config/types'
 import blocks from './blocks'
 import transactions from './transactions'
@@ -57,6 +59,16 @@ export default [
     component: SearchPage,
     props: true
   },
+  {
+    path: `/${r.mining}`,
+    name: 'Mining',
+    component: MiningPage
+  },
+  {
+    path: `/${r.settings}`,
+    name: 'Config',
+    component: UserConfig
+  },
   ...blocks,
   ...transactions,
   ...addresses,
@@ -71,4 +83,5 @@ export default [
     props: {
       error: { code: 'PAGE_NOT_FOUND', error: PAGE_NOT_FOUND }
     }
-  }]
+  }
+]

@@ -1,31 +1,44 @@
 import {
   ROUTES as r,
   CONTRACT_UNKNOWN_NAME,
-  NOT_AVAILABLE
+  NOT_AVAILABLE,
+  POOL_UNKNOWN_NAME,
+  CONTEXT
 } from '../../types'
 import { isAddress } from '../../../lib/js/utils'
 import { round } from '../../../filters/NumberFilters'
 import { eventValue } from '../../../filters/TokensFilters'
+import { addAgo, mSecondsAgo } from '../../../filters/TimeFilters'
+import { store } from '../../../store/index'
 
-export const txValueFilters = decimals => {
-  const filters = ['tx-value']
-  if (decimals) filters.push((value, data) => round(value, decimals))
-  filters.push('rbtc')
+export const isExport = context => context === CONTEXT.export
+
+export const timeElapsedFromTs = (value) => {
+  if (!value) return value
+  return store.getters.getDate - value * 1000
+}
+
+export const fixDecimals = (value, data) => round(value, store.getters.getDecimalPlaces)
+
+const addDecimalFilters = (filters, { fixedDecimals } = {}) => {
+  filters = filters || []
+  if (fixedDecimals) filters.push(fixDecimals)
   return filters
 }
+
+export const valueFilters = fixedDecimals => addDecimalFilters(['tx-value'], { fixedDecimals }).concat(['rbtc'])
+
+export const balanceListFilters = addDecimalFilters(['big-number'], { fixedDecimals: true }).concat(['locale'])
+
+export const balanceFilters = ['big-number', 'locale']
 
 export const linkAddress = address => (!isAddress(address)) ? null : `/${r.address}/${address}`
 export const addressFilters = ['checksum-address']
 
-export const eventValueField = (decimals) => {
-  decimals = parseInt(decimals)
+export const eventValueField = (fixedDecimals) => {
   const suffix = (value, filteredValue, { _addressData }) => _addressData.symbol
-  const filters = [(value, data) => eventValue(value, data._addressData)]
-  if (decimals && !isNaN(decimals)) {
-    filters.push((value) => {
-      return round(value, decimals)
-    })
-  }
+  let filters = [(value, data) => eventValue(value, data._addressData)]
+  filters = addDecimalFilters(filters, { fixedDecimals })
   return { suffix, filters }
 }
 
@@ -42,8 +55,22 @@ export default {
     titleIcon: true,
     hideTitle: true,
     link: `/${r.block}/`,
-    filters: ['locale'],
+    filters: ['locale-round'],
     default: 0
+  },
+  miningBtcBlock: {
+    icon: 'btc',
+    titleIcon: true,
+    hideTitle: true,
+    link: 'https://btc.com/block/',
+    filters: ['not-applicable-locale']
+  },
+  miningRskBlock: {
+    icon: 'rsk',
+    titleIcon: true,
+    hideTitle: true,
+    link: `/${r.block}/`,
+    filters: ['not-applicable-locale']
   },
   blockHash: {
     link: `/${r.block}/`
@@ -56,7 +83,10 @@ export default {
   },
   timestamp: {
     icon: 'stopwatch',
-    filters: ['m-seconds-ago', 'add-ago'],
+    filters: (value, data, context) => {
+      if (isExport(context)) return value
+      return addAgo(mSecondsAgo(timeElapsedFromTs(value, data, context)))
+    },
     titleIcon: true,
     hideTitle: true
   },
@@ -86,7 +116,7 @@ export default {
     trim: 'auto'
   },
   gas: {
-    filters: ['locale']
+    filters: ['locale-round']
   },
   gasPrice: {
     filters: ['tx-gas-price', 'rbtc'],
@@ -105,10 +135,11 @@ export default {
     icon: 'calendar',
     filters: ['date-from-unix-ts'],
     titleIcon: true,
-    hideTitle: true
+    hideTitle: true,
+    trim: 'auto'
   },
   tokenBalance: {
-    filters: ['big-number', 'locale', 'rbtc'],
+    filters: ['tx-value', 'round', 'rbtc'],
     default: 0
   },
   tokenAddress: {
@@ -127,7 +158,7 @@ export default {
     default: NOT_AVAILABLE
   },
   eventValue: eventValueField(),
-  eventValueRounded: eventValueField(2),
+  eventValueRounded: eventValueField(true),
   eventId: {
     icon: 'zap',
     titleIcon: true,
@@ -142,8 +173,13 @@ export default {
     filters: ['tx-density', 'txs-s']
   },
   rbtcBalance: {
-    filters: ['round', 'locale', 'rbtc']
+    filters: ['round', 'locale-round', 'rbtc']
   },
   hashrate,
-  blockHashrate: hashrate
+  blockHashrate: hashrate,
+  pool: {
+    default: POOL_UNKNOWN_NAME,
+    trim: 'auto',
+    filters: addressFilters
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "btc": {
+    "bestBlock": 689458,
+    "hashrate": "76.17 EH/s"
+  },
+  "rsk": {
+    "bestBlock": 3484690,
+    "hashrate": "31.63 EH/s"
+  },
+  "rskOverBtcHashrate": "41.53%"
+}
