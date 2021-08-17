@@ -47,7 +47,7 @@ export const mapRskOverBtcToChartData = (colors, data, activeTab) => {
   const labels = data.map(
     ({ time }) => {
       const format = activeTab.name === 'Week' ? 'MMMM D' : 'h:mm a'
-      return moment(time).format(format)
+      return moment(time).utc(true).format(format)
     }
   )
 

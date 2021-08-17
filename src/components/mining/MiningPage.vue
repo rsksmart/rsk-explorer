@@ -13,11 +13,11 @@
       .col-b
         rsk-over-btc-hashrate(:data='getRangeData("rskOverBtcHashrate")')
     last-btc-blocks(:lastBtcBlocks='miningState.lastBtcBlocks')
-    last-rsk-blocks(:lastRskBlocks='miningState.lastRskBlocks')
+    last-rsk-blocks(:lastRskBlocks='lastRskBlocks')
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 import HashrateDistribution from './HashrateDistribution'
 import HashrateOverTime from './HashrateOverTime'
@@ -41,6 +41,9 @@ export default {
     ...mapState({
       range: state => state.mining.dataRange,
       miningState: state => state.mining
+    }),
+    ...mapGetters({
+      lastRskBlocks: 'getLastRskBlocks'
     })
   },
   methods: {

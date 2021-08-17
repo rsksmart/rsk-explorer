@@ -55,7 +55,7 @@ export default {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Zh',
+              labelString: 'Eh',
               fontFamily: 'Titillium Web',
               fontColor: '#9fdfd1'
             }
