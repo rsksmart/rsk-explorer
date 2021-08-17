@@ -19,22 +19,22 @@
             table.dark(v-if='data' ref='table')
               thead
                 tr
-                  th.unsortable
-                    field-title(:field="{title: 'info'}")
                   template(v-for='field,fieldName,index in fields')
                     th.unsortable(v-if="!btcInfoFields.includes(fieldName)")
                       field-title(:field='field')
+                  th.unsortable
+                    field-title(:field="{title: 'info'}")
               tbody.table-body
                 tr(v-for='row, rowIndex in lastRskBlocks' :class='rowClass(rowIndex)')
+                  template(v-for='field,fieldName,index in fields')
+                    td(v-if="!btcInfoFields.includes(fieldName)")
+                      //- pre(style='text-align: left;') {{row}}
+                      data-field(:field='field' :row='row')
                   td
                     template(v-if='row.hasBTCInfo')
                       button(style={margin: 'auto'} @click="loadInfo(rowIndex, $event)")
                         icon(name='cubes')
                     div(v-else) N/A
-                  template(v-for='field,fieldName,index in fields')
-                    td(v-if="!btcInfoFields.includes(fieldName)")
-                      //- pre(style='text-align: left;') {{row}}
-                      data-field(:field='field' :row='row')
 </template>
 <script>
 import dataMixin from '../../mixins/dataMixin'

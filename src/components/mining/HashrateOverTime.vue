@@ -8,7 +8,7 @@
             :class="{active: activeTab.name === tab.name}")
             span.title {{ tab.name }}
         button.btn.tab-title(@click='toggleUnit')
-          span.title {{ isPercentage ? 'Unit' : '%' }}
+          span.title {{ isPercentage ? 'EH/s' : '%' }}
         //- select.btn.tab-title.select(@change="setDataset($event)")
         //-   option(v-for="index in maxDataset.hashrateDistributionOverTime" :value="index") {{ index }}
         //- span.tab-title Dataset

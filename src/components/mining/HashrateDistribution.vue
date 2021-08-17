@@ -8,7 +8,7 @@
             :class="{active: activeTab.name === tab.name}")
             span.title {{ tab.name }}
         button.btn.tab-title(@click='toggleUnit')
-          span.title {{ isPercentage ? 'Unit' : '%' }}
+          span.title {{ isPercentage ? 'EH/s' : '%' }}
     .chart-container
       doughnut-chart.chart(v-if="chartData.datasets[0] && chartData.datasets[0].data.length !== 0" :chart-data="chartData" :styles="styles" :options="options")
       div(v-else) No data

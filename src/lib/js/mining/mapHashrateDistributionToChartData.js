@@ -1,18 +1,4 @@
 export const mapHashrateDistributionToChartData = (colors, data, isPercentage) => {
-  const chartColors = [
-    colors.orange,
-    colors.red,
-    colors.green,
-    colors.violet,
-    colors.blue,
-    colors.gray,
-    colors.brand1,
-    colors.brand2,
-    colors.brand3,
-    colors.color1,
-    colors.color2
-  ]
-
   const dataRange = data.reduce((acc, dist) => {
     const minerName = dist.minerName.match(/0x*/) ? 'Unknown' : dist.minerName
 
@@ -42,15 +28,16 @@ export const mapHashrateDistributionToChartData = (colors, data, isPercentage) =
     .sort((a, b) => b.value - a.value)
     .map(({ percentage, value }) => isPercentage ? percentage : value)
 
+  const labels = Object.keys(dataRange)
+  const backgroundColor = labels.map(label => colors[label])
+
   const datasets = [
     {
       data: distributionData,
-      backgroundColor: chartColors,
-      borderColor: colors.darkness
+      backgroundColor,
+      borderColor: 'rgba(0,0,0,.3)'
     }
   ]
-
-  const labels = Object.keys(dataRange)
 
   return {
     labels,

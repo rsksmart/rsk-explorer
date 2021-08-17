@@ -1,5 +1,4 @@
 import moment from 'moment'
-import chroma from 'chroma-js'
 
 export const hashrateOverTimeToChartData = (
   colors,
@@ -7,20 +6,12 @@ export const hashrateOverTimeToChartData = (
   activeTab,
   isPercentage
 ) => {
-  const chartColors = [
-    colors.orange,
-    colors.violet,
-    colors.red,
-    colors.green,
-    colors.blue,
-    colors.yellow,
-    colors.brand1,
-    colors.brand2,
-    colors.brand3,
-    colors.gray,
-    colors.color1,
-    colors.color2
-  ]
+  const labels = data.map(
+    ({ time }) => {
+      const format = activeTab.name === 'Week' ? 'MMMM D' : 'h:mm a'
+      return moment(time).utc(true).format(format)
+    }
+  )
 
   const datasets = data.reduce(
     (acc, dataRange) => {
@@ -29,7 +20,7 @@ export const hashrateOverTimeToChartData = (
         minername: miner.minerName.match(/0x*/) ? 'Unknown' : miner.name
       }))
 
-      miners.forEach((miner, index) => {
+      miners.forEach((miner) => {
         const label = miner.minerName
         const data = isPercentage
           ? miner.hashratePercentageInRskNetwork
@@ -37,8 +28,9 @@ export const hashrateOverTimeToChartData = (
 
         const minerData = {
           label,
-          backgroundColor: chartColors[index],
-          borderColor: chroma(chartColors[index]).darken(0.5),
+          backgroundColor: colors[miner.minerName],
+          borderColor: colors.darkness,
+          borderWidth: 1,
           data: [data],
           fill: true
         }
@@ -57,13 +49,6 @@ export const hashrateOverTimeToChartData = (
       return acc
     },
     []
-  )
-
-  const labels = data.map(
-    ({ time }) => {
-      const format = activeTab.name === 'Week' ? 'MMMM D' : 'h:mm a'
-      return moment(time).utc(true).format(format)
-    }
   )
 
   return {

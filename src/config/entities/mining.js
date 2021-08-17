@@ -4,6 +4,42 @@ export const lastRskBlocks = {
   name: 'last-rsk-blocks',
   icon: 'cube',
   fields: {
+    height: {
+      icon: 'rsk',
+      type: 'block',
+      title: 'height',
+      showTitle: true
+    },
+    minerName: {
+      type: 'pool',
+      title: 'miner'
+    },
+    minerAddress: {
+      type: 'address',
+      trim: '3',
+      title: 'miner address'
+    },
+    timeStamp: {
+      field: 'timestamp',
+      type: 'timestamp'
+    },
+    hash: {
+      trim: '3',
+      field: 'hash',
+      type: 'hash'
+    },
+    rskTag: {
+      trim: '3',
+      icon: 'rsk',
+      title: 'RSK Tag'
+    },
+    numberOfUncles: {
+      title: 'uncles',
+      default: 0
+    },
+    rskNodeVersion: {
+      title: 'node'
+    },
     guessedMiner: {
       type: 'pool',
       title: 'Guessed Miner'
@@ -33,42 +69,6 @@ export const lastRskBlocks = {
       trim: 'auto',
       field: 'hash',
       type: 'hash'
-    },
-    height: {
-      icon: 'rsk',
-      type: 'block',
-      title: 'height',
-      showTitle: true
-    },
-    hash: {
-      trim: '3',
-      field: 'hash',
-      type: 'hash'
-    },
-    timeStamp: {
-      field: 'timestamp',
-      type: 'timestamp'
-    },
-    minerAddress: {
-      type: 'address',
-      trim: '3',
-      title: 'miner address'
-    },
-    minerName: {
-      type: 'pool',
-      title: 'miner'
-    },
-    numberOfUncles: {
-      title: 'uncles',
-      default: 0
-    },
-    rskTag: {
-      trim: '3',
-      icon: 'rsk',
-      title: 'RSK Tag'
-    },
-    rskNodeVersion: {
-      title: 'node'
     }
   }
 }
@@ -77,22 +77,22 @@ export const lastBtcBlocks = {
   name: 'last-btc-blocks',
   icon: 'cube',
   fields: {
-    minerName: {
-      type: 'pool',
-      title: 'pool'
-    },
     height: {
       icon: 'btc',
       type: 'miningBtcBlock',
       title: 'height',
       showTitle: true
     },
-    hash: {
-      trim: '3'
+    minerName: {
+      type: 'pool',
+      title: 'pool'
     },
     timeStamp: {
       field: 'timestamp',
       type: 'timestamp'
+    },
+    hash: {
+      trim: '3'
     },
     rskTag: {
       trim: '3',
