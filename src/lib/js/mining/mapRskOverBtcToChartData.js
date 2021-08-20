@@ -7,19 +7,25 @@ export const mapRskOverBtcToChartData = (colors, data, activeTab) => {
 
       const btcData = {
         borderColor: colors.orange,
+        pointBackgroundColor: colors.orange,
         label: 'BTC Hashrate',
+        tension: 0,
         data: [btcHashrate.value]
       }
 
       const rskData = {
         borderColor: colors.green,
+        pointBackgroundColor: colors.green,
         label: 'RSK Hashrate',
+        tension: 0,
         data: [rskHashrate.value]
       }
 
       const rskObjectiveData = {
         borderColor: colors.red,
-        borderDash: [1, 2],
+        pointBackgroundColor: colors.red,
+        borderDash: [3, 5],
+        tension: 0,
         label: '51% BTC',
         data: [rskObjectiveHashrate.value]
       }

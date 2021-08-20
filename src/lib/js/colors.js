@@ -16,7 +16,7 @@ const minerColors = {
   SpiderPool: COLORS.brand1,
   AntPool: COLORS.orange,
   NovaBlock: COLORS.brand3,
-  Binance: COLORS.color1,
+  Binance: COLORS.yellow,
   '1THash': COLORS.color2,
   others: COLORS.cyan,
   unknown: COLORS.titleColor

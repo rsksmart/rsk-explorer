@@ -1,6 +1,7 @@
 import moment from 'moment'
+import chroma from 'chroma-js'
 
-export const hashrateOverTimeToChartData = (
+export const mapHashrateOverTimeToChartData = (
   colors,
   data,
   activeTab,
@@ -29,8 +30,12 @@ export const hashrateOverTimeToChartData = (
         const minerData = {
           label,
           backgroundColor: colors[miner.minerName],
-          borderColor: colors.darkness,
-          borderWidth: 1,
+          pointBackgroundColor: chroma(colors[miner.minerName]).darken(0.4),
+          borderColor: chroma(colors[miner.minerName]).darken(0.4),
+          hoverBorderWidth: 10,
+          pointRadius: 2,
+          borderWidth: 3,
+          tension: 0,
           data: [data],
           fill: true
         }

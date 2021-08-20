@@ -18,7 +18,7 @@
           tool-tip.field-value(:value='filteredValue || value' :trim='trim' :options='trimOptions' :router-link='link')
         template(v-else)
           template(v-if='link' :to='link')
-            a(v-if='link[0] !== "/"' :href="link" target="_blank")
+            a(v-if='location.pathname === "/mining"' :href="link" target="_blank")
               .field-value {{ filteredValue || field.default }}
             router-link(v-else :to='link')
               .field-value {{ filteredValue || field.default }}
@@ -89,6 +89,9 @@ export default {
     },
     valueDescription () {
       return this.fieldValueDescription(this.field, this.value, this.filteredValue, this.row)
+    },
+    location () {
+      return location
     }
   }
 }
