@@ -23,7 +23,7 @@ import { mapActions, mapGetters } from 'vuex'
 import LineChart from './LineChart'
 import BlockBox from '../BlockBox'
 
-import { hashrateOverTimeToChartData } from '../../lib/js/mining/mapHashrateOverTimeToChartData'
+import { mapHashrateOverTimeToChartData } from '../../lib/js/mining/mapHashrateOverTimeToChartData'
 
 export default {
   components: { LineChart, BlockBox },
@@ -127,7 +127,7 @@ export default {
     chartData () {
       if (!this.data) return { labels: [], datasets: [] }
 
-      return hashrateOverTimeToChartData(this.colors, this.data, this.activeTab, this.isPercentage)
+      return mapHashrateOverTimeToChartData(this.colors, this.data, this.activeTab, this.isPercentage)
     },
 
     percentage: function () {

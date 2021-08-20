@@ -1,3 +1,5 @@
+import chroma from 'chroma-js'
+
 export const mapHashrateDistributionToChartData = (colors, data, isPercentage) => {
   const dataRange = data.reduce((acc, dist) => {
     const minerName = dist.minerName.match(/0x*/) ? 'Unknown' : dist.minerName
@@ -30,12 +32,16 @@ export const mapHashrateDistributionToChartData = (colors, data, isPercentage) =
 
   const labels = Object.keys(dataRange)
   const backgroundColor = labels.map(label => colors[label])
+  const borderColor = labels.map(label => chroma(colors[label]).saturate(1))
 
   const datasets = [
     {
       data: distributionData,
       backgroundColor,
-      borderColor: 'rgba(0,0,0,.3)'
+      borderColor,
+      hoverBackgroundColor: borderColor,
+      hoverBorderColor: borderColor,
+      hoverBorderWidth: 10
     }
   ]
 
