@@ -9,8 +9,11 @@ export const mapDifficultyToChartData = (
 
   const labels = data.map(
     ({ time }) => {
-      const format = activeTab.name === 'Week' ? 'MMMM D' : 'h:mm a'
-      return moment(time).utc(true).format(format)
+      if (activeTab.range === 'oneWeek') {
+        return moment(time).format('MMMM D')
+      }
+
+      return moment(time + '+00:00').local().format('h:mm a')
     }
   )
 
