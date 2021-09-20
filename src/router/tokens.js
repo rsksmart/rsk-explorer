@@ -16,6 +16,10 @@ export default [
     }
   },
   {
+    path: `/${r.token}/:address`,
+    redirect: `/${r.address}/:address`
+  },
+  {
     path: `/${r.token}/:contract/${r.accounts}`,
     name: 'Token Accounts',
     component: DataPage,
