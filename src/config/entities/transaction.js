@@ -72,6 +72,10 @@ const TxFields = () => {
       field: 'blockNumber',
       type: 'block'
     },
+    confirmation: {
+      field: 'confirmation',
+      type: 'confirmation'
+    },
     index: {
       field: 'transactionIndex',
       default: 0
@@ -120,6 +124,7 @@ const TxFields = () => {
 const Txs = () => {
   const fields = TxFields()
   delete (fields.index)
+  delete (fields.confirmation)
   fields.status = Object.assign(fields.status, {
     filters: [(value, data, context) => {
       if (isExport(context)) return txStatus(value)

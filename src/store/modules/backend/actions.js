@@ -55,6 +55,12 @@ export const socketData = ({ state, commit, getters, dispatch }, res) => {
 
   const isExport = getters.isExportKey(key)
   if (isExport) return dispatch('exportPages', res)
+
+  if (res.action === 'getTransactionWithAddressData') {
+    const lastBlock = state.lastBlocks[0]
+    res.data.confirmation = lastBlock.number - res.data.blockNumber
+  }
+
   const response = Object.assign({}, state.responses[key])
   const updating = Object.assign(delayedObject(), response.delayed)
   const isUpdating = Boolean(!updating.registry && updating.fields.length)
