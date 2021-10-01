@@ -81,6 +81,12 @@ export default {
     titleIcon: true,
     hideTitle: true
   },
+  confirmation: {
+    icon: 'check',
+    titleIcon: true,
+    hideTitle: true,
+    filters: ['confirmation']
+  },
   internalTransaction: {
     icon: 'transaction',
     link: `/${r.internalTx}/`,

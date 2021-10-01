@@ -107,3 +107,14 @@ export const getTxDensity = (value, decimals = 2) => {
 export const txDensity = Vue.filter('tx-density', getTxDensity)
 
 export const txsS = Vue.filter('txs-s', (value) => `${value} txs/s`)
+
+export const confirmation = Vue.filter('confirmation', (value) => {
+  if (isNaN(value) || value == null) return 'N/A'
+
+  if (value === 1) {
+    return '1 confirmation'
+  } else {
+    value = d3.format(',d')(value)
+    return value + ' confirmations'
+  }
+})
