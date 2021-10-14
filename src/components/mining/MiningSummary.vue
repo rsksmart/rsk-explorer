@@ -18,7 +18,8 @@
           .summary-box
             icon(name="flame")
             .summary-content
-              h3.summary-header Hashrates
+              tool-tip(value="7-day moving average" :options="tipOptions")
+                h3.summary-header Hashrates
               .summary-field
                 icon(name="btc")
                 div {{miningSummary.btcHashrate}}
@@ -37,20 +38,25 @@ import dataMixin from '../../mixins/dataMixin'
 import DataField from '../DataField'
 import FieldTitle from '../FieldTitle'
 import BoxField from '../BoxField'
+import ToolTip from '../ToolTip'
 import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'data-table',
   components: {
     DataField,
     FieldTitle,
-    BoxField
+    BoxField,
+    ToolTip
   },
   mixins: [
     dataMixin
   ],
   data () {
     return {
-      type: 'miningSummary'
+      type: 'miningSummary',
+      tipOptions: {
+        forceTip: true
+      }
     }
   },
   mounted () {},
