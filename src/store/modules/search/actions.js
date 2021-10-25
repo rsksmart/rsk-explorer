@@ -1,6 +1,8 @@
 
-import { testSearchedValue } from '../../../lib/js/validate'
 import { isHexString, isTxOrBlockHash } from '@rsksmart/rsk-utils/dist/strings'
+import { testSearchedValue } from '../../../lib/js/validate'
+import { getAddr } from '../../../lib/js/rns'
+import { store } from '../../../store/index'
 const DEFAULT_TYPE = 'addressByName'
 
 const createSearchKey = (value, type) => {
@@ -15,7 +17,19 @@ export const clearSearchedResults = async ({ commit, dispatch, getters }) => {
 }
 
 export const updateSearchedValue = async ({ commit, dispatch, state }, value) => {
-  value = String(value).replace(/[\W_]+/g, '')
+  if (value.match(/.rsk/)) {
+    try {
+      const address = await getAddr(value)
+      store.commit('SET_DOMAIN', { domain: value, address })
+
+      value = address
+    } catch (error) {
+      console.error(error.message, value)
+    }
+  } else {
+    value = String(value).replace(/[\W_]+/g, '')
+  }
+
   const lcValue = value.toLowerCase()
   value = (isHexString(value) && isTxOrBlockHash(lcValue)) ? lcValue : value
   if (state.value !== value) {
