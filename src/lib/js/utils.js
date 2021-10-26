@@ -1,4 +1,4 @@
-import { add0x, isHexString } from '@rsksmart/rsk-utils/dist/strings'
+import { add0x, isHexString, isTxOrBlockHash } from '@rsksmart/rsk-utils/dist/strings'
 import { isAddress } from '@rsksmart/rsk-utils/dist/addresses'
 
 export { add0x, isHexString, isAddress }
@@ -9,8 +9,8 @@ export const getType = (obj) => {
 
 export const normalizeSearch = value => {
   value = String(value).toLowerCase()
-  value = (parseInt(value).toString() === Number(value).toString()) ? value : add0x(value)
-  return value
+  const lcValue = add0x(value)
+  return (isAddress(value) || (isHexString(value) && isTxOrBlockHash(lcValue))) ? lcValue : value
 }
 
 export const plainObjectChanges = (oldObj, newObj) => {

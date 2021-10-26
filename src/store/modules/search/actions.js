@@ -1,6 +1,6 @@
 
 import { testSearchedValue } from '../../../lib/js/validate'
-import { isHexString, isTxOrBlockHash } from '@rsksmart/rsk-utils/dist/strings'
+import { normalizeSearch } from '../../../lib/js/utils'
 const DEFAULT_TYPE = 'addressByName'
 
 const createSearchKey = (value, type) => {
@@ -16,8 +16,7 @@ export const clearSearchedResults = async ({ commit, dispatch, getters }) => {
 
 export const updateSearchedValue = async ({ commit, dispatch, state }, value) => {
   value = String(value).replace(/[\W_]+/g, '')
-  const lcValue = value.toLowerCase()
-  value = (isHexString(value) && isTxOrBlockHash(lcValue)) ? lcValue : value
+  value = normalizeSearch(value)
   if (state.value !== value) {
     commit('SET_SEARCH_VALUE', value)
     await dispatch('clearSearchedResults')

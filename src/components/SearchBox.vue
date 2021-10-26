@@ -13,6 +13,7 @@
 import { ROUTES as r } from '../config/types'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import CtrlSearch from './controls/CtrlSearch'
+import { normalizeSearch } from '../lib/js/utils'
 // const RESULTS_LENGTH = 10
 export default {
   name: 'search-box',
@@ -99,6 +100,7 @@ export default {
     onInput ({ event, value }) {
       this.clearRequests()
       if (!value || value.length < 2) return
+      value = normalizeSearch(value)
       this.setValue(value)
       this.fetchSearch({ value })
     },
