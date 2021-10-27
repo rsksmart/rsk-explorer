@@ -72,6 +72,10 @@ const Block = () => {
       default: 0,
       trim: 'forced-auto'
     },
+    paidFees: {
+      filters: ['tx-gas-price', 'rbtc'],
+      default: 0
+    },
     time: {
       field: '_metadata.time',
       suffix: 's'
