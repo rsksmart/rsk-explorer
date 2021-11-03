@@ -1,8 +1,9 @@
 
 <template lang="pug">
   .wrapper#app.app
-    .top-page(v-if='topMsg')
-      message.top-msg(:message='topMsg')
+    // TODO: Should be reverted after the block parsing issue is fixed
+    //- .top-page(v-if='topMsg')
+    //-   message.top-msg(:message='topMsg')
     //-.header(:class='(bigMenu) ? "big-menu" : ""')
     .header
       transition(name='head-trans')
