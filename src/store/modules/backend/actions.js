@@ -56,6 +56,11 @@ export const socketData = ({ state, commit, getters, dispatch }, res) => {
   const isExport = getters.isExportKey(key)
   if (isExport) return dispatch('exportPages', res)
 
+  if (res.action === 'getAddress') {
+    const domain = getters.getDomain(req.params.address)
+    res.data.rns = domain
+  }
+
   if (res.action === 'getTransactionWithAddressData') {
     const lastBlock = state.lastBlocks[0]
     res.data.confirmation = lastBlock.number - res.data.blockNumber

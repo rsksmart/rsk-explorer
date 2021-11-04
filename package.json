@@ -15,6 +15,7 @@
     "svg": "npx vsvg -s ./public/svg/icons -t ./src/icons --es6"
   },
   "dependencies": {
+    "@rsksmart/rns-resolver.js": "^1.0.1",
     "@rsksmart/rsk-utils": "^1.1.0",
     "bignumber.js": "^7.2.1",
     "chroma-js": "^1.4.1",

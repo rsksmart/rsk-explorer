@@ -112,3 +112,10 @@ export const SET_EXPORT_METADATA = (state, [key, metadata]) => {
     Vue.set(state.exports[key], prop, metadata[prop])
   }
 }
+
+export const SET_DOMAIN = (state, { domain, address }) => {
+  if (!domain || !address) return
+
+  address = address.toLowerCase()
+  state.rns[address] = domain
+}
