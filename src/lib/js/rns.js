@@ -1,10 +1,11 @@
-import Web3 from 'web3'
-import RNS from '@rsksmart/rns'
-import { isValidDomain } from '@rsksmart/rns/lib/utils'
-
-const rns = new RNS(new Web3(process.env.PUBLIC_NODE_URL))
+/* eslint-disable new-cap */
+import Resolver from '@rsksmart/rns-resolver.js'
 
 export const getAddr = async (domain) => {
-  if (!isValidDomain(domain)) return domain
-  return rns.addr(domain)
+  let resolver
+
+  if (process.env.WS_URL.includes('testnet')) resolver = new Resolver.forRskTestnet()
+  else resolver = new Resolver.forRskMainnet()
+
+  return resolver.addr(domain)
 }

@@ -39,7 +39,6 @@ The configuration is provided through this environment variables:
 
 - **WS_URL**: rsk-explorer-api WS url (backend)
 - **STATS_URL**: rsk stats web (link redirect the 'stats' link)
-- **PUBLIC_NODE_URL**: rsk public (mainnet/testnet) node url
 - **GA_TAG**: (optional) Google analytics tag.
 - **HOTJAR_ID**: (optional) Hotjar ID.
 
@@ -47,7 +46,6 @@ E.g. *to change the backend url :*
 
 ``` shell
   export WS_URL=wss://backend.rsk.co
-  export PUBLIC_NODE_URL=https://public-node.rsk.co
 ```
 
 ### Building for production
