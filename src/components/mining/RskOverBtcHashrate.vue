@@ -29,6 +29,11 @@ export default {
     return {
       tabs: [
         {
+          name: 'Hour',
+          range: 'oneHour',
+          isActive: true
+        },
+        {
           name: 'Day',
           range: 'oneDay',
           isActive: true
@@ -47,7 +52,9 @@ export default {
           yAxes: [{
             ticks: {
               fontColor: '#9fdfd1',
-              fontFamily: 'Titillium Web'
+              fontFamily: 'Titillium Web',
+              suggestedMax: 180,
+              suggestedMin: 50
             },
             scaleLabel: {
               display: true,

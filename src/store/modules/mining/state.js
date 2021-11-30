@@ -8,7 +8,7 @@ export default function () {
     lastRskBlocks: null,
     miningSummary: null,
     dataRange: {
-      rskOverBtcHashrate: 'oneDay',
+      rskOverBtcHashrate: 'oneHour',
       difficultyOverTime: 'oneHour',
       hashrateDistribution: 'oneHour',
       hashrateDistributionOverTime: 'oneHour',

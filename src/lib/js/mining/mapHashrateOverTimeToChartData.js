@@ -10,7 +10,7 @@ export const mapHashrateOverTimeToChartData = (
   const labels = data.map(
     ({ time }) => {
       if (activeTab.range === 'oneWeek') {
-        return moment(time).format('MMMM D')
+        return moment(time).format('MMM D')
       }
 
       return moment(time + '+00:00').local().format('h:mm a')
