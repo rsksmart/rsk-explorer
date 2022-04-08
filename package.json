@@ -22,7 +22,7 @@
     "d3-format": "^1.4.3",
     "highlight.js": "^9.18.3",
     "highlightjs-solidity": "git+https://github.com/highlightjs/highlightjs-solidity.git",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "socket.io-client": "^2.3.0",
     "streamsaver": "^2.0.5",
     "vue": "^2.6.11",
