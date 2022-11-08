@@ -94,7 +94,7 @@ export default {
       return this.isRoute('home')
     },
     topMsg () {
-      return (this.dbIsOutdated) ? 'DB_OUTDATED' || null : null
+      return 
     }
   },
   methods: {
