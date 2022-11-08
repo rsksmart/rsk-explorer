@@ -94,7 +94,7 @@ export default {
       return this.isRoute('home')
     },
     topMsg () {
-      return 
+      return null
     }
   },
   methods: {
