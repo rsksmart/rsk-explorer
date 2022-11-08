@@ -48,6 +48,12 @@ export const Address = () => {
       titleIcon: true,
       hideTitle: true
     },
+    masterCopy: {
+      field: 'masterCopy',
+      default: '',
+      hideIfEmpty: true,
+      trim: 'auto'
+    },
     creationDate: {
       field: 'createdByTx.timestamp',
       type: 'date',
