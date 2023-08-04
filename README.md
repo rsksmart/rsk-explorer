@@ -17,7 +17,7 @@ npm run dev-with-tracking
 # build for production with minification
 npm run build
 
-# build for production with google tracking and hotjar 
+# build for production with google tracking and hotjar
 # you must set the GA-TAG and HOTJAR_ID first, see 'Settings'
 npm run build-with-tracking
 
@@ -41,6 +41,7 @@ The configuration is provided through this environment variables:
 - **STATS_URL**: rsk stats web (link redirect the 'stats' link)
 - **GA_TAG**: (optional) Google analytics tag.
 - **HOTJAR_ID**: (optional) Hotjar ID.
+- **APPS_URL**: rsk apps web (link redirect the 'apps' link)
 
 E.g. *to change the backend url :*
 
