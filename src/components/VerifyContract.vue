@@ -116,6 +116,7 @@ import { camelCaseTo } from '../filters/TextFilters'
 import { ObjectIdSecondsElapsed, isAddress } from '../lib/js/utils'
 import { messages, formFields } from '../config/texts/verifyContract'
 import { ROUTES } from '../config/types'
+import { UNSUPPORTED_SOLC_VERSIONS } from '@/config/entities/lib/solidityVersions'
 
 const KEYS = {
   contract: '__contractVerifierContract',
@@ -416,6 +417,10 @@ export default {
     changeVersion (version) {
       this.version = version
       this.inputErrors.delete('version')
+      this.errors.pop()
+      if (UNSUPPORTED_SOLC_VERSIONS.find((v) => version.includes(v))) {
+        this.errors.push(`The ${version} is not supported, please select another one.`)
+      }
     },
     getContract (event) {
       const { address } = this
