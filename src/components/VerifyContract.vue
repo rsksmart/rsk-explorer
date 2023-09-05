@@ -419,7 +419,7 @@ export default {
       this.inputErrors.delete('version')
       this.errors.pop()
       if (UNSUPPORTED_SOLC_VERSIONS.find((v) => version.includes(v))) {
-        this.errors.push(`The ${version} is not supported, please select another one.`)
+        this.errors.push(`You have selected  version ${version} which is not supported. Please, try another one.`)
       }
     },
     getContract (event) {
