@@ -278,7 +278,6 @@ export default {
       if (releases) releases = this.releasesList(releases)
       return (showAllVersions) ? builds : releases
     },
-
     evmVersions () {
       const { data } = this.getPage()(EVM_VERSIONS_KEY) || {}
       return data
@@ -426,9 +425,6 @@ export default {
       this.showAllVersions = version
       this.inputErrors.delete('version')
       this.errors.pop()
-      if (!this.isSupportedSolidityVersion()) {
-        this.errors.push(messages.NOT_SUPPORTED_SOLIDITY_VERSION_ERROR(version))
-      }
     },
     getContract (event) {
       const { address } = this
@@ -480,7 +476,7 @@ export default {
       if (!this.name) this.inputErrors.add('name')
       if (!this.isSupportedSolidityVersion()) {
         this.inputErrors.add('version')
-        this.errors.push(`You have selected  version ${this.version} which is not supported. Please, try another one.`)
+        this.errors.push(messages.NOT_SUPPORTED_SOLIDITY_VERSION_ERROR(this.version))
       }
     },
 
