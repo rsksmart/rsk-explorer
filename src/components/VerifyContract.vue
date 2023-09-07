@@ -37,7 +37,7 @@
           form-row(v-if='versionsData' v-bind='formFields.VERSION')
             select(name='version' :value='version' @change='changeVersion($event.target.value)' :class='cssClass("version")')
               option(v-for="path,version in versions" :value='path') {{path}}
-            ctrl-switch( :value='showAllVersions' @change='(value)=>showAllVersions=value' label='Show all versions')
+            ctrl-switch( :value='showAllVersions' @change='(value) => changeAllVersions(value)' label='Show all versions')
 
           form-row(v-bind='formFields.OPTIMIZATION')
             ctrl-radio-grp.frow(name='optimization' @change='(value)=>settings.optimizer.enabled=value' :selected='settings.optimizer.enabled')
@@ -296,7 +296,7 @@ export default {
       }, {})
       const params = Object.assign({}, { address, settings, version, name })
       let ready = !Object.values(params).filter(v => undefined === v).length
-      ready = (files.length) ? ready : false
+      ready = (files.length) && this.isSupportedSolidityVersion() ? ready : false
       if (!ready) return false
       const imports = [...files]
       const source = imports[0].contents
@@ -418,8 +418,16 @@ export default {
       this.version = version
       this.inputErrors.delete('version')
       this.errors.pop()
-      if (UNSUPPORTED_SOLC_VERSIONS.find((v) => version.includes(v))) {
-        this.errors.push(`You have selected  version ${version} which is not supported. Please, try another one.`)
+      if (!this.isSupportedSolidityVersion()) {
+        this.errors.push(messages.NOT_SUPPORTED_SOLIDITY_VERSION_ERROR(version))
+      }
+    },
+    changeAllVersions (version) {
+      this.showAllVersions = version
+      this.inputErrors.delete('version')
+      this.errors.pop()
+      if (!this.isSupportedSolidityVersion()) {
+        this.errors.push(messages.NOT_SUPPORTED_SOLIDITY_VERSION_ERROR(version))
       }
     },
     getContract (event) {
@@ -470,6 +478,10 @@ export default {
       if (!this.version) this.inputErrors.add('version')
       if (!this.files.length) this.inputErrors.add('file')
       if (!this.name) this.inputErrors.add('name')
+      if (!this.isSupportedSolidityVersion()) {
+        this.inputErrors.add('version')
+        this.errors.push(`You have selected  version ${this.version} which is not supported. Please, try another one.`)
+      }
     },
 
     async requestVerification (request) {
@@ -492,6 +504,9 @@ export default {
       }
       if (constructorArguments) constructorArguments = constructorArguments.split(',')
       return { constructorArguments, encodedConstructorArguments }
+    },
+    isSupportedSolidityVersion () {
+      return !(UNSUPPORTED_SOLC_VERSIONS.find((v) => this.version.includes(v)))
     }
   }
 }
