@@ -1,0 +1,1 @@
+export const UNSUPPORTED_SOLC_VERSIONS = []

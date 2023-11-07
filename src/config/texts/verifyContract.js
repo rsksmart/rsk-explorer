@@ -15,12 +15,13 @@ export const messages = {
   VERIFICATION_FAILED: 'Verification failed',
   REQUEST_VERIFICATION: 'Requesting verification',
   SHOW_RESULT: 'Go to contract page',
-  VERIFIER_DATA_ERROR: 'Missing contract verifier data'
+  VERIFIER_DATA_ERROR: 'Missing contract verifier data',
+  NOT_SUPPORTED_SOLIDITY_VERSION_ERROR: (value) => `You have selected version ${value} which is not supported. Please, try another one.`
 }
 
 export const formFields = {
   ADDRESS: add('Contract Address'),
-  NAME: add('Contract name', `Contract name declared in code, 
+  NAME: add('Contract name', `Contract name declared in code,
   \n e.g. contract MyContract {}
   \n 'MyContract' is the contract name.`),
   SOURCE: add('Source file', '.sol source file of contract'),
