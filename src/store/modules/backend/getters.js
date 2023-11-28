@@ -32,9 +32,11 @@ export const lastBlocksTime = state => {
 }
 
 export const getPageTotal = (state, getters) => key => {
+  console.log('key: ', key)
   const data = state.responses[key]
-  const { pages } = data
-  const total = (pages && pages.total) ? pages.total : state.totals[key] || null
+  console.log('getPageTotal: ', data)
+  const total = (data?.pages && data?.pages.total) ? data?.pages.total : state.totals[key] || null
+  console.log('total: ', total)
   return total
 }
 
