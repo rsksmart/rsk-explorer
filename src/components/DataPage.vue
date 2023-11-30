@@ -1,6 +1,6 @@
 <template>
   <div class="data-page centered">
-    <h2 class="title" v-if="pageTitle">{{ pageTitle }}</h2>
+    <h2 class="title" v-if="titleDescription">{{ titleDescription }}</h2>
     <spinner v-if="(requesting && !error && !delayed.fields) || delayed.registry"></spinner>
     <error-page v-if="error" :error="error"></error-page>
     <div class="update-error" v-if="updateError">
@@ -20,7 +20,7 @@
           <div class="tabs-titles" v-if="page.data">
             <template v-for="tab in mainContentTabs">
               <button class="btn tab-title" :key="tab.name" v-if="tab.name" @click="setActiveContentTab(tab.name, $event)" :class="tabTitleCss(isActiveContentTab(tab))">
-                <span class="title">{{ tab.name }} {{ undefined !== tab.total ? `(${tab.total})` : '' }}</span>
+                <span class="title">{{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}</span>
                 <icon v-if="tab.buttonIcon" :name="tab.buttonIcon"></icon>
               </button>
             </template>
@@ -28,34 +28,34 @@
           </div>
           <data-section v-if="activeContentTab" :component="activeContentTab.component" :reqKey="reqKey" :module="module" :dataType="activeContentTab.dataType || dataType" :action="action" :updateOnNewBlock="updateOnNewBlock" @update="updateSection"></data-section>
         </div>
-        <div class="page" v-if="data">
-          <data-section v-if="!tabs && !activeContentTab" :module="module" :dataType="dataType" :reqKey="reqKey" :component="component" :action="action" :updateOnNewBlock="updateOnNewBlock" @update="updateSection"></data-section>
-          <div class="tabs" v-if="tabs && data && !hideTabs">
-            <!-- Tabs titles -->
-            <div class="tabs-titles" v-if="page.data">
-              <template v-for="tab in tabs">
-                <template v-if="renderTab(tab)">
-                  <template v-if="isRequesting()(tab.name)">
-                    <button class="btn tab-title" :key="tab.name">
-                      <loading-circle :size="10"></loading-circle>
-                      <span class="title">{{ getTabTitle(tab) }}</span>
-                    </button>
-                  </template>
-                  <template v-else>
-                    <button :key="tab.name" class="btn tab-title" @click="setTab(tab.name, $event)" :class="tabTitleCss(isActiveTab(tab))">
-                      <span class="title">{{ getTabTitle(tab) }}
-                        <small class="small" v-if="tabsTotals[tab.name] !== null">&nbsp; ({{ tabsTotals[tab.name] }})</small>
-                      </span>
-                    </button>
-                  </template>
+      </div>
+      <div class="page" v-if="data">
+        <data-section v-if="!tabs && !activeContentTab" :module="module" :dataType="dataType" :reqKey="reqKey" :component="component" :action="action" :updateOnNewBlock="updateOnNewBlock" @update="updateSection"></data-section>
+        <div class="tabs" v-if="tabs && data && !hideTabs">
+          <!-- Tabs titles -->
+          <div class="tabs-titles" v-if="page.data">
+            <template v-for="(tab, i) in tabs">
+              <template v-if="renderTab(tab)">
+                <template v-if="isRequesting()(tab.name)">
+                  <button :key="tab.dataType" class="btn tab-title">
+                    <loading-circle :size="10"></loading-circle>
+                    <span class="title">{{ getTabTitle(tab) }}</span>
+                  </button>
+                </template>
+                <template v-else>
+                  <button :key="`${tab.name}-${i}`" class="btn tab-title" @click="setTab(tab.name, $event)" :class="tabTitleCss(isActiveTab(tab))">
+                    <span class="title">{{ getTabTitle(tab) }}
+                      <small class="small" v-if="tabsTotals[tab.name] !== null">&nbsp; ({{ tabsTotals[tab.name] }})</small>
+                    </span>
+                  </button>
                 </template>
               </template>
-            </div>
+            </template>
           </div>
-          <template v-for="tab in tabs">
+          <template v-for="(tab, i) in tabs">
             <template v-if="isActiveTab(tab)">
-              <spinner v-if="isRequesting()(tab.name)" :key="tab.name"></spinner>
-              <data-section class="tab-content" v-else :key="tab.module" :module="tab.module" :dataType="tab.dataType" :reqKey="tab.name" :action="tab.action" :msgs="tab.msgs"></data-section>
+              <spinner :key="tab.action" v-if="isRequesting()(tab.name)"></spinner>
+              <data-section :key="`${tab.module}-${i}`" class="tab-content" v-else :module="tab.module" :dataType="tab.dataType" :reqKey="tab.name" :action="tab.action" :msgs="tab.msgs"></data-section>
             </template>
           </template>
         </div>
@@ -106,7 +106,17 @@ export default {
     this.getData()
   },
   watch: {
-    $route: 'onRouteChange'
+    $route: 'onRouteChange',
+    pageTitle (newTitle, oldTitle) {
+      if (newTitle && typeof newTitle === 'string' && newTitle !== oldTitle) {
+        this.storedTitle = newTitle
+      }
+    }
+  },
+  data () {
+    return {
+      storedTitle: ''
+    }
   },
   computed: {
     ...mapGetters({
@@ -114,6 +124,9 @@ export default {
       getActiveContentTab: 'getActiveContentTab',
       routeParams: 'getRouterParams'
     }),
+    titleDescription () {
+      return this.pageTitle || this.storedTitle
+    },
     hideTabs () {
       const active = this.activeContentTab || {}
       return active.hideTabs
