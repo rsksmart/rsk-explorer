@@ -142,8 +142,7 @@ export default {
       return this.page.updateError
     },
     page () {
-      const page = this.getPage()(this.reqKey) || {}
-      return page
+      return this.getPage()(this.reqKey) || {}
     },
     prev () {
       return this.page.prev || null
@@ -162,8 +161,7 @@ export default {
       return this.page.delayed || {}
     },
     data () {
-      const data = this.page.data
-      return data
+      return this.page.data
     },
     pageTitle () {
       if (undefined === this.title) return this.$route.name
