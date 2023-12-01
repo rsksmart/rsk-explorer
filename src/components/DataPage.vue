@@ -65,7 +65,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import { plainObjectChanges } from '../lib/js/utils'
 import Spinner from './Spinner.vue'
 import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
@@ -115,7 +114,8 @@ export default {
   },
   data () {
     return {
-      storedTitle: ''
+      storedTitle: '',
+      isGetAddressLoaded: false
     }
   },
   computed: {
@@ -142,9 +142,7 @@ export default {
       return this.page.updateError
     },
     page () {
-      console.log('this.reqKey: ', this.reqKey)
       const page = this.getPage()(this.reqKey) || {}
-      console.log('page: ', page)
       return page
     },
     prev () {
@@ -165,7 +163,6 @@ export default {
     },
     data () {
       const data = this.page.data
-      console.log('data: ', data)
       return data
     },
     pageTitle () {
@@ -232,7 +229,6 @@ export default {
   },
   methods: {
     getDataTest () {
-      console.log('tabs[0].name: ', this.tabs[0].name)
       this.fetchTab(this.tabs[0].name)
     },
     ...mapActions([
@@ -270,49 +266,30 @@ export default {
       if (typeof render === 'function') return render(data, tabsTotals[name])
       return (undefined === render) ? true : render
     },
-    onRouteChange (to, from) {
-      console.log('to, from: ', to, from)
-      // if (to.path === from.path) {
-      //   console.log('to.path === from.path: ', to.path === from.path)
-      //   // check for query changes
-      //   const diff = plainObjectChanges(to.query, from.query)
-      //   console.log('diff: ', diff)
-      //   const keys = Object.keys(diff)
-      //   console.log('keys: ', keys)
-      //   // dont fetch
-      //   if (!keys.length) return
-      //   if (keys.length === 1 && keys[0].slice(0, 2) === '__') return
-      // }
+    onRouteChange () {
       this.getData()
     },
-
     async getData () {
-      let { module, tabs, action, params } = this
-      console.log('module, tabs, action, params: ', module, tabs, action, params)
-      const key = this.reqKey
-      if (!module || !action) return
-      await this.fetchRouteData({ action, params, module, key })
-      if (tabs) {
-        const active = this.activeTab
-        if (active) {
-          await this.fetchTab(active)
-          tabs = tabs.filter(tab => tab.name !== active)
-        }
-        // for (const tab of tabs) {
-        //   console.log('tab.name: ', tab.name)
-        //   this.fetchTab(tab.name)
-        // }
+      await this.getParentData()
+      if (this.tabs) {
+        await this.fetchTab()
       }
     },
-
-    async fetchTab (tabName) {
-      console.log('tabName: ', tabName)
-      const tab = Object.assign({}, this.getTab(tabName))
+    async getParentData () {
+      const { module, action, params } = this
+      const key = this.reqKey
+      if (!module || !action) return
+      if (!this.isGetAddressLoaded || action !== 'getAddress') {
+        this.isGetAddressLoaded = true
+        return this.fetchRouteData({ action, params, module, key })
+      }
+    },
+    async fetchTab () {
+      const tab = Object.assign({}, this.getTab(this.activeTab))
       let params = tab.params
       params = (params && typeof params === 'function') ? params(this.routeParams) : params
-      console.log('params: ', params)
       params = params || {}
-      params.count = false // WIP get totals in first request only
+      params.count = false
       tab.params = params
       tab.count = false
       if (tab) {
