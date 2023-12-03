@@ -115,7 +115,7 @@ export default {
   data () {
     return {
       storedTitle: '',
-      isGetAddressLoaded: false
+      storedParamAddress: null
     }
   },
   computed: {
@@ -277,8 +277,10 @@ export default {
       const { module, action, params } = this
       const key = this.reqKey
       if (!module || !action) return
-      if (!this.isGetAddressLoaded || action !== 'getAddress') {
-        this.isGetAddressLoaded = true
+      const paramsAddress = this.$route.params?.address
+      // If the parameters are the same when the router changes, we do not request the address information.
+      if (this.storedParamAddress !== paramsAddress) {
+        this.storedParamAddress = paramsAddress
         return this.fetchRouteData({ action, params, module, key })
       }
     },
