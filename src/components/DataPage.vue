@@ -280,7 +280,8 @@ export default {
       const paramsAddress = this.$route.params?.address
       // If the parameters are the same when the router changes, we do not request the address information.
       if (this.storedParamAddress !== paramsAddress) {
-        this.storedParamAddress = paramsAddress
+        // use Date for a random info
+        this.storedParamAddress = paramsAddress || new Date()
         return this.fetchRouteData({ action, params, module, key })
       }
     },
