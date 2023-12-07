@@ -74,7 +74,7 @@ export default {
       return this.getPage()(this.reqKey)
     },
     delayed () {
-      return this.page.delayed
+      return this.page?.delayed
     },
     data () {
       return (this.page) ? this.page.data : null
