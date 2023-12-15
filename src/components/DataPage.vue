@@ -1,57 +1,70 @@
-<template lang="pug">
-  .data-page.centered
-    h2.title(v-if='pageTitle') {{pageTitle}}
-    spinner(v-if='(requesting && !error && !delayed.fields) || delayed.registry')
-    error-page(v-if='error' :error='error')
-    .update-error(v-if='updateError')
-      h3
-        span Update Error:&nbsp;
-        small {{updateError.error}}
-    template(v-if='!error')
-      .messages(v-if='pageMessages')
-        message(v-for='msg,key in pageMessages' :message='msg' :key='key' :data='data')
-      //- Header
-      .page-header(v-if='mainContent')
-        item-navigator(v-if='!isTable' :next='next' :prev='prev' :total='total' :regKey='dataKey()(dataType)')
-
-        .tabs
-          .tabs-titles(v-if='page.data')
-            template(v-for='tab in mainContentTabs')
-              button.btn.tab-title(v-if='tab.name' @click='setActiveContentTab(tab.name,$event)'
-               :class='tabTitleCss(isActiveContentTab(tab))')
-                span.title {{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}
-                icon(v-if='tab.buttonIcon' :name='tab.buttonIcon')
-            export-controls(v-if='data' :data='page.data' :type='dataType')
-        data-section( v-if='activeContentTab'
-          :component='activeContentTab.component' :reqKey='reqKey' :module='module'
-          :dataType='activeContentTab.dataType || dataType' :action='action' :updateOnNewBlock='updateOnNewBlock' @update='updateSection')
-      .page(v-if='data')
-        data-section(v-if='!tabs && !activeContentTab' :module='module' :dataType='dataType'
-          :reqKey='reqKey' :component='component' :action='action' :updateOnNewBlock='updateOnNewBlock' @update='updateSection')
-        .tabs(v-if='tabs && data && !hideTabs')
-          //- Tabs titles
-          .tabs-titles(v-if='page.data')
-            template(v-for='tab in tabs')
-              template(v-if='renderTab(tab)')
-                template(v-if='isRequesting()(tab.name)')
-                  button.btn.tab-title
-                    loading-circle(:size='10')
-                    span.title {{ getTabTitle(tab) }}
-                template(v-else)
-                  button.btn.tab-title(@click='setTab(tab.name,$event)' :class='tabTitleCss(isActiveTab(tab))')
-                    span.title {{ getTabTitle(tab) }}
-                      small.small(v-if='tabsTotals[tab.name] !== null') &nbsp; ({{ tabsTotals[tab.name] }})
-
-          template(v-for='tab in tabs')
-            template(v-if='isActiveTab(tab)')
-              spinner(v-if='isRequesting()(tab.name)')
-              data-section.tab-content(v-else :module='tab.module' :dataType='tab.dataType'
-              :reqKey='tab.name' :action='tab.action' :msgs='tab.msgs')
-
+<template>
+  <div class="data-page centered">
+    <h2 class="title" v-if="titleDescription">{{ titleDescription }}</h2>
+    <spinner v-if="(requesting && !error && !delayed.fields) || delayed.registry"></spinner>
+    <error-page v-if="error" :error="error"></error-page>
+    <div class="update-error" v-if="updateError">
+      <h3>
+        <span>Update Error:&nbsp;</span>
+        <small>{{ updateError.error }}</small>
+      </h3>
+    </div>
+    <template v-if="!error">
+      <div class="messages" v-if="pageMessages">
+        <message v-for="(msg, key) in pageMessages" :message="msg" :key="key" :data="data"></message>
+      </div>
+      <!-- Header -->
+      <div class="page-header" v-if="mainContent">
+        <item-navigator v-if="!isTable" :next="next" :prev="prev" :total="total" :regKey="dataKey()(dataType)"></item-navigator>
+        <div class="tabs">
+          <div class="tabs-titles" v-if="page.data">
+            <template v-for="tab in mainContentTabs">
+              <button class="btn tab-title" :key="tab.name" v-if="tab.name" @click="setActiveContentTab(tab.name, $event)" :class="tabTitleCss(isActiveContentTab(tab))">
+                <span class="title">{{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}</span>
+                <icon v-if="tab.buttonIcon" :name="tab.buttonIcon"></icon>
+              </button>
+            </template>
+            <export-controls v-if="data" :data="page.data" :type="dataType"></export-controls>
+          </div>
+          <data-section v-if="activeContentTab" :component="activeContentTab.component" :reqKey="reqKey" :module="module" :dataType="activeContentTab.dataType || dataType" :action="action" :updateOnNewBlock="updateOnNewBlock" @update="updateSection"></data-section>
+        </div>
+      </div>
+      <div class="page" v-if="data">
+        <data-section v-if="!tabs && !activeContentTab" :module="module" :dataType="dataType" :reqKey="reqKey" :component="component" :action="action" :updateOnNewBlock="updateOnNewBlock" @update="updateSection"></data-section>
+        <div class="tabs" v-if="tabs && data && !hideTabs">
+          <!-- Tabs titles -->
+          <div class="tabs-titles" v-if="page.data">
+            <template v-for="(tab, i) in tabs">
+              <template v-if="renderTab(tab)">
+                <template v-if="isRequesting()(tab.name)">
+                  <button :key="tab.dataType" class="btn tab-title">
+                    <loading-circle :size="10"></loading-circle>
+                    <span class="title">{{ getTabTitle(tab) }}</span>
+                  </button>
+                </template>
+                <template v-else>
+                  <button :key="`${tab.name}-${i}`" class="btn tab-title" @click="setTab(tab.name, $event)" :class="tabTitleCss(isActiveTab(tab))">
+                    <span class="title">{{ getTabTitle(tab) }}
+                      <small class="small" v-if="tabsTotals[tab.name] !== null">&nbsp; ({{ tabsTotals[tab.name] }})</small>
+                    </span>
+                  </button>
+                </template>
+              </template>
+            </template>
+          </div>
+          <template v-for="(tab, i) in tabs">
+            <template v-if="isActiveTab(tab)">
+              <spinner :key="tab.action" v-if="isRequesting()(tab.name)"></spinner>
+              <data-section :key="`${tab.module}-${i}`" class="tab-content" v-else :module="tab.module" :dataType="tab.dataType" :reqKey="tab.name" :action="tab.action" :msgs="tab.msgs"></data-section>
+            </template>
+          </template>
+        </div>
+      </div>
+    </template>
+  </div>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { plainObjectChanges } from '../lib/js/utils'
 import Spinner from './Spinner.vue'
 import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
@@ -92,7 +105,18 @@ export default {
     this.getData()
   },
   watch: {
-    $route: 'onRouteChange'
+    $route: 'onRouteChange',
+    pageTitle (newTitle, oldTitle) {
+      if (newTitle && typeof newTitle === 'string' && newTitle !== oldTitle) {
+        this.storedTitle = newTitle
+      }
+    }
+  },
+  data () {
+    return {
+      storedTitle: '',
+      storedParamAddress: null
+    }
   },
   computed: {
     ...mapGetters({
@@ -100,6 +124,9 @@ export default {
       getActiveContentTab: 'getActiveContentTab',
       routeParams: 'getRouterParams'
     }),
+    titleDescription () {
+      return this.pageTitle || this.storedTitle
+    },
     hideTabs () {
       const active = this.activeContentTab || {}
       return active.hideTabs
@@ -234,43 +261,35 @@ export default {
       if (typeof render === 'function') return render(data, tabsTotals[name])
       return (undefined === render) ? true : render
     },
-    onRouteChange (to, from) {
-      if (to.path === from.path) {
-        // check for query changes
-        const diff = plainObjectChanges(to.query, from.query)
-        const keys = Object.keys(diff)
-        // dont fetch
-        if (!keys.length) return
-        if (keys.length === 1 && keys[0].slice(0, 2) === '__') return
-      }
+    onRouteChange () {
       this.getData()
     },
-
     async getData () {
-      let { module, tabs, action, params } = this
-      const key = this.reqKey
-      if (!module || !action) return
-      await this.fetchRouteData({ action, params, module, key })
-      if (tabs) {
-        const active = this.activeTab
-        if (active) {
-          await this.fetchTab(active)
-          tabs = tabs.filter(tab => tab.name !== active)
-        }
-        for (const tab of tabs) {
-          this.fetchTab(tab.name)
-        }
+      await this.getParentData()
+      if (this.tabs) {
+        await this.fetchTab()
       }
     },
-
-    async fetchTab (tabName) {
-      const tab = Object.assign({}, this.getTab(tabName))
+    async getParentData () {
+      const { module, action, params } = this
+      const key = this.reqKey
+      if (!module || !action) return
+      const paramsAddress = this.$route.params?.address
+      // If the parameters are the same when the router changes, we do not request the address information.
+      if (this.storedParamAddress !== paramsAddress) {
+        // use Date for a random info
+        this.storedParamAddress = paramsAddress || new Date()
+        return this.fetchRouteData({ action, params, module, key })
+      }
+    },
+    async fetchTab () {
+      const tab = Object.assign({}, this.getTab(this.activeTab))
       let params = tab.params
       params = (params && typeof params === 'function') ? params(this.routeParams) : params
       params = params || {}
-      params.count = true // WIP get totals in first request only
+      params.count = false
       tab.params = params
-      tab.count = true
+      tab.count = false
       if (tab) {
         const req = await this.fetchRouteData(tab)
         return req
