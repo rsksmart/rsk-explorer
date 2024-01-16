@@ -1,38 +1,50 @@
-
-<template lang="pug">
-  .tooltip(@mouseleave.passive='showTip(false)'
-    @mouseenter.passive='showTip(true)'
-    @touchend.passive='touch'
-    :style='elStyle'
-    )
-    .trim(v-if='trimLen')
-      slot(name='trim-1')
-        template(v-if='routerLink')
-          router-link(:to='routerLink')
-            span {{trimed[0]}}
-        span(v-else) {{trimed[0]}}
-    slot(v-else)
-      template(v-if='routerLink')
-        router-link(:to='routerLink')
-          span(ref='node-value') {{value}}
-      span(v-else ref='node-value') {{value}}
-      copy-button.left-button(v-if='opts.copy' :target='selectRef("node-value")' @copy='onCopy')
-    .points(v-if='trimLen' :class='pointsClass')
-        button(v-if='!show')
-          span.icon {{ opts.trimTxt }}
-        copy-button(v-if='show && opts.copy' :value='value' @copy='onCopy')
-    .trim(v-if='trimed[1]')
-      template(v-if='routerLink')
-        router-link(:to='routerLink')
-          span {{trimed[1]}}
-      span(v-else) {{trimed[1]}}
-
-    //- Tooltip
-    .tip(v-if='show' :class='opts.pos' :style='tipPos')
-      //- value
-      .value(:class=' (clicked) ? "clicked" : ""' )
-        .copy-txt(@touchend.stop='show = !show' @click.stop='showTip()')
-          .tip-txt(:class='tipClass') {{value}}
+<template>
+  <div class="tooltip"
+     @mouseleave.passive="showTip(false)"
+     @mouseenter.passive="showTip(true)"
+     @touchend.passive="touch"
+     :style="elStyle">
+    <div class="trim" v-if="trimLen">
+      <slot name="trim-1">
+        <template v-if="routerLink">
+          <router-link :to="routerLink">
+            <span>{{ trimed[0] }}</span>
+          </router-link>
+        </template>
+        <span v-else>{{ trimed[0] }}</span>
+      </slot>
+    </div>
+    <slot v-else>
+      <template v-if="routerLink">
+        <router-link :to="routerLink">
+          <span ref="node-value">{{ value }}</span>
+        </router-link>
+      </template>
+      <span v-else ref="node-value">{{ value }}</span>
+      <copy-button class="left-button" v-if="opts.copy" :target="selectRef('node-value')" @copy="onCopy"></copy-button>
+    </slot>
+    <div class="points" v-if="trimLen" :class="pointsClass">
+      <button v-if="!show">
+        <span class="icon">{{ opts.trimTxt }}</span>
+      </button>
+      <copy-button v-if="show && opts.copy" :value="value"  @copy="onCopy"></copy-button>
+    </div>
+    <div class="trim" v-if="trimed[1]">
+      <template v-if="routerLink">
+        <router-link :to="routerLink">
+          <span>{{ trimed[1] }}</span>
+        </router-link>
+      </template>
+      <span v-else>{{ trimed[1] }}</span>
+    </div>
+    <div class="tip" v-if="show" :class="opts.pos" :style="tipPos">
+      <div class="value" :class="{ clicked: clicked }">
+        <div class="copy-txt" @touchend.stop="show = !show" @click.stop="showTip()">
+          <div class="tip-txt" :class="tipClass">{{ value }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 /**
@@ -222,7 +234,6 @@ export default {
     position relative
     display inline-flex
     overflow visible
-    z-index 1000
 
   .nowrap
     white-space nowrap

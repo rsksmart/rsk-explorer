@@ -1,10 +1,13 @@
-<template lang="pug">
-  .box-field.box
-    .box-field-icon
-      field-icon(:icon='field.icon')
-    .box-field-content
-      field-title(:field='field' :options='{hideIcon:true}')
-      data-field(:field='field' :row='row')
+<template>
+  <div class="box-field box">
+    <div class="box-field-icon">
+      <field-icon :icon="field.icon"></field-icon>
+    </div>
+    <div class="box-field-content">
+      <field-title :field="field" :options="{ hideIcon: true }"></field-title>
+      <data-field :field="field" :row="row"></data-field>
+    </div>
+  </div>
 </template>
 
 <script>

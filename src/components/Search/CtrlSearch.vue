@@ -1,39 +1,51 @@
-<template lang="pug">
-  .ctrl-search
-    .input
-      input.search-input(
-        type="search"
-        :value='value'
+<template>
+  <div class="search-content bg-secondary">
+    <img src="@/assets/svg/search.svg" alt="">
+    <div class="content-input">
+      <input
+        class="search-input bg-secondary"
+        type="text"
+        :value="value"
         @input.prevent="input"
         @change.prevent="changeInput"
-        @keyup.stop='onKey'
+        @keyup.stop="onKey"
         :placeholder="placeholder"
         :class="cssClass"
-        )
-      button.link(@click="clear" v-if="value")
-        icon(name="close")
-      button(v-if="isLoading" )
-        loading-circle(:size="10")
-      button.link(v-if="!isLoading" @click.stop="onChange")
-        icon(name="search")
-    .results(v-if="results.length" ref="results")
-      template(v-for="result,i in results")
-        .result(v-if='result.link && result.value'
-          :class="{selected: selectedResult === i+1 }"
+      >
+      <button class="btn-clear bg-secondary" @click="clear" v-if="value">
+        x
+      </button>
+        <!-- <loading-circle :size="10"></loading-circle> -->
+      <Spinner v-if="isLoading" :width="20" :height="20" :border="2" />
+      <!-- <button class="link" v-if="!isLoading" @click.stop="onChange">
+        <icon name="search"></icon>
+      </button> -->
+    </div>
+    <div class="search-results bg-secondary" v-if="results.length" ref="results">
+      <template v-for="(result, i) in results">
+        <div v-if="result.link && result.value"
+          :class="{ selected: selectedResult === i+1 }"
           :key="`${result.value}${i}`"
-          :ref="`result-${i}`")
-          a(
+          :ref="`result-${i}`">
+          <a
             :href="result.link"
-            @touchend.passive="gotoResult($event,i)"
-            @click="gotoResult($event,i)") {{result.name || result.value }}
+            @touchend.passive="gotoResult($event, i)"
+            @click="gotoResult($event, i)">
+            {{ result.name || result.value }}
+          </a>
+        </div>
+      </template>
+    </div>
+  </div>
 </template>
 <script>
 import { clamp } from '../../lib/js/utils'
-import LoadingCircle from '../LoadingCircle'
+import Spinner from '../Loaders/Spinner.vue'
+// import LoadingCircle from '../LoadingCircle'
 export default {
   name: 'ctrl-search',
   components: {
-    LoadingCircle
+    Spinner
   },
   props: ['placeholder', 'cssClass', 'results', 'searchValue', 'loading'],
   data () {
@@ -129,60 +141,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../../lib/styl/vars.styl'
-  @import '../../lib/styl/mixins.styl'
-
-  .ctrl-search
-    position relative
-
-    .loading-circle
-      fill none
-      stroke green
-
-    .input
-      display flex
-      align-items center
-      background none
-      border-style solid
-      width 100%
-
-      ::placeholder
-        transition $trans-fade
-        opacity 1
-
-      :focus::placeholder
-        opacity 0.25
-
-      button
-        display flex
-        margin 0 0.5em 0 0
-
-      input.search-input
-        border none
-        background none
-        text-align center
-        padding 0
-        box-shadow none
-        font-size 0.75em
-        margin 0 0.5em 0 0
-        flex 1
-
-    .results
-      padding 0
-      position absolute
-      z-index 1100
-      list-style none
-      font-size 0.75em
-      background $bg-even
-      width 100%
-      overflow-y auto
-      max-height 70vh
-
-    .result
-      display flex
-      flex-flow row wrap
-      word-break break-all
-      margin 0.5em 1em
-      border-bottom $soft-border
-</style>

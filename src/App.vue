@@ -1,62 +1,22 @@
-
-<template lang="pug">
-  .wrapper#app.app
-    .top-page(v-if='topMsg')
-      message.top-msg(:message='topMsg')
-    //-.header(:class='(bigMenu) ? "big-menu" : ""')
-    .header
-      transition(name='head-trans')
-        header.w-trans
-          .brand(@click='goHome' @touchstart.passive='goHome')
-              .iso.plain-color
-                include assets/svg/logo-alt.svg
-              .title
-                h1.logo.link rsk explorer
-                sub.net.gray {{networkName}}
-          .header-content
-            search-box
-          .nav(:class='(menu) ? "open":""')
-            .burger
-              button(@click='toggleMenu')
-                icon(:name='(!menu) ? "menu" : "close"')
-            nav.menu(:class='(menu) ? "enabled":""')
-              ul
-                template(v-for='m in menuItems')
-                  li(v-if='m.key !== "home" || !isRoute("home")' @click='toggleMenu')
-                    router-link(:to='"/" + m.path' :title='(!m.title)?m.key:null')
-                      icon.icon(v-if='m.icon' :name='getIcon(m.icon)')
-                      span(v-if='m.title') {{m.title}}
-    connection-status(v-if='!connected')
-    .main
-      router-view
-    .footer
-      footer
-        .logo
-          .iso.plain-color
-            include assets/svg/iso-logo-v.svg
-        .text
-          ul.plain
-            li(v-for='item in content.footer')
-              template(v-if="typeof item ==='object'")
-                a(v-if='item.link' :href='item.link')
-                  strong {{item.text}}
-              span(v-else) {{ item }}
+<template>
+  <div class="wrapper" id="app">
+    <div class="top-page" v-if="topMsg">
+      <message class="top-msg" :message="topMsg"></message>
+    </div>
+    <container />
+  </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
-import ConnectionStatus from './components/ConnectionStatus.vue'
-import ToolTip from './components/ToolTip.vue'
-import SearchBox from './components/SearchBox.vue'
 import Message from './components/Message.vue'
 import './icons'
+import Container from './components/Container/Container.vue'
 export default {
   name: 'app',
   components: {
-    ConnectionStatus,
-    SearchBox,
-    ToolTip,
-    Message
+    Message,
+    Container
   },
   data () {
     return {
@@ -142,24 +102,3 @@ export default {
 }
 </script>
 <style src="vue-d3-barchart/dist/vue-d3-barchart.css"></style>
-<style lang="stylus">
-@import 'lib/styl/style.styl'
-@import 'lib/styl/mixins.styl'
-
-.w-trans
-  transition opacity 1s ease
-  opacity 1
-
-.head-trans-enter-active
-  opacity 0
-
-.top-page
-  flex-centered()
-  font-size 0.9em
-  text-shadow $txt-sh
-  background $darkness-odd
-  border-bottom 1px solid $darkness-even
-
-.menu
-  font-size 0.9em
-</style>

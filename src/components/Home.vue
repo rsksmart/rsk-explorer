@@ -1,50 +1,32 @@
-<template lang="pug">
-  .home(v-if='lastBlocks.length')
-    stats-bar
-    .hero
-      .col-a(ref='last-blocks-box')
-        .box.row.last-blocks
-          .last-block
-            block-box(:block='lastBlocks[0]' title='Last Block')
-          pending-blocks(v-if='pending')
-          .auto-update
-            ctrl-switch(label='Auto update' :value='autoUpdate' @change='setAupdate')
-      .col-b(ref='chart-box')
-          .box
-            .chart-c
-              tx-density-chart(:asize='appSize.w + appSize.h')
-    .cols
-      .col-a
-        last-blocks
-        .center.full-w
-          router-link.btn.txt-color.small(:to='`/${r.blocks}/`')
-            span Show all
-      .col-b
-        last-transactions
-        .center.full-w
-          router-link.btn.txt-color.small(:to='`/${r.transactions}/`')
-            span Show all
+<template>
+  <div class="home-view" v-if="lastBlocks.length">
+    <stats-content />
+    <div class="flex justify-between">
+      <last-block :block="lastBlocks[0]" title="Last Block" />
+      <tx-density-chart :asize="appSize.w + appSize.h" />
+    </div>
+    <div class="flex justify-between content-blocks-tx">
+      <last-blocks />
+      <last-transactions />
+    </div>
+  </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import LastBlocks from './LastBlocks.vue'
-import LastTransactions from './LastTransactions.vue'
-import TxDensityChart from './TxDensityChart'
-import BlockBox from './BlockBox.vue'
-import PendingBlocks from './PendingBlocks.vue'
-import CtrlSwitch from './controls/CtrlSwitch.vue'
-import StatsBar from './StatsBar'
+import LastBlocks from '@/components/home/Block/LastBlocks.vue'
 import { ROUTES as r } from '../config/types'
+import StatsContent from '@/components/home/StatsContent.vue'
+import LastBlock from '@/components/home/Block/LastBlock.vue'
+import TxDensityChart from '@/components/Charts/TxDensityChart.vue'
+import LastTransactions from './Transactions/LastTransactions.vue'
 export default {
   name: 'Home',
   components: {
-    StatsBar,
     LastBlocks,
     LastTransactions,
-    TxDensityChart,
-    BlockBox,
-    PendingBlocks,
-    CtrlSwitch
+    StatsContent,
+    LastBlock,
+    TxDensityChart
   },
   data () {
     return {
@@ -76,21 +58,5 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import ('../lib/styl/vars.styl')
-
-  .hero
-    .col-b
-      .box
-        min-height 100%
-        padding 0
-
-  .home
-    max-width 100%
-
-  .chart-c
-    margin 0.5em 1em
-    max-width 100%
-
-  .auto-update
-    margin 0.5em 0 0 0
+  // @import ('../lib/styl/style.styl')
 </style>
