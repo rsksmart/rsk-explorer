@@ -1,4 +1,5 @@
 /* eslint-disable */
+import './addresses'
 import './arrow-down'
 import './arrow-left'
 import './arrow-right'
@@ -73,6 +74,7 @@ import './stopwatch'
 import './table'
 import './times-rectangle'
 import './transaction'
+import './tokens'
 import './triangle-arrow-down'
 import './triangle-arrow-left'
 import './triangle-arrow-right'

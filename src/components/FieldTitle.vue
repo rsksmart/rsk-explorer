@@ -6,7 +6,6 @@
       icon="help"
       :title="description">
     </field-icon>
-
     <field-icon
       v-if="showIcon"
       :icon="field.icon"
@@ -16,7 +15,8 @@
     <span
       class="title"
       v-if="showTitle && field.title">
-      {{ field.title | fieldTitleFilter }}
+      <!-- {{ field.title | fieldTitleFilter }} -->
+      {{ field.title }}
     </span>
     <slot></slot>
   </div>
@@ -58,19 +58,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
-
-  .field-title
-    flex-centered()
-
-    .icon
-      display inline-flex
-
-    .icon + .title
-      margin 0 0 0 0.5em
-    .field-icon
-      .tooltip *
-        word-break normal !important
-</style>

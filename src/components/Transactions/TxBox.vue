@@ -45,24 +45,18 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { mSecondsAgo } from '@/filters/TimeFilters'
 import dataMixin from '@/mixins/dataMixin'
-// import DataField from '../DataField'
 import FieldTitle from '../FieldTitle'
 import RenderField from '../General/RenderField.vue'
 export default {
   name: 'tx-box',
   components: {
-    // DataField,
     FieldTitle,
     RenderField
   },
   mixins: [
     dataMixin
   ],
-  filers: {
-    mSecondsAgo
-  },
   props: ['tx'],
   data () {
     return {

@@ -1,93 +1,124 @@
-<template lang="pug">
-  .data-table(v-if='data.length && fields')
-    //- Table
-    .table-ctrls
-      button.switch(@click='switchTableGrid(false)' :disabled='!renderTable')
-        icon(name='grid')
-      button.switch(@click='switchTableGrid(true)' :disabled='renderTable')
-        icon(name='table')
-      //- Menu
-      menu-button
-        template(v-slot:button)
-          icon(name="dots")
-        template(v-slot:elements)
-          button.button(v-if="!showExportMenu" @click='switchExportMenu')
-            icon(:name='icons.download' )
-            small download
-    //- Export Menu
-    .export-menu.row(v-if='showExportMenu')
-      export-pages(v-if='exportParams' v-bind='exportParams' @close='switchExportMenu')
-    table.dark(v-if='data' ref='table' :class='tableClass')
-      thead(:class='theadClass')
-        tr
-          th.table-id(v-if='sort && !isDefaultSortVisible')
-            .sort(v-if='sort && isSorted([defKeys[0]])')
-
-              //-field-title(:field='fields[defKeys[0]]')
-              button.link(@click='sortBy(defKeys[0],$event)')
-                icon(:name='iconLoad' :style='iconStyle()')
-                .sort-icon(v-if='isSorted(defKeys[0])')
-                  icon.small(:name='sortIcon(defKeys[0])')
-            template(v-else)
-              //-field-title(:field='field')
-              .field-title
-                button.link(@click='sortBy(defKeys[0],$event)')
-                  icon(:name='iconLoad' :style='iconStyle()')
-          th.dummy(v-else)
-          template(v-for='field,fieldName,index in fields')
-            template(v-if='!isHidden(fieldName)')
-              th(:class='thClass(field.fieldName)')
-                .sort(v-if='sort && isSortable(field.path)')
-                  button.link(@click='sortBy(field.path,$event)')
-                    field-title(:field='field')
-                      .sort-icon(v-if='isSorted(field.path)')
-                        icon.small(:name='sortIcon(field.path)')
-                template(v-else)
-                  field-title(:field='field')
-              th.dummy(v-if='isFrom(fieldName,index)' )
-      tbody
-        tr(v-for='row, rowIndex in dataFormatted' :class='rowClass(rowIndex)')
-          //- row icon
-          td.row-icon
-            router-link(:to='rowLink(row)')
-              icon(:name='iconLoad' :style='iconStyle(row)')
-            // - grid default sort icon
-            template(v-if='!renderTable')
-              .sort.td-title(v-if='sort && isSorted([defKeys[0]])')
-                button.link(@click='sortBy(defKeys[0],$event)')
-                  .sort-icon(v-if='isSorted(defKeys[0])')
-                    icon.small(:name='sortIcon(defKeys[0])')
-          template(v-for='field,fieldName,index in fields')
-
-            td(v-if='!isHidden(fieldName)' :class='tdClass(fieldName)')
-              template(v-if='!renderTable')
-                .sort.td-title(v-if='sort && isSortable(field.path)')
-                  button.link(@click='sortBy(field.path,$event)')
-                    field-title(:field='field')
-                      .sort-icon(v-if='isSorted(field.path) && !isDefaultSort')
-                        icon.small(:name='sortIcon(field.path)')
-                field-title.td-title(v-else :field='field')
-              template(v-if="getCustomRenderProps(field,row)")
-                component(:is='field.renderAs' v-bind='getCustomRenderProps(field,row)' )
-              data-field(v-else :field='field' :row='row')
-            td.from-to-arrow(v-if='isFrom(fieldName,index)')
-              icon(name='arrow-right')
+<template>
+  <div class="data-table" v-if="data.length && fields">
+    <!-- Table Controls -->
+    <div class="table-ctrls">
+      <button class="text-white-100 bg-secondary btn" @click="switchExportMenu">
+        <icon :name="icons.download"></icon>
+        <span class="text">Download</span>
+        <icon :name="!showExportMenu ? 'arrow-down' : 'arrow-up'"></icon>
+      </button>
+    </div>
+    <!-- Export Menu -->
+    <div class="export-menu row" v-if="showExportMenu">
+      <export-pages v-if="exportParams" v-bind="exportParams" @close="switchExportMenu"></export-pages>
+    </div>
+    <table class="" v-if="data" ref="table" :class="tableClass">
+      <thead :class="theadClass">
+        <tr>
+          <th class="table-id" v-if="sort && !isDefaultSortVisible">
+            <div class="sort" v-if="sort && isSorted([defKeys[0]])">
+              <!-- <button class="link" @click="sortBy(defKeys[0], $event)">
+                <icon :name="iconLoad" :style="iconStyle()"></icon>
+                <div class="sort-icon" v-if="isSorted(defKeys[0])">
+                  <icon small :name="sortIcon(defKeys[0])"></icon>
+                </div>
+              </button> -->
+            </div>
+            <template v-else>
+              <div class="field-title">
+                <button class="link" @click="sortBy(defKeys[0], $event)">
+                  <icon :name="iconLoad" :style="iconStyle()"></icon>
+                </button>
+              </div>
+            </template>
+          </th>
+          <th class="dummy" v-else></th>
+          <template v-for="(field, fieldName, index) in fields">
+            <template v-if="!isHidden(fieldName)">
+              <th :class="thClass(field.fieldName)" :key="`1-${index}`">
+                <div class="sort" v-if="sort && isSortable(field.path)">
+                  {{ field.title }}
+                  <!-- <button class="link" @click="sortBy(field.path, $event)">
+                    <field-title :field="field">
+                      <div class="sort-icon" v-if="isSorted(field.path)">
+                        <icon small :name="sortIcon(field.path)"></icon>
+                      </div>
+                    </field-title>
+                  </button> -->
+                </div>
+                <template v-else>
+                  <!-- <field-title :field="field"></field-title> -->
+                  {{ field.title }}
+                </template>
+              </th>
+            </template>
+            <th class="dummy" v-if="isFrom(fieldName, index)" :key="`2-${index}`"></th>
+          </template>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(row, rowIndex) in dataFormatted" :class="rowClass(rowIndex)" :key="`3-${rowIndex}`">
+          <!-- Row Icon -->
+          <td class="row-icon">
+            <router-link :to="rowLink(row)">
+              <icon :name="iconLoad" :style="iconStyle(row)"></icon>
+            </router-link>
+            <!-- Grid Default Sort Icon -->
+            <template v-if="!renderTable">
+              <div class="sort td-title" v-if="sort && isSorted([defKeys[0]])">
+                <button class="link" @click="sortBy(defKeys[0], $event)">
+                  <div class="sort-icon" v-if="isSorted(defKeys[0])">
+                    <icon small :name="sortIcon(defKeys[0])"></icon>
+                  </div>
+                </button>
+              </div>
+            </template>
+          </td>
+          <template v-for="(field, fieldName, index) in fields">
+            <td v-if="!isHidden(fieldName)" :class="tdClass(fieldName)" :key="`4-${index}`">
+              <template v-if="!renderTable">
+                <div class="sort td-title" v-if="sort && isSortable(field.path)">
+                  <button class="link" @click="sortBy(field.path, $event)">
+                    <field-title :field="field">
+                      <div class="sort-icon" v-if="isSorted(field.path) && !isDefaultSort">
+                        <icon small :name="sortIcon(field.path)"></icon>
+                      </div>
+                    </field-title>
+                  </button>
+                </div>
+                <field-title class="td-title" v-else :field="field"></field-title>
+              </template>
+              <template v-if="getCustomRenderProps(field, row)">
+                <component :is="field.renderAs" v-bind="getCustomRenderProps(field, row)"></component>
+              </template>
+              <render-field v-else :field="field" :row="row" />
+            </td>
+            <td class="from-to-arrow" v-if="isFrom(fieldName, index)" :key="`5-${index}`">
+              <icon name="arrow-right"></icon>
+            </td>
+          </template>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 <script>
-import dataMixin from '../mixins/dataMixin'
-import DataField from './DataField'
-import FieldTitle from './FieldTitle'
-import MenuButton from './controls/MenuButton'
-import ExportPages from './ExportPages'
-import icons from '../config/icons'
+import dataMixin from '@/mixins/dataMixin'
+import DataField from '@/components/DataField'
+import FieldTitle from '@/components/FieldTitle'
+import MenuButton from '@/components/controls/MenuButton'
+import ExportPages from '@/components/ExportPages'
+import icons from '@/config/icons'
 import { mapGetters, mapActions, mapState } from 'vuex'
+import RenderField from './RenderField.vue'
 export default {
   name: 'data-table',
   components: {
     DataField,
     FieldTitle,
     MenuButton,
-    ExportPages
+    ExportPages,
+    RenderField
   },
   mixins: [
     dataMixin
@@ -282,31 +313,33 @@ export default {
   }
 }
 </script>
-<!-- <style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
+<style lang="stylus">
+  // @import '../../lib/styl/vars.styl'
+  // @import '../../lib/styl/mixins.styl'
+  .data-page
+    position: relative
 
   .data-table
-    display flex
-    flex-flow column nowrap
-    justify-content center
+    // display flex
+    // flex-flow column nowrap
+    // justify-content center
 
   .table-ctrls
-    display flex
+    top 0px
+    right 0px
+    position absolute
     justify-content flex-end
-    margin 1em
 
   .unsortable > .field-title
-    color gray
 
     .icon svg
       fill gray !important
 
   .sort
-    flex-centered()
+    // flex-centered()
 
     .field-title
-      flex-centered()
+      // flex-centered()
 
     button
       display flex
@@ -332,8 +365,7 @@ export default {
         display flex
 
   sub
-    color white
 
   .has-sort
     padding 0 !important
-</style> -->
+</style>

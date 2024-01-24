@@ -1,314 +1,314 @@
 
-apply-colors($colors, $pref = '')
-  for $col in $colors
-    $val = lookup($pref + $col)
-    apply-color($col, $val)
-
-apply-color($col, $val)
-  // backgrounds
-  .bg-{$col}
-    background $val
-
-  // colors classes
-  .{$col}, .{$col} a, .app button.{$col}, textarea.{$col}, textarea.{$col}:disabled
-    color $val
-    fill $val
-    background transparent
-
-  input.{$col}, select.{$col}, {$col}.input:focus
-    color $val !important
-
-  // borders
-  .border-{$col}
-    border-color $val
-    stroke $val
-
-  input.{$col}, select.{$col}
-    border-color $val !important
-
-  // frames
-  .frame-{$col}
-    frame($val)
-
-  // icons
-  .icon.{$col} svg *
-    fill $val
-
-small-titles()
-  opacity 0.8
-  font-size 0.9em
-  margin-left 0.5em
-  margin-top 0.25em
-  letter-spacing 0.0625em
-
-odd()
-  background $darkness-odd
-  color $color
-
-even()
-  background $darkness-even
-  color $color
-
-box()
-  border $frame-border
-  background $quasi-bg
-  border-radius $box-border-radius
-  // min-height $min-box-height
-  // margin-top 0.5rem
-
-flex-centered()
-  display flex
-  justify-content center
-  align-items center
-
-brand-background()
-  background $color
-
-  .svg-icon
-    fill white
-
-  a
-    color color1
-
-    & .svg-icon
-      margin 0 0.5em 0 0
-
-    &:hover
-      color color2
-      fill color2
-
-badge(size)
-  width size
-  height size
-  min-width size
-  min-height size
-  border-radius 50%
-  padding (size / 12)
-  line-height size
-  font-size (size / 2)
-  display flex
-  justify-content center
-  align-items center
-  background $color
-  color white
-  fill white
-
-link()
-  color $color
-  cursor pointer
-
-  +.svg-icon, svg
-    path
-      fill $color !important
-
-  &:hover
-    transition unquote('color') 1s ease
-    color color2
-
-    & .svg-icon, svg
-      path
-        transition fill 1s ease
-        fill color2 !important
-
-  &:active
-    color $color
-
-table($c1, $c2)
-  $bc = $c1
-  $bg-color = red
-  color $txt-color
-  border none
-  $odd = lightness($c1, 98%)
-  $even = lightness($c1, 96%)
-
-  tr, th
-    .svg-icon, button, button *
-      color $c1
-      fill $c1
-
-  th
-    color $c1
-    border-bottom $bc dashed 1px
-
-    padding 1em 2em
-      button *
-        color $c1
-
-  tr.odd td
-    background-color $odd
-
-  tr.even td
-    background-color $even
-
-  tr.pinned
-    .pin .svg-icon
-      fill $color
-
-  tr:last-child td
-    border-bottom solid 1px $bc
-
-  tr:hover td
-    background-color $bg-color
-
-  td
-    border none
-    border-bottom dashed 1px $bc
-    padding 0.75em 1.5em
-
-  tr > td:first-child, tr > th:first-child
-    padding-left 3em
-
-  tr > td:last-child, tr > th:last-child
-    padding-right 3em
-
-setColor(c)
-  color c
-
-  & svg, .svg-icon
-    fill c
-
-borders()
-  border none
-  border-style $border-style
-  border-width $border-width
-  border-color $border-color
-  border-radius $border-radius
-
-defaultsColors()
-  color $color
-  background $bg-color
-
-  & .svg-icon *
-    fill $color
-
-pill()
-  display flex
-  justify-content center
-  align-items center
-  width auto
-  height 1.5em
-  line-height 1em
-  background $color
-  list-style none
-  border-radius 0.25em
-  margin 0 0 0 0.5em
-  color $darkness
-
-  button
-    svg *
-      fill $midlight
-
-    &:hover svg *
-      fill $darkness
-
-  & :first-child
-    margin 0 0.25em 0 0.5em
-
-  & :last-child
-    margin 0 0.25em 0 0.5em
-
-  .svg-icon
-    margin 0
-
-  button, button.close
-    width 1em
-    padding 0
-    margin 0
-    display flex
-    justify-content center
-    align-items center
-    font-size 0.9em
-    height @width
-    border-radius 1em
-    background $color
-
-  & small
-    color white
-
-frame($col)
-  // border $col dashed 1px
-  padding 0.5em 1em
-  margin 0 0 0.5rem 0
-
-flex-table()
-  tr
-    display flex
-    flex-flow row wrap
-    max-width 100%
-    margin-bottom 1em
-
-  td, th
-    flex 1 1 5%
-    flex-centered()
-
-  td
-    flex-flow column wrap
-
-    .td-title, .data-field
-      display flex
-      flex-flow column
-      justify-content center !important
-      align-items center !important
-      // flex 0 0 50%
-
-  td.from-to-arrow
-    display none
-
-  td.row-header
-    flex 1 1 100%
-    padding 0 !important
-    flex-centered()
-
-  td.hidden
-    display none
-
-  td.row-header, td.row-icon
-    font-size 1.0625em
-
-  thead
-    display none
-
-break-word()
-  word-wrap break-word
-  overflow-wrap break-word
-  word-break break-word
-
-raw()
-  font-size 0.7em
-  font-family $monospace-font
-
-hover($bg, $c)
-  background lighten($bg, 10%)
-  color lighten($c, 5%)
-
-focus($bg)
-  transition border-color 0.5 ease
-  // border $focus-border
-  background $bg
-  box-shadow 0 0 0 1px black inset
-
-active($bg, $c)
-  transition all 1s ease
-  background lighten($bg, 25%)
-
-buttonColors($c, $bg)
-  transition all 0.5s ease
-  color $c
-  background $bg
-
-  &:hover
-    hover($bg, $c)
-    // text-shadow $txt-sh
-    // box-shadow 0 0 0 1px darken($bg,50%) inset
-
-  &:focus
-    focus($bg, $c)
-
-  &:active, &:focus:active
-    active($bg, $c)
-
-  svg, .icon, .svg-icon
-    fill $c
-
-  span
-    font-weight bold
+// apply-colors($colors, $pref = '')
+//   for $col in $colors
+//     $val = lookup($pref + $col)
+//     apply-color($col, $val)
+
+// apply-color($col, $val)
+//   // backgrounds
+//   .bg-{$col}
+//     background $val
+
+//   // colors classes
+//   .{$col}, .{$col} a, .app button.{$col}, textarea.{$col}, textarea.{$col}:disabled
+//     color $val
+//     fill $val
+//     background transparent
+
+//   input.{$col}, select.{$col}, {$col}.input:focus
+//     color $val !important
+
+//   // borders
+//   .border-{$col}
+//     border-color $val
+//     stroke $val
+
+//   input.{$col}, select.{$col}
+//     border-color $val !important
+
+//   // frames
+//   .frame-{$col}
+//     frame($val)
+
+//   // icons
+//   .icon.{$col} svg *
+//     fill $val
+
+// small-titles()
+//   opacity 0.8
+//   font-size 0.9em
+//   margin-left 0.5em
+//   margin-top 0.25em
+//   letter-spacing 0.0625em
+
+// odd()
+//   background $darkness-odd
+//   color $color
+
+// even()
+//   background $darkness-even
+//   color $color
+
+// box()
+//   border $frame-border
+//   background $quasi-bg
+//   border-radius $box-border-radius
+//   // min-height $min-box-height
+//   // margin-top 0.5rem
+
+// flex-centered()
+//   display flex
+//   justify-content center
+//   align-items center
+
+// brand-background()
+//   background $color
+
+//   .svg-icon
+//     fill white
+
+//   a
+//     color color1
+
+//     & .svg-icon
+//       margin 0 0.5em 0 0
+
+//     &:hover
+//       color color2
+//       fill color2
+
+// badge(size)
+//   width size
+//   height size
+//   min-width size
+//   min-height size
+//   border-radius 50%
+//   padding (size / 12)
+//   line-height size
+//   font-size (size / 2)
+//   display flex
+//   justify-content center
+//   align-items center
+//   background $color
+//   color white
+//   fill white
+
+// link()
+//   color $color
+//   cursor pointer
+
+//   +.svg-icon, svg
+//     path
+//       fill $color !important
+
+//   &:hover
+//     transition unquote('color') 1s ease
+//     color color2
+
+//     & .svg-icon, svg
+//       path
+//         transition fill 1s ease
+//         fill color2 !important
+
+//   &:active
+//     color $color
+
+// table($c1, $c2)
+//   $bc = $c1
+//   $bg-color = red
+//   color $txt-color
+//   border none
+//   $odd = lightness($c1, 98%)
+//   $even = lightness($c1, 96%)
+
+//   tr, th
+//     .svg-icon, button, button *
+//       color $c1
+//       fill $c1
+
+//   th
+//     color $c1
+//     border-bottom $bc dashed 1px
+
+//     padding 1em 2em
+//       button *
+//         color $c1
+
+//   tr.odd td
+//     background-color $odd
+
+//   tr.even td
+//     background-color $even
+
+//   tr.pinned
+//     .pin .svg-icon
+//       fill $color
+
+//   tr:last-child td
+//     border-bottom solid 1px $bc
+
+//   tr:hover td
+//     background-color $bg-color
+
+//   td
+//     border none
+//     border-bottom dashed 1px $bc
+//     padding 0.75em 1.5em
+
+//   tr > td:first-child, tr > th:first-child
+//     padding-left 3em
+
+//   tr > td:last-child, tr > th:last-child
+//     padding-right 3em
+
+// setColor(c)
+//   color c
+
+//   & svg, .svg-icon
+//     fill c
+
+// borders()
+//   border none
+//   border-style $border-style
+//   border-width $border-width
+//   border-color $border-color
+//   border-radius $border-radius
+
+// defaultsColors()
+//   color $color
+//   background $bg-color
+
+//   & .svg-icon *
+//     fill $color
+
+// pill()
+//   display flex
+//   justify-content center
+//   align-items center
+//   width auto
+//   height 1.5em
+//   line-height 1em
+//   background $color
+//   list-style none
+//   border-radius 0.25em
+//   margin 0 0 0 0.5em
+//   color $darkness
+
+//   button
+//     svg *
+//       fill $midlight
+
+//     &:hover svg *
+//       fill $darkness
+
+//   & :first-child
+//     margin 0 0.25em 0 0.5em
+
+//   & :last-child
+//     margin 0 0.25em 0 0.5em
+
+//   .svg-icon
+//     margin 0
+
+//   button, button.close
+//     width 1em
+//     padding 0
+//     margin 0
+//     display flex
+//     justify-content center
+//     align-items center
+//     font-size 0.9em
+//     height @width
+//     border-radius 1em
+//     background $color
+
+//   & small
+//     color white
+
+// frame($col)
+//   // border $col dashed 1px
+//   padding 0.5em 1em
+//   margin 0 0 0.5rem 0
+
+// flex-table()
+//   tr
+//     display flex
+//     flex-flow row wrap
+//     max-width 100%
+//     margin-bottom 1em
+
+//   td, th
+//     flex 1 1 5%
+//     flex-centered()
+
+//   td
+//     flex-flow column wrap
+
+//     .td-title, .data-field
+//       display flex
+//       flex-flow column
+//       justify-content center !important
+//       align-items center !important
+//       // flex 0 0 50%
+
+//   td.from-to-arrow
+//     display none
+
+//   td.row-header
+//     flex 1 1 100%
+//     padding 0 !important
+//     flex-centered()
+
+//   td.hidden
+//     display none
+
+//   td.row-header, td.row-icon
+//     font-size 1.0625em
+
+//   thead
+//     display none
+
+// break-word()
+//   word-wrap break-word
+//   overflow-wrap break-word
+//   word-break break-word
+
+// raw()
+//   font-size 0.7em
+//   font-family $monospace-font
+
+// hover($bg, $c)
+//   background lighten($bg, 10%)
+//   color lighten($c, 5%)
+
+// focus($bg)
+//   transition border-color 0.5 ease
+//   // border $focus-border
+//   background $bg
+//   box-shadow 0 0 0 1px black inset
+
+// active($bg, $c)
+//   transition all 1s ease
+//   background lighten($bg, 25%)
+
+// buttonColors($c, $bg)
+//   transition all 0.5s ease
+//   color $c
+//   background $bg
+
+//   &:hover
+//     hover($bg, $c)
+//     // text-shadow $txt-sh
+//     // box-shadow 0 0 0 1px darken($bg,50%) inset
+
+//   &:focus
+//     focus($bg, $c)
+
+//   &:active, &:focus:active
+//     active($bg, $c)
+
+//   svg, .icon, .svg-icon
+//     fill $c
+
+//   span
+//     font-weight bold

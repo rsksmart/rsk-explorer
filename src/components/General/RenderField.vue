@@ -24,7 +24,7 @@
         </template>
         <template v-else>
           <router-link v-if="link" :to="link">
-            <div class="field-value">{{ filteredValue || field.default }}ss</div>
+            <div class="field-value">{{ filteredValue || field.default }}</div>
           </router-link>
           <div class="field-value" v-else>{{ filteredValue || field.default }}</div>
         </template>

@@ -2,7 +2,7 @@
   <div class="tooltip">
     <div class="tooltip-text">
       <div class="trim-value flex text-white-400">
-        <router-link :to="link">
+        <router-link :to="link || ''">
           {{ firstTrim(text) }}
         </router-link>
         <div class="copy flex">
@@ -11,7 +11,7 @@
             <field-icon :icon="'copy'" />
           </div>
         </div>
-        <router-link :to="link">
+        <router-link :to="link || ''">
           {{ lastTrim(text) }}
         </router-link>
       </div>

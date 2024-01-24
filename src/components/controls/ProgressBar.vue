@@ -1,15 +1,18 @@
-<template lang="pug">
-  svg.progress-bar(:width='width' :height='height')
-    rect.bg(x='0' y='0' :height='height' :width='width')
-    rect.bar(x='0' y='0' :height='height' :width='barWidth')
+<template>
+  <svg class="progress-bar" :width="width" :height="height">
+    <rect class="bg" x="0" y="0" :height="height" :width="width" rx="5" ry="5"></rect>
+    <rect x="0" y="0" :height="height" :width="barWidth" rx="5" ry="5" :fill="PAGE_COLORS[$route.name].cl"></rect>
+  </svg>
 </template>
 <script>
+import { PAGE_COLORS } from '@/config/pageColors'
+
 export default {
   name: 'progress-bar',
   props: {
     width: {
-      type: Number,
-      default: 50
+      type: String,
+      default: '50'
     },
     height: {
       type: Number,
@@ -27,7 +30,8 @@ export default {
     return {
       interval: null,
       percent: 0,
-      startTime: 0
+      startTime: 0,
+      PAGE_COLORS
     }
   },
   created () {
@@ -56,17 +60,13 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../../lib/styl/vars.styl'
 
-  .progress-bar
-    margin 0 1em
-
-    rect.bar
-      fill green
+    // rect.bar
+    //   fill green
 
     rect.bg
       fill gray
       opacity 0.15
     text
-      fill red
+      fill white
 </style>

@@ -1,31 +1,38 @@
-<template lang="pug">
-  .section
-    .error(v-if='error')
-      h2 {{error.error || 'ERROR'}}
-    template(v-if='!error')
-      .messages(v-if='msgs')
-        message(v-for='msg,key in messages' :message='msg' :key='key' :data='data' :parentData='parentData')
-      //- Transactions filters
-      tx-filters.frame(v-if='action === "getTransactions"' :q='q' :module='module' :reqKey='reqKey')
-      paginator(v-if='isTable' :options='pageOptions' :link='0')
+<template>
+  <div class="section">
+    <div class="error" v-if="error">
+      <h2>{{ error.error || 'ERROR' }}</h2>
+    </div>
+    <template v-if="!error">
+      <div class="messages" v-if="msgs">
+        <message v-for="(msg, key) in messages" :message="msg" :key="key" :data="data" :parentData="parentData"></message>
+      </div>
+      <!-- Transactions filters -->
+      <tx-filters class="frame" v-if="action === 'getTransactions'" :q="q" :module="module" :reqKey="reqKey"></tx-filters>
+      <!-- <paginator v-if="isTable" :options="pageOptions" :link="0"></paginator> -->
+    </template>
 
-    //- Component
-    template(v-if='component && data')
-        component(:is='component' :data='data' :type='dataType' :parentData='parentData' :delayed='delayed')
-    //- Generic render
-    template(v-else)
-        template(v-if='isTable')
-          data-table(:page='page' :type='dataType' :sort='sort' :parentData='parentData')
-        template(v-else)
-          data-item(:data='data' :type='dataType' :parentData='parentData' :delayed='delayed')
+    <!-- Component -->
+    <template v-if="component && data">
+      <component :is="component" :data="data" :type="dataType" :parentData="parentData" :delayed="delayed"></component>
+    </template>
+    <!-- Generic render -->
+    <template v-else>
+      <template v-if="isTable">
+        <data-table :page="page" :type="dataType" :sort="sort" :parentData="parentData"></data-table>
+      </template>
+      <template v-else>
+        <data-item :data="data" :type="dataType" :parentData="parentData" :delayed="delayed"></data-item>
+      </template>
+    </template>
 
-    paginator(v-if='isTable' :options='pageOptions' :link='0')
-
+    <paginator v-if="isTable" :options="pageOptions" :link="0"></paginator>
+  </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import ToolTip from './ToolTip'
-import DataTable from './DataTable'
+import DataTable from '@/components/General/DataTable'
 import DataItem from './DataItem'
 import Paginator from './Paginator'
 import TxFilters from './TxFilters'
@@ -132,4 +139,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus"></style>

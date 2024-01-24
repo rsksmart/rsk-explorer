@@ -24,8 +24,8 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/rsk-hljs.styl'
+  // @import '../lib/styl/vars.styl'
+  // @import '../lib/styl/rsk-hljs.styl'
 
   .source-code
     background $darkness-odd
