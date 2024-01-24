@@ -1,28 +1,39 @@
-<template lang="pug">
-  .data-field(:style='cellStyle(field,value)' :class='fieldClass')
-    template(v-if='field.renderAs')
-      component(:is='field.renderAs' v-bind='renderAsProps({field,value,filteredValue,row})' )
-    template(v-else)
-      //- arrays (uncomplete)
-      template(v-if='filteredType === "array"')
-        ul.array
-          li(v-for='v in value') {{v}}
-      template(v-else-if='filteredType === "object"')
-        ul
-          li(v-for='p in Object.keys(value)')
-            strong {{p}}:&nbsp;
-            span {{value[p]}}
-
-      template(v-else)
-        template(v-if='trim && !options.noTrim')
-          tool-tip.field-value(:value='filteredValue || value' :trim='trim' :options='trimOptions' :router-link='link')
-        template(v-else)
-          router-link(v-if='link' :to='link')
-            .field-value {{ filteredValue || field.default }}
-          .field-value(v-else) {{ filteredValue || field.default }}
-        span.field-suffix(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
-        field-icon.field-value-description(v-if='valueDescription' icon="help" :title="valueDescription")
-        progress-bar(v-if='delayed')
+<template>
+  <div class="data-field" :style="cellStyle(field, value)" :class="fieldClass">
+    <template v-if="field.renderAs">
+      <component :is="field.renderAs" v-bind="renderAsProps({ field, value, filteredValue, row })"></component>
+    </template>
+    <template v-else>
+      <!-- arrays (uncomplete) -->
+      <template v-if="filteredType === 'array'">
+        <ul class="array">
+          <li v-for="v in value" :key="v">{{ v }}</li>
+        </ul>
+      </template>
+      <template v-else-if="filteredType === 'object'">
+        <ul>
+          <li v-for="p in Object.keys(value)" :key="p">
+            <strong>{{ p }}:&nbsp;</strong>
+            <span>{{ value[p] }}</span>
+          </li>
+        </ul>
+      </template>
+      <template v-else>
+        <template v-if="trim && !options.noTrim">
+          <tool-tip class="field-value" :value="filteredValue || value" :trim="trim" :options="trimOptions" :router-link="link"></tool-tip>
+        </template>
+        <template v-else>
+          <router-link v-if="link" :to="link">
+            <div class="field-value">{{ filteredValue || field.default }} a</div>
+          </router-link>
+          <div class="field-value" v-else>{{ filteredValue || field.default }} b</div>
+        </template>
+        <span class="field-suffix" v-if="suffix && filteredValue !== null">&nbsp; {{ suffix }}</span>
+        <field-icon class="field-value-description" v-if="valueDescription" icon="help" :title="valueDescription"></field-icon>
+        <progress-bar v-if="delayed"></progress-bar>
+      </template>
+    </template>
+  </div>
 </template>
 <script>
 import common from '../mixins/common'

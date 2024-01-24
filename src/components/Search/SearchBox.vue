@@ -1,18 +1,20 @@
-<template lang="pug">
-  .search
-    ctrl-search(
+<template>
+  <div class="search">
+    <ctrl-search
       @change="search"
       @result="onResult"
       @input="onInput"
       :results="results"
       :loading="isLoading"
       :placeholder="placeholder"
-      :cssClass="searchBoxClass")
+      :cssClass="searchBoxClass">
+    </ctrl-search>
+  </div>
 </template>
 <script>
-import { ROUTES as r } from '../config/types'
+import { ROUTES as r } from '../../config/types'
 import { mapState, mapGetters, mapActions } from 'vuex'
-import CtrlSearch from './controls/CtrlSearch'
+import CtrlSearch from './CtrlSearch.vue'
 // const RESULTS_LENGTH = 10
 export default {
   name: 'search-box',
@@ -22,7 +24,7 @@ export default {
   data () {
     return {
       value: undefined,
-      msg: 'Search by: address / block / tx / token name',
+      msg: 'Search by address, block, tx, token name',
       msgTimeout: null,
       requestingTimeout: null
     }
@@ -140,40 +142,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
-
-  .margin-less
-    margin-bottom 0
-
-  .search-msg
-    flex-centered()
-    flex-flow column wrap
-    transition all 0.5s ease
-    flex 0 1 100%
-    opacity 1
-    position relative
-    margin-bottom -2em
-
-  .search
-    flex-flow row wrap
-
-    ::placeholder
-      color $graylight
-
-    button
-      margin 0 0.5rem 0 0
-      display inline-block
-
-  .msg-trans
-    will-change opacity
-
-  .msgtrans-enter-active
-    opacity 0
-
-  .msgtrans-leave-to
-    transition all 0.5s ease
-    transform translateY(-1em)
-    opacity 0
-</style>

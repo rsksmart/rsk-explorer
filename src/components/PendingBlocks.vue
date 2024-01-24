@@ -1,24 +1,26 @@
-<template lang="pug">
-  .pending-blocks.box
-    button(@click='updateBlocks')
-      cube-of-cubes.cubes( v-if='step && mod' :mod='mod' :step='step' :size='size' :cubeStyleCb='cubeStyle')
-      .w-badge
-        .badge(:style='badgeStyle') {{ pending }}
-    small
-     strong {{ pending }} new blocks
-    small
-     //-em.soft in last {{ (now - firstListBlock.timestamp * 1000) | abbr-time }}
-     em.soft in last  {{ now - lastBlocksTime | abbr-time }}
+<template>
+  <div class="pending-blocks box">
+    <button @click="updateBlocks">
+      <cube-of-cubes class="cubes" v-if="step && mod" :mod="mod" :step="step" :size="size" :cubeStyleCb="cubeStyle"></cube-of-cubes>
+      <div class="w-badge">
+        <div class="badge" :style="badgeStyle">{{ pending }}</div>
+      </div>
+    </button>
+    <small>
+      <strong>{{ pending }} new blocks</strong>
+    </small>
+    <small>
+      <em class="soft">in last {{ now - lastBlocksTime | abbr-time }}</em>
+    </small>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { abbrTime } from '../filters/TimeFilters'
 import CubeOfCubes from './CubeOfCubes.vue'
-import ToolTip from './ToolTip.vue'
 export default {
   name: 'pending-blocks',
   components: {
-    ToolTip,
     CubeOfCubes
   },
   filters: {
@@ -128,4 +130,4 @@ export default {
         badge(1.6em)
         border $border
         background none
-</style>
+</style> -->
