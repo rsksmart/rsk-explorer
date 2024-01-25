@@ -2,9 +2,8 @@
   <div class="data-page centered" :class="titleDescription">
     <div class="flex container-title">
       <icon :class="titleDescription" :name="titleDescription.toLowerCase()"></icon>
-      <div class="text-white-100 title" v-if="titleDescription">{{ titleDescription }}</div>
+      <div class="text-white-100 title first-leter-uppercase" v-if="titleDescription">{{ titleDescription }}</div>
     </div>
-    <!-- <spinner v-if="(requesting && !error && !delayed.fields) || delayed.registry" :height="50" :width="50" :border="5" /> -->
     <div v-if="(requesting && !error && !delayed.fields) || delayed.registry" class="flex justify-center content-spiner">
       <spinner :height="300" :width="300" :border="5" />
     </div>
@@ -20,12 +19,24 @@
         <message v-for="(msg, key) in pageMessages" :message="msg" :key="key" :data="data"></message>
       </div>
       <!-- Header -->
-      <div class="page-header" v-if="mainContent">
-        <item-navigator v-if="!isTable" :next="next" :prev="prev" :total="total" :regKey="dataKey()(dataType)"></item-navigator>
+      <div class="page-header content-section" v-if="mainContent && page.data">
+        <div class="page-header-content">
+          <div class="back-content">
+            <icon name="back" :class="titleDescription" />
+            <span :style="{color: PAGE_COLORS[$route.name].cl}">All</span>
+          </div>
+          <div class="flex justify-between item-center">
+            <title-detail :page="page" :titleDescription="titleDescription" />
+            <item-navigator v-if="!isTable" :next="next" :prev="prev" :total="total" :regKey="dataKey()(dataType)"></item-navigator>
+          </div>
+        </div>
         <div class="tabs">
           <div class="tabs-titles" v-if="page.data">
             <template v-for="tab in mainContentTabs">
-              <button class="btn tab-title" :key="tab.name" v-if="tab.name" @click="setActiveContentTab(tab.name, $event)" :class="tabTitleCss(isActiveContentTab(tab))">
+              <button class="btn tab-title first-leter-uppercase"
+                :style="{ backgroundColor: tabTitleCss(isActiveContentTab(tab))[0] === 'active' ? PAGE_COLORS[$route.name].cl : '' }" :key="tab.name" v-if="tab.name"
+                @click="setActiveContentTab(tab.name, $event)"
+              >
                 <span class="title">{{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}</span>
                 <icon v-if="tab.buttonIcon" :name="tab.buttonIcon"></icon>
               </button>
@@ -43,13 +54,17 @@
             <template v-for="(tab, i) in tabs">
               <template v-if="renderTab(tab)">
                 <template v-if="isRequesting()(tab.name)">
-                  <button :key="tab.dataType" class="btn tab-title">
+                  <button :key="tab.dataType" class="btn tab-title first-leter-uppercase"
+                    :style="{ backgroundColor: tabTitleCss(isActiveContentTab(tab))[0] === 'active' ? PAGE_COLORS[$route.name].cl : '' }"
+                  >
                     <loading-circle :size="10"></loading-circle>
                     <span class="title">{{ getTabTitle(tab) }}</span>
                   </button>
                 </template>
                 <template v-else>
-                  <button :key="`${tab.name}-${i}`" class="btn tab-title" @click="setTab(tab.name, $event)" :class="tabTitleCss(isActiveTab(tab))">
+                  <button :key="`${tab.name}-${i}`" class="btn tab-title first-leter-uppercase" @click="setTab(tab.name, $event)" :class="tabTitleCss(isActiveTab(tab))"
+                    :style="{ backgroundColor: tabTitleCss(isActiveTab(tab))[0] === 'active' ? PAGE_COLORS[$route.name].cl : '' }"
+                  >
                     <span class="title">{{ getTabTitle(tab) }}
                       <small class="small" v-if="tabsTotals[tab.name] !== null">&nbsp; ({{ tabsTotals[tab.name] }})</small>
                     </span>
@@ -60,7 +75,7 @@
           </div>
           <template v-for="(tab, i) in tabs">
             <template v-if="isActiveTab(tab)">
-              <spinner :key="tab.action" v-if="isRequesting()(tab.name)"></spinner>
+              <spinner :key="tab.action" v-if="isRequesting()(tab.name)" :height="300" :width="300" :border="5" />
               <data-section :key="`${tab.module}-${i}`" class="tab-content" v-else :module="tab.module" :dataType="tab.dataType" :reqKey="tab.name" :action="tab.action" :msgs="tab.msgs"></data-section>
             </template>
           </template>
@@ -71,7 +86,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import Spinner from './Spinner.vue'
 import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
 import ErrorPage from './ErrorPage'
@@ -80,6 +94,9 @@ import ItemNavigator from './ItemNavigator'
 import ExportControls from './ExportControls'
 import common from '../mixins/common'
 import Spinner from './Loaders/Spinner.vue'
+import { PAGE_COLORS } from '@/config/pageColors'
+import TitleDetail from './General/TitleDetail.vue'
+
 export default {
   name: 'data-page',
   components: {
@@ -89,7 +106,8 @@ export default {
     Message,
     LoadingCircle,
     ItemNavigator,
-    ExportControls
+    ExportControls,
+    TitleDetail
   },
   mixins: [
     common
@@ -122,7 +140,8 @@ export default {
   data () {
     return {
       storedTitle: '',
-      storedParamAddress: null
+      storedParamAddress: null,
+      PAGE_COLORS
     }
   },
   computed: {

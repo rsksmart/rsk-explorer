@@ -24,9 +24,9 @@
         </template>
         <template v-else>
           <router-link v-if="link" :to="link">
-            <div class="field-value">{{ filteredValue || field.default }} a</div>
+            <div class="field-value">{{ filteredValue || field.default }}</div>
           </router-link>
-          <div class="field-value" v-else>{{ filteredValue || field.default }} b</div>
+          <div class="field-value" v-else>{{ filteredValue || field.default }}</div>
         </template>
         <span class="field-suffix" v-if="suffix && filteredValue !== null">&nbsp; {{ suffix }}</span>
         <field-icon class="field-value-description" v-if="valueDescription" icon="help" :title="valueDescription"></field-icon>

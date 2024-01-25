@@ -24,14 +24,6 @@
   }
 }
 
-.Block {
-  .page-header {
-    background-color: $newbw_800;
-    padding: 24px;
-    border-radius: 12px;
-  }
-}
-
 .data-table {
   .btn {
     .text {
@@ -102,7 +94,58 @@
     }
   }
 }
-.Transactions, .Transaction {
+.Block {
+  .data-table {
+    table {
+      table-layout: unset;
+      td {
+        .title {
+          display: none;
+        }
+        &.row-icon {
+          .link {
+            display: none;
+          }
+        }
+      }
+      tr {
+        &:hover {
+          .field__hash, .field__from, .field__to, .field__gasUsed, .field__type {
+            .field-value {
+              color: $green_900 !important;
+            }
+            a {
+              color: $green_900;
+            }
+          }
+        }
+      }
+      .field__block {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 52px;
+        .field-title {
+          margin-right: 10px;
+        }
+      }
+      .from-to-arrow {
+        width: 60px;
+      }
+      .field__time, .field__hash, .field__from {
+        .field-title {
+          display: none;
+        }
+      }
+      .from-to-arrow {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.Transactions, .Transaction, .contract, .account {
   .data-table {
     table {
       table-layout: unset;
@@ -153,7 +196,7 @@
   }
 }
 
-.Addresses, .Address {
+.Addresses, .Address, .contract, .account {
   .data-table {
     table {
       table-layout: fixed;

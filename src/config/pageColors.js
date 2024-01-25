@@ -23,10 +23,8 @@ export const PAGE_COLORS = {
     cl: '#08FFD0',
     cl1: '#08FFD0',
     cl2: '#000'
+  },
+  'Internal transaction': {
+    cl: '#FF9100'
   }
-}
-
-export const getColorPage = (page) => {
-  console.log('page: ', page)
-  return PAGE_COLORS[page]
 }

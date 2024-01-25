@@ -9,7 +9,6 @@
       </div>
       <!-- Transactions filters -->
       <tx-filters class="frame" v-if="action === 'getTransactions'" :q="q" :module="module" :reqKey="reqKey"></tx-filters>
-      <!-- <paginator v-if="isTable" :options="pageOptions" :link="0"></paginator> -->
     </template>
 
     <!-- Component -->

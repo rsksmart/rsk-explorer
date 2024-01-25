@@ -227,7 +227,7 @@ export default {
 </script>
 <style lang="stylus">
   $tip-arrow-size = 5px
-  $tip-bg = white
+  $tip-bg = #121212
   $tip-border = 1px
 
   .tooltip, .trim
@@ -285,7 +285,7 @@ export default {
       .value
         border-radius 3px
         padding 0.125em 0.25em
-        background-color $tip-bg
+        background-color #121212
         word-break break-all
         display flex
         justify-content center
