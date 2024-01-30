@@ -1,24 +1,34 @@
-<template lang="pug">
-  .pages(v-if='next || prev || pages')
-    button.page-button(v-if='prev' @click='goToPage(prevIndex,$event)')
-      icon(name='arrow-left')
-    div(v-else)
-    ul.page-numbers(v-if='pages.length > 1')
-      li(v-if='prevPage')
-        button(@click='goToPage(prevPage,$event)')
-          icon.link(name='triangle-arrow-left')
-      li.link(v-for='p in pages' :class='(p.page===page) ? "selected":""' @click='goToPage(p)')
-        small {{p.page}}
-      li(v-if='nextPage')
-        button(@click='goToPage(nextPage,$event)')
-          icon.link(name='triangle-arrow-right')
-    button.page-button(v-if='nextIndex' @click='goToPage(nextIndex,$event)')
-      icon(name='arrow-right')
-    div(v-else)
+<template>
+  <div class="pages" v-if='next || prev || pages'>
+    <button class="page-button" v-if='prev' @click='goToPage(prevIndex,$event)'>
+      <icon name='triangle-arrow-left'></icon>
+    </button>
+    <div v-else></div>
+    <ul class="page-numbers" v-if='pages.length > 1'>
+      <button v-if='prevPage' class="prev-page" @click='goToPage(prevPage,$event)'>
+        <icon class="link" name='arrow-left'></icon>
+      </button>
+      <li class="link" v-for='(p, i) in pages'
+        :style='{ backgroundColor: (p.page===page) ? PAGE_COLORS[$route.name].cl : "" } '
+        @click='goToPage(p)' :key="`${i}`">
+        <small>{{ p.page }}</small>
+      </li>
+      <button v-if='nextPage' class="next-page" @click='goToPage(nextPage,$event)'>
+        <icon class="link" name='triangle-arrow-right'></icon>
+      </button>
+    </ul>
+    <button class="page-button" v-if='nextIndex' @click='goToPage(nextIndex,$event)'>
+      <icon name='arrow-right'></icon>
+    </button>
+    <div v-else></div>
+  </div>
 </template>
+
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import common from '../mixins/common'
+import { PAGE_COLORS } from '@/config/pageColors'
+
 export default {
   name: 'paginator',
   props: ['options', 'link'],
@@ -27,7 +37,8 @@ export default {
   ],
   data () {
     return {
-      editPage: false
+      editPage: false,
+      PAGE_COLORS
     }
   },
   computed: {
@@ -103,36 +114,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
-
-  input.page
-    width 3em
-
-  .pages
-    width 100%
-    display flex
-    margin 1em
-    justify-content space-evenly
-
-  ul.page-numbers
-    display flex
-    flex-flow row nowrap
-    color $color
-    list-style none
-
-    li
-      margin 0 0.25em
-      min-width 1em
-      flex-centered()
-
-    li.selected
-      padding 0.0625em 0.125em
-      border-radius $border-radius
-      border-color $soft-border
-
-  .page-button
-    .svg-icon *
-      fill $dark
-</style>

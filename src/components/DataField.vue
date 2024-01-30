@@ -101,7 +101,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<!-- <style lang="stylus">
   @import '../lib/styl/vars.styl'
   @import '../lib/styl/mixins.styl'
   @import '../lib/styl/lists.styl'
@@ -165,4 +165,4 @@ export default {
 
     :first-child
       margin 0
-</style>
+</style> -->

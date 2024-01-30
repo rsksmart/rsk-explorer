@@ -1,7 +1,13 @@
 <template>
-  <div class="data-page centered">
-    <h2 class="title" v-if="titleDescription">{{ titleDescription }}</h2>
-    <spinner v-if="(requesting && !error && !delayed.fields) || delayed.registry"></spinner>
+  <div class="data-page centered" :class="titleDescription">
+    <div class="flex container-title">
+      <icon :class="titleDescription" :name="titleDescription.toLowerCase()"></icon>
+      <div class="text-white-100 title" v-if="titleDescription">{{ titleDescription }}</div>
+    </div>
+    <!-- <spinner v-if="(requesting && !error && !delayed.fields) || delayed.registry" :height="50" :width="50" :border="5" /> -->
+    <div v-if="(requesting && !error && !delayed.fields) || delayed.registry" class="flex justify-center content-spiner">
+      <spinner :height="300" :width="300" :border="5" />
+    </div>
     <error-page v-if="error" :error="error"></error-page>
     <div class="update-error" v-if="updateError">
       <h3>
@@ -65,7 +71,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import Spinner from './Spinner.vue'
+// import Spinner from './Spinner.vue'
 import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
 import ErrorPage from './ErrorPage'
@@ -73,6 +79,7 @@ import Message from './Message'
 import ItemNavigator from './ItemNavigator'
 import ExportControls from './ExportControls'
 import common from '../mixins/common'
+import Spinner from './Loaders/Spinner.vue'
 export default {
   name: 'data-page',
   components: {

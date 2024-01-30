@@ -23,7 +23,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<!-- <style lang="stylus">
   @import '../lib/styl/mixins.styl'
 
   .field-list
@@ -44,4 +44,4 @@ export default {
             font-size  .9em
             &:after
               content:':'
-</style>
+</style> -->

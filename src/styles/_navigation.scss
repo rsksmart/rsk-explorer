@@ -104,7 +104,7 @@
       display: flex;
       padding: 12px;
       height: 52px;
-      color: #B8B8B8;
+      color: $white_400;
       text-decoration: none;
       align-items: center;
       font-size: 14px;
@@ -168,7 +168,7 @@
       }
     }
     &.link-tokens {
-      background-color: rgb(110 231 183);
+      background-color: $cyan_300;
       color: #000;
     }
     &:hover {

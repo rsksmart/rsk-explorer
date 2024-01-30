@@ -1,7 +1,7 @@
 <template>
   <div class="field-icon icon" :class="css">
     <tool-tip v-if="title" :value="title | camelCaseTo" :options="tipOptions">
-      <icon :name="icon"></icon>
+      <icon :name="icon" :class="icon"></icon>
     </tool-tip>
     <icon v-else :name="icon"></icon>
   </div>

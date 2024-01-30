@@ -1,30 +1,42 @@
-<template lang="pug">
-  .export-pages.section
-    h4.brand Dowload
-    form.odd
-      .export-options(v-if='!inProgress')
-        fieldset.frame.row(v-if='itemEntity')
-          legend Fields
-          export-items
-        fieldset.frame.row
-          legend Format
-          export-format
-      .export-progress.txt-center(v-if='inProgress')
-        .center.brand
-          small {{metadata.progress}}%
-        .row.txt-center
-          progress-bar(:progress='metadata.progress || 0.1' :width='progressBarWidth')
-      .export.frame(v-if='inProgress')
-        ul.plain.small.txt-center
-          li
-            small(v-if='metadata.received') Received: {{metadata.received}} of {{metadata.total}} items
-          li
-            small(v-if='metadata.elapsed') {{metadata.elapsed | m-to-time }}
-            small(v-if='metadata.estimated') &nbsp;/ {{metadata.estimated | m-to-seconds | s-seconds}}
-      .export-buttons.frame
-        .col
-          button.btn.brand(v-if='!inProgress' @click='exportPages') Export
-          button.btn.brand(@click='close') Cancel
+<template>
+  <div class="export-pages bg-secondary">
+    <h4 class="title">Download</h4>
+    <form class="form-export">
+      <div class="export-options" v-if="!inProgress">
+        <fieldset class="frame" v-if="itemEntity">
+          <legend>Fields</legend>
+          <export-items></export-items>
+        </fieldset>
+        <fieldset class="frame">
+          <legend>Format</legend>
+          <export-format></export-format>
+        </fieldset>
+      </div>
+      <div class="export-progress txt-center" v-if="inProgress">
+        <div class="center brand">
+          <small>{{ metadata.progress }}%</small>
+        </div>
+        <div class="txt-center">
+          <progress-bar :progress="metadata.progress || 0.1" :width="'100%'"></progress-bar>
+        </div>
+      </div>
+      <div class="export" v-if="inProgress">
+        <div class="plain small txt-center">
+          <div>
+            <small v-if="metadata.received">Received: {{ metadata.received }} of {{ metadata.total }} items</small>
+          </div>
+          <div>
+            <small v-if="metadata.elapsed">{{ metadata.elapsed | m-to-time }}</small>
+            <small v-if="metadata.estimated">&nbsp;/ {{ metadata.estimated | m-to-seconds | s-seconds }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="export-buttons">
+        <button class="export" :style="{ backgroundColor: PAGE_COLORS[$route.name].cl, color: PAGE_COLORS[$route.name].cl2 }" v-if="!inProgress" @click="exportPages">Export</button>
+        <button class="cancel" @click="close">Cancel</button>
+      </div>
+    </form>
+  </div>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -36,6 +48,8 @@ import ProgressBar from './controls/ProgressBar'
 import { FileStream } from '../lib/js/fileStream'
 import { mToTime, mToSeconds, sSeconds } from '../filters/TimeFilters'
 import { EXPORT_ITEMS } from '../config/types'
+import { PAGE_COLORS } from '@/config/pageColors'
+
 export default {
   name: 'export-pages',
   components: {
@@ -52,7 +66,8 @@ export default {
       unsubscribe: undefined,
       computedWidth: 0,
       inProgress: false,
-      writer: undefined
+      writer: undefined,
+      PAGE_COLORS
     }
   },
   mounted () {
@@ -157,14 +172,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
-
-  .export-pages
-    margin 0 0 2em 0
-    width 100%
-    height auto
-    flex-centered()
-    flex-flow column wrap
-</style>

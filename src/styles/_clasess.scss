@@ -79,6 +79,9 @@ body {
 .justify-between {
   justify-content: space-between;
 }
+.justify-center {
+  justify-content: center;
+}
 .item-center {
   align-items: center;
 }
@@ -102,6 +105,12 @@ body {
 }
 .fw700 {
   font-weight: 700;
+}
+
+.first-leter-uppercase {
+  &::first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .content-explorer {
@@ -146,7 +155,12 @@ button {
         margin: 0 2px;
       }
       a {
-        color: $white_100;
+        color: $white_400;
+      }
+      &:hover {
+        a {
+          color: $white_100;
+        }
       }
     }
     .container-value {
@@ -203,6 +217,10 @@ button {
       }
     }
   }
+}
+.btn {
+  padding: 16px;
+  border-radius: 12px;
 }
 .spinner {
   border-color: rgba(170, 170, 170, 0.1);
