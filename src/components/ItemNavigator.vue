@@ -3,7 +3,7 @@
     <li class="prev" v-if="prevLink">
       <router-link :to="linkTo(prev)">
         <icon name="triangle-arrow-left"></icon>
-        <span>previous</span>
+        <span>Previous</span>
       </router-link>
     </li>
     <li class="total" v-if="total">
@@ -11,7 +11,7 @@
     </li>
     <li class="next" v-if="nextLink">
       <router-link :to="linkTo(next)">
-        <span>next</span>
+        <span>Next</span>
         <icon name="triangle-arrow-right"></icon>
       </router-link>
     </li>

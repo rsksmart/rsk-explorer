@@ -24,16 +24,11 @@ export default {
 }
 </script>
 <style lang="stylus">
-  // @import '../lib/styl/vars.styl'
-  // @import '../lib/styl/rsk-hljs.styl'
-
   .source-code
-    background $darkness-odd
 
     code
       font-size 0.75rem
       color $gray
-      margin 2em
 
     .line-number
       font-size 0.75rem
@@ -42,7 +37,4 @@ export default {
 
     .line
       margin 0 4em 0.25em 1em
-
-      &:hover
-        background $darkness-even
 </style>

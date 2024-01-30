@@ -52,8 +52,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-@import '../../lib/styl/vars.styl'
-  @import '../../lib/styl/mixins.styl'
   .ctrl-big-text
     width 100%
     min-width 100%
@@ -61,8 +59,6 @@ export default {
 
     .big-text
       border none
-      border-top $soft-border
-      border-bottom $soft-border
       font-size 0.75rem
       overflow-y scroll
       overflow-x auto

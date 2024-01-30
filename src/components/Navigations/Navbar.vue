@@ -2,7 +2,9 @@
   <nav class="navbar">
     <SearchBox />
     <div>
-      <img src="@/assets/svg/setting-icon.svg" alt="">
+      <router-link to="/settings">
+        <img src="@/assets/svg/setting-icon.svg" alt="">
+      </router-link>
     </div>
   </nav>
 </template>

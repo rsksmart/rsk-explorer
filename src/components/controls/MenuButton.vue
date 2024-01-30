@@ -1,9 +1,12 @@
-<template lang="pug">
-  .menu-button.menu()
-    button.btn(@click='switchMenu')
-      slot(name="button")
-    .menu-elements(v-show="enabled")
-      slot(name="elements")
+<template>
+  <div class="menu-button menu" :class="{'enabled': enabled}">
+    <button class="btn" @click="switchMenu">
+      <slot name="button"></slot>
+    </button>
+    <div class="menu-elements" v-show="enabled">
+      <slot name="elements"></slot>
+    </div>
+  </div>
 </template>
 <script>
 export default {
@@ -26,23 +29,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-@import '../../lib/styl/vars.styl'
-@import '../../lib/styl/mixins.styl'
-
-  .menu-button
-    position relative
-    display inline-flex
-
-    .menu-elements
-      display flex
-      position absolute
-      flex-flow column nowrap
-      top 1.5em
-      right 0
-      z-index 9999
-      background $bg-even
-      white-space nowrap
-      div
-        margin-top 0.25em
-</style>

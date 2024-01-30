@@ -1,15 +1,25 @@
-<template lang="pug">
-  .export-controls(v-if="data" label="test label")
-    menu-button
-      template(v-slot:button)
-        icon(name="dots")
-      template(v-slot:elements)
-        copy-button.button.med(:value="getFilteredData(data,isCsv)" title="copy json")
-          small copy
-        download-button.button.med(v-bind="downloadData(fileName,data,isCsv)")
-          small download
-        .row
-          export-format
+<template>
+  <div class="export-controls" v-if="data" label="test label">
+    <menu-button>
+      <template v-slot:button>
+        <icon name="clowd-down"></icon>
+        <span class="btn-title">Download</span>
+        <icon name="arrow-down" class="icon-down"></icon>
+        <icon name="arrow-up" class="icon-up"></icon>
+      </template>
+      <template v-slot:elements>
+        <copy-button class="button med" :value="getFilteredData(data,isCsv)" title="copy json">
+          <small>copy</small>
+        </copy-button>
+        <download-button class="button med" v-bind="downloadData(fileName,data,isCsv)">
+          <small>download</small>
+        </download-button>
+        <div class="row">
+          <export-format></export-format>
+        </div>
+      </template>
+    </menu-button>
+  </div>
 </template>
 <script>
 import MenuButton from './controls/MenuButton'
@@ -46,7 +56,6 @@ export default {
 <style lang="stylus">
   .export-controls
     display flex
-    position relative
     flex 1
     flex-flow row nowrap
     justify-content flex-end

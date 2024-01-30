@@ -12,7 +12,7 @@
     <div class="export-menu row" v-if="showExportMenu">
       <export-pages v-if="exportParams" v-bind="exportParams" @close="switchExportMenu"></export-pages>
     </div>
-    <table class="" v-if="data" ref="table" :class="tableClass">
+    <table class="" v-if="data" ref="table" :class="[tableClass, `d-${exportParams.entityName || ''}`]">
       <thead :class="theadClass">
         <tr>
           <th class="table-id" v-if="sort && !isDefaultSortVisible">
@@ -91,7 +91,7 @@
               <template v-if="getCustomRenderProps(field, row)">
                 <component :is="field.renderAs" v-bind="getCustomRenderProps(field, row)"></component>
               </template>
-              <render-field v-else :field="field" :row="row" />
+              <data-field v-else :field="field" :row="row" />
             </td>
             <td class="from-to-arrow" v-if="isFrom(fieldName, index)" :key="`5-${index}`">
               <icon name="arrow-right"></icon>
@@ -239,7 +239,7 @@ export default {
     exportParams () {
       const { page, type, key, parentData, entity } = this
       const { itemEntity } = entity
-      if (!page || !page.req || !type || !key) return
+      if (!page || !page.req || !type || !key) return { entityName: '' }
       const req = Object.assign({ entityName: type, dataKey: key, parentData, itemEntity }, page.req)
       return req
     }
@@ -314,15 +314,8 @@ export default {
 }
 </script>
 <style lang="stylus">
-  // @import '../../lib/styl/vars.styl'
-  // @import '../../lib/styl/mixins.styl'
   .data-page
     position: relative
-
-  .data-table
-    // display flex
-    // flex-flow column nowrap
-    // justify-content center
 
   .table-ctrls
     top 0px
@@ -336,10 +329,6 @@ export default {
       fill gray !important
 
   .sort
-    // flex-centered()
-
-    .field-title
-      // flex-centered()
 
     button
       display flex

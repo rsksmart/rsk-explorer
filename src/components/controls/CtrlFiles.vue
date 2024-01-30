@@ -119,6 +119,7 @@ export default {
       display flex
       flex-flow row nowrap
       align-items center
+      justify-content: center
       margin 0 0.5em
 
       button

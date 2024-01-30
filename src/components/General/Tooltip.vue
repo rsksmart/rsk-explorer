@@ -1,7 +1,7 @@
 <template>
   <div class="tooltip">
-    <div class="tooltip-text">
-      <div class="trim-value flex text-white-400">
+    <div class="tooltip-text" :class="hideCopy ? '' : 'show-copy'">
+      <div class="trim-value flex text-white-400" v-if="!trim">
         <router-link :to="link || ''">
           {{ firstTrim(text) }}
         </router-link>
@@ -15,6 +15,7 @@
           {{ lastTrim(text) }}
         </router-link>
       </div>
+      <div v-else class="">{{ formatNumber(text) }}</div>
       <div class="container-value">
         <div class="text-value bg-primary">{{ text }}</div>
       </div>
@@ -34,6 +35,12 @@ export default {
     },
     link: {
       required: false
+    },
+    hideCopy: {
+      required: false
+    },
+    trim: {
+      required: false
     }
   },
   methods: {
@@ -43,6 +50,10 @@ export default {
     lastTrim (text) {
       const value = text.length
       return text.substring(value - 4, value)
+    },
+    formatNumber (number) {
+      const formatter = new Intl.NumberFormat('es-US')
+      return formatter.format(number)
     }
   }
 }

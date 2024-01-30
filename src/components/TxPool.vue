@@ -13,7 +13,7 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
-import DataTable from './DataTable'
+import DataTable from './General/DataTable.vue'
 import Chart from './Chart'
 import { dayFromTs, timeFromTs } from '../filters/TimeFilters'
 import chartsDefaults from '../config/chartsDefaults'

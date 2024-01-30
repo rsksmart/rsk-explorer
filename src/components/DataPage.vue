@@ -1,8 +1,8 @@
 <template>
-  <div class="data-page centered" :class="titleDescription">
+  <div class="data-page centered" :class="$route.name">
     <div class="flex container-title">
       <icon :class="titleDescription" :name="titleDescription.toLowerCase()"></icon>
-      <div class="text-white-100 title first-leter-uppercase" v-if="titleDescription">{{ titleDescription }}</div>
+      <div class="text-white-100 title capitalize" v-if="titleDescription">{{ titleDescription }}</div>
     </div>
     <div v-if="(requesting && !error && !delayed.fields) || delayed.registry" class="flex justify-center content-spiner">
       <spinner :height="300" :width="300" :border="5" />
@@ -21,10 +21,7 @@
       <!-- Header -->
       <div class="page-header content-section" v-if="mainContent && page.data">
         <div class="page-header-content">
-          <div class="back-content">
-            <icon name="back" :class="titleDescription" />
-            <span :style="{color: PAGE_COLORS[$route.name].cl}">All</span>
-          </div>
+          <back-content :titleDescription="titleDescription" />
           <div class="flex justify-between item-center">
             <title-detail :page="page" :titleDescription="titleDescription" />
             <item-navigator v-if="!isTable" :next="next" :prev="prev" :total="total" :regKey="dataKey()(dataType)"></item-navigator>
@@ -33,8 +30,9 @@
         <div class="tabs">
           <div class="tabs-titles" v-if="page.data">
             <template v-for="tab in mainContentTabs">
-              <button class="btn tab-title first-leter-uppercase"
-                :style="{ backgroundColor: tabTitleCss(isActiveContentTab(tab))[0] === 'active' ? PAGE_COLORS[$route.name].cl : '' }" :key="tab.name" v-if="tab.name"
+              <button class="btn tab-title capitalize"
+                :class="[tabTitleCss(isActiveContentTab(tab)), `btn-${$route.name.toLowerCase()}`]"
+                :key="tab.name" v-if="tab.name"
                 @click="setActiveContentTab(tab.name, $event)"
               >
                 <span class="title">{{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}</span>
@@ -57,13 +55,13 @@
                   <button :key="tab.dataType" class="btn tab-title first-leter-uppercase"
                     :style="{ backgroundColor: tabTitleCss(isActiveContentTab(tab))[0] === 'active' ? PAGE_COLORS[$route.name].cl : '' }"
                   >
-                    <loading-circle :size="10"></loading-circle>
+                    <!-- <loading-circle :size="10"></loading-circle> -->
                     <span class="title">{{ getTabTitle(tab) }}</span>
                   </button>
                 </template>
                 <template v-else>
-                  <button :key="`${tab.name}-${i}`" class="btn tab-title first-leter-uppercase" @click="setTab(tab.name, $event)" :class="tabTitleCss(isActiveTab(tab))"
-                    :style="{ backgroundColor: tabTitleCss(isActiveTab(tab))[0] === 'active' ? PAGE_COLORS[$route.name].cl : '' }"
+                  <button :key="`${tab.name}-${i}`" class="btn tab-title capitalize e" @click="setTab(tab.name, $event)"
+                  :class="[tabTitleCss(isActiveTab(tab)), `btn-${$route.name.toLowerCase()}`]"
                   >
                     <span class="title">{{ getTabTitle(tab) }}
                       <small class="small" v-if="tabsTotals[tab.name] !== null">&nbsp; ({{ tabsTotals[tab.name] }})</small>
@@ -86,7 +84,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import LoadingCircle from './LoadingCircle.vue'
 import DataSection from './DataSection'
 import ErrorPage from './ErrorPage'
 import Message from './Message'
@@ -96,6 +93,7 @@ import common from '../mixins/common'
 import Spinner from './Loaders/Spinner.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
 import TitleDetail from './General/TitleDetail.vue'
+import BackContent from './General/BackContent.vue'
 
 export default {
   name: 'data-page',
@@ -104,10 +102,10 @@ export default {
     DataSection,
     ErrorPage,
     Message,
-    LoadingCircle,
     ItemNavigator,
     ExportControls,
-    TitleDetail
+    TitleDetail,
+    BackContent
   },
   mixins: [
     common
@@ -367,7 +365,7 @@ export default {
     // align-self flex-start
 
   .page-header
-    margin-bottom 2em
+    margin-bottom 4rem
 
   .messages
     font-size 0.9em
