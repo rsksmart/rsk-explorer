@@ -1,5 +1,7 @@
 <template>
-  <div class="spinner" :style='{ width: `${width}px`, height: `${height}px`, borderWidth: `${border}px` }'></div>
+  <div class="flex justify-center">
+    <div class="spinner" :style='{ width: `${width}px`, height: `${height}px`, borderWidth: `${border}px` }'></div>
+  </div>
 </template>
 <script>
 export default {

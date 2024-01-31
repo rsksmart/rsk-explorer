@@ -1,15 +1,21 @@
-<template lang="pug">
-  ul.prev-next
-    li.prev(v-if='prevLink')
-      router-link(:to='linkTo(prev)')
-        icon(name='triangle-arrow-left')
-        small previous
-    li.total(v-if='total')
-      span {{total}}
-    li.next(v-if='nextLink')
-      router-link(:to='linkTo(next)')
-        small next
-        icon(name='triangle-arrow-right')
+<template>
+  <ul class="prev-next">
+    <li class="prev" v-if="prevLink">
+      <router-link :to="linkTo(prev)">
+        <icon name="triangle-arrow-left"></icon>
+        <span>Previous</span>
+      </router-link>
+    </li>
+    <li class="total" v-if="total">
+      <span>{{ total }}</span>
+    </li>
+    <li class="next" v-if="nextLink">
+      <router-link :to="linkTo(next)">
+        <span>Next</span>
+        <icon name="triangle-arrow-right"></icon>
+      </router-link>
+    </li>
+  </ul>
 </template>
 <script>
 import { mapGetters } from 'vuex'

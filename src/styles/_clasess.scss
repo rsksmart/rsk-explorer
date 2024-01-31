@@ -106,11 +106,16 @@ body {
 .fw700 {
   font-weight: 700;
 }
-
+.capitalize {
+  text-transform: capitalize;
+}
 .first-leter-uppercase {
   &::first-letter {
     text-transform: uppercase;
   }
+}
+.txt-center {
+  text-align: center;
 }
 
 .content-explorer {
@@ -185,13 +190,13 @@ button {
           color: $white_100;
         }
       }
-      &:hover {
+      &.show-copy:hover {
         .copy-icon {
           display: block;
         }
       }
     }
-    &:hover {
+    &.show-copy:hover {
       .trim-value {
         cursor: pointer;
         color: $white_100;
@@ -218,10 +223,28 @@ button {
     }
   }
 }
+
 .btn {
   padding: 16px;
   border-radius: 12px;
+  color: $white_100;
 }
+.btn-event.active {
+  background-color: $orange_900;
+  color: #000;
+}
+.btn-address.active {
+  background-color: $pink_900;
+}
+.btn-block.active {
+  background-color: $green_900;
+  color: #000;
+}
+.btn-transaction.active {
+  background-color: $orange_900;
+  color: #000;
+}
+
 .spinner {
   border-color: rgba(170, 170, 170, 0.1);
   border-style: solid;
@@ -239,17 +262,22 @@ button {
   }
 }
 
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
-body::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: rgb(54, 54, 54);   
   border-radius: 12px;
 }
 
-body::-webkit-scrollbar-thumb {
-  background-color: $newbw_800;
+::-webkit-scrollbar-thumb {
+  background-color: rgb(125, 125, 125);
   border-radius: 20px;
   border: 1px solid rgb(49, 49, 49);
+}
+
+svg.svg-icon {
+  fill: $white_400;
 }

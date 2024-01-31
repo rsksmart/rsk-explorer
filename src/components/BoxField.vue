@@ -32,8 +32,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/style.styl'
-  @import '../lib/styl/mixins.styl'
+
   .box-field.box
     display flex
     flex-flow row nowrap

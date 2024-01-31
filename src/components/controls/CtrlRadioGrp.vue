@@ -1,9 +1,12 @@
-<template lang="pug">
-  .radios
-    .radio-grp(v-for='value,label in group')
-      label
-        input.inline(type='radio' :name='name' :value='value' @change='change(value)' :checked='selected===value')
-        span.label {{label}}
+<template>
+  <div class="radios">
+    <div class="radio-grp" v-for="(label, value) in group" :key="value">
+      <label>
+        <input class="inline" type="radio" :name="name" :value="value" @change="change(value)" :checked="selected === value">
+        <span class="label">{{ label }}</span>
+      </label>
+    </div>
+  </div>
 </template>
 <script>
 export default {
@@ -37,80 +40,44 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../../lib/styl/vars.styl'
-  @import '../../lib/styl/mixins.styl'
-  $size = 2em
+<style>
+  input[type="radio"] {
+  --s: 1em;
+  --c: #FF71E1;
 
-  radioSym($w)
-    content ''
-    display block
-    width $w
-    height @width
-    border-radius 50%
-    box-shadow $inset-sh
-    transition all .5s ease-out
+  height: var(--s);
+  aspect-ratio: 1;
+  border: calc(var(--s) / 8) solid #939393;
+  padding: calc(var(--s) / 8);
+  background: radial-gradient(farthest-side, var(--c) 94%, #0000) 50%/0 0
+    no-repeat content-box;
+  border-radius: 50%;
+  outline-offset: calc(var(--s) / 10);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  font-size: inherit;
+  transition: 0.3s;
+}
+input[type="radio"]:checked {
+  border-color: var(--c);
+  background-size: 100% 100%;
+}
 
-  radioSymCenter()
-    $s = .85em
-    radioSym($s)
-    $pos = ( ($size - $s)/2 )
-    position absolute
-    top $pos
-    left $pos
-    width $s
-    height @width
-    box-sizing border-box
+input[type="radio"]:disabled {
+  background: linear-gradient(#939393 0 0) 50%/100% 20% no-repeat content-box;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
-  .radio-grp
-    display inline-flex
-    justify-content center
-    align-items center
-    flex 1
-    margin 0 1em 0 0
+@media print {
+  input[type="radio"] {
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    appearance: auto;
+    background: none;
+  }
+}
 
-    .label
-      margin 0 0.5em
-      color gray
-
-    label
-      position relative
-      display flex
-
-    input[type='radio']
-      appearance none
-      padding 0
-      border none
-      background none
-
-      &:before
-        radioSym($size)
-        background $forms-ctrls-bg
-
-      &:after
-        radioSymCenter()
-        background gray
-        // border gray solid 1px
-        box-shadow none
-
-      &:focus
-        border-radius 50%
-
-      &:checked
-        border none
-
-      &:checked:before
-        background $color !important
-
-      &:checked:after
-        transition all .5s ease-in
-        radioSymCenter()
-        background $white
-        box-shadow $tip-sh
-        border none
-
-      &:hover:before
-        background $gray
-      &:hover:after
-        background white
 </style>

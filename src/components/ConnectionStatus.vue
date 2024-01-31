@@ -91,8 +91,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-  // @import '../lib/styl/style.styl'
-  // @import '../lib/styl/mixins.styl'
 
   .connection-status
     // font-family $monospace-font

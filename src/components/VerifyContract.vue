@@ -3,7 +3,7 @@
     h2 Verify contract
     //- Form Errors
     .loading(v-show='isWaiting')
-      loading-circle(:size='30' )
+      spinner( :height="200" :width="200" :border="5")
       p(v-if='!verificationDone && timer') {{messages().WAITING_FOR_RESULT}}
     .errors(v-if='errors.length')
       .error(v-for='error in errors')
@@ -11,6 +11,7 @@
     //- Verifier connection errors
     .error.center(v-if='verifierConnectionErrors')
       h3.error ERROR
+      img(src='@/assets/svg/error-icon.svg')
       p {{messages().VERIFIER_DATA_ERROR}}
     template(v-else)
       form.flex(v-if='!verificationId' @submit.prevent='submit')
@@ -77,17 +78,18 @@
 
       //- Waiting for verification
       div(v-if='isWaitingForVerification')
-        p {{messages().WAITING_VERIFICATION}}
+        p.flex.justify-center.text-white-400 {{messages().WAITING_VERIFICATION}}
 
       //- Verification Result
       template.errrors(v-if='verificationErrors')
-        p {{messages().VERIFICATION_ERROR}}
+        p.flex.justify-center.text-white-400 {{messages().VERIFICATION_ERROR}}
         .row
           ul.small
             li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
 
       .done(v-if='verificationDone || verificationErrors')
-        template(v-if='verificationSuccessful')
+        template(v-if='!verificationSuccessful')
+          img(src='@/assets/svg/successfully.svg')
           h3.brand {{messages().VERIFICATION_DONE}}
           .row
             button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
@@ -107,7 +109,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import LoadingCircle from './LoadingCircle'
 import CtrlFiles from './controls/CtrlFiles'
 import CtrlSwitch from './controls/CtrlSwitch'
 import CtrlRadioGrp from './controls/CtrlRadioGrp'
@@ -117,6 +118,7 @@ import { ObjectIdSecondsElapsed, isAddress } from '../lib/js/utils'
 import { messages, formFields } from '../config/texts/verifyContract'
 import { ROUTES } from '../config/types'
 import { UNSUPPORTED_SOLC_VERSIONS } from '@/config/entities/lib/solidityVersions'
+import Spinner from './Loaders/Spinner'
 
 const KEYS = {
   contract: '__contractVerifierContract',
@@ -133,11 +135,11 @@ const ID_TIMEOUT_SECONDS = 120
 export default {
   name: 'verify-contract',
   components: {
-    LoadingCircle,
     CtrlFiles,
     CtrlSwitch,
     CtrlRadioGrp,
-    FormRow
+    FormRow,
+    Spinner
   },
   filter: [camelCaseTo],
   data () {
@@ -507,23 +509,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-@import '../lib/styl/vars.styl'
-
-.verify-contracts
-  flex-flow column nowrap !important
-
-  .loading
-    display block
-    text-align center
-
-    svg
-      margin auto
-
-  svg.loading-circle
-    fill none
-    stroke green
-
-  .try-again
-    padding 2em
-</style>

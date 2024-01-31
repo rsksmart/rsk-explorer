@@ -24,9 +24,9 @@
         </template>
         <template v-else>
           <router-link v-if="link" :to="link">
-            <div class="field-value">{{ filteredValue || field.default }} a</div>
+            <div class="field-value">{{ filteredValue || field.default }}</div>
           </router-link>
-          <div class="field-value" v-else>{{ filteredValue || field.default }} b</div>
+          <div class="field-value" v-else>{{ filteredValue || field.default }}</div>
         </template>
         <span class="field-suffix" v-if="suffix && filteredValue !== null">&nbsp; {{ suffix }}</span>
         <field-icon class="field-value-description" v-if="valueDescription" icon="help" :title="valueDescription"></field-icon>
@@ -101,68 +101,3 @@ export default {
   }
 }
 </script>
-<!-- <style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
-  @import '../lib/styl/lists.styl'
-
-  .data-field
-    ul
-      display flex
-      flex-flow column
-      flex 1
-      margin 0
-      padding 0
-
-      li
-        break-word()
-
-    ul.array
-      font-size 0.9em
-      list-style none
-
-  .data-field, .data-field > a, .data-field > .tooltip, max-width 100%
-    display flex
-    position relative
-    break-word()
-    justify-content center
-    align-items center
-
-  .field-value
-    overflow-wrap break-word
-    word-wrap break-word
-    -ms-word-break break-all
-    word-break break-all
-    word-break break-word
-    -ms-hyphens auto
-    -moz-hyphens auto
-    -webkit-hyphens auto
-    hyphens auto
-
-  .field-suffix
-    white-space pre
-
-  .field-value-description
-    position relative
-    display inline-flex
-    margin 0 0 0 1em
-    white-space nowrap
-
-  .flex-table
-    & td .data-field
-      width 100%
-
-  .data-field.items-list ul
-    list-style none
-    margin 0
-    padding 0
-    display flex
-    flex-flow row wrap
-
-    li
-      display flex
-      margin 0 0 0 1em
-
-    :first-child
-      margin 0
-</style> -->

@@ -1,17 +1,28 @@
-<template lang="pug">
-  .event-call(v-if='data')
-    ul.event
-      li.event-name {{name}}
-        ul.args(v-if='inputs')
-          template(v-for='arg in inputs')
-            li.type {{arg.type}}
-            li.index(v-if='arg.indexed') indexed
-            li.name {{arg.name}}
+<template>
+  <div class="event-call" v-if="data">
+    <ul class="event">
+      <li class="event-name">{{ name }}
+        <template v-if="inputs">
+          <ul class="args" v-for="(arg, i) in inputs" :key="i">
+            <li class="type" :key="`1-${i}`" :style="{ color: PAGE_COLORS[$route.name].cl }">{{ arg.type }}</li>
+            <li class="index" v-if="arg.indexed">indexed</li>
+            <li class="name">{{ arg.name }}</li>
+          </ul>
+        </template>
+      </li>
+    </ul>
+  </div>
 </template>
 <script>
+import { PAGE_COLORS } from '../config/pageColors'
 export default {
   name: 'event-call',
   props: ['data'],
+  data () {
+    return {
+      PAGE_COLORS
+    }
+  },
   computed: {
     name () {
       return this.data.name
@@ -23,8 +34,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
 
   .event-call
     margin 0
@@ -47,7 +56,7 @@ export default {
       padding 0
       flex-flow row wrap
       li
-        color gray
+        color white
 
     ul,li
       margin 0 0.25em 0 0
@@ -64,13 +73,13 @@ export default {
         content ')'
 
       .type
-        color $info
+        color white
         &:after
           content ''
 
       .name
         font-size 0.9em
-        color $txt-color
+        // color green
 
         &:after
           content ','

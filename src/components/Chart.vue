@@ -52,7 +52,7 @@ export default {
       return { width: this.size.w + 'px' }
     },
     chartOptions () {
-      return Object.assign({ size: this.size }, this.opts)
+      return Object.assign({ size: { w: 1050, h: 321 } }, this.opts)
     },
     hRatio () {
       const hr = this.heightRatio
@@ -69,7 +69,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/vars.styl'
 
   .chart-container
     display flex

@@ -1,12 +1,12 @@
 <template>
   <div class="pages" v-if='next || prev || pages'>
     <button class="page-button" v-if='prev' @click='goToPage(prevIndex,$event)'>
-      <icon name='triangle-arrow-left'></icon>
+      <icon name='arrow-left'></icon>
     </button>
     <div v-else></div>
     <ul class="page-numbers" v-if='pages.length > 1'>
       <button v-if='prevPage' class="prev-page" @click='goToPage(prevPage,$event)'>
-        <icon class="link" name='arrow-left'></icon>
+        <icon class="link" name='triangle-arrow-left'></icon>
       </button>
       <li class="link" v-for='(p, i) in pages'
         :style='{ backgroundColor: (p.page===page) ? PAGE_COLORS[$route.name].cl : "" } '

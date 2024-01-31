@@ -226,8 +226,10 @@ export default {
 }
 </script>
 <style lang="stylus">
+  @import ('../lib/styl/app.styl')
+
   $tip-arrow-size = 5px
-  $tip-bg = white
+  $tip-bg = #121212
   $tip-border = 1px
 
   .tooltip, .trim
@@ -235,8 +237,8 @@ export default {
     display inline-flex
     overflow visible
 
-  .nowrap
-    white-space nowrap
+  // .nowrap
+  //   white-space nowrap
 
   // Arrow mixin
   arrow(pos)
@@ -265,9 +267,12 @@ export default {
     flex-flow row nowrap
     justify-content center
     align-items center
+    a
+      color #B8B8B8
     .copy-button
       .message
         z-index 100
+        color #b8b8b8
 
     .left-button
       margin 0 0 0 .5em
@@ -276,7 +281,7 @@ export default {
       position absolute
       filter drop-shadow($tip-sh)
       width 100%
-      color $dark
+      color #b8b8b8
       display flex
       justify-content flex-start // arrow on start
       animation 0.125s ease-in tooltip-anim
@@ -285,11 +290,12 @@ export default {
       .value
         border-radius 3px
         padding 0.125em 0.25em
-        background-color $tip-bg
+        background-color #121212
         word-break break-all
         display flex
         justify-content center
         align-items center
+        min-width 150px
 
       .tip-txt
         padding 0.25em
@@ -317,21 +323,23 @@ export default {
     for pos in top bottom left right
       .tip.{pos}
         arrow(pos)
-
+    .trim
+      a
+        color #B8B8B8
     .points
       display inline-flex
       box-shadow none
+      width 1rem
 
       button
         height auto
         width @height
         min-height 2em
-        color @color
-        margin 0 .25em
+        color #b8b8b8
 
         .icon, .svg-icon
           display inline-flex
-          color @color
+          color #b8b8b8
           max-height 1em
           min-width 1em
           justify-content center
@@ -402,8 +410,8 @@ export default {
 
   @keyframes copyb
     0%
-      color @color
+      color #b8b8b8
 
     100%
-      color inherit
+      color #b8b8b8
 </style>

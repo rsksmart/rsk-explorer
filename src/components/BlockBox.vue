@@ -84,7 +84,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/media_queries.styl'
 
   .block-box
     display flex

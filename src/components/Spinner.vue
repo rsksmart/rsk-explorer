@@ -76,22 +76,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  // @import '../lib/styl/vars.styl'
-
-  // .spinner
-  //   min-height 100vh
-  //   min-width 100%
-  //   display flex
-  //   justify-content center
-  //   align-items center
-
-  //   .cubes
-  //     .fill
-  //       fill $color
-  //       stroke gray
-
-  //     svg
-  //       stroke brand3
-  //       overflow visible
-</style>
