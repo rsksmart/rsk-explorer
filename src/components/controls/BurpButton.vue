@@ -43,7 +43,7 @@ export default {
     .message
       position absolute
       z-index 10
-      bottom 0
+      bottom -10px
       opacity 0
       width auto
       white-space nowrap

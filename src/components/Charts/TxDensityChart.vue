@@ -1,7 +1,7 @@
 <template>
   <div class="tx-density-chart bg-secondary">
     <div class="text-white-100 title">Transactions density</div>
-    <div class="chart-container" v-if="blocks.length" :style="boxStyle">
+    <div class="chart-container" v-if="blocks.length">
       <d3-bar-chart :data="chartData" :options="chartOptions" @barClick="barClick"></d3-bar-chart>
     </div>
   </div>
@@ -94,10 +94,6 @@ export default {
     ...mapState({
       blocks: state => state.backend.lastBlocks
     }),
-
-    boxStyle () {
-      return { width: this.size.w + 'px' }
-    },
     chartOptions () {
       return Object.assign({ size: this.size }, this.options)
     },
@@ -114,15 +110,19 @@ export default {
   },
   methods: {
     onResize () {
-      const w = 500
-      const h = 130
-      this.size = Object.assign({}, { w, h })
+      const chartContainer = this.$el.querySelector('.chart-container')
+      const w = chartContainer.offsetWidth
+      const h = Math.max(chartContainer.offsetHeight, 130)
+      this.size = { w, h }
     },
     barClick (event) {
       const bar = event.bar || {}
       const blockNumber = (bar.d) ? bar.d.number : null
       if (blockNumber) this.$router.push({ path: `${ROUTES.block}/${blockNumber}` })
     }
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>

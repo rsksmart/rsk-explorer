@@ -1,10 +1,12 @@
-<template lang="pug">
-  .connection-status(:class='status.css')
-    loading-bar(:step='waitingPercentage')
-    .line-item
-      waiting-dots.line-item(v-if='!connected && isWaiting')
-      .message(v-else) {{status.msg}}
-      .time(v-if='showTime') {{status.time | m-seconds-ago}}
+<template>
+  <div class="connection-status" :class="status.css">
+    <loading-bar :step="waitingPercentage"></loading-bar>
+    <div class="line-item">
+      <waiting-dots class="line-item" v-if="!connected && isWaiting"></waiting-dots>
+      <div class="message" v-else>{{ status.msg }}</div>
+      <div class="time" v-if="showTime">{{ status.time | m-seconds-ago }}</div>
+    </div>
+  </div>
 </template>
 <script>
 import { CONNECTION_STATUS as STATUS } from '../config/types'
@@ -93,14 +95,13 @@ export default {
 <style lang="stylus">
 
   .connection-status
-    // font-family $monospace-font
     display flex
     flex-flow column nowrap
-    color $color
+    color #fbfbfb
     font-size 0.75em
     align-self flex-start
-    flex-centered()
     width 100%
     max-width 100%
     height auto
+    margin-bottom 20px
 </style>

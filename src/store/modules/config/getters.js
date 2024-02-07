@@ -28,3 +28,5 @@ export const isCsvExport = state => state.exportFormat === EXPORT_FORMATS.CSV
 export const getDecimalPlaces = state => state.decimalPlaces
 
 export const getUserConfig = state => key => state[key]
+
+export const getMenuToggle = state => state.menuToggle

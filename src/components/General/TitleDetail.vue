@@ -25,7 +25,7 @@ export default {
           hideTrim: false
         },
         block: {
-          icon: 'transaction',
+          icon: 'block',
           txt: 'number',
           hideTrim: true
         },

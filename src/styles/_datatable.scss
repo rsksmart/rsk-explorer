@@ -66,6 +66,11 @@
         display: none !important;
       }
     }
+    .field__number, .field__txs, .field__miner, .field__size {
+      .td-title {
+        display: none;
+      }
+    }
     .from-to-arrow {
       width: 60px;
       text-align: center;
@@ -260,6 +265,27 @@
           }
         }
       }
+    }
+  }
+}
+
+@include tablet() {
+  .data-table {
+    table {
+      .dummy, .row-icon {
+        display: none;
+      }
+    }
+  }
+}
+
+@include phone() {
+  .data-table {
+    table {
+      color: $white_400;
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: unset;
     }
   }
 }

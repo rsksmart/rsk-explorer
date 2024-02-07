@@ -1,110 +1,111 @@
 <template lang="pug">
-  .verify-contracts.section
-    h2 Verify contract
-    //- Form Errors
+  .verify-contracts
     .loading(v-show='isWaiting')
       spinner( :height="200" :width="200" :border="5")
       p(v-if='!verificationDone && timer') {{messages().WAITING_FOR_RESULT}}
-    .errors(v-if='errors.length')
-      .error(v-for='error in errors')
-        small {{error}}
-    //- Verifier connection errors
-    .error.center(v-if='verifierConnectionErrors')
-      h3.error ERROR
-      img(src='@/assets/svg/error-icon.svg')
-      p {{messages().VERIFIER_DATA_ERROR}}
-    template(v-else)
-      form.flex(v-if='!verificationId' @submit.prevent='submit')
-        form-row(v-bind='formFields.ADDRESS')
-          input(name="address" type= "text" :value="address" @change="changeAddress($event.target.value)" size="50")
+    .section(v-if='!isWaiting')
+      h2 Verify contract
+      //- Form Errors
+      .errors(v-if='errors.length')
+        .error(v-for='error in errors')
+          small {{error}}
+      //- Verifier connection errors
+      .error.center(v-if='verifierConnectionErrors')
+        h3.error ERROR
+        img(src='@/assets/svg/error-icon.svg')
+        p {{messages().VERIFIER_DATA_ERROR}}
+      template(v-else)
+        form.flex(v-if='!verificationId' @submit.prevent='submit')
+          form-row(v-bind='formFields.ADDRESS')
+            input(name="address" type= "text" :value="address" @change="changeAddress($event.target.value)" size="50")
 
-          //- Form errors
-          template(v-for='[errored,error] in formErrors')
-            //-FIX--------------------------------------------------
-            template(v-if='errored')
-              p.error {{error}}
+            //- Form errors
+            template(v-for='[errored,error] in formErrors')
+              //-FIX--------------------------------------------------
+              template(v-if='errored')
+                p.error {{error}}
 
-          //-.contract(v-if='!isVerified')
-            .items(v-if='contractData')
-              .item(v-for='p,v in contractData')
-                small {{ v | camel-case-to }}: {{p}}
+            //-.contract(v-if='!isVerified')
+              .items(v-if='contractData')
+                .item(v-for='p,v in contractData')
+                  small {{ v | camel-case-to }}: {{p}}
 
-        //- Verification form
-        template(v-if='isVerifiable')
-          form-row(v-bind='formFields.NAME')
-            input(name="name" type="text" :value="name" @change='changeName($event.target.value)'  :class='cssClass("name")')
-          form-row(v-bind='(hasFiles) ? formFields.FILES : formFields.SOURCE')
-            ctrl-files(:multiple='hasFiles' @change='updateFiles' @error='addError' :load-files='files' :class='cssClass("file")' accept='.sol')
-          form-row(v-if='versionsData' v-bind='formFields.VERSION')
-            select(name='version' :value='version' @change='changeVersion($event.target.value)' :class='cssClass("version")')
-              option(v-for="path,version in versions" :value='path') {{path}}
-            ctrl-switch( :value='showAllVersions' @change='(value) => changeAllVersions(value)' label='Show all versions')
+          //- Verification form
+          template(v-if='isVerifiable')
+            form-row(v-bind='formFields.NAME')
+              input(name="name" type="text" :value="name" @change='changeName($event.target.value)'  :class='cssClass("name")')
+            form-row(v-bind='(hasFiles) ? formFields.FILES : formFields.SOURCE')
+              ctrl-files(:multiple='hasFiles' @change='updateFiles' @error='addError' :load-files='files' :class='cssClass("file")' accept='.sol')
+            form-row(v-if='versionsData' v-bind='formFields.VERSION')
+              select(name='version' :value='version' @change='changeVersion($event.target.value)' :class='cssClass("version")')
+                option(v-for="path,version in versions" :value='path') {{path}}
+              ctrl-switch( :value='showAllVersions' @change='(value) => changeAllVersions(value)' label='Show all versions')
 
-          form-row(v-bind='formFields.OPTIMIZATION')
-            ctrl-radio-grp.frow(name='optimization' @change='(value)=>settings.optimizer.enabled=value' :selected='settings.optimizer.enabled')
+            form-row(v-bind='formFields.OPTIMIZATION')
+              ctrl-radio-grp.frow(name='optimization' @change='(value)=>settings.optimizer.enabled=value' :selected='settings.optimizer.enabled')
 
-          form-row(v-bind='formFields.RUNS')
-            input(type='text' name='runs' v-model='settings.optimizer.runs' :disabled='!settings.optimizer.enabled')
+            form-row(v-bind='formFields.RUNS')
+              input(type='text' name='runs' v-model='settings.optimizer.runs' :disabled='!settings.optimizer.enabled')
 
-          form-row(v-bind='formFields.EVM')
-            select(v-if='evmVersions' name='evm-version' v-model='settings.evmVersion')
-              option(:value='undefined') latest
-              option(v-for='evm in evmVersions' :value='evm') {{evm}}
-          form-row(v-bind='abiEncodedArgs ? formFields.ENCODED_ARGUMENTS:formFields.CONSTRUCTOR_ARGUMENTS')
-            input(type='text' v-model='constructorArguments')
-          form-row(v-bind='formFields.ABI_ENCODED_ARGUMENTS')
-            ctrl-radio-grp.frow(name='encoded' @change='(value)=>abiEncodedArgs=value' :selected='abiEncodedArgs')
-          form-row(v-bind='formFields.LIBRARIES')
-            .frow
-              button.btn.brand(type="button" @click='addLibrary' name="add-library")
-                icon.white(name="plus")
-                span Add library
-          //- Libraries
-          template(v-for='lib in libs')
-            form-row(v-bind='formFields.LIB_NAME')
-              input(type='text' v-model='lib.name' v-bind='formFields.LIB_NAME.input')
-            form-row(v-bind='formFields.LIB_ADDRESS')
-              input(type='text' v-model='lib.address' v-bind='formFields.LIB_ADDRESS.input' )
-          form-row
-            button.brand.big(name="submit")
-              span Verify
-            //-button.btn.big(name="submit" @click.passive='resetForm')
-              span Reset
+            form-row(v-bind='formFields.EVM')
+              select(v-if='evmVersions' name='evm-version' v-model='settings.evmVersion')
+                option(:value='undefined') latest
+                option(v-for='evm in evmVersions' :value='evm') {{evm}}
+            form-row(v-bind='abiEncodedArgs ? formFields.ENCODED_ARGUMENTS:formFields.CONSTRUCTOR_ARGUMENTS')
+              input(type='text' v-model='constructorArguments')
+            form-row(v-bind='formFields.ABI_ENCODED_ARGUMENTS')
+              ctrl-radio-grp.frow(name='encoded' @change='(value)=>abiEncodedArgs=value' :selected='abiEncodedArgs')
+            form-row(v-bind='formFields.LIBRARIES')
+              .frow
+                button.btn.brand(type="button" @click='addLibrary' name="add-library")
+                  icon.white(name="plus")
+                  span Add library
+            //- Libraries
+            template(v-for='lib in libs')
+              form-row(v-bind='formFields.LIB_NAME')
+                input(type='text' v-model='lib.name' v-bind='formFields.LIB_NAME.input')
+              form-row(v-bind='formFields.LIB_ADDRESS')
+                input(type='text' v-model='lib.address' v-bind='formFields.LIB_ADDRESS.input' )
+            form-row
+              button.brand.big(name="submit")
+                span Verify
+              //-button.btn.big(name="submit" @click.passive='resetForm')
+                span Reset
 
-      //- Verification response
-      //-div(v-if='verifierResponse')
-        .error(v-if='verifierResponse.error')
-          p {{verifierResponse.error}}
+        //- Verification response
+        //-div(v-if='verifierResponse')
+          .error(v-if='verifierResponse.error')
+            p {{verifierResponse.error}}
 
-      //- Waiting for verification
-      div(v-if='isWaitingForVerification')
-        p.flex.justify-center.text-white-400 {{messages().WAITING_VERIFICATION}}
+        //- Waiting for verification
+        div(v-if='isWaitingForVerification')
+          p.flex.justify-center.text-white-400 {{messages().WAITING_VERIFICATION}}
 
-      //- Verification Result
-      template.errrors(v-if='verificationErrors')
-        p.flex.justify-center.text-white-400 {{messages().VERIFICATION_ERROR}}
-        .row
-          ul.small
-            li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
-
-      .done(v-if='verificationDone || verificationErrors')
-        template(v-if='!verificationSuccessful')
-          img(src='@/assets/svg/successfully.svg')
-          h3.brand {{messages().VERIFICATION_DONE}}
+        //- Verification Result
+        template.errrors(v-if='verificationErrors')
+          p.flex.justify-center.text-white-400 {{messages().VERIFICATION_ERROR}}
           .row
-            button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
+            ul.small
+              li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
 
-        template(v-else)
-          .row
-            h3.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
-          .row(v-if='verificationTry')
-            h4.info Try adding some of this parameters:
-          ul
-            li(v-for='v,p in verificationTry')
-              strong {{p}}:
-              pre {{v}}
-          .row.try-again
-            button.big.brand.btn.flex(@click.prevent='tryAgain') Try again
+        .done(v-if='verificationDone || verificationErrors')
+          template(v-if='!verificationSuccessful')
+            img(src='@/assets/svg/successfully.svg')
+            h3.brand {{messages().VERIFICATION_DONE}}
+            .row
+              button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
+
+          template(v-else)
+            .row
+              h3.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
+            .row(v-if='verificationTry')
+              h4.info Try adding some of this parameters:
+            ul
+              li(v-for='v,p in verificationTry')
+                strong {{p}}:
+                pre {{v}}
+            .row.try-again
+              button.big.brand.btn.flex(@click.prevent='tryAgain') Try again
 
 </template>
 <script>

@@ -34,7 +34,7 @@
 }
 
 .export-pages {
-  width: 450px;
+  width: 350px;
   margin: 0 auto 50px auto;
   border-radius: 12px;
   color: $white_100;
@@ -43,7 +43,7 @@
   fieldset {
     margin-top: 10px;
     border-radius: 12px;
-    height: 80px;
+    height: 70px;
     .export-items, .export-format {
       padding: 0 12px;
       height: 100%;
@@ -153,8 +153,13 @@ li {
   color: $white_100;
   display: flex;
 
+  small {
+    white-space: nowrap;
+  }
   .filter-content {
     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     .item {
       margin: 0 24px;
     }
@@ -219,6 +224,7 @@ li {
   .ctrl-big-text {
     .content {
       background-color: $newbw_900;
+      word-break: break-all;
     }
   }
   .verify {

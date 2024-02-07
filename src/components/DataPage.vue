@@ -1,6 +1,6 @@
 <template>
   <div class="data-page centered" :class="$route.name">
-    <div class="flex container-title">
+    <div class="flex container-title" v-if="!requesting">
       <icon :class="titleDescription" :name="titleDescription.toLowerCase()"></icon>
       <div class="text-white-100 title capitalize" v-if="titleDescription">{{ titleDescription }}</div>
     </div>
@@ -19,29 +19,31 @@
         <message v-for="(msg, key) in pageMessages" :message="msg" :key="key" :data="data"></message>
       </div>
       <!-- Header -->
-      <div class="page-header content-section" v-if="mainContent && page.data">
-        <div class="page-header-content">
-          <back-content :titleDescription="titleDescription" />
-          <div class="flex justify-between item-center">
-            <title-detail :page="page" :titleDescription="titleDescription" />
-            <item-navigator v-if="!isTable" :next="next" :prev="prev" :total="total" :regKey="dataKey()(dataType)"></item-navigator>
+      <div class="page-header" v-if="mainContent && page.data">
+        <div class="content-section">
+          <div class="page-header-content">
+            <back-content :titleDescription="titleDescription" />
+            <div class="flex justify-between item-center">
+              <title-detail :page="page" :titleDescription="titleDescription" />
+              <item-navigator v-if="!isTable" :next="next" :prev="prev" :total="total" :regKey="dataKey()(dataType)"></item-navigator>
+            </div>
           </div>
-        </div>
-        <div class="tabs">
-          <div class="tabs-titles" v-if="page.data">
-            <template v-for="tab in mainContentTabs">
-              <button class="btn tab-title capitalize"
-                :class="[tabTitleCss(isActiveContentTab(tab)), `btn-${$route.name.toLowerCase()}`]"
-                :key="tab.name" v-if="tab.name"
-                @click="setActiveContentTab(tab.name, $event)"
-              >
-                <span class="title">{{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}</span>
-                <icon v-if="tab.buttonIcon" :name="tab.buttonIcon"></icon>
-              </button>
-            </template>
-            <export-controls v-if="data" :data="page.data" :type="dataType"></export-controls>
+          <div class="tabs">
+            <div class="tabs-titles" v-if="page.data">
+              <template v-for="tab in mainContentTabs">
+                <button class="btn tab-title capitalize"
+                  :class="[tabTitleCss(isActiveContentTab(tab)), `btn-${$route.name.toLowerCase()}`]"
+                  :key="tab.name" v-if="tab.name"
+                  @click="setActiveContentTab(tab.name, $event)"
+                >
+                  <span class="title">{{ tab.name }} {{ (undefined !== tab.total) ? `(${tab.total})` : '' }}</span>
+                  <icon v-if="tab.buttonIcon" :name="tab.buttonIcon"></icon>
+                </button>
+              </template>
+              <export-controls v-if="data" :data="page.data" :type="dataType"></export-controls>
+            </div>
+            <data-section v-if="activeContentTab" :component="activeContentTab.component" :reqKey="reqKey" :module="module" :dataType="activeContentTab.dataType || dataType" :action="action" :updateOnNewBlock="updateOnNewBlock" @update="updateSection"></data-section>
           </div>
-          <data-section v-if="activeContentTab" :component="activeContentTab.component" :reqKey="reqKey" :module="module" :dataType="activeContentTab.dataType || dataType" :action="action" :updateOnNewBlock="updateOnNewBlock" @update="updateSection"></data-section>
         </div>
       </div>
       <div class="page" v-if="data">
@@ -362,10 +364,6 @@ export default {
 
   .data-page h2.title
     text-transform capitalize
-    // align-self flex-start
-
-  .page-header
-    margin-bottom 4rem
 
   .messages
     font-size 0.9em

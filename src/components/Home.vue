@@ -1,11 +1,11 @@
 <template>
   <div class="home-view" v-if="lastBlocks.length">
     <stats-content />
-    <div class="flex justify-between">
+    <div class="content-block-chart">
       <last-block :block="lastBlocks[0]" title="Last Block" />
       <tx-density-chart :asize="appSize.w + appSize.h" />
     </div>
-    <div class="flex justify-between content-blocks-tx">
+    <div class="content-blocks-tx">
       <last-blocks />
       <last-transactions />
     </div>
