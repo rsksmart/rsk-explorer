@@ -5,13 +5,17 @@
   "description": "Rsk explorer client",
   "author": "emi <emiliorizzo@gmail.com>",
   "scripts": {
-    "build": "npx vue-cli-service build --modern",
+    "dev:mainnet": "env-cmd -f .env.mainnet npx vue-cli-service serve",
+    "dev:testnet": "env-cmd -f .env.testnet npx vue-cli-service serve",
+    "dev-with-tracking:mainnet": "env-cmd -f .env.mainnet npx vue-cli-service serve src/main.with.tracking.js",
+    "dev-with-tracking:testnet": "env-cmd -f .env.testnet npx vue-cli-service serve src/main.with.tracking.js",
+    "build:mainnet": "env-cmd -f .env.mainnet npx vue-cli-service build --modern",
+    "build:testnet": "env-cmd -f .env.testnet npx vue-cli-service build --modern",
+    "build-with-tracking:mainnet": "env-cmd -f .env.mainnet npx vue-cli-service build src/main.with.tracking.js --modern",
+    "build-with-tracking:testnet": "env-cmd -f .env.testnet npx vue-cli-service build src/main.with.tracking.js --modern",
     "test:unit": "npx vue-cli-service test:unit",
     "test:e2e": "npx vue-cli-service test:e2e",
     "lint": "npx vue-cli-service lint",
-    "build-with-tracking": "npx vue-cli-service build src/main.with.tracking.js --modern",
-    "dev": "npx vue-cli-service serve",
-    "dev-with-tracking": "npx vue-cli-service serve src/main.with.tracking.js",
     "svg": "npx vsvg -s ./public/svg/icons -t ./src/icons --es6"
   },
   "dependencies": {

@@ -1,0 +1,41 @@
+name: RSK Explorer testnet build and deploy
+
+on:
+  push:
+    branches: [feat/add-workflow]
+
+jobs:
+  testnet_build_and_deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: npm run install
+
+      - name: Build site
+        run: npm run build-with-tracking:testnet
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.TESTNET_ROLE_ARN }}
+          aws-region: ${{ secrets.TESTNET_AWS_REGION }}
+
+      - name: Deploy site to S3
+        run: |
+          aws s3 sync --delete --only-show-errors dist/ ${{ secrets.TESTNET_S3_BUCKET }}
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.TESTNET_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
