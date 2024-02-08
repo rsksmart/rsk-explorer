@@ -9,18 +9,6 @@
   }
 }
 
-@include tablet() {
-  .data-page {
-    .section {
-      .data-table {
-        overflow-x: auto;
-        .flex-table, table {
-          min-width: 1100px;
-        }
-      }
-    }
-  }
-}
 .Block, .Transaction, .transaction, .contract, .account, .Address, .Event, .Token {
   .page-header {
     
@@ -501,6 +489,113 @@
     
     .table-ctrls {
       top: -60px;
+    }
+  }
+}
+
+.apps-view {
+  width: 100%;
+  color: $white_100;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  .apps-content {
+    width: 100%;
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    flex-wrap: wrap;
+    gap: 10px;
+    .apps-item {
+      width: 100%;
+      padding: 24px;
+      border-radius: 12px;
+      display: flex;
+      .item-img {
+        margin-right: 12px;
+        background-color: $newbw_700;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .item-content {
+        width: 100%;
+        a {
+          color: $white_100;
+          &:hover {
+            color: $white_400;
+          }
+        }
+        .address {
+          .icon-miner {
+            margin-right: 5px;
+          }
+        }
+        .item-header {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+      .title {
+        font-size: 24px;
+        margin-right: 8px;
+      }
+      .item-description {
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+@include tablet() {
+  .data-page {
+    .section {
+      .data-table {
+        overflow-x: auto;
+        .flex-table, table {
+          min-width: 1100px;
+        }
+      }
+    }
+  }
+  .apps-view {
+    .apps-content {
+      grid-template-columns: repeat(1, 1fr);
+      .apps-item {
+        padding: 12px;
+        .item-description {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+@include phone() {
+  .apps-view {
+    padding: 0 12px;
+    .apps-content {
+      .apps-item {
+        padding: 12px;
+        .title {
+          font-size: 20px;
+        }
+      }
+      .img-content {
+        display: none;
+      }
+      .item-content {
+        .item-header {
+          flex-direction: column;
+          .address {
+            margin-top: 10px;
+          }
+        }
+      }
     }
   }
 }

@@ -35,6 +35,10 @@
             <img class="active-icon" src="@/assets/svg/token-active.svg" alt="token-icon">
             <span>Tokens</span>
           </router-link>
+          <router-link to="/apps" class="link-apps" :class="$route.name === 'Apps' ? activeClasses : ''">
+            <icon name="apps" />
+            <span>Apps</span>
+          </router-link>
           <router-link to="/">
             <img src="@/assets/svg/stats-icon.svg" alt="stats-icon">
             <span>Statictics</span>
@@ -46,7 +50,10 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+
 export default {
+  components: {
+  },
   data () {
     return {
       activeClasses: 'router-link-exact-active router-link-active'

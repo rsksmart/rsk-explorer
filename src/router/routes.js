@@ -11,9 +11,9 @@ import addresses from './addresses'
 import tokens from './tokens'
 import contracts from './contracts'
 import internalTransactions from './internalTransactions'
+import AppsView from '@/views/AppsView'
 import balances from './balances'
 const statsUrl = process.env.STATS_URL
-const appsUrl = process.env.APPS_URL
 
 export default [
   {
@@ -64,19 +64,19 @@ export default [
     name: 'Config',
     component: UserConfig
   },
-  {
-    path: `/${r.apps}`,
-    name: 'apps',
-    beforeEnter (t, f) {
-      let url = appsUrl
-      if (!url) {
-        const host = window.location.host.split('.')
-        host[0] = 'apps'
-        url = window.location.protocol + '//' + host.join('.')
-      }
-      window.open(url, '_blank')
-    }
-  },
+  // {
+  //   path: `/${r.apps}`,
+  //   name: 'apps',
+  //   beforeEnter (t, f) {
+  //     let url = appsUrl
+  //     if (!url) {
+  //       const host = window.location.host.split('.')
+  //       host[0] = 'apps'
+  //       url = window.location.protocol + '//' + host.join('.')
+  //     }
+  //     window.open(url, '_blank')
+  //   }
+  // },
   ...blocks,
   ...transactions,
   ...addresses,
@@ -91,4 +91,9 @@ export default [
     props: {
       error: { code: 'PAGE_NOT_FOUND', error: PAGE_NOT_FOUND }
     }
-  }]
+  },
+  {
+    path: '/apps',
+    component: AppsView
+  }
+]

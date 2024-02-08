@@ -8,7 +8,7 @@
     color: $white_400;
     border-collapse: collapse;
     width: 100%;
-    table-layout: fixed;
+    table-layout: auto;
     thead {
       background-color: $newbw_800;
     }
@@ -66,10 +66,11 @@
         display: none !important;
       }
     }
-    .field__number, .field__txs, .field__miner, .field__size {
-      .td-title {
-        display: none;
-      }
+    .field__number, .field__txs, .field__miner, .field__size,
+    .field__name, .field__address, .field__created, .field__blockNumber {
+    }
+    .td-title {
+      display: none;
     }
     .from-to-arrow {
       width: 60px;
@@ -274,6 +275,34 @@
     table {
       .dummy, .row-icon {
         display: none;
+      }
+    }
+    .d-tokens, .d-addresses, .d-blocks {
+      table-layout: unset;
+      min-width: 600px !important;
+    }
+    .table-id {
+      display: none;
+    }
+    .dummy {
+      display: block !important;
+    }
+    .d-tokens {
+      table-layout: unset;
+      min-width: 800px !important;
+    }
+    .d-blocks {
+      .dummy {
+        display: none !important;
+      }
+    }
+    .d-addresses {
+      thead {
+        tr {
+          .table-id {
+            display: none !important;
+          }
+        }
       }
     }
   }
