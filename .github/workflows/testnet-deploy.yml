@@ -2,7 +2,7 @@ name: RSK Explorer testnet build and deploy
 
 on:
   push:
-    branches: [feat/add-workflow]
+    branches: [develop]
 
 jobs:
   testnet_build_and_deploy:
@@ -21,7 +21,7 @@ jobs:
           node-version: "16"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build site
         run: npm run build-with-tracking:testnet
@@ -34,8 +34,7 @@ jobs:
 
       - name: Deploy site to S3
         run: |
-          aws s3 sync --delete --only-show-errors dist/ ${{ secrets.TESTNET_S3_BUCKET }}
-
+          aws s3 sync --sse aws:kms --sse-kms-key-id ${{ secrets.TESTNET_KMS_KEY_ID }} --delete --only-show-errors dist/ ${{ secrets.TESTNET_S3_BUCKET }}
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.TESTNET_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
