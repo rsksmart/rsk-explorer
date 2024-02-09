@@ -27,7 +27,7 @@ jobs:
         run: npm run build-with-tracking:testnet
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.TESTNET_ROLE_ARN }}
           aws-region: ${{ secrets.TESTNET_AWS_REGION }}
