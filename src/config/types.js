@@ -24,7 +24,8 @@ export const ROUTES = {
   internalTx: 'itx',
   balance: 'balance',
   balances: 'balances',
-  settings: 'settings'
+  settings: 'settings',
+  apps: 'apps'
 }
 
 export const STATUS = {

@@ -13,6 +13,7 @@ import contracts from './contracts'
 import internalTransactions from './internalTransactions'
 import balances from './balances'
 const statsUrl = process.env.STATS_URL
+const appsUrl = process.env.APPS_URL
 
 export default [
   {
@@ -62,6 +63,19 @@ export default [
     path: `/${r.settings}`,
     name: 'Config',
     component: UserConfig
+  },
+  {
+    path: `/${r.apps}`,
+    name: 'apps',
+    beforeEnter (t, f) {
+      let url = appsUrl
+      if (!url) {
+        const host = window.location.host.split('.')
+        host[0] = 'apps'
+        url = window.location.protocol + '//' + host.join('.')
+      }
+      window.open(url, '_blank')
+    }
   },
   ...blocks,
   ...transactions,
