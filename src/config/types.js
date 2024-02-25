@@ -32,14 +32,16 @@ export const STATUS = {
   SUCCESS: 'SUCCESSFUL',
   FAIL: 'FAILED',
   QUEUED: 'QUEUED',
-  PENDING: 'PENDING'
+  PENDING: 'PENDING',
+  REMOVED: 'REMOVED'
 }
 
 export const STATUS_ICONS = {
   SUCCESS: 'check',
   FAIL: 'close',
   QUEUED: 'buffer',
-  PENDING: 'stopwatch'
+  PENDING: 'stopwatch',
+  REMOVED: 'close'
 }
 
 export const THIS_ADDRESS = 'This Address'
