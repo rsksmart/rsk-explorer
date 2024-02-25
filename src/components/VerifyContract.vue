@@ -1,21 +1,43 @@
 <template lang="pug">
-  .verify-contracts
+.verify-contracts.section
+    //- Form Errors
+    h1 Verify contract
     .loading(v-show='isWaiting')
-      spinner( :height="200" :width="200" :border="5")
-      p(v-if='!verificationDone && timer') {{messages().WAITING_FOR_RESULT}}
-    .section(v-if='!isWaiting')
-      h2 Verify contract
-      //- Form Errors
-      .errors(v-if='errors.length')
-        .error(v-for='error in errors')
-          small {{error}}
-      //- Verifier connection errors
-      .error.center(v-if='verifierConnectionErrors')
-        h3.error ERROR
-        img(src='@/assets/svg/error-icon.svg')
-        p {{messages().VERIFIER_DATA_ERROR}}
-      template(v-else)
-        form.flex(v-if='!verificationId' @submit.prevent='submit')
+      <div class="waiting-result">
+        spinner( :height="100" :width="100" :border="5")
+        p(v-if='!verificationDone && timer') {{messages().WAITING_FOR_RESULT}}
+      </div>
+    .errors(v-if='errors.length')
+      .error(v-for='error in errors')
+        small {{error}}
+    //- Verifier connection errors
+    .error.center(v-if='verifierConnectionErrors')
+      h3.error ERROR
+      img(src='@/assets/svg/error-icon.svg')
+      p {{messages().VERIFIER_DATA_ERROR}}
+    template(v-else)
+      template(v-if='!verificationId')
+        form.flex
+          form-row(v-bind='formFields.METHOD' v-if='!isVerified')
+            select(name='method' :value='method' @change='setVerifyMethod($event.target.value)' :class='cssClass("version")')
+              option(v-for="method in verifyMethods" :value='method') {{method}}
+        form.flex(v-if='method === verifyMethods.STANDARD_JSON_INPUT' @submit.prevent='submit')
+          form-row(v-bind='formFields.JSON')
+            ctrl-files(@change='handleStandardJsonInput' @error='addError' :class='cssClass("file")' accept='.json')
+          form-row(v-bind='formFields.NAME')
+                input(name="name" type="text" :value="name" @change='changeName($event.target.value)'  :class='cssClass("name")')
+          form-row(v-if='versionsData' v-bind='formFields.VERSION')
+              select(name='version' :value='version' @change='changeVersion($event.target.value)' :class='cssClass("version")')
+                option(v-for="path,version in versions" :value='path') {{path}}
+          form-row(v-bind='abiEncodedArgs ? formFields.ENCODED_ARGUMENTS:formFields.CONSTRUCTOR_ARGUMENTS')
+            input(type='text' v-model='constructorArguments')
+          form-row(v-bind='formFields.ABI_ENCODED_ARGUMENTS')
+            ctrl-radio-grp.frow(name='encoded' @change='(value)=>abiEncodedArgs=value' :selected='abiEncodedArgs')
+          form-row
+            button.brand.big(name="submit")
+              span Verify
+
+        form.flex(v-if='method === verifyMethods.SOLIDITY_SOURCE_FILE' @submit.prevent='submit')
           form-row(v-bind='formFields.ADDRESS')
             input(name="address" type= "text" :value="address" @change="changeAddress($event.target.value)" size="50")
 
@@ -23,7 +45,12 @@
             template(v-for='[errored,error] in formErrors')
               //-FIX--------------------------------------------------
               template(v-if='errored')
-                p.error {{error}}
+                template(v-if='error === messages().IS_VERIFIED')
+                  <br>
+                  h3.brand Contract already verified
+                  .row
+                    button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
+                <p v-else>{{error}}</p>
 
             //-.contract(v-if='!isVerified')
               .items(v-if='contractData')
@@ -72,40 +99,40 @@
               //-button.btn.big(name="submit" @click.passive='resetForm')
                 span Reset
 
-        //- Verification response
-        //-div(v-if='verifierResponse')
-          .error(v-if='verifierResponse.error')
-            p {{verifierResponse.error}}
+      //- Verification response
+      //-div(v-if='verifierResponse')
+        .error(v-if='verifierResponse.error')
+          p {{verifierResponse.error}}
 
-        //- Waiting for verification
-        div(v-if='isWaitingForVerification')
-          p.flex.justify-center.text-white-400 {{messages().WAITING_VERIFICATION}}
+      //- Waiting for verification
+      div(v-if='isWaitingForVerification')
+        p.flex.justify-center.text-white-400 {{messages().WAITING_VERIFICATION}}
 
-        //- Verification Result
-        template.errrors(v-if='verificationErrors')
-          p.flex.justify-center.text-white-400 {{messages().VERIFICATION_ERROR}}
+      //- Verification Result
+      template.errrors(v-if='verificationErrors')
+        p.flex.justify-center.text-white-400 {{messages().VERIFICATION_ERROR}}
+        .row
+          ul.small
+            li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
+
+      .done(v-if='verificationDone || verificationErrors')
+        template(v-if='verificationSuccessful')
+          img(src='@/assets/svg/successfully.svg')
+          h3.brand {{messages().VERIFICATION_DONE}}
           .row
-            ul.small
-              li.error(v-for='error in verificationErrors') {{error.formattedMessage}}
+            button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
 
-        .done(v-if='verificationDone || verificationErrors')
-          template(v-if='!verificationSuccessful')
-            img(src='@/assets/svg/successfully.svg')
-            h3.brand {{messages().VERIFICATION_DONE}}
-            .row
-              button.link.big(@click.passive='goToContractPage') {{messages().SHOW_RESULT}}
-
-          template(v-else)
-            .row
-              h3.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
-            .row(v-if='verificationTry')
-              h4.info Try adding some of this parameters:
-            ul
-              li(v-for='v,p in verificationTry')
-                strong {{p}}:
-                pre {{v}}
-            .row.try-again
-              button.big.brand.btn.flex(@click.prevent='tryAgain') Try again
+        template(v-else)
+          .row
+            h3.error(v-if='!verificationErrors') {{messages().VERIFICATION_FAILED}}
+          .row(v-if='verificationTry')
+            h4.info Try adding some of this parameters:
+          ul
+            li(v-for='v,p in verificationTry')
+              strong {{p}}:
+              pre {{v}}
+          .row.try-again
+            button.big.brand.btn.flex(@click.prevent='tryAgain') Try again
 
 </template>
 <script>
@@ -131,7 +158,12 @@ const KEYS = {
 const VERSIONS_KEY = '__contractVerifierSOLCVersions'
 const EVM_VERSIONS_KEY = '__contractVerifierEVMVersions'
 
-const ID_TIMEOUT_SECONDS = 120
+const ID_TIMEOUT_SECONDS = 300
+
+const VERIFY_METHODS = {
+  SOLIDITY_SOURCE_FILE: 'Solidity source file',
+  STANDARD_JSON_INPUT: 'Standard JSON input'
+}
 
 export default {
   name: 'verify-contract',
@@ -164,7 +196,9 @@ export default {
       abiEncodedArgs: false,
       inputErrors: new Set(),
       errors: [],
-      timer: undefined
+      timer: undefined,
+      method: VERIFY_METHODS.SOLIDITY_SOURCE_FILE,
+      sources: undefined
     }
   },
   created () {
@@ -178,6 +212,9 @@ export default {
   },
   computed: {
     ...mapGetters(['contractVerifierEnabled']),
+    verifyMethods () {
+      return VERIFY_METHODS
+    },
     keys () {
       return KEYS
     },
@@ -288,21 +325,36 @@ export default {
 
     isReadyToSend () {
       const { constructorArguments, encodedConstructorArguments } = this.getConstructorArguments()
-      const { address, settings, files, version, name, libs } = this
-      const libraries = libs.reduce((v, a, i) => {
-        const { name, address } = a
-        if (address && name) {
-          v[name] = address
+      const { address, settings, files, version, name, libs, sources } = this
+
+      if (!sources) { // solidity source file verification method
+        const libraries = libs.reduce((v, a, i) => {
+          const { name, address } = a
+          if (address && name) {
+            v[name] = address
+          }
+          return v
+        }, {})
+        const params = Object.assign({}, { address, settings, version, name })
+        let ready = !Object.values(params).filter(v => undefined === v).length
+
+        if (!ready) return false
+
+        const imports = [...files]
+        const source = imports[0].contents
+
+        ready = (files.length) && this.isSupportedSolidityVersion() ? ready : false
+        return Object.assign(params, { imports, source, libraries, constructorArguments, encodedConstructorArguments })
+      } else { // standard json input verification method
+        const params = Object.assign({}, { address, settings, version, name, sources })
+        const ready = this.isSupportedSolidityVersion() && !Object.values(params).filter(v => undefined === v).length
+
+        if (!ready) {
+          return false
+        } else {
+          return Object.assign(params, { constructorArguments, encodedConstructorArguments })
         }
-        return v
-      }, {})
-      const params = Object.assign({}, { address, settings, version, name })
-      let ready = !Object.values(params).filter(v => undefined === v).length
-      ready = (files.length) && this.isSupportedSolidityVersion() ? ready : false
-      if (!ready) return false
-      const imports = [...files]
-      const source = imports[0].contents
-      return Object.assign(params, { imports, source, libraries, constructorArguments, encodedConstructorArguments })
+      }
     },
     hasFiles () {
       return !!this.files.length
@@ -327,7 +379,28 @@ export default {
   methods: {
     ...mapActions(['fetchData', 'setKeyData']),
     ...mapGetters(['isRequesting', 'getPage']),
+    setVerifyMethod (method) {
+      this.clearErrors()
+      this.sources = undefined
+      this.method = method
+    },
+    handleStandardJsonInput (json) {
+      this.errors.pop()
+      if (json[0]) {
+        try {
+          const { sources, settings } = JSON.parse(json[0].contents)
 
+          if (!sources) this.addError('Invalid JSON, missing sources')
+          if (!settings) this.addError('Invalid JSON, missing settings')
+
+          this.settings = settings
+          this.sources = sources
+        } catch (error) {
+          console.log(error)
+          this.addError(error)
+        }
+      }
+    },
     reset () {
       clearTimeout(this.timer)
       this.timer = undefined
@@ -475,7 +548,7 @@ export default {
       if (params) return this.requestVerification(params)
       this.clearErrors()
       if (!this.version) this.inputErrors.add('version')
-      if (!this.files.length) this.inputErrors.add('file')
+      if (!this.files.length && !this.sources) this.inputErrors.add('file')
       if (!this.name) this.inputErrors.add('name')
       if (!this.isSupportedSolidityVersion()) {
         this.inputErrors.add('version')
