@@ -396,7 +396,6 @@ export default {
           this.settings = settings
           this.sources = sources
         } catch (error) {
-          console.log(error)
           this.addError(error)
         }
       }
