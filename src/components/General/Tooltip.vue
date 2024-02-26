@@ -7,9 +7,10 @@
         </router-link>
         <div class="copy flex">
           <div class="copy-text">...</div>
-          <div class="copy-icon">
-            <field-icon :icon="'copy'" />
-          </div>
+          <button class="copy-icon" @click="copyValue">
+            <icon :icon="'copy'" />
+          </button>
+          <div class="text-copied" :class="copied ? 'copied' : ''">copied</div>
         </div>
         <router-link :to="link || ''">
           {{ lastTrim(text) }}
@@ -23,12 +24,8 @@
   </div>
 </template>
 <script>
-import FieldIcon from '../FieldIcon.vue'
 
 export default {
-  components: {
-    FieldIcon
-  },
   props: {
     text: {
       required: true
@@ -43,6 +40,11 @@ export default {
       required: false
     }
   },
+  data () {
+    return {
+      copied: false
+    }
+  },
   methods: {
     firstTrim (text) {
       return text.substring(0, 4)
@@ -54,6 +56,13 @@ export default {
     formatNumber (number) {
       const formatter = new Intl.NumberFormat('es-US')
       return formatter.format(number)
+    },
+    copyValue () {
+      navigator.clipboard.writeText(this.text)
+      this.copied = true
+      setTimeout(() => {
+        this.copied = false
+      }, 1000)
     }
   }
 }

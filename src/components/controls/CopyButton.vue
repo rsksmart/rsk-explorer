@@ -1,8 +1,10 @@
-<template lang="pug">
-  .copy-button
-    textarea.hidden-ctrl(v-if='value' :ref='refName') {{value}}
-    burp-button(:icon='iconName' :message='message || "copied!"' :title='title' :text='text' @click='copy' :class='css' )
-      slot()
+<template>
+  <div class="copy-button">
+    <textarea v-if="value" :ref="refName" class="hidden-ctrl" v-model="value"></textarea>
+    <burp-button :icon="iconName" :message="message || 'copied!'" :title="title" :text="text" @click="copy" :class="css">
+      <slot></slot>
+    </burp-button>
+  </div>
 </template>
 <script>
 import { copyText } from '../../lib/js/io'

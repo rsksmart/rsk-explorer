@@ -19,6 +19,10 @@
     <template v-else>
       <template v-if="isTable">
         <data-table :page="page" :type="dataType" :sort="sort" :parentData="parentData"></data-table>
+        <div v-if="data.length === 0" class="data-empty">
+          <div class="empty">0x <icon name="tokens"/></div>
+          <p class="info">There are currently no {{ reqKey }}</p>
+        </div>
       </template>
       <template v-else>
         <data-item :data="data" :type="dataType" :parentData="parentData" :delayed="delayed"></data-item>

@@ -11,19 +11,16 @@
         <div class="navbar-content">
           <SearchBox />
           <div class="content-network">
-            <button class="btn" :class="!isNetworkmainnet ? 'btn-active' : 'btn-go'">
+            <a :href="isNetworkmainnet ? 'https://explorer.testnet.rsk.co/' : 'javascript:void(0)'" class="btn" :class="!isNetworkmainnet ? 'btn-active' : 'btn-go'">
               <span class="large-text">Testnet</span>
               <span class="short-text">TN</span>
               <img v-if="isNetworkmainnet" src="@/assets/svg/arrow-go.svg" alt="">
-            </button>
-            <button class="btn" :class="isNetworkmainnet ? 'btn-active' : 'btn-go'">
+            </a>
+            <a :href="!isNetworkmainnet ? 'https://explorer.rsk.co/' : 'javascript:void(0)'" class="btn" :class="isNetworkmainnet ? 'btn-active' : 'btn-go'">
               <span class="large-text">Mainnet</span>
               <span class="short-text">MN</span>
               <img v-if="!isNetworkmainnet" src="@/assets/svg/arrow-go.svg" alt="">
-            </button>
-            <router-link to="/settings" class="settings-page">
-              <img src="@/assets/svg/setting-icon.svg" alt="">
-            </router-link>
+            </a>
           </div>
         </div>
       </div>

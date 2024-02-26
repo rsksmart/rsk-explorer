@@ -1,9 +1,9 @@
 <template>
   <div class="ctrl-switch-values">
-    <small class="label first-leter-uppercase" :class="formatCss(optA)"
+    <small class="label first-leter-uppercase"
       :style="{ color: selected === optA ? PAGE_COLORS[$route.name].cl : '' }">{{ optA }}</small>
     <ctrl-switch :value="value === optB" @change="changeFormat" :square="true" css="enabled"></ctrl-switch>
-    <small class="label first-leter-uppercase" :class="formatCss(optB)"
+    <small class="label first-leter-uppercase"
       :style="{ color: selected === optB ? PAGE_COLORS[$route.name].cl : '' }"
     >{{ optB }}</small>
   </div>
@@ -41,9 +41,6 @@ export default {
       const { optA, optB, value } = this
       this.value = (value === optA) ? optB : optA
       this.$emit('change', this.value)
-    },
-    formatCss (value) {
-      return (value === this.value) ? ['brand', 'bold'] : 'disabled'
     }
   }
 }
