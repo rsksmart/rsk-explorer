@@ -1,6 +1,6 @@
 <template>
   <div class="radios">
-    <div class="radio-grp" v-for="(label, value) in group" :key="value">
+    <div class="radio-grp" v-for="(value, label) in group" :key="value">
       <label>
         <input class="inline" type="radio" :name="name" :value="value" @change="change(value)" :checked="selected === value">
         <span class="label">{{ label }}</span>
