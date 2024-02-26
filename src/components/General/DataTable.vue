@@ -319,7 +319,7 @@ export default {
 
   .table-ctrls
     top 0px
-    right 0px
+    right 24px
     position absolute
     justify-content flex-end
 

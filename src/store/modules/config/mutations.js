@@ -45,3 +45,7 @@ export const SET_CONFIG_DECIMAL_PLACES = (state, value) => {
   value = (!isNaN(value)) ? value : 4
   Vue.set(state, 'decimalPlaces', value)
 }
+
+export const SET_MENU_TOGGLE = (state, value) => {
+  Vue.set(state, 'menuToggle', value)
+}

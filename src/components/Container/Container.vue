@@ -1,11 +1,12 @@
-
 <template>
   <div class="content-explorer">
-    <Sidebar />
+    <Navbar />
     <div class="content-view">
-      <Navbar />
-      <connection-status v-if="!connected"></connection-status>
-      <router-view />
+      <Sidebar />
+      <div class="content-view-body">
+        <connection-status v-if="!connected"></connection-status>
+        <router-view />
+      </div>
     </div>
   </div>
 </template>

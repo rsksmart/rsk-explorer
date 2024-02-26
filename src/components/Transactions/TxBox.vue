@@ -10,7 +10,7 @@
         <div class="box-tx-block">
           <render-field :field="fields.hash" :row="tx" class="fw700"/>
           <div class="tx-box-block">
-            <router-link :to="blockLink" class="flex text-white-400 fw700">
+            <router-link :to="blockLink" class="flex text-white-400 item-center fw700">
               <img src="@/assets/svg/block-icon.svg" alt="">
               <div>&nbsp; {{ blockNumber }}</div>
             </router-link>
@@ -21,7 +21,6 @@
             <div class="flex text-white-400 field-content">
               <div class="half from-to flex item-center" v-if="tx.txType == 'normal'">
                 <render-field class="small from" :field="fields.from" :row="tx" />
-                <!-- <img src="@/assets/svg/block-icon.svg" alt=""> -->
                 <icon class="from-to-arrow" name="arrow-right"></icon>
                 <render-field class="small to" :field="fields.to" :row="tx" />
               </div>

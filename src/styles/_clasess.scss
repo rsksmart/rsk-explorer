@@ -119,14 +119,26 @@ body {
 }
 
 .content-explorer {
-  display: flex;
-
+  width: 100%;
+  .content-view-body {
+    margin: 0 auto 20px auto;
+    max-width: 1300px;
+    overflow: hidden;
+    width: 100%;
+  }
   .content-view {
-    width: 1124px;
-    margin: 0 auto;
+    display: flex;
+    width: 100%;
+
+    .error {
+      color: $white_100;
+      padding: 0 24px;
+    }
   }
 }
-
+.loading-bar {
+  fill: $cyan_300;
+}
 a {
   text-decoration: none;
 }

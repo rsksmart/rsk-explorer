@@ -1,9 +1,10 @@
 <template>
-  <div class="search-content bg-secondary">
-    <img src="@/assets/svg/search.svg" alt="">
+  <div class="search-content">
+    <img v-if="!expandSearch" src="@/assets/svg/search.svg" alt="" @click="setExpand">
+    <button v-else class="btn-close" @click="setExpand">X</button>
     <div class="content-input">
       <input
-        class="search-input bg-secondary"
+        class="search-input bg-primary"
         type="text"
         :value="value"
         @input.prevent="input"
@@ -12,14 +13,10 @@
         :placeholder="placeholder"
         :class="cssClass"
       >
-      <button class="btn-clear bg-secondary" @click="clear" v-if="value">
+      <button class="btn-clear" @click="clear" v-if="value">
         x
       </button>
-        <!-- <loading-circle :size="10"></loading-circle> -->
       <Spinner v-if="isLoading" :width="20" :height="20" :border="2" />
-      <!-- <button class="link" v-if="!isLoading" @click.stop="onChange">
-        <icon name="search"></icon>
-      </button> -->
     </div>
     <div class="search-results bg-secondary" v-if="results.length" ref="results">
       <template v-for="(result, i) in results">
@@ -39,9 +36,9 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 import { clamp } from '../../lib/js/utils'
 import Spinner from '../Loaders/Spinner.vue'
-// import LoadingCircle from '../LoadingCircle'
 export default {
   name: 'ctrl-search',
   components: {
@@ -53,7 +50,8 @@ export default {
       value: '',
       selectedResult: 0,
       resultEmitted: null,
-      focused: undefined
+      focused: undefined,
+      expandSearch: false
     }
   },
   created () {
@@ -61,6 +59,11 @@ export default {
     if (searchValue) this.value = searchValue
   },
   methods: {
+    ...mapActions(['searchExpand']),
+    setExpand () {
+      this.expandSearch = !this.expandSearch
+      this.searchExpand({ value: this.expandSearch })
+    },
     clear () {
       this.value = ''
       this.selectResult(0)

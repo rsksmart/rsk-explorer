@@ -1,6 +1,7 @@
 import { EXPORT_FORMATS, EXPORT_ITEMS } from '../../../config/types'
 export default function () {
   return {
+    menuToggle: false,
     autoUpdateBlocks: false,
     sort: {},
     tables: {},

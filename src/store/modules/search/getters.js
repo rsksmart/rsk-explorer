@@ -54,3 +54,7 @@ export const isSearchPage = (state, getters) => {
   const re = new RegExp(`^/${r.search}`)
   return re.test(getters.getRouterPath)
 }
+
+export const getSearchExpand = (state) => {
+  return state.expanded
+}

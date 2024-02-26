@@ -15,3 +15,7 @@ export const CLEAR_SEARCH_REQUEST = state => {
 export const SET_SEARCH_TYPES = (state, types) => {
   Vue.set(state, 'types', types)
 }
+
+export const SET_SEARCH_EXPAND = (state, value) => {
+  Vue.set(state, 'expanded', value)
+}

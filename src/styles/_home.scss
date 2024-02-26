@@ -1,18 +1,23 @@
-.home-view {
-  margin-top: 40px;
-  width: 1124px;
+.home-view, .data-page {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 .content-stats {
   width: 100%;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  flex-wrap: wrap;
   .stats-item {
     display: flex;
     justify-content: space-between;
+    flex: 1;
     align-items: center;
-    width: 366px;
     height: 100px;
     border-radius: 12px;
     padding: 24px;
@@ -30,13 +35,19 @@
   }
 }
 
+.content-block-chart {
+  display: grid;  
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
 .last-block {
-  width: 556px;
+  flex: 1;
   height: 200px;
   border-radius: 12px;
   padding: 24px;
   display: grid;
-  grid-template-columns: 381px 127px;
+  grid-template-columns: 60% 40%;
   grid-template-rows: 26px 80px auto;
   position: relative;
 
@@ -60,7 +71,7 @@
     grid-row: 3 / 4;
     color: $white_400 !important;
     font-size: 14px;
-
+    flex-wrap: wrap;
     .trim {
       a {
         color: $white_400;
@@ -132,25 +143,29 @@
 
 .tx-density-chart {
   padding: 24px;
-  width: 556px;
+  flex: 1;
   height: 200px;
   border-radius: 12px;
   .title {
     font-size: 18px;
     margin-bottom: 10px;
   }
+  .chart-container {
+    width: 100%;
+  }
 }
 
 .home-view {
   .content-blocks-tx {
+    display: flex;
     margin-bottom: 80px;
+    gap: 12px;
   }
   .blocks-wrapper {
     margin-top: 36px;
-    width: 556px;
+    flex: 1;
   }
   .block-box {
-    width: 556px;
     padding: 24px;
     height: 100px;
     position: relative;
@@ -249,11 +264,9 @@
   }
 
   .tx-wrapper {
-    width: 556px;
     margin-top: 36px;
-    
+    flex: 1;
     .tx-box {
-      width: 556px;
       height: 100px;
       padding: 24px;
       position: relative;
@@ -270,17 +283,13 @@
         }
       }
 
-      .box-tx-block {
-        width: 104px;
-      }
-
       .box-icon {
         margin-right: 12px;
       }
-
+      
       .tx-box-block {
+        width: 114px;
         margin-top: 8px;
-        margin-right: 16px;
         img {
           width: 14px;
           height: 14px;
@@ -326,6 +335,49 @@
             height: 16px;
           }
         }
+      }
+    }
+  }
+}
+@include tablet() {
+  .content-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .content-block-chart {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .last-block {
+    grid-template-columns: 60% 40%;
+    .block-number {
+      font-size: 36px;
+      padding-top: 27px;
+    }
+    .block-detail {
+      margin-top: unset ;
+    }
+  }
+  .home-view {
+    .content-blocks-tx {
+      display: block;
+    }
+  }
+}
+
+@include phone() {
+  .home-view, .data-page {
+    padding: 0 12px;
+  }
+  .content-stats {
+    .stats-item {
+      img {
+        display: none;
+      }
+    }
+  }
+  .home-view {
+    .tx-wrapper {
+      .tx-box {
+        padding: 12px 0;
       }
     }
   }

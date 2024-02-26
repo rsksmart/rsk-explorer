@@ -1,54 +1,22 @@
 <template>
-  <div>
-    <div class="content-stats flex">
-      <stat-item :field="fields.hashrate" :stats="stats" :icon="'@/assets/svg/fire-icon.svg'">
-        <img src="@/assets/svg/fire-icon.svg" alt="fire-icon">
-      </stat-item>
-      <stat-item :field="fields.circulatingSupply" :stats="stats.circulating || {}">
-        <img src="@/assets/svg/btc-white-icon.svg" alt="btc-white-icon">
-      </stat-item>
-      <stat-item :field="fields.lockingCap" :stats="stats.bridge || {}">
-        <img src="@/assets/svg/btc-white-icon.svg" alt="btc-white-icon">
-      </stat-item>
-      <stat-item :field="fields.activeAccounts" :stats="stats || {}">
-        <img src="@/assets/svg/people-icon.svg" alt="people-icon">
-      </stat-item>
-    </div>
-    <div class="stats-bar container">
-      <div class="cols" v-if="stats">
-        <div class="col-a">
-          <div class="cols">
-            <!-- first box -->
-            <div class="col-a">
-              <!-- <box-field :field="fields.hashrate" :row="stats" :style="colStyle"></box-field> -->
-            </div>
-            <!-- second box -->
-            <div class="col-b">
-              <!-- <box-field :field="fields.circulatingSupply" :row="circulating" :style="colStyle"></box-field> -->
-            </div>
-          </div>
-        </div>
-        <div class="col-b">
-          <div class="cols">
-            <!-- third box -->
-            <div class="col-a">
-              <!-- <box-field :field="fields.lockingCap" :row="bridge" :style="colStyle"></box-field> -->
-            </div>
-            <!-- fourth box -->
-            <div class="col-b">
-              <!-- <box-field :field="fields.activeAccounts" :row="stats" :style="colStyle"></box-field> -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="content-stats">
+    <stat-item :field="fields.hashrate" :stats="stats" :icon="'@/assets/svg/fire-icon.svg'">
+      <img src="@/assets/svg/fire-icon.svg" alt="fire-icon">
+    </stat-item>
+    <stat-item :field="fields.circulatingSupply" :stats="stats.circulating || {}">
+      <img src="@/assets/svg/btc-white-icon.svg" alt="btc-white-icon">
+    </stat-item>
+    <stat-item :field="fields.lockingCap" :stats="stats.bridge || {}">
+      <img src="@/assets/svg/btc-white-icon.svg" alt="btc-white-icon">
+    </stat-item>
+    <stat-item :field="fields.activeAccounts" :stats="stats || {}">
+      <img src="@/assets/svg/people-icon.svg" alt="people-icon">
+    </stat-item>
   </div>
 </template>
-
 <script>
 import { mapState, mapGetters } from 'vuex'
 import dataMixin from '../../mixins/dataMixin'
-// import BoxField from '../BoxField'
 import StatItem from './StatItem.vue'
 
 // Todo, use css grid & remove this method
