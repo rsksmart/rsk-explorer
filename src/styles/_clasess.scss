@@ -251,6 +251,19 @@ button {
       }
     }
   }
+  >.copy-button {
+    border-radius: 90px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-left: 2px;
+    &:active {
+      background-color: $newbw_700;
+    }
+  }
 }
 @keyframes copyAnimation {
   0% {
@@ -258,7 +271,6 @@ button {
   }
   75% {
     top: -30px;
-    // transform: translateY(-1em);
   }
   90% {
     top: -50px;
@@ -266,7 +278,6 @@ button {
   100% {
     top: -150px;
     opacity: 0;
-    // transform: translateY(-5em);
   }
 }
 .btn {

@@ -197,6 +197,9 @@
         flex: 5;
         a {
           color: $white_400;
+          &:hover {
+            color: #e7fff9;
+          }
         }
         .field-value {
           word-break: break-all;

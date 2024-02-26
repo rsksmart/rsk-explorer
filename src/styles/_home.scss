@@ -4,6 +4,20 @@
   margin: 0 auto;
   padding: 0 24px;
 }
+.connection-status {
+  text-align: center;
+  .message {
+    margin-top: 3px;
+  }
+  .line-item {
+    position: relative;
+    svg {
+      top: 5px;
+      position: absolute;
+      fill: $cyan_300;
+    }
+  }
+}
 .content-stats {
   width: 100%;
   justify-content: space-between;
