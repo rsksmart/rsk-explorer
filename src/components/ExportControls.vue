@@ -9,33 +9,26 @@
       </template>
       <template v-slot:elements>
         <copy-button class="button med" :value="getFilteredData(data,isCsv)" title="copy json">
-          <small>copy</small>
+          Copy
         </copy-button>
-        <download-button class="button med" v-bind="downloadData(fileName,data,isCsv)">
-          <small>download</small>
-        </download-button>
-        <div class="row">
-          <export-format></export-format>
-        </div>
+        <button @click="downloadInfo('json')">Download JSON</button>
+        <button @click="downloadInfo('csv')">Download csv</button>
       </template>
     </menu-button>
   </div>
 </template>
 <script>
+import { downloadText } from '@/lib/js/io'
 import MenuButton from './controls/MenuButton'
 import CopyButton from './controls/CopyButton'
-import DownloadButton from './controls/DownloadButton'
-import ExportFormat from './controls/ExportFormat'
 import exportMixin from '../mixins/export'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'export-controls',
   props: ['data', 'type', 'id'],
   components: {
     MenuButton,
-    CopyButton,
-    DownloadButton,
-    ExportFormat
+    CopyButton
   },
   mixins: [exportMixin],
   computed: {
@@ -49,6 +42,13 @@ export default {
       const id = (key) ? data[key] : null
       if (type && id) fileName = `${type}-${id}`
       return fileName
+    }
+  },
+  methods: {
+    ...mapActions(['updateExportFormat']),
+    downloadInfo (type) {
+      const info = this.downloadData(this.fileName, this.data, this.isCsv)
+      downloadText(info.value, info.fileName, type)
     }
   }
 }

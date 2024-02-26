@@ -8,7 +8,6 @@
     color: $white_400;
     border-collapse: collapse;
     width: 100%;
-    table-layout: auto;
     thead {
       background-color: $newbw_800;
     }
@@ -39,7 +38,7 @@
             color: $green_900 !important;
           }
         }
-        >:nth-child(5) {
+        .field__miner {
           a {
             color: $green_900 !important;
           }
@@ -65,9 +64,6 @@
       .field-title {
         display: none !important;
       }
-    }
-    .field__number, .field__txs, .field__miner, .field__size,
-    .field__name, .field__address, .field__created, .field__blockNumber {
     }
     .td-title {
       display: none;
@@ -101,7 +97,6 @@
       width: 40px;
       a {
         margin-left: 12px;
-        padding: 1px 5px 5px;
         width: 40px;
         height: 40px;
         display: flex;
@@ -109,6 +104,11 @@
         align-items: center;
         border-radius: 90px;
         background-color: $newbw_800;
+
+        .container-icon {
+          width: max-content;
+          height: 18px;
+        }
       }
       .link {
         display: none;
@@ -128,7 +128,6 @@
     }
   }
   .d-internalTransactions {
-    // table-layout: fixed;
     .unsortable:last-child {
       display: none;
     }
@@ -138,7 +137,7 @@
   }
 }
 
-.Block {
+.Block, .Blocks {
   .data-table {
     table {
       table-layout: unset;
@@ -149,6 +148,11 @@
       }
       tr {
         &:hover {
+          .row-icon {
+            svg {
+              fill: $green_900 !important;
+            }
+          }
           .field__hash, .field__from, .field__to, .field__gasUsed, .field__type {
             .field-value {
               color: $green_900 !important;
@@ -194,6 +198,11 @@
       }
       tr {
         &:hover {
+          .row-icon {
+            svg {
+              fill: $orange_900 !important;
+            }
+          }
           .field__hash, .field__from, .field__to, .field__gasUsed, .field__type {
             .field-value {
               color: $orange_900 !important;
@@ -236,7 +245,7 @@
             }
           }
           .field__address, .field__balance, .field__type, .field__block, .field__from,
-          .field__to, .field__event, .field__hash {
+          .field__to, .field__event, .field__hash, .data-field {
             .field-value {
               color: $pink_900 !important;
             }
@@ -256,6 +265,11 @@
       table-layout: unset;
       tr {
         &:hover {
+          .row-icon {
+            svg {
+              fill: $cyan_300 !important;
+            }
+          }
           .field__address, .field__balance, .field__name, .field__event, .field__to, .field__from {
             .field-value {
               color: $cyan_300 !important;

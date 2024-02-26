@@ -1,7 +1,7 @@
 <template>
   <ul class="prev-next">
     <li class="prev" v-if="prevLink">
-      <router-link :to="linkTo(prev)">
+      <router-link :to="linkTo(prev)" class="btn">
         <icon name="triangle-arrow-left"></icon>
         <span>Previous</span>
       </router-link>
@@ -10,7 +10,7 @@
       <span>{{ total }}</span>
     </li>
     <li class="next" v-if="nextLink">
-      <router-link :to="linkTo(next)">
+      <router-link :to="linkTo(next)" class="btn">
         <span>Next</span>
         <icon name="triangle-arrow-right"></icon>
       </router-link>

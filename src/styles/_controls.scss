@@ -293,6 +293,9 @@ li {
 }
 
 .menu-button {
+  &.enabled > .btn {
+    background-color: #575757;
+  }
   position: absolute;
   top: 73px;
   width: 142px;
@@ -319,23 +322,26 @@ li {
   .menu-elements {
     position: absolute;
     z-index: 10;
-    background-color: $newbw_800;
+    margin-top: 5px;
+    background-color: $newbw_700;
     color: $white_100;
     width: 100%;
-    box-shadow: 0px 2px 10px -2px rgb(57, 57, 57);
-    padding: 12px;
+    padding: 14px 16px;
+    border: 1px solid $newbw_700;
     border-radius: 12px;
-    small {
-      color: $white_100 !important;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     button {
-      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      small {
-        margin-left: 10px;
-      }
       color: $white_100;
+      svg {
+        display: none;
+      }
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

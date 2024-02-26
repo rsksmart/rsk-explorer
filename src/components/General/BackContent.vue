@@ -2,7 +2,7 @@
   <div class="back-content">
     <router-link :to="routes[$route.name] || ''" class="flex item-center">
       <icon name="back" :class="$route.name" />
-      <span :style="{color: PAGE_COLORS[$route.name].cl}">All</span>
+      <span :style="{color: PAGE_COLORS[$route.name].cl}">{{ `All ${$route.name}s` }}</span>
     </router-link>
   </div>
 </template>

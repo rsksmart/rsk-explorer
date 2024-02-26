@@ -39,12 +39,15 @@
     .btn {
       font-size: 18px;
       padding: unset;
+      display: flex;
+      justify-content: center;
       &.btn-active {
         width: 89px;
         height: 26px;
         background-color: $purple_900;
         color: $newbw_900;
         font-weight: 700;
+        cursor: default;
       }
       &.btn-go {
         display: flex;
@@ -56,6 +59,7 @@
         background-color: $newbw_900;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
         &::before {
           content: '';
           position: absolute;

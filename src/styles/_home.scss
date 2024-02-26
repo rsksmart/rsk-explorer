@@ -4,6 +4,20 @@
   margin: 0 auto;
   padding: 0 24px;
 }
+.connection-status {
+  text-align: center;
+  .message {
+    margin-top: 3px;
+  }
+  .line-item {
+    position: relative;
+    svg {
+      top: 5px;
+      position: absolute;
+      fill: $cyan_300;
+    }
+  }
+}
 .content-stats {
   width: 100%;
   justify-content: space-between;
@@ -174,6 +188,14 @@
     &:hover {
       background-color: $newbw_800;
       border-radius: 12px;
+      .block-detail {
+        .link-icon {
+          display: block;
+        }
+        >:nth-child(3) {
+          right: 1px;
+        }
+      }
     }
 
     .block-icon {
@@ -221,6 +243,12 @@
       }
       .field-title {
         margin-right: 5px;
+      }
+      .link-icon {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 5px;
       }
     }
   }
@@ -279,7 +307,18 @@
         .field-content {
           .contract, >:nth-child(3) {
             background-color: $newbw_700;
-          } 
+          }
+        }
+        .half {
+          .link-icon {
+            display: flex;
+          }
+        }
+      }
+      .half {
+        .link-icon {
+          display: none;
+          align-items: flex-end;
         }
       }
 
