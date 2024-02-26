@@ -63,6 +63,7 @@ export default {
       overflow-y scroll
       overflow-x auto
       overflow-wrap break-word
+      border-radius 7px
       width 100%
       position relative
       min-width 100%

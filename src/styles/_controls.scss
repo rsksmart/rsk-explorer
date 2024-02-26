@@ -212,6 +212,14 @@ li {
   }
 
 }
+
+.waiting-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
 .contract-details {
   color: $white_100;
   .header {
@@ -237,8 +245,11 @@ li {
     }
   }
   .files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
     .link {
-      color: $white_400;
+      color: rgb(250, 232, 199);
       border-bottom: 1px solid $newbw_800;
       font-weight: 700;
 
