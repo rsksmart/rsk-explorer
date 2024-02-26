@@ -33,9 +33,16 @@
 <script>
 import SearchBox from '@/components/Search/SearchBox.vue'
 import { mapActions, mapGetters } from 'vuex'
+import { DOMAIN_MAINNET, DOMAIN_TESTNET } from '../../config/network'
 export default {
   components: {
     SearchBox
+  },
+  data () {
+    return {
+      DOMAIN_MAINNET,
+      DOMAIN_TESTNET
+    }
   },
   computed: {
     ...mapGetters(['networkName']),
