@@ -9,6 +9,21 @@ import { ROUTES as r } from '../config/types'
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
+  scrollBehavior (to, from, savedPosition) {
+    let x = 0
+    let y = 0
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      let hash = to.hash
+      if (hash) {
+        hash = hash.split(':')
+        x = hash[0]
+        y = hash[1]
+      }
+      return { x, y }
+    }
+  },
   routes
 })
 
