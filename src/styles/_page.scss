@@ -577,6 +577,14 @@
           .icon-miner {
             margin-right: 5px;
           }
+          .tooltip {
+            a {
+              &:hover {
+                color: $white_100;
+                cursor: default;
+              }
+            }
+          }
         }
         .item-header {
           display: flex;
