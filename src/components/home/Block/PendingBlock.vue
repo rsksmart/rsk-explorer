@@ -3,9 +3,6 @@
     <div class="pending-blocks">
       <button class="btn-upload-blocks" @click="updateBlocks">
         <img src="@/assets/svg/blocks-icon.svg" alt="">
-        <div class="w-badge">
-          <!-- <div class="badge" :style="badgeStyle">{{ pending }}</div> -->
-        </div>
       </button>
       <div class="text-blocks">{{ pending }} new blocks</div>
       <div class="time-blocks">in last {{ now - lastBlocksTime | abbr-time }}</div>

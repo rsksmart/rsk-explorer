@@ -21,7 +21,8 @@ export const stats = {
     },
     activeAccounts: {
       icon: 'buffer',
-      filters: ['locale-round']
+      filters: ['locale-round'],
+      title: 'Active Accounts'
     },
     lockingCap: {
       icon: 'btc',

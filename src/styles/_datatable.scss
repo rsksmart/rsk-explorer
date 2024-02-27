@@ -119,6 +119,23 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .tooltip {
+        .tip {
+          width: unset;
+          left: unset !important;
+          right: 0px;
+          bottom: 23px !important;
+          &::before {
+            top: unset;
+            bottom: -10px;
+          }
+          &::after {
+            left: unset;
+            right: 3px;
+          }
+        }
+      }
       svg {
         fill: $white_400;
       }
