@@ -1,24 +1,29 @@
-<template lang="pug">
-  .search-page.page
-    h2.title Search
-    spinner(v-if='isSearching')
-    .result(v-else)
-      ul.results(v-if='results.length')
-        li(v-for="result in results")
-          a(:href='result.link') {{result.name}}
-      .not-found(v-if='!results.length && !isSearching')
-        p The search didn't match any element
+<template>
+  <div class="search-page page">
+    <spinner v-if="isSearching" :height="300" :width="300" :border="5" />
+    <template v-else>
+      <h2 class="title">Search</h2>
+      <div class="result">
+        <ul class="results" v-if="results.length">
+          <li v-for="result in results" :key="result.id">
+            <a :href="result.link">{{ result.name }}</a>
+          </li>
+        </ul>
+        <div class="not-found" v-if="!results.length && !isSearching">
+          <p>The search didn't match any element</p>
+        </div>
+      </div>
+    </template>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Spinner from './Spinner.vue'
-import Message from './Message'
+import Spinner from './Loaders/Spinner.vue'
 export default {
   name: 'search-page',
   props: ['value'],
   components: {
-    Spinner,
-    Message
+    Spinner
   },
   created () {
     const { value, searched, search } = this
