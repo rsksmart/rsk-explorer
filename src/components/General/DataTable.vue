@@ -17,12 +17,6 @@
         <tr>
           <th class="table-id" v-if="sort && !isDefaultSortVisible">
             <div class="sort" v-if="sort && isSorted([defKeys[0]])">
-              <!-- <button class="link" @click="sortBy(defKeys[0], $event)">
-                <icon :name="iconLoad" :style="iconStyle()"></icon>
-                <div class="sort-icon" v-if="isSorted(defKeys[0])">
-                  <icon small :name="sortIcon(defKeys[0])"></icon>
-                </div>
-              </button> -->
             </div>
             <template v-else>
               <div class="field-title">
@@ -38,16 +32,8 @@
               <th :class="thClass(field.fieldName)" :key="`1-${index}`">
                 <div class="sort" v-if="sort && isSortable(field.path)">
                   {{ field.title }}
-                  <!-- <button class="link" @click="sortBy(field.path, $event)">
-                    <field-title :field="field">
-                      <div class="sort-icon" v-if="isSorted(field.path)">
-                        <icon small :name="sortIcon(field.path)"></icon>
-                      </div>
-                    </field-title>
-                  </button> -->
                 </div>
                 <template v-else>
-                  <!-- <field-title :field="field"></field-title> -->
                   {{ field.title }}
                 </template>
               </th>
@@ -61,7 +47,7 @@
           <!-- Row Icon -->
           <td class="row-icon">
             <router-link :to="rowLink(row)">
-              <icon :name="iconLoad" :style="iconStyle(row)"></icon>
+              <icon-svg :name="iconLoad" />
             </router-link>
             <!-- Grid Default Sort Icon -->
             <template v-if="!renderTable">
@@ -111,6 +97,7 @@ import ExportPages from '@/components/ExportPages'
 import icons from '@/config/icons'
 import { mapGetters, mapActions, mapState } from 'vuex'
 import RenderField from './RenderField.vue'
+import IconSvg from './IconSvg.vue'
 export default {
   name: 'data-table',
   components: {
@@ -118,7 +105,8 @@ export default {
     FieldTitle,
     MenuButton,
     ExportPages,
-    RenderField
+    RenderField,
+    IconSvg
   },
   mixins: [
     dataMixin

@@ -146,6 +146,10 @@ button {
   background-color: transparent;
   border: none;
   cursor: pointer;
+  &.btn:hover {
+    background-color: #575757;
+    color: white;
+  }
 }
 .tooltip {
   position: relative;
@@ -159,13 +163,26 @@ button {
         height: 18px;
         display: flex;
         justify-content: center;
+        position: relative;
+        .text-copied {
+          display: none;
+          position: absolute;
+          &.copied {
+            display: block;
+            animation-name: copyAnimation;
+            animation-duration: 2s;  
+            // animation-delay: 2s;
+            animation-fill-mode: both;
+          }
+        }
       }
       .copy-icon {
         transition: all 0.5s;
         display: none;
         cursor: pointer;
         svg {
-          width: 16px !important;
+          width: 14px !important;
+          height: 14px;
         }
       }
       .copy-text {
@@ -234,8 +251,35 @@ button {
       }
     }
   }
+  >.copy-button {
+    border-radius: 90px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-left: 2px;
+    &:active {
+      background-color: $newbw_700;
+    }
+  }
 }
-
+@keyframes copyAnimation {
+  0% {
+    top: 20px;
+  }
+  75% {
+    top: -30px;
+  }
+  90% {
+    top: -50px;
+  }
+  100% {
+    top: -150px;
+    opacity: 0;
+  }
+}
 .btn {
   padding: 16px;
   border-radius: 12px;
@@ -290,6 +334,6 @@ button {
   border: 1px solid rgb(49, 49, 49);
 }
 
-svg.svg-icon {
+svg {
   fill: $white_400;
 }

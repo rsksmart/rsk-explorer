@@ -16,11 +16,14 @@
           <div v-for="(f, i) in boxFields" :key="i">
             <div :class="i > 0 ? 'half soft' : 'half'">
               <div v-for="(field, x) in f" :class="x > 0 ? 'xdata soft' : 'xdata'" :key="x">
-                <field-title class="small" :field="field"></field-title>
-                <render-field :field="field" :row="block"></render-field>
+                <field-title class="small" :field="field" />
+                <render-field :field="field" :row="block" />
               </div>
             </div>
           </div>
+          <router-link :to="blockLink" class="link-icon">
+            <icon name="triangle-arrow-right" />
+          </router-link>
         </div>
       </div>
     </div>

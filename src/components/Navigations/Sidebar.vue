@@ -28,17 +28,21 @@
           <router-link to="/addresses" class="link-address" :class="$route.name === 'Address' ? activeClasses : ''">
             <img class="base-icon" src="@/assets/svg/address-icon.svg" alt="address-icon">
             <img class="active-icon" src="@/assets/svg/address-active.svg" alt="address-icon">
-            <span>Adresses</span>
+            <span>Addresses</span>
           </router-link>
           <router-link to="/tokens" class="link-tokens" :class="$route.name === 'Token' || $route.name === 'Token Account' ? activeClasses : ''">
             <img class="base-icon" src="@/assets/svg/token-icon.svg" alt="token-icon">
             <img class="active-icon" src="@/assets/svg/token-active.svg" alt="token-icon">
             <span>Tokens</span>
           </router-link>
-          <router-link to="/">
-            <img src="@/assets/svg/stats-icon.svg" alt="stats-icon">
-            <span>Statictics</span>
+          <router-link to="/apps" class="link-apps" :class="$route.name === 'Apps' ? activeClasses : ''">
+            <icon name="apps" />
+            <span>Apps</span>
           </router-link>
+          <a :href="isNetworkmainnet ? 'https://stats.rsk.co/' : 'https://stats.testnet.rsk.co/'">
+            <img src="@/assets/svg/stats-icon.svg" alt="stats-icon">
+            <span>Statistics</span>
+          </a>
         </div>
       </div>
     </div>
@@ -46,14 +50,21 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+
 export default {
+  components: {
+  },
   data () {
     return {
       activeClasses: 'router-link-exact-active router-link-active'
     }
   },
   computed: {
-    ...mapGetters(['getMenuToggle'])
+    ...mapGetters(['getMenuToggle']),
+    ...mapGetters(['networkName']),
+    isNetworkmainnet () {
+      return this.networkName === 'mainnet'
+    }
   },
   watch: {
     $route () {

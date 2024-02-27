@@ -15,18 +15,21 @@
     <span
       class="title"
       v-if="showTitle && field.title">
-      <!-- {{ field.title | fieldTitleFilter }} -->
-      {{ field.title }}
+      {{ field.title | fieldTitleFilter }}
     </span>
     <slot></slot>
   </div>
 </template>
 <script>
 import FieldIcon from './FieldIcon'
+import { fieldTitleFilter } from '@/filters/TextFilters'
 export default {
   name: 'field-title',
   components: {
     FieldIcon
+  },
+  filters: {
+    fieldTitleFilter
   },
   props: ['field', 'options'],
   data () {

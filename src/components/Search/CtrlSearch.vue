@@ -10,8 +10,10 @@
         @input.prevent="input"
         @change.prevent="changeInput"
         @keyup.stop="onKey"
-        :placeholder="placeholder"
+        :placeholder="onFocusValue ? placeholder : null"
         :class="cssClass"
+        @focus="onFocusValue = false"
+        @blur="onFocusValue = true"
       >
       <button class="btn-clear" @click="clear" v-if="value">
         x
@@ -51,7 +53,8 @@ export default {
       selectedResult: 0,
       resultEmitted: null,
       focused: undefined,
-      expandSearch: false
+      expandSearch: false,
+      onFocusValue: true
     }
   },
   created () {

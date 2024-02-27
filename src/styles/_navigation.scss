@@ -39,12 +39,15 @@
     .btn {
       font-size: 18px;
       padding: unset;
+      display: flex;
+      justify-content: center;
       &.btn-active {
         width: 89px;
         height: 26px;
         background-color: $purple_900;
         color: $newbw_900;
         font-weight: 700;
+        cursor: default;
       }
       &.btn-go {
         display: flex;
@@ -56,6 +59,7 @@
         background-color: $newbw_900;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
         &::before {
           content: '';
           position: absolute;
@@ -206,6 +210,10 @@
       display: block;
     }
   }
+  svg {
+    fill: $white_400 !important;
+    margin-right: 14px;
+  }
 
   .router-link-active {
     .home-active {
@@ -248,13 +256,19 @@
       background-color: $cyan_300;
       color: #000;
     }
+    &.link-apps {
+      background-color: white;
+      color: #000;
+      svg {
+        fill: #000 !important;
+      }
+    }
     &:hover {
       background-color: $green_900;
     }
   }
 }
 @media (min-width: $phone) and (max-width: $tablet) {
-// @include tablet() {
   .sidebar {
     position: relative;
     width: 55px;
@@ -356,10 +370,12 @@
       position: relative;
       left: 0px;
       animation: slideInFromLeft 0.5s forwards;
-      // animation: slideOutToLeft 0.5s forwards;
+      width: 250px;
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
     }
     .sidebar-body {
-      width: 200px;
+      width: 245px;
       .navbar-logo {
         padding: 24px;
         display: flex;
@@ -374,7 +390,7 @@
       }
     }
     &.show {
-      position: absolute;
+      position: fixed;
       display: block;
       z-index: 100;
       .sidebar-container {

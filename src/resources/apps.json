@@ -1,0 +1,120 @@
+{
+  "apps": {
+    "mainnet": [
+      {
+        "id": 1,
+        "name": "Dollar on Chain (DOC)",
+        "address": "0xe700691da7b9851f2f35f8b8182c69c53ccad9db",
+        "description": "DOC Decentralized bitcoin backed stablecoin",
+        "url": "https://dapp.moneyonchain.com/"
+      },
+      {
+        "id": 2,
+        "name": "RIF",
+        "address": "0x2aCc95758f8b5F583470bA265Eb685a8f45fC9D5",
+        "description": "RIF is short for Rootstock Infrastructure Framework. It's a service layer built on top of the Rootstock blockchain, offering open, decentralized tools and technologies. With RIF, developers can create scalable DeFi products quickly and easily.",
+        "url": "https://rif.technology/"
+      },
+      {
+        "id": 3,
+        "name": "Sovryn",
+        "address": "0x7f7Dcf9DF951C4A332740e9a125720DA242A34ff",
+        "description": "Secure bitcoin technology that allows you to do more with your bitcoin while having more control over your funds. Bitcoin-backed stablecoins, 0% interest loans, trading, and more with no middlemen.",
+        "url": "https://sovryn.com/"
+      },
+      {
+        "id": 4,
+        "name": "RIF US Dollar (USDRIF)",
+        "address": "0x3A15461d8aE0F0Fb5Fa2629e9DA7D66A794a6e37",
+        "description": "RIF US Dollar is a fully crypto collateralized stablecoin. 1:1 pegged to US Dollar guaranteed by the smart contract.",
+        "url": "https://dapp.rifonchain.com/"
+      },
+      {
+        "id": 5,
+        "name": "PagoLinea (Pesos Argentinos)",
+        "address": "0xd52da63689543924dca66bcbe2e2ea599c45d575",
+        "description": "Blockchain Wallet for multiples services",
+        "url": "https://pagolinea.com/"
+      },
+      {
+        "id": 6,
+        "name": "PagoLinea (Pesos Colombianos)",
+        "address": "0x7c459c5b11e2815db085dda9ec314a9cde00a082",
+        "description": "Blockchain Wallet for multiples services",
+        "url": "https://pagolinea.com/"
+      },
+      {
+        "id": 7,
+        "name": "PagoLinea (USD)",
+        "address": "0xaa5dc2ea0e056fc962f48ab25547d66d3586ee8a",
+        "description": "Blockchain Wallet for multiples services",
+        "url": "https://pagolinea.com/"
+      },
+      {
+        "id": 8,
+        "name": "Tropykus",
+        "address": "0xEDAEfc6B596ed38D712100976969975A37C84464",
+        "description": "Savings and loans for Latam",
+        "url": "https://tropykus.com/"
+      }
+    ],
+    "testnet": [
+      {
+        "id": 1,
+        "name": "Dollar on Chain (DOC)",
+        "address": "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0",
+        "description": "DOC Decentralized bitcoin backed stablecoin",
+        "url": "https://github.com/money-on-chain/stable-protocol-interface/releases"
+      },
+      {
+        "id": 2,
+        "name": "tRIF",
+        "address": "0x19F64674D8A5B4E652319F5e239eFd3bc969A1fE",
+        "description": "RIF is short for Rootstock Infrastructure Framework. It's a service layer built on top of the Rootstock blockchain, offering open, decentralized tools and technologies. With RIF, developers can create scalable DeFi products quickly and easily.",
+        "url": "https://rif.technology/"
+      },
+      {
+        "id": 3,
+        "name": "Sovryn",
+        "address": "0x75bBf7f4D77777730ee35b94881B898113a93124",
+        "description": "Secure bitcoin technology that allows you to do more with your bitcoin while having more control over your funds. Bitcoin-backed stablecoins, 0% interest loans, trading, and more with no middlemen.",
+        "url": "https://sovryn.com/"
+      },
+      {
+        "id": 4,
+        "name": "RIF US Dollar (USDRIF)",
+        "address": "0x8dbf326e12a9fF37ED6DDF75adA548C2640A6482",
+        "description": "RIF US Dollar is a fully crypto collateralized stablecoin. 1:1 pegged to US Dollar guaranteed by the smart contract.",
+        "url": "https://github.com/money-on-chain/stable-protocol-interface/releases"
+      },
+      {
+        "id": 5,
+        "name": "PagoLinea (Pesos Argentinos)",
+        "address": "0x7841953feC095B459EF080db4Bd0D7201968A34E",
+        "description": "Blockchain Wallet for multiples services",
+        "url": "https://pagolinea.com/"
+      },
+      {
+        "id": 6,
+        "name": "PagoLinea (Pesos Colombianos)",
+        "address": "0x4307ad39DFEf5063990928BFbf61Fa905A07D823",
+        "description": "Blockchain Wallet for multiples services",
+        "url": "https://pagolinea.com/"
+      },
+      {
+        "id": 7,
+        "name": "PagoLinea (USD)",
+        "address": "0x5313a79e9658147a6cc6fbF7f5F50c7a5df93445",
+        "description": "Blockchain Wallet for multiples services",
+        "url": "https://pagolinea.com/"
+      },
+      {
+        "id": 8,
+        "name": "Tropykus",
+        "address": "0xDe2DC0AeA8fC8Ce567F5F48344Ed44b89d6186B7",
+        "description": "Savings and loans for Latam",
+        "url": "https://tropykus.com/"
+      }
+    ]
+  }
+}

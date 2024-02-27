@@ -44,7 +44,7 @@ export const abbreviatedTimeObj = time => {
     suffix = t
     if (time < seconds) {
       time = time / ant
-      time = Math.round(time * 100) / 100
+      time = Math.round(time)
       return { time, suffix }
     }
     ant = seconds

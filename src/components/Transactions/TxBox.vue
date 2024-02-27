@@ -30,6 +30,9 @@
               <div class="half soft">
                 <field-title class="small" :field="fields.time"></field-title>
                 <render-field :field="fields.time" :row="tx" />
+                <router-link :to="txLink" class="link-icon">
+                  <icon name="triangle-arrow-right" />
+                </router-link>
               </div>
               <div class="half flex" v-if="tx.txType == 'normal'">
                 <img src="@/assets/svg/btc-orange.svg" alt="">

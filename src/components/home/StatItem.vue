@@ -4,8 +4,8 @@
       <div class="stats-item-value text-primary text-white-100">
         {{ filteredValue }}
       </div>
-      <div class="stats-item-text text-white-400">
-        {{ capitalizeFirstLetter(field.title) }}
+      <div class="stats-item-text text-white-400 capitalize">
+        {{ field.title }}
       </div>
     </div>
     <div>
@@ -32,13 +32,6 @@ export default {
     },
     value () {
       return this.getValue(this.field, this.stats, true)
-    }
-  },
-  methods: {
-    capitalizeFirstLetter (string) {
-      return string.replace(/\b\w/g, function (char) {
-        return char.toUpperCase()
-      })
     }
   }
 }
