@@ -124,10 +124,10 @@
       color: $orange_900;
     }
   }
-  .data-table {
-    padding-top: 65px;
-    position: relative;
-  }
+  // .data-table {
+  //   padding-top: 65px;
+  //   position: relative;
+  // }
   .content-section {
     position: relative;
     background-color: $newbw_800;
@@ -516,8 +516,9 @@
 
 .pending-txs {
   color: $white_100;
+  padding: 0 24px;
   h2 {
-    margin: 30px 0;
+    margin-bottom: 30px;
   }
   h3 {
     margin-top: 60px;
@@ -543,7 +544,12 @@
     position: relative;
     
     .table-ctrls {
-      top: -60px;
+      top: 15px;
+      position: relative;
+      display: flex;
+    }
+    table {
+      margin-top: 20px;
     }
   }
 }
@@ -615,12 +621,19 @@
 }
 
 @include tablet() {
-  .data-page {
-    .section {
-      .data-table {
-        overflow-x: auto;
-        .flex-table, table {
-          min-width: 1100px;
+  .data-page, .pending-txs {
+    .data-table {
+      overflow-x: auto;
+      .flex-table, table {
+        min-width: 1100px;
+      }
+    }
+  }
+  .pending-txs {
+    .data-table {
+      table {
+        .dummy:first-child {
+          display: none !important;
         }
       }
     }
