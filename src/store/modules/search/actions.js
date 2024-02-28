@@ -57,3 +57,7 @@ export const searchTypes = async ({ dispatch }, { types, value }) => {
     await dispatch('fetchSearch', { value, type })
   }
 }
+
+export const searchExpand = ({ commit }, { value }) => {
+  commit('SET_SEARCH_EXPAND', value)
+}

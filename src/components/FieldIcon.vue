@@ -1,8 +1,10 @@
-<template lang="pug">
-  .field-icon.icon(:class='css')
-    tool-tip(v-if='title' :value='title | camelCaseTo' :options='tipOptions')
-      icon(:name='icon')
-    icon(v-else :name='icon')
+<template>
+  <div class="field-icon icon" :class="css">
+    <tool-tip v-if="title" :value="title | camelCaseTo" :options="tipOptions">
+      <icon :name="icon" :class="icon"></icon>
+    </tool-tip>
+    <icon v-else :name="icon"></icon>
+  </div>
 </template>
 <script>
 import ToolTip from './ToolTip'
@@ -24,3 +26,6 @@ export default {
   }
 }
 </script>
+<style lang="stylus">
+  @import '../lib/styl/icons.styl';
+</style>

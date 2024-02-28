@@ -14,14 +14,16 @@ import { linkAddress, addressFilters, valueFilters, isExport } from './lib/field
 
 const TX_STATUS_CSS = Object.freeze({
   FAIL: 'error',
-  SUCCESS: 'brand',
-  QUEUED: 'blue',
-  PENDING: 'yellow'
+  SUCCESS: 'success',
+  QUEUED: 'queued',
+  PENDING: 'pending',
+  REMOVED: 'error'
 })
 
 const TX_STATUS_MESSAGES = Object.freeze({
   QUEUED: 'The transaction nonce is not in sequence. Waiting for transaction(s) with previous nonces to be received.',
-  PENDING: 'The transaction is ready to be processed and included in a block.'
+  PENDING: 'The transaction is ready to be processed and included in a block.',
+  REMOVED: 'The transaction was once in the tx pool, but wasn\'t finally included in any block.'
 })
 
 const transactionFormatFields = ({ fields }) => {

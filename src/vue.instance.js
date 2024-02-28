@@ -9,6 +9,7 @@ import router from './router'
 import DataField from './components/DataField'
 import FieldItem from './components/FieldItem'
 import DataItem from './components/DataItem'
+import './styles/index.scss'
 
 Vue.use(VueSVGIcon, { tagName: 'icon' })
 Vue.use(Vuex)

@@ -1,0 +1,534 @@
+.navbar {
+  display: flex;
+  height: 80px;
+  position: relative;
+  z-index: 100;
+  margin-bottom: 24px;
+  .navbar-logo {
+    width: 212px;
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    .menu-toggle {
+      display: none;
+    }
+  }
+  .navbar-container {
+    height: 80px;
+    width: 100%;
+  }
+  .navbar-body {
+    width: 100%;
+    display: flex;
+    height: 80px;
+    position: fixed;
+    padding: 20px;
+    background-color: $newbw_900;
+  }
+  .navbar-content {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .content-network {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    .btn {
+      font-size: 18px;
+      padding: unset;
+      display: flex;
+      justify-content: center;
+      &.btn-active {
+        width: 89px;
+        height: 26px;
+        background-color: $purple_900;
+        color: $newbw_900;
+        font-weight: 700;
+        cursor: default;
+      }
+      &.btn-go {
+        display: flex;
+        width: 113px;
+        height: 36px;
+        border: 1px solid $white_100;
+        border-radius: 100px;
+        position: relative;
+        background-color: $newbw_900;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 3px;
+          left: 3px;
+          width: 113px;
+          height: 36px;
+          border: 1px solid $white_100;
+          background-color: $newbw_900;
+          border-radius: 100px;
+          z-index: -1;
+        }
+      }
+      .short-text {
+        display: none;
+      }
+      img {
+        margin-left: 8px;
+      }
+    }
+  }
+}
+.search-content {
+  position: relative;
+  width: 420px;
+  height: 40px;
+  border-radius: 90px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border: 1px solid $newbw_800;
+  img {
+    width: 16px;
+    height: 16px;
+  }
+  .content-input {
+    display: flex;
+    padding-left: 16px;
+    flex: 1;
+    input {
+      width: 100%;
+      border: none;
+      color: white;
+      font-size: 14px;
+      &:focus {
+        outline: none !important;
+        background: unset;
+      }
+    }
+    .btn-clear {
+      border: none;
+      cursor: pointer;
+      color: $cyan_300;
+      font-weight: 700;
+      font-size: 15px;
+      margin: 0 8px 2px 6px;
+    }
+  }
+  .btn-close {
+    color: $white_100;
+  }
+  .btn-search {
+    margin-top: 2px;
+  }
+  .search-results {
+    position: absolute;
+    z-index: 1;
+    top: 40px;
+    left: 0;
+    right: 0;
+    border-radius: 20px;
+    width: 420px;
+    padding: 16px;
+    min-height: 80px;
+    height: max-content;
+    max-height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgb(54, 54, 54);   
+      border-radius: 12px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: $newbw_800;
+      border-radius: 20px;
+      border: 1px solid rgb(49, 49, 49);
+    }
+
+    a {
+      color: #c0c0c0;
+      font-size: 12px;
+      text-decoration: none;
+      &:hover {
+        color: white;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.sidebar {
+  position: relative;
+  width: 212px;
+  height: 100vh;
+
+  .btn-close {
+    display: none;
+    color: $white_100;
+  }
+  .sidebar-container {
+    width: 212px;
+    height: 100vh;
+  }
+}
+.sidebar-body {
+  position: fixed;
+  width: 212px;
+  height: 100vh;
+  .navbar-logo {
+    display: none;
+  }
+  .navigation {
+    margin: 0 12px;
+    a {
+      cursor: pointer;
+      display: flex;
+      padding: 12px;
+      height: 52px;
+      color: $white_400;
+      text-decoration: none;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 12px;
+      img {
+        display: block;
+        object-fit: contain;
+        flex-shrink: 0;
+        max-width: 100%;
+        max-height: 100%;
+        margin-right: 12px;
+      }
+      &:hover {
+        background-color: $newbw_800;
+      }
+    }
+    .active-icon {
+      display: none;
+    }
+    .base-icon {
+      display: block;
+    }
+  }
+  svg {
+    fill: $white_400 !important;
+    margin-right: 14px;
+  }
+
+  .router-link-active {
+    .home-active {
+      display: none;
+    }
+    .active-icon {
+      display: block;
+    }
+    .base-icon {
+      display: none;
+    }
+    border-radius: 12px;
+    &.link-home.router-link-exact-active {
+      background-color: $purple_900;
+      border-radius: 12px;
+      color: #000;
+      .home-icon {
+        display: none;
+      }
+      .home-active {
+        display: block;
+      }
+    }
+    &.link-blocks {
+      background-color: $green_900;
+      color: #000;
+    }
+    &.link-txs {
+      background-color: $orange_900;
+      color: #000;
+    }
+    &.link-address {
+      background-color: $pink_900;
+      color: #fff;
+      .block-icon {
+        display: none;
+      }
+    }
+    &.link-tokens {
+      background-color: $cyan_300;
+      color: #000;
+    }
+    &.link-apps {
+      background-color: white;
+      color: #000;
+      svg {
+        fill: #000 !important;
+      }
+    }
+    &:hover {
+      background-color: $green_900;
+    }
+  }
+}
+@media (min-width: $phone) and (max-width: $tablet) {
+  .sidebar {
+    position: relative;
+    width: 55px;
+    height: 100vh;
+    margin-right: 70px;
+    z-index: 1;
+    .sidebar-container {
+      width: 55px;
+      height: 100vh;
+    }
+  }
+  .sidebar-body {
+    position: fixed;
+    width: 55px;
+    height: 55px;
+
+    .navigation {
+      margin: unset;
+      a {
+        justify-content: center;
+        position: relative;
+        img {
+          width: 16px;
+          height: 16px;
+          margin-right: unset;
+        }
+        span {
+          display: none;
+          width: 90px;
+          height: 30px;
+          position: absolute;
+          align-items: center;
+          justify-content: center;
+          border-radius: 5px;
+          right: -100px;
+          color: $white_100;
+          text-align: left;
+          background-color: #000;
+          opacity: 1;
+          transition: opacity ease .5s;
+          &::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            background-color: #000;
+            position: absolute;
+            left: -3px;
+            transform: rotate(45deg);
+            z-index: -1;
+          }
+        }
+        &:hover {
+          span {
+            display: inline-flex;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+  .navbar {
+    .navbar-logo {
+      width: unset;
+    }
+    .search-content {
+      position: relative;
+      width: 100%;
+    }
+    .search {
+      margin: 0 10px;
+      flex: 1;
+    }
+    .settings-page {
+      display: none;
+    }
+  }
+}
+
+@include phone() {
+  .sidebar {
+    display: none;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .8);
+    top: 0;
+    z-index: 0;
+    .btn-close {
+      display: block;
+      position: absolute;
+      color: $white_100;
+      font-weight: 900;
+      font-size: 20px;
+      top: 20px;
+      right: 20px;
+    }
+    .sidebar-container {
+      position: relative;
+      background-color: $newbw_800;
+      position: relative;
+      left: 0px;
+      animation: slideInFromLeft 0.5s forwards;
+      width: 250px;
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+    .sidebar-body {
+      width: 245px;
+      .navbar-logo {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+      }
+    }
+    .navigation {
+      a {
+        span {
+          display: block;
+        }
+      }
+    }
+    &.show {
+      position: fixed;
+      display: block;
+      z-index: 100;
+      .sidebar-container {
+        display: block;
+        left: 0;
+        animation: slideInFromLeft 0.5s forwards;
+      }
+    }
+    &.hide {
+      .sidebar-container {
+        left: 0;
+        animation: slideOutToLeft 0.5s forwards;
+      }
+      animation: slideOutToLeftAndFade 0.5s forwards;
+    }
+  }
+  .navbar-content {
+    position: relative;
+    z-index: 1;
+  }
+  .navbar {
+    .settings-page {
+      display: none;
+    }
+    .navbar-logo {
+      .menu-toggle {
+        margin-right: 15px;
+        display: block;
+      }
+    }
+    .navbar-content {
+      justify-content: flex-end;
+      .search {
+        margin: 0 10px;
+      }
+      .search-content {
+        background-color: $newbw_900;
+        width: 100%;
+        .content-input {
+          display: none;
+          color: white;
+        }
+      }
+      
+      .content-network {
+        .large-text {
+          display: none;
+        }
+        .short-text {
+          display: block;
+        }
+        .btn {
+          width: 59px;
+          &::before {
+            width: 59px;
+            top: 1px;
+            left: 1px;
+          }
+          img {
+            margin-left: 3px;
+          }
+        }
+      }
+    }
+    .content-expand {
+      .navbar-logo {
+        display: none;
+      }
+      .search {
+        flex: 1;
+      }
+      .search-content {
+        background-color: $newbw_900;
+        width: 100%;
+        flex: 1;
+        .content-input {
+          display: flex;
+        }
+        .search-results {
+          margin-top: 5px;
+          box-shadow: 3px 5px 10px #272727;
+        }
+        .btn-close {
+          cursor: pointer;
+          color: $white_100;
+          font-weight: 700;
+        }
+      }
+      .navbar-content {
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    position: absolute;
+    left: -250px;
+  }
+  to {
+    left: 0;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    position: absolute;
+    left: 0;
+  }
+  to {
+    left: -250px;
+    // display: none;
+  }
+}
+@keyframes slideOutToLeftAndFade {
+  0% {
+    position: absolute;
+    top: 0;
+    display: block;
+    z-index: 100;
+    opacity: 1;
+  }
+  100% {
+    z-index: 100;
+    top: 0;
+    position: absolute;
+    opacity: 0;
+  }
+  100% {
+    display: none;
+  }
+}

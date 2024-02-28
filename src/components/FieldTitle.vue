@@ -1,16 +1,35 @@
-<template lang="pug">
-  .field-title
-    field-icon.field-description(v-if='description' icon="help" :title='description' )
-    field-icon(v-if='showIcon' :icon='field.icon' :title='(showTitle) ? null: field.title' )
-    span.title(v-if='showTitle && field.title') {{ field.title | field-title-filter }}
-    slot
+<template>
+  <div class="field-title">
+    <field-icon
+      class="field-description"
+      v-if="description"
+      icon="help"
+      :title="description">
+    </field-icon>
+    <field-icon
+      v-if="showIcon"
+      :icon="field.icon"
+      :title="showTitle ? null : field.title">
+    </field-icon>
+
+    <span
+      class="title"
+      v-if="showTitle && field.title">
+      {{ field.title | fieldTitleFilter }}
+    </span>
+    <slot></slot>
+  </div>
 </template>
 <script>
 import FieldIcon from './FieldIcon'
+import { fieldTitleFilter } from '@/filters/TextFilters'
 export default {
   name: 'field-title',
   components: {
     FieldIcon
+  },
+  filters: {
+    fieldTitleFilter
   },
   props: ['field', 'options'],
   data () {
@@ -42,19 +61,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
-
-  .field-title
-    flex-centered()
-
-    .icon
-      display inline-flex
-
-    .icon + .title
-      margin 0 0 0 0.5em
-    .field-icon
-      .tooltip *
-        word-break normal !important
-</style>

@@ -1,28 +1,39 @@
-<template lang="pug">
-  .data-field(:style='cellStyle(field,value)' :class='fieldClass')
-    template(v-if='field.renderAs')
-      component(:is='field.renderAs' v-bind='renderAsProps({field,value,filteredValue,row})' )
-    template(v-else)
-      //- arrays (uncomplete)
-      template(v-if='filteredType === "array"')
-        ul.array
-          li(v-for='v in value') {{v}}
-      template(v-else-if='filteredType === "object"')
-        ul
-          li(v-for='p in Object.keys(value)')
-            strong {{p}}:&nbsp;
-            span {{value[p]}}
-
-      template(v-else)
-        template(v-if='trim && !options.noTrim')
-          tool-tip.field-value(:value='filteredValue || value' :trim='trim' :options='trimOptions' :router-link='link')
-        template(v-else)
-          router-link(v-if='link' :to='link')
-            .field-value {{ filteredValue || field.default }}
-          .field-value(v-else) {{ filteredValue || field.default }}
-        span.field-suffix(v-if='suffix && filteredValue !== null') &nbsp; {{suffix}}
-        field-icon.field-value-description(v-if='valueDescription' icon="help" :title="valueDescription")
-        progress-bar(v-if='delayed')
+<template>
+  <div class="data-field" :style="cellStyle(field, value)" :class="fieldClass">
+    <template v-if="field.renderAs">
+      <component :is="field.renderAs" v-bind="renderAsProps({ field, value, filteredValue, row })"></component>
+    </template>
+    <template v-else>
+      <!-- arrays (uncomplete) -->
+      <template v-if="filteredType === 'array'">
+        <ul class="array">
+          <li v-for="v in value" :key="v">{{ v }}</li>
+        </ul>
+      </template>
+      <template v-else-if="filteredType === 'object'">
+        <ul>
+          <li v-for="p in Object.keys(value)" :key="p">
+            <strong>{{ p }}:&nbsp;</strong>
+            <span>{{ value[p] }}</span>
+          </li>
+        </ul>
+      </template>
+      <template v-else>
+        <template v-if="trim && !options.noTrim">
+          <tool-tip class="field-value" :value="filteredValue || value" :trim="trim" :options="trimOptions" :router-link="link"></tool-tip>
+        </template>
+        <template v-else>
+          <router-link v-if="link" :to="link">
+            <div class="field-value">{{ filteredValue || field.default }}</div>
+          </router-link>
+          <div class="field-value" v-else>{{ filteredValue || field.default }}</div>
+        </template>
+        <span class="field-suffix" v-if="suffix && filteredValue !== null">&nbsp; {{ suffix }}</span>
+        <field-icon class="field-value-description" v-if="valueDescription" icon="help" :title="valueDescription"></field-icon>
+        <progress-bar v-if="delayed"></progress-bar>
+      </template>
+    </template>
+  </div>
 </template>
 <script>
 import common from '../mixins/common'
@@ -90,68 +101,3 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/mixins.styl'
-  @import '../lib/styl/lists.styl'
-
-  .data-field
-    ul
-      display flex
-      flex-flow column
-      flex 1
-      margin 0
-      padding 0
-
-      li
-        break-word()
-
-    ul.array
-      font-size 0.9em
-      list-style none
-
-  .data-field, .data-field > a, .data-field > .tooltip, max-width 100%
-    display flex
-    position relative
-    break-word()
-    justify-content center
-    align-items center
-
-  .field-value
-    overflow-wrap break-word
-    word-wrap break-word
-    -ms-word-break break-all
-    word-break break-all
-    word-break break-word
-    -ms-hyphens auto
-    -moz-hyphens auto
-    -webkit-hyphens auto
-    hyphens auto
-
-  .field-suffix
-    white-space pre
-
-  .field-value-description
-    position relative
-    display inline-flex
-    margin 0 0 0 1em
-    white-space nowrap
-
-  .flex-table
-    & td .data-field
-      width 100%
-
-  .data-field.items-list ul
-    list-style none
-    margin 0
-    padding 0
-    display flex
-    flex-flow row wrap
-
-    li
-      display flex
-      margin 0 0 0 1em
-
-    :first-child
-      margin 0
-</style>

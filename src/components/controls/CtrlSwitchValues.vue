@@ -1,11 +1,17 @@
-<template lang="pug">
-.ctrl-switch-values.row
-  small.label(:class='formatCss(optA)') {{optA}}
-  ctrl-switch(:value="value === optB" @change='changeFormat' :square='true' css='enabled')
-  small.label(:class='formatCss(optB)') {{optB}}
+<template>
+  <div class="ctrl-switch-values">
+    <small class="label first-leter-uppercase"
+      :style="{ color: selected === optA ? PAGE_COLORS[$route.name].cl : '' }">{{ optA }}</small>
+    <ctrl-switch :value="value === optB" @change="changeFormat" :square="true" css="enabled"></ctrl-switch>
+    <small class="label first-leter-uppercase"
+      :style="{ color: selected === optB ? PAGE_COLORS[$route.name].cl : '' }"
+    >{{ optB }}</small>
+  </div>
 </template>
 <script>
 import CtrlSwitch from './CtrlSwitch'
+import { PAGE_COLORS } from '@/config/pageColors'
+
 export default {
   name: 'ctrl-switch-values',
   components: { CtrlSwitch },
@@ -18,7 +24,8 @@ export default {
   },
   data () {
     return {
-      value: this.selected || this.values[0]
+      value: this.selected || this.values[0],
+      PAGE_COLORS
     }
   },
   computed: {
@@ -34,15 +41,7 @@ export default {
       const { optA, optB, value } = this
       this.value = (value === optA) ? optB : optA
       this.$emit('change', this.value)
-    },
-    formatCss (value) {
-      return (value === this.value) ? ['brand', 'bold'] : 'disabled'
     }
   }
 }
 </script>
-<style lang="stylus">
-  .ctrl-switch-values
-    .switch
-      margin 0 0.5em
-</style>
