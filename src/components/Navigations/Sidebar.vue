@@ -39,7 +39,7 @@
             <icon name="apps" />
             <span>Apps</span>
           </router-link>
-          <a target="_blank" :href="isNetworkmainnet ? 'https://stats.rsk.co/' : 'https://stats.testnet.rsk.co/'">
+          <a target="_blank" :href="isNetworkmainnet ? DOMAIN_STATS_MAINNET : DOMAIN_STATS_TESTNET">
             <img src="@/assets/svg/stats-icon.svg" alt="stats-icon">
             <span>Statistics</span>
           </a>
@@ -50,12 +50,15 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { DOMAIN_STATS_TESTNET, DOMAIN_STATS_MAINNET } from '../../config/network'
 
 export default {
   components: {
   },
   data () {
     return {
+      DOMAIN_STATS_MAINNET,
+      DOMAIN_STATS_TESTNET,
       activeClasses: 'router-link-exact-active router-link-active'
     }
   },
