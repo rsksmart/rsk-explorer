@@ -6,7 +6,9 @@
           <button @click="handleClick" class="menu-toggle">
             <img src="@/assets/svg/menu-icon.svg">
           </button>
-          <img src="@/assets/svg/logo.svg" alt="">
+          <router-link to="/">
+            <img src="@/assets/svg/logo.svg" alt="">
+          </router-link>
         </div>
         <div class="navbar-content">
           <SearchBox />
@@ -16,7 +18,7 @@
               <span class="short-text">TN</span>
               <img v-if="isNetworkmainnet" src="@/assets/svg/arrow-go.svg" alt="">
             </a>
-            <a :href="isNetworkmainnet ? DOMAIN_MAINNET : 'javascript:void(0)'" class="btn" :class="isNetworkmainnet ? 'btn-active' : 'btn-go'">
+            <a :href="isNetworkmainnet ? 'javascript:void(0)' : DOMAIN_MAINNET" class="btn" :class="isNetworkmainnet ? 'btn-active' : 'btn-go'">
               <span class="large-text">Mainnet</span>
               <span class="short-text">MN</span>
               <img v-if="!isNetworkmainnet" src="@/assets/svg/arrow-go.svg" alt="">

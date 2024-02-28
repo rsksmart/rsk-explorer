@@ -39,7 +39,7 @@
             <icon name="apps" />
             <span>Apps</span>
           </router-link>
-          <a :href="isNetworkmainnet ? 'https://stats.rsk.co/' : 'https://stats.testnet.rsk.co/'">
+          <a target="_blank" :href="isNetworkmainnet ? 'https://stats.rsk.co/' : 'https://stats.testnet.rsk.co/'">
             <img src="@/assets/svg/stats-icon.svg" alt="stats-icon">
             <span>Statistics</span>
           </a>

@@ -75,7 +75,8 @@ export default {
       this.selectResult(0)
       const value = event.target.value
       this.value = value
-      this.emit(event, type, value)
+      const typeEvent = this.value.length > 10 ? 'change' : type
+      this.emit(event, typeEvent, value)
     },
     emit (event, type, value) {
       type = type || event.type

@@ -47,7 +47,8 @@ export default {
   methods: {
     ...mapActions(['updateExportFormat']),
     downloadInfo (type) {
-      const info = this.downloadData(this.fileName, this.data, this.isCsv)
+      const isCsv = type === 'csv'
+      const info = this.downloadData(this.fileName, this.data, isCsv)
       downloadText(info.value, info.fileName, type)
     }
   }

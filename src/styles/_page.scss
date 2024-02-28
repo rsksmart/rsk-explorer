@@ -214,9 +214,13 @@
       }
       .error {
         color: $red_500;
+        padding: unset  ;
         a {
           color: $red_500;
         }
+      }
+      .brand {
+        color: $cyan_300;
       }
     }
     .custom-item {
