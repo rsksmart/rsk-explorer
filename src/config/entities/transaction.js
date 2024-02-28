@@ -14,9 +14,9 @@ import { linkAddress, addressFilters, valueFilters, isExport } from './lib/field
 
 const TX_STATUS_CSS = Object.freeze({
   FAIL: 'error',
-  SUCCESS: 'brand',
-  QUEUED: 'blue',
-  PENDING: 'yellow',
+  SUCCESS: 'success',
+  QUEUED: 'queued',
+  PENDING: 'pending',
   REMOVED: 'error'
 })
 

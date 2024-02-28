@@ -117,8 +117,8 @@ body {
 .txt-center {
   text-align: center;
 }
-.yellow {
-  color: yellow;        
+.pending {
+  color: $orange_900 !important;        
 }
 .content-explorer {
   width: 100%;

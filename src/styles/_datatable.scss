@@ -22,6 +22,11 @@
       .data-field {
         display: flex;
         justify-content: center;
+        &.pending {
+          .field-value {
+            color: $orange_900;
+          }
+        }
       }
     }
     tr {
