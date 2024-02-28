@@ -118,6 +118,12 @@
       margin: 0 8px 2px 6px;
     }
   }
+  .btn-close {
+    color: $white_100;
+  }
+  .btn-search {
+    margin-top: 2px;
+  }
   .search-results {
     position: absolute;
     z-index: 1;
@@ -166,6 +172,7 @@
 
   .btn-close {
     display: none;
+    color: $white_100;
   }
   .sidebar-container {
     width: 212px;
