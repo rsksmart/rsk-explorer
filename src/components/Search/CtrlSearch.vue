@@ -1,6 +1,8 @@
 <template>
   <div class="search-content">
-    <img v-if="!expandSearch" src="@/assets/svg/search.svg" alt="" @click="setExpand">
+    <button v-if="!expandSearch" @click="setExpand" class="btn-search">
+      <img src="@/assets/svg/search.svg" alt="">
+    </button>
     <button v-else class="btn-close" @click="setExpand">X</button>
     <div class="content-input">
       <input
@@ -64,6 +66,7 @@ export default {
   methods: {
     ...mapActions(['searchExpand']),
     setExpand () {
+      if (window.innerWidth > 600) return
       this.expandSearch = !this.expandSearch
       this.searchExpand({ value: this.expandSearch })
     },
@@ -75,13 +78,15 @@ export default {
       this.selectResult(0)
       const value = event.target.value
       this.value = value
-      this.emit(event, type, value)
+      const typeEvent = this.value.length > 10 ? 'change' : type
+      this.emit(event, typeEvent, value)
     },
     emit (event, type, value) {
       type = type || event.type
       this.$emit(type, { value, event })
     },
     changeInput (event) {
+      console.log('event: ', event)
       const { fullPath } = this.$route
       const vm = this
       setTimeout(() => {

@@ -6,15 +6,15 @@
     <div v-else></div>
     <ul class="page-numbers" v-if='pages.length > 1'>
       <button v-if='prevPage' class="prev-page" @click='goToPage(prevPage,$event)'>
-        <icon class="link" name='triangle-arrow-left'></icon>
+        <icon name='triangle-arrow-left'></icon>
       </button>
       <li class="link" v-for='(p, i) in pages'
         :style='{ backgroundColor: (p.page===page) ? PAGE_COLORS[$route.name].cl : "" } '
         @click='goToPage(p)' :key="`${i}`">
-        <small>{{ p.page }}</small>
+        <span>{{ p.page }}</span>
       </li>
       <button v-if='nextPage' class="next-page" @click='goToPage(nextPage,$event)'>
-        <icon class="link" name='triangle-arrow-right'></icon>
+        <icon name='triangle-arrow-right'></icon>
       </button>
     </ul>
     <button class="page-button" v-if='nextIndex' @click='goToPage(nextIndex,$event)'>
