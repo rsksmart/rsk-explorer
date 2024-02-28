@@ -86,7 +86,6 @@ export default {
       this.$emit(type, { value, event })
     },
     changeInput (event) {
-      console.log('event: ', event)
       const { fullPath } = this.$route
       const vm = this
       setTimeout(() => {
