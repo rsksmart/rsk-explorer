@@ -3,6 +3,7 @@
     <div class="pending-blocks">
       <button class="btn-upload-blocks" @click="updateBlocks">
         <img src="@/assets/svg/blocks-icon.svg" alt="">
+        <span class="w-badge" v-if="pending"></span>
       </button>
       <div class="text-blocks">{{ pending }} new blocks</div>
       <div class="time-blocks">in last {{ now - lastBlocksTime | abbr-time }}</div>
