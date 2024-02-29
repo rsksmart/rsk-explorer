@@ -88,7 +88,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/vars.styl'
 
   .loading-circle
     overflow hidden

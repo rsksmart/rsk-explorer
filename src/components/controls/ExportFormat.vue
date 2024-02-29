@@ -1,6 +1,7 @@
-<template lang="pug">
-.export-format
-  ctrl-switch-values(:values="values" :selected="format" @change="updateExportFormat")
+<template>
+  <div class="export-format">
+    <ctrl-switch-values :values="values" :selected="format" @change="updateExportFormat"></ctrl-switch-values>
+  </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'

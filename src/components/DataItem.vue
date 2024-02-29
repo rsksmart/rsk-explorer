@@ -1,32 +1,39 @@
-<template lang="pug">
-  .data-item(v-if='entity')
-    h2.item-title(v-if='entity.itemTitle && data')
-      icon.medium(v-if='entity.icon' :name='entity.icon')
-      span {{ entity.singular }}
-      data-field(v-if='fields[titleField]' :field='fields[titleField]' :row='data')
-    .items(v-if='data && fields')
-      template(v-for='field,fieldName,index in fields')
-        template(v-if='showField(field,data)')
-
-          template(v-if='hasFields(field)')
-            template(v-for='f,n,ii in field.fields')
-              field-item(v-if='!f.renderAs' :field='parseField(n,field.fields[n])' :data='dataFormatted' v-bind='componentProps(f)' :css='itemClass(f,index+ii)')
-              .custom-item(v-else :class='itemClass(f)')
-                field-title(:field='parseField(n,field.fields[n])' v-if='!field.hideTitle' :class='f.renderAs')
-                component.custom(:is='f.renderAs' :field='f' :data='getValue(f,data)' v-bind='componentProps(f)')
-
-          template(v-else)
-            field-item(v-if='!field.renderAs' :field='field' :data='dataFormatted' v-bind='componentProps(field)' :css='itemClass(field,index)')
-              //-custom component
-            .custom-item(v-else :class='itemClass(field)')
-              field-title(:field='field' v-if='!field.hideTitle' :class='field.renderAs')
-              component.custom(:is='field.renderAs' :field='field' :data='getValue(field,data)' v-bind='componentProps(field)')
+<template>
+  <div class="data-item" v-if="entity">
+    <h2 class="item-title" v-if="entity.itemTitle && data">
+      <icon class="medium" v-if="entity.icon" :name="entity.icon"></icon>
+      <span>{{ entity.singular }}</span>
+      <data-field v-if="fields[titleField]" :field="fields[titleField]" :row="data"></data-field>
+    </h2>
+    <div class="items" v-if="data && fields">
+      <template v-for="(field, fieldName, index) in fields">
+        <template v-if="showField(field, data)">
+          <template v-if="hasFields(field)">
+            <template v-for="(f, n, ii) in field.fields">
+              <field-item v-if="!f.renderAs" :field="parseField(n, field.fields[n])" :data="dataFormatted" v-bind="componentProps(f)" :css="itemClass(f, index + ii)" :key="`1-${n}`" />
+              <div class="custom-item" v-else :class="itemClass(f)" :key="`2-${ii}`">
+                <field-title :field="parseField(n, field.fields[n])" v-if="!field.hideTitle" :class="f.renderAs"></field-title>
+                <component.custom :is="f.renderAs" :field="f" :data="getValue(f, data)" v-bind="componentProps(f)"></component.custom>
+              </div>
+            </template>
+          </template>
+          <template v-else>
+            <field-item v-if="!field.renderAs" :field="field" :data="dataFormatted" v-bind="componentProps(field)" :css="itemClass(field, index)" :key="`3-${index}`" />
+            <div class="custom-item" v-else :class="itemClass(field)" :key="`4-${index}`">
+              <field-title :field="field" v-if="!field.hideTitle" :class="field.renderAs"></field-title>
+              <component.custom :is="field.renderAs" :field="field" :data="getValue(field, data)" v-bind="componentProps(field)"></component.custom>
+            </div>
+          </template>
+        </template>
+      </template>
+    </div>
+  </div>
 </template>
 <script>
 import dataMixin from '../mixins/dataMixin'
 import DataField from './DataField'
 import FieldTitle from './FieldTitle'
-import DataTable from './DataTable'
+import DataTable from '@/components/General/DataTable'
 import FieldItem from './FieldItem'
 import CollapsibleList from './CollapsibleList'
 import EventCall from './EventCall'
@@ -88,99 +95,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
-  @import '../lib/styl/media_queries.styl'
-
-  .data-item
-    min-width 100%
-    width 100%
-
-    .items
-      min-width 100%
-      display flex
-      flex-flow row wrap
-      padding 0.5em 0em
-
-    .item
-      display flex
-      flex 1 1 100%
-      align-items center
-      padding 0.5em 0em
-      overflow visible
-
-    .item
-      font-size 1em
-
-     .field-title
-        margin-right 0.5em
-
-      .field-title
-        flex 1
-        margin 0 1em 0 2em
-        justify-content flex-start
-        align-self flex-start
-
-      .data-field
-        margin 0 2em 0 0em !important
-        flex 5
-
-  .field-value
-    display inline-flex
-
-  .custom
-    display flex
-    flex-flow column wrap
-    margin 0 2em 0 0em !important
-    flex 5
-
-  .custom-item
-    display flex
-    flex 1 1 100%
-    align-items center
-    overflow visible
-    padding 0.5em 0em
-    max-width 100%
-
-    .field-title
-      flex 1
-      margin 0 1em 0 2em
-      justify-content flex-start
-
-  .field-icon, .field-title
-    color $color
-
-  .field-title
-    text-transform capitalize
-    font-weight bold
-
-  .item-title
-    text-transform capitalize
-    display inline-flex
-
-    .field-value
-      display inline-flex
-
-    div, span
-      &::before
-        content '\00a0'
-
-  .field-title.big-field
-    justify-content flex-start
-    align-self flex-start
-    margin-bottom 0.5em
-
-  .field-title.big-field, .big-field.custom
-    margin 0 1em 0em 2em
-
-  .field-title.data-table
-    margin 0 !important
-    justify-content center !important
-    margin-top 1em !important
-
-  @media $media_medium
-    .data-item
-      .big-field.custom
-        min-width 20em
-</style>

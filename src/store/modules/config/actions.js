@@ -28,3 +28,7 @@ export const updateDecimalPlaces = ({ commit }, value) => {
 export const updateExportItems = ({ commit }, value) => {
   commit('SET_CONFIG', ['exportItems', value])
 }
+
+export const updateMenuToggle = ({ commit }, value) => {
+  commit('SET_MENU_TOGGLE', value)
+}

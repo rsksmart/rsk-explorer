@@ -1,19 +1,25 @@
-<template lang="pug">
-  .pending-txs
-    h2 Pending transactions
-    .tx-pool-chart(v-if='chart.length')
-      chart(:data='chart' :options='options', title='Pending Txs Log')
-        //-chart(:data='chart' :options='blocksChartOptions')
-    h3 Tx pool
-    template(v-if='!txs')
-      .info.txt-center
-        span Tx pool is empty
-    template(v-else)
-      data-table(:type='type' :page='txs')
+<template>
+  <div class="pending-txs">
+    <h2>Pending transactions</h2>
+    <div class="tx-pool-chart">
+      <chart v-if="chart.length" :data="chart" :options="options" title="Pending Txs Log"></chart>
+      <!-- <chart :data="chart" :options="blocksChartOptions"></chart> -->
+    </div>
+    <h3>Tx pool</h3>
+    <template v-if="!txs">
+      <div class="info txt-center">
+        <span>Tx pool is empty</span>
+      </div>
+    </template>
+    <template v-else>
+      <data-table :type="type" :page="txs"></data-table>
+    </template>
+  </div>
 </template>
+
 <script>
 import { mapState, mapGetters } from 'vuex'
-import DataTable from './DataTable'
+import DataTable from './General/DataTable.vue'
 import Chart from './Chart'
 import { dayFromTs, timeFromTs } from '../filters/TimeFilters'
 import chartsDefaults from '../config/chartsDefaults'
@@ -23,6 +29,7 @@ export default {
     DataTable,
     Chart
   },
+  props: ['size'],
   data () {
     return {
       type: 'txPool',
@@ -118,11 +125,23 @@ export default {
     blockColor (block) {
       const bc = this.getBlockColor()
       return bc(block)
+    },
+    handleResize () {
+      const chartContainer = this.$el.querySelector('.tx-pool-chart')
+      const w = chartContainer.offsetWidth
+      const h = 250
+      // Realiza acciones basadas en el nuevo ancho aquí
+      const opt = Object.assign(chartsDefaults, this.chartOptions)
+      const size = { w, h }
+      this.chartOptions = { ...opt, size }
     }
+  },
+  mounted () {
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.handleResize)
   }
 }
 </script>
-<style lang="stylus">
-  .pending-txs
-    min-width 100%
-</style>

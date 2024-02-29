@@ -1,0 +1,356 @@
+.data-table {
+  .btn {
+    .text {
+      margin: 0 10px;
+    }
+  }
+  table {
+    color: $white_400;
+    border-collapse: collapse;
+    width: 100%;
+    thead {
+      background-color: $newbw_800;
+    }
+    th {
+      text-align: center;
+      padding: 0.5em 1em;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+    td {
+      .data-field {
+        display: flex;
+        justify-content: center;
+        &.pending {
+          .field-value {
+            color: $orange_900;
+          }
+        }
+      }
+    }
+    tr {
+      height: 52px;
+      &:hover {
+        background-color: $newbw_800;
+        .field__from {
+          a {
+            color: $green_900;
+          }
+        }
+        >:nth-child(2) {
+          .field-value {
+            color: $green_900 !important;
+          }
+        }
+        .field__miner {
+          a {
+            color: $green_900 !important;
+          }
+        }
+        .row-icon {
+          a {
+            background-color: $newbw_700;
+          }
+        }
+      }
+      box-shadow: 0px -1px 0px 0px #3A3A3A inset;
+      .error {
+        a {
+          color: $red_500 !important;
+        }
+      }
+      .field-value {
+        color: $white_400;
+      }
+    }
+    .field__time, .field__hash, .field__from, .field__date, .field__block,
+    .field__timestamp, .field__to, .field__type, .field__value, .field__balance {
+      .field-title {
+        display: none !important;
+      }
+    }
+    .td-title {
+      display: none;
+    }
+    .from-to-arrow {
+      width: 60px;
+      text-align: center;
+    }
+    .field-list {
+      margin: 10px 0;
+      font-size: 14px;
+      .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .data-field {
+          a {
+            color: $white_400;
+          }
+        }
+        .field-title {
+          margin: 3px;
+          .title {
+            color: #928b8b;
+          }
+
+        }
+      }
+    }
+    .row-icon {
+      width: 40px;
+      a {
+        margin-left: 12px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 90px;
+        background-color: $newbw_800;
+
+        .container-icon {
+          width: max-content;
+          height: 18px;
+        }
+      }
+      .link {
+        display: none;
+      }
+    }
+    .field__status {
+      height: 52px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .tooltip {
+        .tip {
+          width: unset;
+          left: unset !important;
+          right: 0px;
+          bottom: 23px !important;
+          &::before {
+            top: unset;
+            bottom: -10px;
+          }
+          &::after {
+            left: unset;
+            right: 3px;
+          }
+        }
+      }
+      svg {
+        fill: $white_400;
+      }
+      .close {
+        fill: $red_500;
+      }
+    }
+  }
+  .d-internalTransactions {
+    .unsortable:last-child {
+      display: none;
+    }
+    .field__status {
+      display: none;
+    }
+  }
+}
+
+.Block, .Blocks {
+  .data-table {
+    table {
+      table-layout: unset;
+      td {
+        .title {
+          display: none;
+        }
+      }
+      tr {
+        &:hover {
+          .row-icon {
+            svg {
+              fill: $green_900 !important;
+            }
+          }
+          .field__hash, .field__from, .field__to, .field__gasUsed, .field__type {
+            .field-value {
+              color: $green_900 !important;
+            }
+            a {
+              color: $green_900;
+            }
+          }
+        }
+      }
+      .field__block {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 52px;
+        .field-title {
+          margin-right: 10px;
+        }
+      }
+      .field__time, .field__hash, .field__from {
+        .field-title {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.Transactions, .Transaction {
+  .data-table {
+    table {
+      table-layout: unset;
+      td {
+        .title {
+          display: none;
+        }
+        &.row-icon {
+          .link {
+            display: none;
+          }
+        }
+      }
+      tr {
+        &:hover {
+          .row-icon {
+            svg {
+              fill: $orange_900 !important;
+            }
+          }
+          .field__hash, .field__from, .field__to, .field__gasUsed, .field__type {
+            .field-value {
+              color: $orange_900 !important;
+            }
+            a {
+              color: $orange_900;
+            }
+          }
+        }
+      }
+      .field__block {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 52px;
+        .field-title {
+          margin-right: 10px;
+        }
+      }
+      .from-to-arrow {
+        width: 60px;
+      }
+      .from-to-arrow {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.Addresses, .Address {
+  .data-table {
+    table {
+      table-layout: unset;
+      tr {
+        &:hover {
+          .row-icon {
+            svg {
+              fill: $pink_900 !important;
+            }
+          }
+          .field__address, .field__balance, .field__type, .field__block, .field__from,
+          .field__to, .field__event, .field__hash, .data-field {
+            .field-value {
+              color: $pink_900 !important;
+            }
+            a {
+              color: $pink_900;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.Tokens, .Token {
+  .data-table {
+    table {
+      table-layout: unset;
+      tr {
+        &:hover {
+          .row-icon {
+            svg {
+              fill: $cyan_300 !important;
+            }
+          }
+          .field__address, .field__balance, .field__name, .field__event, .field__to, .field__from {
+            .field-value {
+              color: $cyan_300 !important;
+            }
+            a {
+              color: $cyan_300;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@include tablet() {
+  .data-table {
+    table {
+      .dummy, .row-icon {
+        display: none;
+      }
+    }
+    .d-tokens, .d-addresses, .d-blocks {
+      table-layout: unset;
+      min-width: 600px !important;
+    }
+    .table-id {
+      display: none;
+    }
+    .dummy {
+      display: block !important;
+    }
+    .d-tokens {
+      table-layout: unset;
+      min-width: 800px !important;
+    }
+    .d-blocks {
+      .dummy {
+        display: none !important;
+      }
+    }
+    .d-addresses {
+      thead {
+        tr {
+          .table-id {
+            display: none !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include phone() {
+  .data-table {
+    table {
+      color: $white_400;
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: unset;
+    }
+  }
+}

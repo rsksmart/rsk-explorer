@@ -1,10 +1,10 @@
-<template lang="pug">
-
-  .chart(v-if='data')
-    strong.title(v-if='title') {{title}}
-    .chart-container(v-if='data.length' :style='boxStyle')
-      d3-bar-chart(:data='data' :options='chartOptions')
-
+<template>
+  <div class="chart" v-if="data">
+    <strong class="title" v-if="title">{{ title }}</strong>
+    <div class="chart-container" v-if="data.length" :style="boxStyle">
+      <d3-bar-chart :data="data" :options="chartOptions"></d3-bar-chart>
+    </div>
+  </div>
 </template>
 <script>
 import D3BarChart from 'vue-d3-barchart'
@@ -52,7 +52,9 @@ export default {
       return { width: this.size.w + 'px' }
     },
     chartOptions () {
-      return Object.assign({ size: this.size }, this.opts)
+      const size = this.size
+      const value = { ...this.opts, size }
+      return value
     },
     hRatio () {
       const hr = this.heightRatio
@@ -61,15 +63,14 @@ export default {
   },
   methods: {
     onResize () {
-      const w = this.$el.parentElement.offsetWidth
+      const w = this.$el.parentElement.offsetWidth - 50
       const h = w / this.hRatio
       this.size = Object.assign({}, { w, h })
     }
   }
 }
 </script>
-<style lang="stylus">
-  @import '../lib/styl/vars.styl'
+<!-- <style lang="stylus">
 
   .chart-container
     display flex
@@ -91,4 +92,4 @@ export default {
     path
       opacity 0.2
       stroke none
-</style>
+</style> -->

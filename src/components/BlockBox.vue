@@ -1,23 +1,37 @@
-<template lang="pug">
-  transition(name='blockbox')
-    .block-box
-      .block.box(v-if='block' :style='blockBoxStyle')
-        .block-icon.box-icon
-          router-link(:to='blockLink')
-            icon(:name='entity.icon' :color='blockColor')
-        .box-content
-          .block-title(v-if='title')
-            h4.title {{title}}
-          ul.block-data.flex
-            li.half
-              router-link(:to='blockLink')
-                .block-number(:style='bStyle' )
-                  span {{ blockNumber }}
-            template(v-for='f,i in boxFields')
-              li.half(:class=' (i>0) ? "soft" : "" ')
-                .xdata(v-for='field,x in f' :class=' (x>0) ? "soft" : "" ')
-                  field-title.small(:field='field')
-                  data-field.small(:field='field' :row='block')
+<template>
+  <transition name="blockbox">
+    <div class="block-box">
+      <div class="block box" v-if="block" :style="blockBoxStyle">
+        <div class="block-icon box-icon">
+          <router-link :to="blockLink">
+            <icon :name="entity.icon" :color="blockColor"></icon>
+          </router-link>
+        </div>
+        <div class="box-content">
+          <div class="block-title" v-if="title">
+            <h4 class="title">{{ title }}</h4>
+          </div>
+          <ul class="block-data flex">
+            <li class="half">
+              <router-link :to="blockLink">
+                <div class="block-number" :style="bStyle">
+                  <span>{{ blockNumber }}</span>
+                </div>
+              </router-link>
+            </li>
+            <div v-for="(f, i) in boxFields" :key="i">
+              <li :class="i > 0 ? 'half soft' : 'half'">
+                <div v-for="(field, x) in f" :class="x > 0 ? 'xdata soft' : 'xdata'" :key="x">
+                  <field-title class="small" :field="field"></field-title>
+                  <data-field class="small" :field="field" :row="block"></data-field>
+                </div>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 <script>
 import DataField from './DataField'
@@ -70,7 +84,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-  @import '../lib/styl/media_queries.styl'
 
   .block-box
     display flex
