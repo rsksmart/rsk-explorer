@@ -245,26 +245,26 @@
         display: block;
       }
     }
-    &.link-blocks {
+    &.link-blocks.router-link-exact-active {
       background-color: $green_900;
       color: #000;
     }
-    &.link-txs {
+    &.link-txs.router-link-exact-active {
       background-color: $orange_900;
       color: #000;
     }
-    &.link-address {
+    &.link-address.router-link-exact-active {
       background-color: $pink_900;
       color: #fff;
       .block-icon {
         display: none;
       }
     }
-    &.link-tokens {
+    &.link-tokens.router-link-exact-active {
       background-color: $cyan_300;
       color: #000;
     }
-    &.link-apps {
+    &.link-apps.router-link-exact-active {
       background-color: white;
       color: #000;
       svg {
