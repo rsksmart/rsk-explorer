@@ -112,7 +112,7 @@ export default {
     onResize () {
       const chartContainer = this.$el.querySelector('.chart-container')
       const w = chartContainer.offsetWidth
-      const h = Math.max(chartContainer.offsetHeight, 130)
+      const h = 120
       this.size = { w, h }
     },
     barClick (event) {
