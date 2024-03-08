@@ -99,10 +99,6 @@ export const socketDbStatus = ({ state, commit }, data) => {
   commit('SET_DB_STATUS', data)
 }
 
-export const socketBalancesStatus = ({ state, commit }, data) => {
-  commit('SET_BALANCES_STATUS', data)
-}
-
 export const fetchData = ({ state, commit, getters }, req) => {
   req.params = req.params || {}
   const { next, prev, query, sort, action, count, page, fields } = req

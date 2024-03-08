@@ -36,10 +36,4 @@ export const CHECKSUM_WARN = {
   }
 }
 
-export const BALANCES_WARN = {
-  title: 'Note:',
-  txt: 'Showing balances between blocks: #@fromBlock and #@toBlock',
-  type: 'warn'
-}
-
-export default { DB_OUTDATED, INTERNAL_TX_WARN, CHECKSUM_WARN, BALANCES_WARN }
+export default { DB_OUTDATED, INTERNAL_TX_WARN, CHECKSUM_WARN }
