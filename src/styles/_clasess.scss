@@ -15,6 +15,9 @@ body {
   background-color: $newbw_900;
   font-family: 'Rootstock Sans Body', sans-serif;
 }
+button {
+  font-family: 'Rootstock Sans Body', sans-serif;
+}
 // background
 .bg-primary {
   background-color: $newbw_900;
@@ -302,6 +305,11 @@ button {
   background-color: $orange_900;
   color: #000;
 }
+.cursor-text {
+  a, button, .trim-value {
+    cursor: text !important;
+  }
+}
 
 .spinner {
   border-color: rgba(170, 170, 170, 0.1);
@@ -338,4 +346,29 @@ button {
 
 svg {
   fill: $white_400;
+}
+.section-loader {
+  width: 100%;
+  overflow: hidden;
+  padding: 24px;
+  border-radius: 12px;
+  svg {
+    fill: $newbw_700;
+  }
+}
+.table-loader {
+  width: 100%;
+  overflow: hidden;
+  svg {
+    fill: $newbw_800;
+  }
+}
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .5
+  }
 }

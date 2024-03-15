@@ -64,7 +64,7 @@ export default {
     display flex
 
     .decode
-      align-self flex-end
+      margin-left 10px
 
     textarea
       padding 0

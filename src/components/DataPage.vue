@@ -1,11 +1,11 @@
 <template>
   <div class="data-page centered" :class="$route.name">
-    <div class="flex container-title" v-if="!requesting">
+    <div class="flex container-title">
       <icon :class="titleDescription" :name="titleDescription.toLowerCase()"></icon>
       <div class="text-white-100 title capitalize" v-if="titleDescription">{{ titleDescription }}</div>
     </div>
-    <div v-if="(requesting && !error && !delayed.fields) || delayed.registry" class="flex justify-center content-spiner">
-      <spinner :height="300" :width="300" :border="5" />
+    <div v-if="(requesting && !error && !delayed.fields) || delayed.registry" class="content-spiner">
+      <Loader type="table" :fixed="false" />
     </div>
     <error-page v-if="error" :error="error"></error-page>
     <div class="update-error" v-if="updateError">
@@ -75,7 +75,7 @@
           </div>
           <template v-for="(tab, i) in tabs">
             <template v-if="isActiveTab(tab)">
-              <spinner :key="tab.action" v-if="isRequesting()(tab.name)" :height="300" :width="300" :border="5" />
+              <Loader type="table" :key="tab.action" v-if="isRequesting()(tab.name)" :fixed="true" />
               <data-section :key="`${tab.module}-${i}`" class="tab-content" v-else :module="tab.module" :dataType="tab.dataType" :reqKey="tab.name" :action="tab.action" :msgs="tab.msgs"></data-section>
             </template>
           </template>
@@ -92,22 +92,22 @@ import Message from './Message'
 import ItemNavigator from './ItemNavigator'
 import ExportControls from './ExportControls'
 import common from '../mixins/common'
-import Spinner from './Loaders/Spinner.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
 import TitleDetail from './General/TitleDetail.vue'
 import BackContent from './General/BackContent.vue'
+import Loader from './Loaders/Loader.vue'
 
 export default {
   name: 'data-page',
   components: {
-    Spinner,
     DataSection,
     ErrorPage,
     Message,
     ItemNavigator,
     ExportControls,
     TitleDetail,
-    BackContent
+    BackContent,
+    Loader
   },
   mixins: [
     common
