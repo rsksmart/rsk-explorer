@@ -197,6 +197,7 @@
         flex: 5;
         gap: 5px;
         align-items: center;
+        word-break: break-all;
         a {
           color: $white_400;
           &:hover {

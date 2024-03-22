@@ -1,5 +1,5 @@
 <template>
-  <div class="data-field" :style="cellStyle(field, value)" :class="fieldClass">
+  <div class="data-field" :class="fieldClass">
     <template v-if="field.renderAs">
       <component :is="field.renderAs" v-bind="renderAsProps({ field, value, filteredValue, row })"></component>
     </template>
@@ -78,7 +78,8 @@ export default {
       return getType(this.filteredValue)
     },
     link () {
-      return this.makeLink(this.field, this.row)
+      const value = this.makeLink(this.field, this.row)
+      return value === this.$route.path ? false : value
     },
     trim () {
       return this.computeTrim(this.field, this.value, this.filteredValue)

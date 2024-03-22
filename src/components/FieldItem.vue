@@ -4,7 +4,6 @@
     data-field(
       :field='parsedField'
       :row='data'
-      :style='cellStyle(field,getValue(field,data,true))'
       :delayed='delayed')
 
 </template>
