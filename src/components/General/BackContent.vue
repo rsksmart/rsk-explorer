@@ -1,8 +1,8 @@
 <template>
   <div class="back-content">
-    <router-link :to="routes[$route.name] || ''" class="flex item-center">
+    <router-link :to="routes[$route.name].route || ''" class="flex item-center">
       <icon name="back" :class="$route.name" />
-      <span :style="{color: PAGE_COLORS[$route.name].cl}">{{ `All ${$route.name}s` }}</span>
+      <span :style="{color: PAGE_COLORS[$route.name].cl}">{{ `All ${routes[$route.name].name}` }}</span>
     </router-link>
   </div>
 </template>
@@ -17,12 +17,34 @@ export default {
     return {
       PAGE_COLORS,
       routes: {
-        Block: '/blocks',
-        Transaction: '/txs',
-        Address: '/addresses',
-        'Internal transaction': '/txs',
-        Event: '/txs',
-        Token: '/tokens'
+        Block: {
+          route: '/blocks',
+          name: 'Blocks'
+        },
+        Transaction: {
+          route: '/txs',
+          name: 'Transactions'
+        },
+        Address: {
+          route: '/addresses',
+          name: 'Addresses'
+        },
+        'Internal transaction': {
+          route: '/txs',
+          name: 'Transactions'
+        },
+        Event: {
+          route: '/txs',
+          name: 'Transactions'
+        },
+        Token: {
+          route: '/tokens',
+          name: 'Tokens'
+        },
+        'Account Balance': {
+          route: '/balance',
+          name: 'Balance'
+        }
       }
     }
   }

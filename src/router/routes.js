@@ -81,6 +81,7 @@ export default [
   },
   {
     path: '/apps',
+    name: 'apps',
     component: AppsView
   }
 ]

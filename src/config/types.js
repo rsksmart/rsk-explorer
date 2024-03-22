@@ -28,6 +28,28 @@ export const ROUTES = {
   apps: 'apps'
 }
 
+export const PAGE_NAME = {
+  TXS: [
+    'Internal transaction',
+    'Transaction',
+    'Event',
+    'Transactions'
+  ],
+  TOKENS: [
+    'Token',
+    'Tokens',
+    'Token Account'
+  ],
+  ADDRESSES: [
+    'Address',
+    'Addresses'
+  ],
+  BLOCKS: [
+    'Block',
+    'Blocks'
+  ]
+}
+
 export const STATUS = {
   SUCCESS: 'SUCCESSFUL',
   FAIL: 'FAILED',

@@ -14,23 +14,26 @@
             <img class="home-active" src="@/assets/svg/home-active.svg" alt="home-icon">
             <span>Home</span>
           </router-link>
-          <router-link to="/blocks" class="link-blocks" :class="$route.name === 'Block' ? activeClasses : ''">
+          <router-link to="/blocks" class="link-blocks"
+            :class="PAGE_NAME.BLOCKS.some((v) => $route.name?.includes(v)) ? activeClasses : ''">
             <img class="base-icon" src="@/assets/svg/block-icon.svg" alt="block-icon">
             <img class="active-icon" src="@/assets/svg/block-active.svg" alt="block-icon">
             <span>Blocks</span>
           </router-link>
           <router-link to="/txs" class="link-txs"
-            :class="$route.name === 'Internal transaction' || $route.name === 'Transaction' || $route.name === 'Event' ? activeClasses : ''">
+            :class="PAGE_NAME.TXS.some((v) => $route.name?.includes(v)) ? activeClasses : ''">
             <img class="base-icon" src="@/assets/svg/tx-icon.svg" alt="transaction-icon">
             <img class="active-icon" src="@/assets/svg/tx-active.svg" alt="transaction-icon">
             <span>Transactions</span>
           </router-link>
-          <router-link to="/addresses" class="link-address" :class="$route.name === 'Address' ? activeClasses : ''">
+          <router-link to="/addresses" class="link-address"
+            :class="PAGE_NAME.ADDRESSES.some((v) => $route.name?.includes(v)) ? activeClasses : ''">
             <img class="base-icon" src="@/assets/svg/address-icon.svg" alt="address-icon">
             <img class="active-icon" src="@/assets/svg/address-active.svg" alt="address-icon">
             <span>Addresses</span>
           </router-link>
-          <router-link to="/tokens" class="link-tokens" :class="$route.name === 'Token' || $route.name === 'Token Account' ? activeClasses : ''">
+          <router-link to="/tokens" class="link-tokens"
+            :class="PAGE_NAME.TOKENS.some((v) => $route.name?.includes(v)) ? activeClasses : ''">
             <img class="base-icon" src="@/assets/svg/token-icon.svg" alt="token-icon">
             <img class="active-icon" src="@/assets/svg/token-active.svg" alt="token-icon">
             <span>Tokens</span>
@@ -51,12 +54,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { DOMAIN_STATS_TESTNET, DOMAIN_STATS_MAINNET } from '../../config/network'
+import { PAGE_NAME } from '@/config/types'
 
 export default {
-  components: {
-  },
   data () {
     return {
+      PAGE_NAME,
       DOMAIN_STATS_MAINNET,
       DOMAIN_STATS_TESTNET,
       activeClasses: 'router-link-exact-active router-link-active'

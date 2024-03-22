@@ -203,7 +203,7 @@
         display: block;
         object-fit: contain;
         flex-shrink: 0;
-        max-width: 100%;
+        width: 18px;
         max-height: 100%;
         margin-right: 12px;
       }
@@ -220,7 +220,7 @@
   }
   svg {
     fill: $white_400 !important;
-    margin-right: 14px;
+    margin-right: 17px;
   }
 
   .router-link-active {
