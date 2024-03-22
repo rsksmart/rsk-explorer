@@ -98,10 +98,6 @@ export const SET_STATS = (state, data) => {
   Vue.set(state, 'stats', data)
 }
 
-export const SET_BALANCES_STATUS = (state, data) => {
-  Vue.set(state, 'balancesStatus', data)
-}
-
 export const SET_EXPORT_KEY = (state, key) => {
   Vue.set(state.exports, key, { total: undefined, received: 0, timestamp: undefined })
 }

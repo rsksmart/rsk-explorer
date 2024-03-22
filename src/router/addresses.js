@@ -5,7 +5,6 @@ import { ROUTES as r } from '../config/types'
 import { TRANSFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 import store from '../store/'
 import { fillMessage, CHECKSUM_WARN } from '../config/messages'
-import { balancesMessages } from './balances'
 
 export default [
   {
@@ -109,8 +108,7 @@ export default [
           name: 'balances',
           dataType: 'balances',
           module: 'balances',
-          action: 'getBalances',
-          msgs: balancesMessages
+          action: 'getBalances'
         },
         {
           name: 'mined blocks',
