@@ -206,6 +206,10 @@
 
 .Transactions, .Transaction {
   .data-table {
+    overflow-x: auto;
+    .flex-table, table {
+      min-width: 1100px;
+    }
     table {
       table-layout: unset;
       td {
@@ -246,7 +250,7 @@
         }
       }
       .from-to-arrow {
-        width: 60px;
+        width: 40px;
       }
       .from-to-arrow {
         text-align: center;
@@ -286,6 +290,14 @@
     table {
       table-layout: unset;
       tr {
+        .field__name {
+          width: 200px;
+          .data-field {
+            justify-content: flex-start;
+            margin-left: 30px;
+            width: 100%;
+          }
+        }
         &:hover {
           .row-icon {
             svg {

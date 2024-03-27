@@ -10,7 +10,7 @@
         type="text"
         :value="value"
         @input.prevent="input"
-        @change.prevent="changeInput"
+        @keyup.enter="changeInput"
         @keyup.stop="onKey"
         :placeholder="onFocusValue ? placeholder : null"
         :class="cssClass"
@@ -43,6 +43,7 @@
 import { mapActions } from 'vuex'
 import { clamp } from '../../lib/js/utils'
 import Spinner from '../Loaders/Spinner.vue'
+import { ROUTES } from '../../config/types'
 export default {
   name: 'ctrl-search',
   components: {
@@ -64,7 +65,7 @@ export default {
     if (searchValue) this.value = searchValue
   },
   methods: {
-    ...mapActions(['searchExpand']),
+    ...mapActions(['searchExpand', 'clearSearchedResults']),
     setExpand () {
       if (window.innerWidth > 600) return
       this.expandSearch = !this.expandSearch
@@ -73,6 +74,7 @@ export default {
     clear () {
       this.value = ''
       this.selectResult(0)
+      this.clearSearchedResults()
     },
     input (event, type) {
       this.selectResult(0)
@@ -102,7 +104,6 @@ export default {
     onChange (event) {
       const value = this.value
       this.emit(event, 'change', value)
-      this.clear()
     },
     selectResult (result) {
       this.selectedResult = result
@@ -113,7 +114,6 @@ export default {
       if (link) this.$router.push(link)
       this.selectResult(key++)
       this.emitResult(event, result)
-      this.clear()
     },
     emitResult (event, result) {
       this.emit(event, 'result', result)
@@ -147,6 +147,14 @@ export default {
     },
     isLoading () {
       return !!this.loading
+    }
+  },
+  watch: {
+    $route () {
+      if (this.$route.name.toLowerCase() !== ROUTES.search.toLowerCase()) {
+        this.clearSearchedResults()
+        this.value = ''
+      }
     }
   }
 }

@@ -43,5 +43,8 @@ export const PAGE_COLORS = {
   },
   txPool: {
     cl: '#08FFD0'
+  },
+  'Account Balance': {
+    cl: '#FF71E1'
   }
 }

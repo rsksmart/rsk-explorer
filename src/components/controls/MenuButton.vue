@@ -19,9 +19,6 @@ export default {
   methods: {
     switchMenu () {
       this.enabled = !this.enabled
-      if (this.enabled) {
-        setTimeout(() => { this.enabled = false }, 3000)
-      }
     },
     hideMenu () {
       this.enabled = false

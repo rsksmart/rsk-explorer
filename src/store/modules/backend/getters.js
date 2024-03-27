@@ -86,8 +86,6 @@ export const isResponseBlockUpdated = (state, getters) => key => {
   if (metadata.block && lastBlock) return metadata.block.hash === lastBlock.hash
 }
 
-export const getBalancesStatus = state => state.balancesStatus
-
 export const isExportKey = state => key => {
   const value = state.exports[key]
   return value !== undefined && value !== null

@@ -57,6 +57,3 @@ export default {
 
 }
 </script>
-<style lang="stylus">
-  // @import ('../lib/styl/style.styl')
-</style>

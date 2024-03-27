@@ -1,7 +1,7 @@
 <template>
   <div class="title-detail flex">
     <icon :class="titleDescription" :name="icon"></icon>
-    <div class="text-white-100">
+    <div class="text-white-100 cursor-text">
       <tool-tip :text="value" :hideCopy="true" :trim="data[routerName].hideTrim" />
       <span class="capitalize"> {{ titleDescription }}</span>
     </div>
