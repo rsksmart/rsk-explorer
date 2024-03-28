@@ -1,16 +1,18 @@
 <template>
   <div class="content-explorer">
     <Navbar />
-    <div class="content-view">
+    <main class="content-view">
       <Sidebar />
       <div class="content-view-body">
         <connection-status v-if="!connected"></connection-status>
         <router-view />
       </div>
-    </div>
+    </main>
+    <Footer />
   </div>
 </template>
 <script>
+import Footer from '@/components/General/Footer.vue'
 import Navbar from '../Navigations/Navbar.vue'
 import Sidebar from '../Navigations/Sidebar.vue'
 import ConnectionStatus from '@/components/ConnectionStatus.vue'
@@ -20,7 +22,8 @@ export default {
   components: {
     Navbar,
     Sidebar,
-    ConnectionStatus
+    ConnectionStatus,
+    Footer
   },
   computed: {
     ...mapState({
