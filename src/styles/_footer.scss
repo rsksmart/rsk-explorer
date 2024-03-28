@@ -1,0 +1,44 @@
+footer {
+  color: $white_100;
+  margin: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .copy {
+    font-size: 12px;
+    color: #888888;
+  }
+
+  font-size: 14px;
+  .navigation {
+    display: flex;
+    gap: 20px;
+    a {
+      color: $white_100;
+      &:hover {
+        color: $white_400;
+      }
+    }
+  }
+  .social {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    svg {
+      height: 20px;
+      width: 25px;
+    }
+  }
+
+  @include tablet() {
+    display: block;
+    .navigation {
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+  }
+}
