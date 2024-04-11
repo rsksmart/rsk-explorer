@@ -257,8 +257,19 @@
     .box-head {
       display: flex;
       align-items: center;
-      padding: 0 24px;
+      justify-content: space-between;
+      padding-left: 24px;
       margin-bottom: 10px;
+    }
+    .box-title {
+      display: flex;
+      align-items: center;
+    }
+    .auto-update {
+      color: $white_400;
+      display: flex;
+      gap: 5px;
+      width: max-content;
     }
     .title {
       &::first-letter {
