@@ -2,7 +2,7 @@ import { EXPORT_FORMATS, EXPORT_ITEMS } from '../../../config/types'
 export default function () {
   return {
     menuToggle: false,
-    autoUpdateBlocks: false,
+    autoUpdateBlocks: true,
     sort: {},
     tables: {},
     exportFormat: EXPORT_FORMATS.JSON,
