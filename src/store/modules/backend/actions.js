@@ -30,10 +30,14 @@ export const socketNewTransactions = ({ state, commit, getters }, result) => {
   }
 }
 // handle newBlocks from blocks channel
-export const socketNewBlocks = ({ state, commit, getters }, result) => {
+export const socketNewBlocks = ({ state, commit, getters, dispatch, rootState }, result) => {
   const blocks = result.data || []
   const autoUpdate = getters.autoUpdate
   commit('LAST_BLOCKS', blocks)
+  if (rootState.autoUpdateBlocks) dispatch('updateBlocks')
+  if (rootState.route.path === '/') {
+    dispatch('fetchRouteData', { action: 'getTransactions', params: undefined, module: 'transactions', key: 'data' })
+  }
   if (!state.lastBlocksTime) commit('LAST_BLOCKS_TIME')
   if (!state.blocks.length || autoUpdate) {
     commit('SET_BLOCKS', blocks.slice())
