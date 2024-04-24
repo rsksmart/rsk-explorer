@@ -10,12 +10,12 @@ const createSearchKey = (value, type) => {
 export const clearSearchedResults = async ({ commit, dispatch, getters }) => {
   const keys = getters.searchKeysRequested
   commit('CLEAR_SEARCH_REQUEST')
-  await dispatch('clearRequests', keys)
+  // await dispatch('clearRequests', keys)
   return dispatch('clearResponses', keys)
 }
 
 export const updateSearchedValue = async ({ commit, dispatch, state }, value) => {
-  value = String(value).replace(/[\W_]+/g, '')
+  // value = String(value).replace(/[\W_]+/g, '')
   const lcValue = value.toLowerCase()
   value = (isHexString(value) && isTxOrBlockHash(lcValue)) ? lcValue : value
   if (state.value !== value) {

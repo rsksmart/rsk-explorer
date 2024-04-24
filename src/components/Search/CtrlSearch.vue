@@ -8,10 +8,10 @@
       <input
         class="search-input bg-primary"
         type="text"
-        :value="value"
-        @input.prevent="input"
-        @keyup.enter="changeInput"
-        @keyup.stop="onKey"
+        v-model="value"
+        @input.prevent="debouncedInput"
+        @keyup.enter="debouncedChangeInput"
+        @keyup.stop="debouncedOnKey"
         :placeholder="onFocusValue ? placeholder : null"
         :class="cssClass"
         @focus="onFocusValue = false"
@@ -57,12 +57,16 @@ export default {
       resultEmitted: null,
       focused: undefined,
       expandSearch: false,
-      onFocusValue: true
+      onFocusValue: true,
+      debounceTime: 800
     }
   },
   created () {
     const { searchValue } = this
     if (searchValue) this.value = searchValue
+    this.debouncedOnKey = this.debounce(this.onKey, this.debounceTime)
+    this.debouncedInput = this.debounce(this.input, this.debounceTime)
+    this.debouncedChangeInput = this.debounce(this.changeInput, this.debounceTime)
   },
   methods: {
     ...mapActions(['searchExpand', 'clearSearchedResults']),
@@ -80,7 +84,7 @@ export default {
       this.selectResult(0)
       const value = event.target.value
       this.value = value
-      const typeEvent = this.value.length > 10 ? 'change' : type
+      const typeEvent = type
       this.emit(event, typeEvent, value)
     },
     emit (event, type, value) {
@@ -138,6 +142,21 @@ export default {
     },
     onShowMore (event) {
       this.emit(event, 'showMore', this.value)
+    },
+    debounce (func, wait, immediate) {
+      let timeout
+      return function () {
+        const context = this
+        const args = arguments
+        const later = function () {
+          timeout = null
+          if (!immediate) func.apply(context, args)
+        }
+        const callNow = immediate && !timeout
+        clearTimeout(timeout)
+        timeout = setTimeout(later, wait)
+        if (callNow) func.apply(context, args)
+      }
     }
   },
   computed: {
