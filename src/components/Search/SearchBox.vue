@@ -15,7 +15,6 @@
 import { ROUTES as r } from '../../config/types'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import CtrlSearch from './CtrlSearch.vue'
-// const RESULTS_LENGTH = 10
 export default {
   name: 'search-box',
   components: {
@@ -91,18 +90,13 @@ export default {
       this.value = value
       if (this.isSearchPage) {
         history.pushState({}, document.title, value)
-        console.log('history: ', history)
       }
     },
-
     onResult ({ event, value }) {
-      console.log('value: onResult', value)
       this.setValue(value)
-      // if (value) this.clearRequests()
     },
     onInput ({ event, value }) {
       this.clearRequests()
-      console.log('!value || value.length < 2: ', !value || value.length < 2)
       if (!value || value.length < 2) return
       this.setValue(value)
       this.fetchSearch({ value })

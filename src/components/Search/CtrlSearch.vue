@@ -84,8 +84,7 @@ export default {
       this.selectResult(0)
       const value = event.target.value
       this.value = value
-      const typeEvent = type
-      this.emit(event, typeEvent, value)
+      this.emit(event, type, value)
     },
     emit (event, type, value) {
       type = type || event.type
