@@ -42,7 +42,8 @@ export const PAGE_NAME = {
   ],
   ADDRESSES: [
     'Address',
-    'Addresses'
+    'Addresses',
+    'Account Balance'
   ],
   BLOCKS: [
     'Block',
