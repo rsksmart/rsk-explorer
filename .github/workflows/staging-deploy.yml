@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Build site
-        run: npm run build-with-tracking:testnet
+        run: npm run build-with-tracking:staging
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
