@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       value: undefined,
-      msg: 'Search by address, block, tx, token name',
+      msg: 'Search by address, block, tx, token name, rns domain',
       msgTimeout: null,
       requestingTimeout: null
     }

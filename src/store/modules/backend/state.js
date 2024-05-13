@@ -26,7 +26,8 @@ export default function () {
       timestamp: 0
     },
     txPoolChart: [],
-    stats: {}
+    stats: {},
+    rns: {}
   }
 }
 

@@ -59,6 +59,12 @@ export const socketData = ({ state, commit, getters, dispatch }, res) => {
 
   const isExport = getters.isExportKey(key)
   if (isExport) return dispatch('exportPages', res)
+
+  if (res.action === 'getAddress') {
+    const domain = getters.getDomain(req.params.address)
+    res.data.rns = domain
+  }
+
   const response = Object.assign({}, state.responses[key])
   const updating = Object.assign(delayedObject(), response.delayed)
   const isUpdating = Boolean(!updating.registry && updating.fields.length)
