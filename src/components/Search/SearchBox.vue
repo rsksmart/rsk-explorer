@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { ROUTES as r } from '../../config/types'
+// import { ROUTES as r } from '../../config/types'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import CtrlSearch from './CtrlSearch.vue'
 export default {
@@ -79,11 +79,11 @@ export default {
       const link = this.getSearchLink()({ type, value })
       if (!link) return
       this.clearRequests()
-      this.$router.push(link, () => { })
+      // this.$router.push(link, () => { })
     },
     goToSearchPage (value) {
-      const link = `/${r.search}/${value}`
-      this.$router.push(link, () => { })
+      // const link = `/${r.search}/${value}`
+      // this.$router.push(link, () => { })
     },
 
     setValue (value) {
@@ -105,6 +105,7 @@ export default {
       await this.prepareSearch({ value })
       value = this.searched
       const { types } = this
+      console.log('types: ', types)
       if (!types || !types.length) {
         return this.goToSearchPage(value)
       } else if (types.length === 1) {
