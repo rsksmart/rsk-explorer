@@ -73,12 +73,7 @@ export default {
       onFocusValue: false,
       debounceTime: 800,
       isAddressValue: false,
-      typing: false,
-      allowedTypes: [
-        'block',
-        'itx',
-        'address'
-      ]
+      typing: false
     }
   },
   created () {
@@ -124,7 +119,6 @@ export default {
       this.selectResult(0)
       const value = event.target.value
       this.value = value
-      // const typeEvent = this.value.length > 20 ? 'change' : type
       this.emit(event, type, value)
       this.emit(event, 'change', value)
     },
@@ -133,33 +127,15 @@ export default {
       this.$emit(type, { value, event })
     },
     changeInput (event) {
-      console.log('changeInput: ')
       this.onFocus(false)
-      const { fullPath } = this.$route
-      console.log('fullPath: ', fullPath)
-      const vm = this
-      console.log('vm.$route.fullPath: ', vm.$route.fullPath)
-      console.log('vm.selectedResult: ', vm.selectedResult)
       if (this.currentType && this.searchedTypes.length) {
         this.$router.push(this.linkToSearch, () => { })
       } else {
         const link = `/${ROUTES.search}/${this.value}`
         this.$router.push(link, () => { })
       }
-      // setTimeout(() => {
-      //   console.log('vm.selectedResult: ', vm.selectedResult)
-      //   if (!vm.selectedResult) {
-      //     if (fullPath === vm.$route.fullPath) {
-      //       vm.onChange(event)
-      //     } else {
-      //       this.value = ''
-      //       vm.emitResult(event, null)
-      //     }
-      //   }
-      // }, 200)
     },
     onChange (event) {
-      console.log('onChange: ')
       const value = this.value
       this.emit(event, 'change', value)
     },
@@ -175,17 +151,14 @@ export default {
       this.emitResult(event, result)
     },
     emitResult (event, result) {
-      console.log('event, result: ', event, result)
       this.emit(event, 'result', result)
     },
     onKey (event) {
       let { selectedResult, results } = this
       if (!results || results.length < 1) return
       const { code } = event
-      console.log('onKey: ', code)
       // open result
       if (['Enter'].includes(code) && selectedResult) {
-        console.log('ENTER ====== selectedResult: ')
         this.gotoResult(event, (selectedResult - 1))
         return
       }
