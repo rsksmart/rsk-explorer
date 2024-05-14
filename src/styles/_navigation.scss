@@ -99,7 +99,7 @@
 .search-content {
   z-index: 10;
   position: relative;
-  width: 420px;
+  width: 470px;
   height: 40px;
   border-radius: 90px;
   padding: 0 16px;
@@ -151,7 +151,7 @@
     left: 0;
     right: 0;
     border-radius: 20px;
-    width: 420px;
+    width: 470px;
     padding: 16px;
     min-height: 80px;
     height: max-content;
@@ -173,8 +173,8 @@
       border: 1px solid rgb(49, 49, 49);
     }
     .title-address {
-      color: $white_400;
-      font-weight: 600;
+      color: $white_100;
+      font-weight: 700;
       margin-bottom: 10px;
     }
 
@@ -188,7 +188,8 @@
       }
       &.search-address {
         background-color: $newbw_700;
-        color: $white_100;
+        font-weight: 500;
+        color: white;
       }
     }
     &.no-results {
@@ -512,7 +513,7 @@
         }
         .search-results {
           margin-top: 5px;
-          box-shadow: 3px 5px 10px #272727;
+          width: 350px;
         }
         .btn-close {
           cursor: pointer;
