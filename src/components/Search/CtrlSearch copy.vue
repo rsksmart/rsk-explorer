@@ -1,55 +1,49 @@
 <template>
-  <div class="search-container">
-    <div class="search-content" :class="`${onFocusValue ? 'search-content-focus' : ''}`">
-      <button v-if="!expandSearch" @click="setExpand" class="btn-search">
-        <img src="@/assets/svg/search.svg" alt="">
+  <div class="search-content" :class="`${!onFocusValue ? 'search-content-focus' : ''}`">
+    <button v-if="!expandSearch" @click="setExpand" class="btn-search">
+      <img src="@/assets/svg/search.svg" alt="">
+    </button>
+    <button v-else class="btn-close" @click="setExpand">X</button>
+    <div class="content-input">
+      <input
+        class="search-input"
+        type="text"
+        v-model="value"
+        @input.prevent="handleInput"
+        @keyup.enter="debouncedChangeInput"
+        @keyup.stop="debouncedOnKey"
+        :placeholder="onFocusValue ? placeholder : null"
+        :class="cssClass"
+        @focus="onFocus(false)"
+        @blur="onFocus(true)"
+      >
+      <button class="btn-clear" @click="clear" v-if="value">
+        x
       </button>
-      <button v-else class="btn-close" @click="setExpand">X</button>
-      <div class="content-input">
-        <input
-          class="search-input"
-          type="text"
-          v-model="value"
-          ref="inputRef"
-          @input.prevent="handleInput"
-          @keyup.enter="debouncedChangeInput"
-          @keyup.stop="debouncedOnKey"
-          :placeholder="!onFocusValue ? placeholder : null"
-          :class="cssClass"
-          @focus="onFocus(true)"
-          @blur="isSearchPage ? onFocus(false) : null"
-        >
-        <button class="btn-clear" @click="btnClear" v-if="value">
-          x
-        </button>
-        <Spinner v-if="isLoading" :width="20" :height="20" :border="2" />
-      </div>
-      <div class="search-results bg-secondary" v-if="value && onFocusValue && !isSearchPage && !typing && !isLoading">
-        <template v-if="(currentType && searchedTypes.length > 0)">
-          <div class="title-address capitalize">{{ currentType }}</div>
-          <router-link :to="`${linkToSearch}`" class="search-address">{{ value }}</router-link>
-        </template>
-        <div v-else-if="results.length" ref="results">
-          <template v-for="(result, i) in results">
-            <div v-if="result.link && result.value"
-              :class="{ selected: selectedResult === i+1 }"
-              :key="`${result.value}${i}`"
-              :ref="`result-${i}`">
-              <a
-                :href="result.link"
-                @touchend.passive="gotoResult($event, i)"
-                @click="gotoResult($event, i)">
-                {{ result.name || result.value }}
-              </a>
-            </div>
-          </template>
-        </div>
-        <div class="no-results bg-secondary" v-else-if="onFocusValue && value && !typing && !isLoading && !isAddressValue && !isSearchPage">
-          <div class="title-address">No results found.</div>
-        </div>
-      </div>
+      <Spinner v-if="isLoading" :width="20" :height="20" :border="2" />
     </div>
-    <div class="search-background" v-if="onFocusValue && !isSearchPage" @click="onFocus(false)"></div>
+    <div class="search-results bg-secondary" v-if="value.length > 40 && isAddressValue & !onFocusValue">
+      <div class="title-address">{{ currentTypes }}</div>
+      <router-link :to="`/address/${value}`" class="search-address">{{ value }}</router-link>
+    </div>
+    <div class="search-results bg-secondary" v-if="results.length" ref="results">
+      <template v-for="(result, i) in results">
+        <div v-if="result.link && result.value"
+          :class="{ selected: selectedResult === i+1 }"
+          :key="`${result.value}${i}`"
+          :ref="`result-${i}`">
+          <a
+            :href="result.link"
+            @touchend.passive="gotoResult($event, i)"
+            @click="gotoResult($event, i)">
+            {{ result.name || result.value }}
+          </a>
+        </div>
+      </template>
+    </div>
+    <div class="search-results no-results bg-secondary" v-else-if="!onFocusValue && value && !typing && !isLoading && !isAddressValue">
+      <div class="title-address">No results found.</div>
+    </div>
   </div>
 </template>
 <script>
@@ -70,15 +64,10 @@ export default {
       resultEmitted: null,
       focused: undefined,
       expandSearch: false,
-      onFocusValue: false,
+      onFocusValue: true,
       debounceTime: 800,
       isAddressValue: false,
-      typing: false,
-      allowedTypes: [
-        'block',
-        'itx',
-        'address'
-      ]
+      typing: false
     }
   },
   created () {
@@ -96,17 +85,16 @@ export default {
       'searchTypes',
       'fetchSearch'
     ]),
-    btnClear () {
-      this.clear()
-      this.$refs.inputRef.focus()
-    },
     handleInput (event) {
       this.debouncedInput(event)
       this.typing = true
     },
     onFocus (value) {
+      // if (!value) this.onFocusValue = value
       setTimeout(() => {
         this.onFocusValue = value
+        if (value) this.clearSearchedResults()
+        this.$emit('bgChange', value)
       }, 100)
     },
     setExpand () {
@@ -119,14 +107,24 @@ export default {
       this.selectResult(0)
       this.clearSearchedResults()
     },
-    input (event, type) {
+    async input (event, type) {
       this.typing = false
       this.selectResult(0)
-      const value = event.target.value
-      this.value = value
-      // const typeEvent = this.value.length > 20 ? 'change' : type
-      this.emit(event, type, value)
-      this.emit(event, 'change', value)
+      await this.prepareSearch({ value: this.value })
+      this.value = event.target.value
+      const link = this.getSearchLink({ type: this.types, value: this.value })
+      console.log('link: ', link)
+      // if (this.types.length)
+      await this.searchTypes({ types: this.types, value: this.value })
+      await this.fetchSearch({ value: this.value })
+      const link1 = this.getSearchLink({ type: this.types, value: this.value })
+      console.log('link1: ', link1)
+      // const typeEvent = this.value.length > 10 ? 'change' : type
+      if (this.value) {
+        this.isAddressValue = this.value.includes('0x')
+      } else {
+      }
+      this.emit(event, type, this.value)
     },
     emit (event, type, value) {
       type = type || event.type
@@ -134,32 +132,20 @@ export default {
     },
     changeInput (event) {
       console.log('changeInput: ')
-      this.onFocus(false)
       const { fullPath } = this.$route
-      console.log('fullPath: ', fullPath)
       const vm = this
-      console.log('vm.$route.fullPath: ', vm.$route.fullPath)
-      console.log('vm.selectedResult: ', vm.selectedResult)
-      if (this.currentType && this.searchedTypes.length) {
-        this.$router.push(this.linkToSearch, () => { })
-      } else {
-        const link = `/${ROUTES.search}/${this.value}`
-        this.$router.push(link, () => { })
-      }
-      // setTimeout(() => {
-      //   console.log('vm.selectedResult: ', vm.selectedResult)
-      //   if (!vm.selectedResult) {
-      //     if (fullPath === vm.$route.fullPath) {
-      //       vm.onChange(event)
-      //     } else {
-      //       this.value = ''
-      //       vm.emitResult(event, null)
-      //     }
-      //   }
-      // }, 200)
+      setTimeout(() => {
+        if (!vm.selectedResult) {
+          if (fullPath === vm.$route.fullPath) {
+            vm.onChange(event)
+          } else {
+            this.value = ''
+            vm.emitResult(event, null)
+          }
+        }
+      }, 200)
     },
     onChange (event) {
-      console.log('onChange: ')
       const value = this.value
       this.emit(event, 'change', value)
     },
@@ -167,7 +153,6 @@ export default {
       this.selectedResult = result
     },
     gotoResult (event, key) {
-      this.onFocus(false)
       const result = this.results[key]
       const { link } = result
       if (link) this.$router.push(link)
@@ -175,17 +160,15 @@ export default {
       this.emitResult(event, result)
     },
     emitResult (event, result) {
-      console.log('event, result: ', event, result)
       this.emit(event, 'result', result)
     },
     onKey (event) {
+      console.log('onKey: ')
       let { selectedResult, results } = this
       if (!results || results.length < 1) return
       const { code } = event
-      console.log('onKey: ', code)
       // open result
       if (['Enter'].includes(code) && selectedResult) {
-        console.log('ENTER ====== selectedResult: ')
         this.gotoResult(event, (selectedResult - 1))
         return
       }
@@ -219,9 +202,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      searchedTypes: 'searchedTypes',
-      currentType: 'searchedType',
-      linkToSearch: 'linkToSearch'
+      types: 'searchedTypes',
+      currentTypes: 'searchedType',
+      getSearchLink: 'getSearchLink',
+      currentType
     }),
     totalResults () {
       const { results } = this
@@ -229,15 +213,10 @@ export default {
     },
     isLoading () {
       return !!this.loading
-    },
-    isSearchPage () {
-      return this.$route.name.toLowerCase() === ROUTES.search.toLowerCase()
     }
   },
   watch: {
     $route () {
-      this.$refs.inputRef.blur()
-      this.onFocus(false)
       if (this.$route.name.toLowerCase() !== ROUTES.search.toLowerCase()) {
         this.clearSearchedResults()
         this.value = ''

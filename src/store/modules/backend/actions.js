@@ -35,7 +35,8 @@ export const socketNewBlocks = ({ state, commit, getters, dispatch, rootState },
   const autoUpdate = getters.autoUpdate
   commit('LAST_BLOCKS', blocks)
   if (rootState.autoUpdateBlocks) dispatch('updateBlocks')
-  if (rootState.route.path === '/') {
+  if (rootState.route.path === '/' && autoUpdate) {
+    commit('LAST_BLOCKS_TIME', blocks[0].timestamp)
     dispatch('fetchRouteData', { action: 'getTransactions', params: undefined, module: 'transactions', key: 'data' })
   }
   if (!state.lastBlocksTime) commit('LAST_BLOCKS_TIME')

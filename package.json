@@ -27,6 +27,7 @@
     "env-cmd": "^10.1.0",
     "highlight.js": "^9.18.3",
     "highlightjs-solidity": "git+https://github.com/highlightjs/highlightjs-solidity.git",
+    "keccak": "^3.0.4",
     "moment": "^2.27.0",
     "socket.io-client": "^2.3.0",
     "streamsaver": "^2.0.5",

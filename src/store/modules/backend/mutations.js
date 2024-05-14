@@ -19,8 +19,7 @@ export const LAST_BLOCKS = (state, blocks) => {
 }
 
 export const LAST_BLOCKS_TIME = (state, time) => {
-  if (undefined === time) time = Date.now()
-  state.lastBlocksTime = time
+  state.lastBlocksTime = time ? new Date(time * 1000) : Date.now()
 }
 export const SET_BLOCKS = (state, blocks) => {
   state.blocks = blocks
