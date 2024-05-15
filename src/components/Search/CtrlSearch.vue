@@ -22,7 +22,7 @@
         <button class="btn-clear" @click="btnClear" v-if="value">
           x
         </button>
-        <Spinner v-if="isLoading" :width="20" :height="20" :border="2" />
+        <Spinner v-if="isLoading || typing" :width="20" :height="20" :border="2" />
       </div>
       <div class="search-results bg-secondary" v-if="value && onFocusValue && !isSearchPage && !typing && !isLoading">
         <template v-if="(currentType && searchedTypes.length > 0)">
@@ -44,7 +44,7 @@
             </div>
           </template>
         </div>
-        <div class="no-results bg-secondary" v-else-if="onFocusValue && value && !typing && !isLoading && !isAddressValue && !isSearchPage">
+        <div class="no-results bg-secondary" v-else-if="onFocusValue && value && !typing && !isLoading && !isSearchPage">
           <div class="title-address">No results found.</div>
         </div>
       </div>
@@ -72,7 +72,6 @@ export default {
       expandSearch: false,
       onFocusValue: false,
       debounceTime: 800,
-      isAddressValue: false,
       typing: false
     }
   },
@@ -115,7 +114,6 @@ export default {
       this.clearSearchedResults()
     },
     input (event, type) {
-      this.typing = false
       this.selectResult(0)
       const value = event.target.value
       this.value = value
@@ -125,6 +123,11 @@ export default {
     emit (event, type, value) {
       type = type || event.type
       this.$emit(type, { value, event })
+      let timer = 0
+      if (value.includes('.rsk')) timer = 1500
+      setTimeout(() => {
+        this.typing = false
+      }, timer)
     },
     changeInput (event) {
       this.onFocus(false)
