@@ -19,13 +19,10 @@
         <div class="flex item-end">
           <div class="box-info">
             <div class="flex text-white-400 field-content">
-              <div class="half from-to flex item-center" v-if="tx.txType == 'normal'">
+              <div class="half from-to flex item-center">
                 <render-field class="small from" :field="fields.from" :row="tx" />
                 <icon class="from-to-arrow" name="arrow-right"></icon>
                 <render-field class="small to" :field="fields.to" :row="tx" />
-              </div>
-              <div class="half contract" v-else>
-                <span>{{ tx.txType }}</span>
               </div>
               <div class="half soft">
                 <field-title class="small" :field="fields.time"></field-title>
@@ -34,7 +31,7 @@
                   <icon name="triangle-arrow-right" />
                 </router-link>
               </div>
-              <div class="half flex" v-if="tx.txType == 'normal'">
+              <div class="half flex">
                 <img src="@/assets/svg/btc-orange.svg" alt="">
                 <render-field :field="fields.value" :row="tx" />
               </div>

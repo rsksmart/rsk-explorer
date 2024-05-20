@@ -10,6 +10,10 @@ export const transactions = state => {
   return state.transactions
 }
 
+export const lastTransactions = state => {
+  return state.responses?.data?.data
+}
+
 export const pendingBlocks = state => {
   return Object.keys(state.pendingBlocks).length
 }

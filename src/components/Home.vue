@@ -12,9 +12,8 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import LastBlocks from '@/components/home/Block/LastBlocks.vue'
-import { ROUTES as r } from '../config/types'
 import StatsContent from '@/components/home/StatsContent.vue'
 import LastBlock from '@/components/home/Block/LastBlock.vue'
 import TxDensityChart from '@/components/Charts/TxDensityChart.vue'
@@ -28,32 +27,13 @@ export default {
     LastBlock,
     TxDensityChart
   },
-  data () {
-    return {
-      topBoxHeight: 0,
-      r
-    }
-  },
   computed: {
     ...mapState({
-      lastBlocks: state => state.backend.lastBlocks,
-      autoUpdate: state => state.config.autoUpdateBlocks
+      lastBlocks: state => state.backend.lastBlocks
     }),
     ...mapGetters({
-      pending: 'pendingBlocks',
       appSize: 'getSize'
     })
-  },
-  methods: {
-    ...mapActions([
-      'updateBlocks',
-      'setAutoUpdate'
-    ]),
-    setAupdate (value) {
-      this.updateBlocks()
-      this.setAutoUpdate(value)
-    }
   }
-
 }
 </script>
