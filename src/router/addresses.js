@@ -1,6 +1,8 @@
 import DataPage from '@/components/DataPage'
 import DataItem from '@/components/DataItem'
 import ContractCode from '@/components/ContractCode'
+import ContractInteraction from '@/components/ContractInteraction'
+
 import { ROUTES as r } from '../config/types'
 import { TRANSFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 import store from '../store/'
@@ -59,6 +61,12 @@ export default [
             const { verification } = data
             if (verification && verification.match === true) return 'check'
           }
+        },
+        {
+          name: 'Contract Interaction',
+          component: ContractInteraction,
+          render: data => (data && data.type === 'contract' && !data.isNative && data.verification),
+          hideTabs: true
         }
       ],
       dataType: 'address',
