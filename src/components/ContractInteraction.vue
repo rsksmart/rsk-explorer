@@ -23,16 +23,20 @@
           <!-- Inputs -->
           <div v-if="method.inputs && method.inputs.length > 0">
             <div class="method-input" v-for="(input, i) in method.inputs" :key="i">
-              <label class="method-input-label">
-                <p>[{{ input.name || `${i}` }}]</p>
-                <span class="method-input-type">({{ input.type }})</span>
+              <label class="label">
+                <p>{{ input.name || '&lt;input&gt;' }}</p>
+                <span class="type">({{ input.type }})</span>
               </label>
               <input class="method-input-field" type="text" v-model="method.interactionData.inputsValues[i]" :placeholder="input.name || i">
             </div>
           </div>
           <!-- Result -->
           <div class="method-result">
-            <p class="method-result-value">{{ method.interactionData.result ?? '(result)' }}</p>
+            <label class="label">
+                <p>Result</p>
+                <span class="type">({{ method.outputs[0].type}})</span>
+              </label>
+            <p class="method-result-value">{{ method.interactionData.result ?? 'result' }}</p>
             <p class="method-result-message" v-if="method.interactionData.message">Error: {{ method.interactionData.message }}</p>
           </div>
         </div>
@@ -43,7 +47,7 @@
 
 <script>
 import { jsonRpcProvider } from '../jsonRpcProvider'
-import { ethers, isAddress } from 'ethers'
+import { ethers } from 'ethers'
 
 export default {
   name: 'contract-interaction',
@@ -213,36 +217,57 @@ export default {
         const contractInstance = this.getContractInstance()
         const args = inputsValues
 
-        console.log({ methodName, methodIndex, method, inputsValues, contractInstance })
-
         // inputs validations
-        method.inputs.forEach((input, index) => {
-          // addresses
-          if (input.type === 'address') {
-            if (!isAddress(args[index])) throw new Error(`[${input.name}] must be a valid address`)
+        if (inputsValues.length < method.inputs.length) throw new Error(`Invalid number of parameters for "${methodName}". Got ${inputsValues.length} expected ${method.inputs.length}!`)
 
+        method.inputs.forEach((input, index) => {
+          const { type } = input
+
+          if (type === 'address') {
             // normalize non checksummed addresses
-            args[index] = args[index].toLowerCase()
+            args[index] = this.normalizeAddress(args[index])
+          } else if (type === 'bool') {
+            if (!this.isValidBoolean(args[index])) throw new Error('Invalid boolean input (possible values: true, false, 1, 0)')
           }
-          // TODO: validate all the other types
+          /*
+            OK bool (uint8 restricted to values 0 and 1 in EVM. Can be 0, 1, true, false)
+            OK uint8, uint16, uint24... uint256 = uint
+            OK int8, int16, int24... int256 = int
+            OK address == uint160 (type: "address", internalType: "address payable")
+            OK address payable == uint160 (type: "address", internalType: "address payable")
+            OK bytes1, bytes2, bytes3... bytes32
+            OK string
+            OK (not required) enum (https://docs.soliditylang.org/en/latest/types.html#enums)
+            OK Custom types (based on underlying types: https://docs.soliditylang.org/en/latest/types.html#user-defined-value-types)
+          */
         })
 
         const result = await contractInstance[methodName](...args)
 
         console.log('Result:', result)
 
-        // TODO: format outputs according to output type
-        // const formattedResult = result
-
         this.$set(method.interactionData, 'result', result)
       } catch (error) {
-        console.error(error)
+        console.log(error.message)
+
         this.$set(method.interactionData, 'result', 'error')
         this.$set(method.interactionData, 'message', error.message)
       }
     },
     state () {
       console.dir(this.$data, { depth: null })
+    },
+    validateString (value) {
+      if (typeof value !== 'string') throw new Error('Invalid string')
+    },
+    normalizeAddress (address) {
+      this.validateString(address)
+      return address.toLowerCase()
+    },
+    isValidBoolean (text) {
+      this.validateString(text)
+
+      return /^(true|false|1|0)$/i.test(text)
     }
   },
   mounted () {
@@ -316,13 +341,13 @@ export default {
   width: 100%;
 }
 
-.method-input-label {
+.label {
   display: flex;
   gap: 2px;
   align-items: center;
 }
 
-.method-input-type {
+.type {
   font-style: italic;
   font-size: 12px;
 }
