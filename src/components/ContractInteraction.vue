@@ -80,18 +80,18 @@ export default {
     parsedAbi () {
       const CATEGORIES = this.abiCategories
 
-      this.abi.forEach(value => {
-        const { type, stateMutability } = value
+      this.abi.forEach(fragment => {
+        const { type, stateMutability } = fragment
 
         if (type === 'constructor') {
-          this.registerAbiFragment(value, CATEGORIES.CONTRACT_CONSTRUCTOR)
+          this.registerAbiFragment(fragment, CATEGORIES.CONTRACT_CONSTRUCTOR)
         } else if (type === 'event') {
-          this.registerAbiFragment(value, CATEGORIES.EVENTS)
+          this.registerAbiFragment(fragment, CATEGORIES.EVENTS)
         } else if (type === 'function') {
           if (stateMutability === 'view') {
-            this.registerAbiFragment(value, CATEGORIES.READ_METHODS)
+            this.registerAbiFragment(fragment, CATEGORIES.READ_METHODS)
           } else if (stateMutability === 'nonpayable') {
-            this.registerAbiFragment(value, CATEGORIES.WRITE_METHODS)
+            this.registerAbiFragment(fragment, CATEGORIES.WRITE_METHODS)
           }
         }
       })
