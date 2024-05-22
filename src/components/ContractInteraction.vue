@@ -66,8 +66,13 @@ export default {
     verification () {
       return this.getData.verification || {}
     },
+    stringifiedAbi () {
+      const { verification } = this
+      const abi = (verification) ? verification.abi : null
+      return (abi) ? JSON.stringify(abi, null, 2) : null
+    },
     abi () {
-      return this.verification ? this.verification.abi : []
+      return JSON.parse(this.stringifiedAbi)
     },
     abiCategories () {
       return this.CATEGORIES
