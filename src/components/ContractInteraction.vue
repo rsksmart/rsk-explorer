@@ -19,25 +19,30 @@
       <div class="methods-list">
         <h3 class="methods-category-title capitalize">Read Methods ({{ contractAbi.readMethods.length }})</h3>
         <div class="method" v-for="(method, index) of contractAbi.readMethods" :key="index">
-          <button class="method-name button" @click="contractCall(method.name, method.interactionData.inputsValues)">{{ method.name }}</button>
+          <button class="method-name button" @click="contractCall(method.name, method.interactionData.inputs)">{{ method.name }}</button>
           <!-- Inputs -->
           <div v-if="method.inputs && method.inputs.length > 0">
-            <div class="method-input" v-for="(input, i) in method.inputs" :key="i">
+            <div class="method-input" v-for="(input, i) of method.inputs" :key="i">
               <label class="label">
                 <p>{{ input.name || '&lt;input&gt;' }}</p>
                 <span class="type">({{ input.type }})</span>
               </label>
-              <input class="method-input-field" type="text" v-model="method.interactionData.inputsValues[i]" :placeholder="input.name || i">
+              <input class="method-input-field" type="text" v-model="method.interactionData.inputs[i]" :placeholder="input.name || i">
             </div>
           </div>
           <!-- Result -->
-          <div class="method-result">
+          <div class="divider"></div>
+          <div v-if="method.outputs && method.outputs.length > 0">
             <label class="label">
-                <p>Result</p>
-                <span class="type">({{ method.outputs[0].type}})</span>
-              </label>
-            <p class="method-result-value">{{ method.interactionData.result ?? 'result' }}</p>
-            <p class="method-result-message" v-if="method.interactionData.message">Error: {{ method.interactionData.message }}</p>
+              <p>result</p>
+              <span class="type">({{ method.outputs.map(output => output.type).join(', ') }})</span>
+            </label>
+            <div v-for="(output, i) of method.outputs" :key="i">
+              <div class="method-output">
+                <p class="method-output-value">{{ method.interactionData.outputs[i] ?? 'result' }}</p>
+              </div>
+            </div>
+            <p class="method-output-message" v-if="method.interactionData.message.content" :class="`interaction-message ${method.interactionData.message.style}`">{{ method.interactionData.message.content }}</p>
           </div>
         </div>
       </div>
@@ -91,9 +96,12 @@ export default {
                   ... other outputs ...
                 ],
                 interactionData: {
-                  inputsValues: [inputValue1, inputValue2, ...]
-                  result: null | response from rpc api
-                  message: null | result message depending on result
+                  inputs: [inputValue1, inputValue2, ...]
+                  outputs: [outputValue1, outputValue2, ...]
+                  message: {
+                    content: null | result message
+                    style: 'message-error' | 'message-info'
+                  }
                 }
               }
               ... other methods ...
@@ -142,9 +150,12 @@ export default {
           parsedAbi[category].push(value)
         } else if (category === CATEGORIES.READ_METHODS || category === CATEGORIES.WRITE_METHODS) {
           this.$set(value, 'interactionData', {
-            inputsValues: [],
-            result: null,
-            message: null
+            inputs: [],
+            outputs: [],
+            message: {
+              content: null,
+              style: 'message-info'
+            }
           })
 
           parsedAbi[category].push(value)
@@ -207,18 +218,19 @@ export default {
 
       return this.contractInstance
     },
-    async contractCall (methodName, inputsValues) {
+    async contractCall (methodName, inputs) {
       const methodIndex = this.contractAbi.readMethods.findIndex(m => m.name === methodName)
       const method = this.contractAbi.readMethods[methodIndex]
-      this.$set(method.interactionData, 'result', 'calling contract...')
-      this.$set(method.interactionData, 'message', null)
+      this.$set(method.interactionData, 'message', { content: 'calling contract...', style: 'message-info' })
+
+      console.log({ methodName, inputs, method })
 
       try {
         const contractInstance = this.getContractInstance()
-        const args = inputsValues
+        const args = inputs
 
         // inputs validations
-        if (inputsValues.length < method.inputs.length) throw new Error(`Invalid number of parameters for "${methodName}". Got ${inputsValues.length} expected ${method.inputs.length}!`)
+        if (inputs.length < method.inputs.length) throw new Error(`Invalid number of parameters for "${methodName}". Got ${inputs.length} expected ${method.inputs.length}!`)
 
         method.inputs.forEach((input, index) => {
           const { type } = input
@@ -242,16 +254,27 @@ export default {
           */
         })
 
+        // Note: When function has multiple outputs, ethers returns result as a proxy
         const result = await contractInstance[methodName](...args)
-
         console.log('Result:', result)
 
-        this.$set(method.interactionData, 'result', result)
+        if (method.outputs.length > 1) {
+          method.outputs.forEach((_, index) => {
+            console.log({ index, result: result[index] })
+            this.$set(method.interactionData.outputs, index, result[index])
+          })
+        } else {
+          // single output
+          this.$set(method.interactionData.outputs, 0, result)
+        }
+
+        this.$set(method.interactionData, 'message', { content: null, style: 'message-info' })
+        console.log({ method })
       } catch (error) {
         console.log(error.message)
 
-        this.$set(method.interactionData, 'result', 'error')
-        this.$set(method.interactionData, 'message', error.message)
+        this.$set(method.interactionData, 'outputs', [])
+        this.$set(method.interactionData, 'message', { content: error.message, style: 'message-error' })
       }
     },
     state () {
@@ -368,16 +391,16 @@ export default {
   background-color: #555;
 }
 
-.method-result {
-  margin-top: 20px;
+.method-output {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
-.method-result-value {
+.method-output-value {
   padding: 4px;
-  border: 1px solid transparent;
+  border: 1px solid #fff;
   border-radius: 4px;
   background-color: #444;
   color: #ccc;
@@ -385,9 +408,24 @@ export default {
   align-items: center;
 }
 
-.method-result-message {
+.interaction-message {
   padding: 5px;
+}
+
+.message-info {
+  color: #ccc;
+}
+
+.message-error {
   color: #f00;
+}
+
+.divider {
+  height: 1px;
+  background-color: #888;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 </style>
