@@ -4,7 +4,7 @@
     <div class="method" v-for="(method, index) in methods" :key="index">
       <button class="method-name button" @click="contractCall(method.name, method.interactionData.inputs, methodsCategory)">{{ method.name }}</button>
       <!-- Inputs -->
-      <div v-if="method.inputs && method.inputs.length > 0">
+      <div v-if="method.inputs">
         <div class="method-input" v-for="(input, i) in method.inputs" :key="i">
           <label class="label">
             <p>{{ input.name || '&lt;input&gt;' }}</p>
@@ -15,10 +15,10 @@
       </div>
       <!-- Result -->
       <div class="divider"></div>
-      <div v-if="method.outputs && method.outputs.length > 0">
+      <div v-if="method.outputs">
         <label class="label">
           <p>result</p>
-          <span class="type">({{ method.outputs.map(output => output.type).join(', ') }})</span>
+          <span v-if="method.outputs.length" class="type">({{ method.outputs.map(output => output.type).join(', ') }})</span>
         </label>
         <div v-for="(output, i) in method.outputs" :key="i">
           <div class="method-output">
