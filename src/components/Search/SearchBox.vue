@@ -75,9 +75,7 @@ export default {
       this.clearSearchedResults()
     },
     goTo ({ type, value }) {
-      const link = this.getSearchLink()({ type, value })
-      if (!link) return
-      this.clearRequests()
+      this.getSearchLink()({ type, value })
     },
     setValue (value) {
       this.value = value

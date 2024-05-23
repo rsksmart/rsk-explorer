@@ -18,7 +18,6 @@ export const clearSearchedResults = async ({ commit, dispatch, getters }) => {
 }
 
 export const updateSearchedValue = async ({ commit, dispatch, state }, value) => {
-  // value = String(value).replace(/[\W_]+/g, '')
   if (value.match(/.rsk/)) {
     try {
       const address = await getAddr(value)
@@ -28,8 +27,6 @@ export const updateSearchedValue = async ({ commit, dispatch, state }, value) =>
     } catch (error) {
       // console.error(error.message, value)
     }
-  } else {
-    value = String(value).replace(/[\W_]+/g, '')
   }
   const lcValue = value.toLowerCase()
   value = (isHexString(value) && isTxOrBlockHash(lcValue)) ? lcValue : value

@@ -30,6 +30,7 @@
           <router-link :to="`${linkToSearch}`" class="search-address">{{ value }}</router-link>
         </template>
         <div v-else-if="results.length" ref="results">
+          <div class="title-address capitalize">Result:</div>
           <template v-for="(result, i) in results">
             <div v-if="result.link && result.value"
               :class="{ selected: selectedResult === i+1 }"
