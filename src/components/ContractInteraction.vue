@@ -1,19 +1,6 @@
 <template>
   <!-- Contract Interaction -->
   <div v-if="verification" class="contract-interaction section">
-    <!-- TODO -->
-    <!-- OK - Decide if apikey and json rpc call should be made directly or through explorer api (what do we win by coupling the jsonrpc calls to the explore api?) -->
-    <!-- Add contract methods: title + input (if required) + result -->
-    <!-- Add ethers to enable metamask wallet connection (required for sending txs (writes)) -->
-    <!-- Connect to explorer API for requests -->
-    <!-- Talk with Carlos about UI/UX -->
-    <!-- <h3>Dev</h3>
-    <button class="btn" @click="state">Component state</button>
-    <button class="btn" @click="printAddressData">Address data</button>
-    <button class="btn" @click="printJsonProvider">Json Provider</button>
-    <button class="btn" @click="printRawContractABI">Raw Contract ABI</button>
-    <button class="btn" @click="printParsedContractABI">Parsed Contract ABI</button>
-    <br><br><br> -->
     <button class="btn" @click="connectToMetamask">Connect to Metamask</button>
     <div v-if="this.signer && this.signer.address">
       <p style="color: #0b0;">Metamask Connected!</p>
@@ -111,22 +98,6 @@ export default {
     }
   },
   methods: {
-    // printAddressData () {
-    //   console.log(this.getData)
-    // },
-    // printJsonProvider () {
-    //   console.log({ url: process.env.JSON_RPC_PROVIDER, instance: this.jsonRpcProvider })
-    // },
-    // printRawContractABI () {
-    //   console.log(this.data.verification.abi)
-    // },
-    // printParsedContractABI () {
-    //   const { contractConstructor, events, readMethods, writeMethods } = this.contractAbi
-    //   console.log('Constructor:', contractConstructor)
-    //   console.log('Events:', events)
-    //   console.log('ReadMethods:', readMethods)
-    //   console.log('WriteMethods:', writeMethods)
-    // },
     registerAbiFragment (value, category) {
       const CATEGORIES = this.abiCategories
 
@@ -163,8 +134,6 @@ export default {
       const contractInstance = new ethers.Contract(contractAddress, abi, signer)
       this.$set(this.contractInstances, 'write', contractInstance)
       this.$set(this, 'signer', signer)
-
-      console.log({ contractInstances: this.contractInstances, signer: this.signer })
     },
     getReadOnlyContractInstance () {
       if (!this.contractInstances.readOnly) this.setReadOnlyContractInstance()
@@ -181,29 +150,20 @@ export default {
       return window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chainIdHex }] })
     },
     async validateNetwork (provider) {
-      console.log('Trying to fetch current chain id...')
       const currentNetwork = await provider.getNetwork()
       const currentNetworkChainId = `0x${currentNetwork.chainId.toString(16)}`
 
-      console.log('Validating network...')
-
-      const { chainId, chainName } = rskNetworks[envNetwork]
-
-      console.log({ rskNetworks, chainId, chainName, currentNetwork, currentNetworkChainId })
+      const chainId = rskNetworks[envNetwork].chainId
 
       if (currentNetworkChainId !== chainId) {
-        // also check name to ensure its using RPC API url
+        // maybe we should also check network name to ensure its using RPC API url
         await this.addNetwork([rskNetworks[envNetwork]])
         await this.switchNetwork(chainId)
       }
-
-      console.log('Network validated.')
     },
     async connectToMetamask () {
       if (window.ethereum) {
         if (this.metamaskConnected) return
-
-        console.log('Connecting to metamask...')
 
         try {
           await window.ethereum.request({ method: 'eth_requestAccounts' })
@@ -224,12 +184,9 @@ export default {
       }
     },
     async sendTransaction (methodName, inputs) {
-      console.log({ methodName, inputs })
       const methodIndex = this.contractAbi[this.CATEGORIES.WRITE_METHODS].findIndex(m => m.name === methodName)
       const method = this.contractAbi[this.CATEGORIES.WRITE_METHODS][methodIndex]
       this.$set(method.interactionData, 'message', { content: 'Sending transaction...', style: 'message-info' })
-
-      console.log({ methodName, inputs, method })
 
       try {
         await this.validateNetwork(this.browserProvider)
@@ -259,11 +216,10 @@ export default {
         // If issue persists, downgrade to ethers v5
         const tx = await contract[methodName](...args)
         this.$set(method.interactionData, 'message', { content: 'Transaction sent. Waiting for confirmation...', style: 'message-info' })
-        console.log('Transaction sent. Waiting for confirmation...', tx)
 
-        const receipt = await tx.wait()
+        await tx.wait() // receipt
+
         this.$set(method.interactionData, 'message', { content: `Transaction confirmed. Hash: ${tx.hash}`, style: 'message-info' }) // TODO: add button for explorer tx in new tab according to network
-        console.log('Transaction confirmed. Receipt:', receipt)
       } catch (error) {
         console.error(error)
 
@@ -271,17 +227,14 @@ export default {
       }
     },
     async contractCall (methodName, inputs) {
-      console.log({ methodName, inputs })
       const methodIndex = this.contractAbi[this.CATEGORIES.READ_METHODS].findIndex(m => m.name === methodName)
       const method = this.contractAbi[this.CATEGORIES.READ_METHODS][methodIndex]
       this.$set(method.interactionData, 'message', { content: 'calling contract...', style: 'message-info' })
 
-      console.log({ methodName, inputs, method })
-
       try {
         // inputs validations
         if (inputs.length < method.inputs.length) throw new Error(`Invalid number of parameters for "${methodName}". Got ${inputs.length} expected ${method.inputs.length}!`)
-        console.log('contractCall: validating network...')
+
         await this.validateNetwork(this.jsonRpcProvider)
 
         const contract = this.getReadOnlyContractInstance()
@@ -300,11 +253,9 @@ export default {
 
         // Note: When function has multiple outputs, ethers returns result as a proxy
         const result = await contract[methodName](...args)
-        console.log('Result:', result)
 
         if (method.outputs.length > 1) {
           method.outputs.forEach((_, index) => {
-            console.log({ index, result: result[index] })
             this.$set(method.interactionData.outputs, index, result[index])
           })
         } else {
@@ -313,7 +264,6 @@ export default {
         }
 
         this.$set(method.interactionData, 'message', { content: null, style: 'message-info' })
-        console.log({ method })
       } catch (error) {
         console.error(error)
 
