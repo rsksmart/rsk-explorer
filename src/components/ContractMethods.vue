@@ -2,7 +2,7 @@
   <div class="methods-list">
     <h3 class="methods-category-title capitalize">{{ title }} ({{ methods.length }})</h3>
     <div class="method" v-for="(method, index) in methods" :key="index">
-      <button class="method-name button" @click="contractCall(method.name, method.interactionData.inputs, methodsCategory)">{{ method.name }}</button>
+      <button :class="['button', disableCalls ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs)" :disabled="disableCalls">{{ method.name }}</button>
       <!-- Inputs -->
       <div v-if="method.inputs">
         <div class="method-input" v-for="(input, i) in method.inputs" :key="i">
@@ -15,7 +15,7 @@
       </div>
       <!-- Result -->
       <div class="divider"></div>
-      <div v-if="method.outputs">
+      <div v-if="showOutputs && method.outputs">
         <label class="label">
           <p>result</p>
           <span v-if="method.outputs.length" class="type">({{ method.outputs.map(output => output.type).join(', ') }})</span>
@@ -25,8 +25,8 @@
             <p class="method-output-value">{{ method.interactionData.outputs[i] ?? 'result' }}</p>
           </div>
         </div>
-        <p class="method-output-message" v-if="method.interactionData.message.content" :class="`interaction-message ${method.interactionData.message.style}`">{{ method.interactionData.message.content }}</p>
       </div>
+      <p class="method-output-message" v-if="method.interactionData.message.content" :class="`interaction-message ${method.interactionData.message.style}`">{{ method.interactionData.message.content }}</p>
     </div>
   </div>
 </template>
@@ -43,14 +43,24 @@ export default {
       type: Array,
       required: true
     },
-    methodsCategory: {
+    methodsType: {
       type: String,
       required: true
+    },
+    disableCalls: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  data () {
+    return {
+      showOutputs: this.methodsType === 'read'
     }
   },
   methods: {
-    contractCall (methodName, inputs, methodsCategory) {
-      this.$emit('contract-call', methodName, inputs, methodsCategory)
+    contractCall (methodName, inputs) {
+      this.$emit('contract-interaction-handler', methodName, inputs)
     }
   }
 }
@@ -69,11 +79,11 @@ export default {
   transition: background-color 0.2s ease;
 }
 
-.button:hover {
+.enabled:hover {
   background-color: #222;
 }
 
-.button:active {
+.enabled:active {
   background-color: #000;
 }
 
@@ -81,8 +91,15 @@ export default {
   text-transform: capitalize;
 }
 
+.disabled {
+  background-color: #999;
+  color: #ccc;
+  cursor: default;
+}
+
 .methods-list {
   flex: 1;
+  min-width: 500px;
   max-width: 500px;
 }
 
@@ -145,16 +162,17 @@ export default {
 
 .method-output-value {
   padding: 4px;
-  border: 1px solid #fff;
   border-radius: 4px;
   background-color: #444;
   color: #ccc;
   display: flex;
   align-items: center;
+  overflow: auto;
 }
 
 .interaction-message {
   padding: 5px;
+  overflow: auto;
 }
 
 .message-info {
