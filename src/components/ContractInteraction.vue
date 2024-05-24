@@ -2,9 +2,9 @@
   <!-- Contract Interaction -->
   <div v-if="verification" class="contract-interaction section">
     <button class="btn" @click="connectToMetamask">Connect to Metamask</button>
-    <div v-if="this.signer && this.signer.address">
-      <p style="color: #0b0;">Metamask Connected!</p>
-      <span>Address: {{ this.signer.address }}</span>
+    <div v-if="this.signer && this.signerAddress">
+      <p style="color: #0d0;">Metamask Connected!</p>
+      <span>Address: {{ this.signerAddress }}</span>
     </div>
     <br><br><br>
     <div class="methods-container">
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { jsonRpcProvider, rskNetworks, envNetwork } from '../jsonRpcProvider'
+import { jsonRpcProvider, getBrowserProvider, rskNetworks, envNetwork } from '../jsonRpcProvider'
 import { ethers } from 'ethers'
 import ContractMethods from './ContractMethods.vue'
 
@@ -51,7 +51,8 @@ export default {
       metamaskConnected: false,
       installMetamaskMsg: 'MetaMask extension is not installed. Please install it first: https://metamask.io/download/',
       browserProvider: null,
-      signer: null
+      signer: null,
+      signerAddress: null
     }
   },
   computed: {
@@ -131,9 +132,11 @@ export default {
     async setWriteContractInstance () {
       const { contractAddress, abi } = this
       const signer = await this.browserProvider.getSigner()
+      const signerAddress = await signer.getAddress()
       const contractInstance = new ethers.Contract(contractAddress, abi, signer)
       this.$set(this.contractInstances, 'write', contractInstance)
       this.$set(this, 'signer', signer)
+      this.$set(this, 'signerAddress', signerAddress)
     },
     getReadOnlyContractInstance () {
       if (!this.contractInstances.readOnly) this.setReadOnlyContractInstance()
@@ -168,7 +171,7 @@ export default {
         try {
           await window.ethereum.request({ method: 'eth_requestAccounts' })
 
-          const browserProvider = new ethers.BrowserProvider(window.ethereum)
+          const browserProvider = getBrowserProvider()
 
           await this.validateNetwork(browserProvider)
 
@@ -176,6 +179,7 @@ export default {
           this.$set(this, 'browserProvider', browserProvider)
 
           await this.setWriteContractInstance()
+          console.log(this)
         } catch (error) {
           console.error('Error when connecting to metamask', error)
         }
@@ -210,16 +214,12 @@ export default {
           }
         })
 
-        // Error: missing r
-        // random error with ethers and metamask: https://github.com/ethers-io/ethers.js/issues/4513#:~:text=yes.%20It%20is%20a%20random%20error.%20I%20would%20be%20great%20at%20least%20if%20we%20can%20catch%20it.
-        // Possible way to reproduce it: https://github.com/ethers-io/ethers.js/issues/4513#:~:text=yes.%20that%20is%20the%20way%20to%20reproduce%20the%20error.%20send%20the%20same%20transaction%20two%20times%20in%20a%20row
-        // If issue persists, downgrade to ethers v5
         const tx = await contract[methodName](...args)
-        this.$set(method.interactionData, 'message', { content: 'Transaction sent. Waiting for confirmation...', style: 'message-info' })
+        this.$set(method.interactionData, 'message', { content: `Transaction sent. Waiting for confirmation... (hash: ${tx.hash})`, style: 'message-info' })
 
         await tx.wait() // receipt
 
-        this.$set(method.interactionData, 'message', { content: `Transaction confirmed. Hash: ${tx.hash}`, style: 'message-info' }) // TODO: add button for explorer tx in new tab according to network
+        this.$set(method.interactionData, 'message', { content: `Transaction confirmed. Hash: ${tx.hash}`, style: 'message-success' }) // TODO: add button for explorer tx in new tab according to network
       } catch (error) {
         console.error(error)
 

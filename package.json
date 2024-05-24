@@ -28,7 +28,7 @@
     "core-js": "^3.6.4",
     "d3-format": "^1.4.3",
     "env-cmd": "^10.1.0",
-    "ethers": "^6.12.1",
+    "ethers": "^5.7.0",
     "highlight.js": "^9.18.3",
     "highlightjs-solidity": "git+https://github.com/highlightjs/highlightjs-solidity.git",
     "moment": "^2.27.0",

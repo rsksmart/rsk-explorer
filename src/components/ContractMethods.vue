@@ -179,6 +179,10 @@ export default {
   color: #ccc;
 }
 
+.message-success {
+  color: #0d0;
+}
+
 .message-error {
   color: #f00;
 }

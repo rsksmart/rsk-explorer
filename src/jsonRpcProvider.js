@@ -43,13 +43,15 @@ export const rskNetworks = {
   }
 }
 
-export const jsonRpcProvider = new ethers.JsonRpcProvider(
+export const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
   rpcServiceApiUrl,
   {
     name: rskNetworks[envNetwork].chainName,
     chainId: parseInt(rskNetworks[envNetwork].chainId)
   }
 )
+
+export const getBrowserProvider = () => new ethers.providers.Web3Provider(window.ethereum)
 
 // const getBlockNumber = async () => {
 //   const blockNumber = await jsonRpcProvider.getBlockNumber()
