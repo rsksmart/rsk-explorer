@@ -1,15 +1,49 @@
 <template>
   <!-- Contract Interaction -->
   <div v-if="verification" class="contract-interaction section">
-    <button class="btn" @click="connectToMetamask">Connect to Metamask</button>
+    <button v-if="!this.signer" class="btn btn-connect" @click="connectToMetamask">Connect to Metamask</button>
     <div v-if="this.signer && this.signerAddress">
-      <p style="color: #0d0;">Metamask Connected!</p>
-      <span>Address: {{ this.signerAddress }}</span>
+      <p class="metamask-title">Metamask Connected!</p>
+      <span>Address:
+        <tool-tip :text="this.signerAddress" :trim="false" :link="false" :hideCopy="false" />
+      </span>
     </div>
-    <br><br><br>
     <div class="methods-container">
-      <ContractMethods title="Read Methods" :methods="contractAbi.readMethods" @contract-interaction-handler="contractCall" methodsType="read" />
-      <ContractMethods title="Write Methods" :methods="contractAbi.writeMethods" @contract-interaction-handler="sendTransaction" methodsType="write" :disableCalls="!metamaskConnected"/>
+      <div class="btn-content">
+        <button
+          class="btn"
+          :style="{ backgroundColor: readMethods ? PAGE_COLORS[$route.name].cl : ''}"
+          @click="selectMethods(true)"
+        >
+          Read Methods
+        </button>
+        <button
+          class="btn"
+          :style="{ backgroundColor: !readMethods ? PAGE_COLORS[$route.name].cl : ''}"
+          @click="selectMethods(false)"
+        >
+          Write Methods
+        </button>
+      </div>
+      <div class="methods-content">
+        <ContractMethods
+          v-if="readMethods"
+          title="Read Methods"
+          :methods="contractAbi.readMethods"
+          @contract-interaction-handler="contractCall"
+          methodsType="read"
+          :key="`read-${methodsKey}`"
+        />
+        <ContractMethods
+          v-else
+          title="Write Methods"
+          :methods="contractAbi.writeMethods"
+          @contract-interaction-handler="sendTransaction"
+          methodsType="write"
+          :disableCalls="!metamaskConnected"
+          :key="`write-${methodsKey}`"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -18,11 +52,14 @@
 import { jsonRpcProvider, getBrowserProvider, rskNetworks, envNetwork } from '../jsonRpcProvider'
 import { ethers } from 'ethers'
 import ContractMethods from './ContractMethods.vue'
+import ToolTip from './General/Tooltip.vue'
+import { PAGE_COLORS } from '@/config/pageColors'
 
 export default {
   name: 'contract-interaction',
   components: {
-    ContractMethods
+    ContractMethods,
+    ToolTip
   },
   props: ['data'],
   data () {
@@ -32,15 +69,14 @@ export default {
       READ_METHODS: 'readMethods',
       WRITE_METHODS: 'writeMethods'
     }
-
     const contractAbi = {
       [CATEGORIES.CONTRACT_CONSTRUCTOR]: null,
       [CATEGORIES.EVENTS]: [],
       [CATEGORIES.READ_METHODS]: [],
       [CATEGORIES.WRITE_METHODS]: []
     }
-
     return {
+      PAGE_COLORS,
       CATEGORIES,
       contractAbi,
       contractInstances: {
@@ -52,7 +88,9 @@ export default {
       installMetamaskMsg: 'MetaMask extension is not installed. Please install it first: https://metamask.io/download/',
       browserProvider: null,
       signer: null,
-      signerAddress: null
+      signerAddress: null,
+      readMethods: true,
+      methodsKey: 0
     }
   },
   computed: {
@@ -285,6 +323,10 @@ export default {
     },
     formatBigNumber (num) {
       return ethers.toBigInt(num)
+    },
+    selectMethods (value) {
+      this.readMethods = value
+      this.methodsKey += 1
     }
   },
   mounted () {
@@ -293,19 +335,37 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .contract-interaction {
   color: #fff;
   width: 100%;
-}
+  .tooltip .tooltip-text .trim-value .copy-icon svg {
+    margin-top: 2px;
+  }
 
-.methods-container {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
+  .btn-connect {
+    border: 1px solid $newbw_700;
+    padding: 10px;
+  }
+  .metamask-title {
+    color: $cyan_300;
+  }
+  .methods-container {
+    margin: 20px 0;
+    .btn-content {
+      display: flex;
+      gap: 10px;
+      .btn {
+        font-size: 12px;
+        border: 1px solid $newbw_700;
+        padding: 8px;
+      }
+    }
+    .methods-content {
+      margin-top: 20px;
+    }
+  }
 }
-
 </style>

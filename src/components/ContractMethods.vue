@@ -2,38 +2,45 @@
   <div class="methods-list">
     <h3 class="methods-category-title capitalize">{{ title }} ({{ methods.length }})</h3>
     <div class="method" v-for="(method, index) in methods" :key="index">
-      <button :class="['button', disableCalls ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs)" :disabled="disableCalls">{{ method.name }}</button>
-      <!-- Inputs -->
-      <div v-if="method.inputs">
-        <div class="method-input" v-for="(input, i) in method.inputs" :key="i">
-          <label class="label">
-            <p>{{ input.name || '&lt;input&gt;' }}</p>
-            <span class="type">({{ input.type }})</span>
-          </label>
-          <input class="method-input-field" type="text" v-model="method.interactionData.inputs[i]" :placeholder="input.name || i">
-        </div>
-      </div>
-      <!-- Result -->
-      <div class="divider"></div>
-      <div v-if="showOutputs && method.outputs">
-        <label class="label">
-          <p>result</p>
-          <span v-if="method.outputs.length" class="type">({{ method.outputs.map(output => output.type).join(', ') }})</span>
-        </label>
-        <div v-for="(output, i) in method.outputs" :key="i">
-          <div class="method-output">
-            <p class="method-output-value">{{ method.interactionData.outputs[i] ?? 'result' }}</p>
+      <accordion :title="method.name" :index="index">
+        <!-- Inputs -->
+        <div v-if="method.inputs">
+          <div class="method-input" v-for="(input, i) in method.inputs" :key="i">
+            <div class="label">
+              <p>{{ input.name || '&lt;input&gt;' }}</p>
+              <span class="type">({{ input.type }})</span>
+            </div>
+            <input class="method-input-field" type="text" v-model="method.interactionData.inputs[i]" :placeholder="input.name || i">
           </div>
         </div>
-      </div>
-      <p class="method-output-message" v-if="method.interactionData.message.content" :class="`interaction-message ${method.interactionData.message.style}`">{{ method.interactionData.message.content }}</p>
+        <button :class="['button', disableCalls ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs)" :disabled="disableCalls">{{ method.name }}</button>
+        <!-- Result -->
+        <div v-if="showOutputs && method.outputs && method.interactionData.outputs[0]" class="result">
+          <label class="label">
+            <p>result</p>
+            <span v-if="method.outputs.length" class="type">({{ method.outputs.map(output => output.type).join(', ') }})</span>
+          </label>
+          <div v-for="(output, i) in method.outputs" :key="i">
+            <div class="method-output" v-if="method.interactionData.outputs[i]">
+              <p class="method-output-value">{{ method.interactionData.outputs[i] ?? 'result' }}</p>
+            </div>
+          </div>
+        </div>
+        <p class="method-output-message" v-if="method.interactionData.message.content" :class="`interaction-message ${method.interactionData.message.style}`">
+          {{ method.interactionData.message.content }}
+        </p>
+      </accordion>
     </div>
   </div>
 </template>
 
 <script>
+import Accordion from './controls/Accordion.vue'
 export default {
   name: 'contract-methods',
+  components: {
+    Accordion
+  },
   props: {
     title: {
       type: String,
@@ -66,13 +73,15 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/styles/variables.scss';
 
 .button {
-  background-color: #555;
-  color: #fff;
+  margin: 12px 0;
+  color: $pink_900;
   border: none;
-  border-radius: 4px;
+  border: 1px solid $pink_900;
+  border-radius: 12px;
   padding: 5px 10px;
   font-size: 16px;
   cursor: pointer;
@@ -80,7 +89,7 @@ export default {
 }
 
 .enabled:hover {
-  background-color: #222;
+  opacity: .9;
 }
 
 .enabled:active {
@@ -92,15 +101,14 @@ export default {
 }
 
 .disabled {
-  background-color: #999;
-  color: #ccc;
+  border: 1px solid #5f5f5f;
+  color: #5f5f5f;
   cursor: default;
 }
 
 .methods-list {
   flex: 1;
-  min-width: 500px;
-  max-width: 500px;
+  width: 100%;
 }
 
 .methods-category-title {
@@ -108,9 +116,8 @@ export default {
 }
 
 .method {
-  margin-bottom: 20px;
-  background-color: #333;
-  padding: 10px;
+  margin-bottom: 10px;
+  background-color: $newbw_800;
   border-radius: 8px;
 }
 
@@ -119,17 +126,20 @@ export default {
 }
 
 .method-input {
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
+  margin: 10px 0;
+  justify-content: space-between;
   gap: 3px;
   width: 100%;
 }
+.method-input .label {
+  flex: 1;
+}
 
 .label {
-  display: flex;
+  display: inline-flex;
   gap: 2px;
   align-items: center;
+  color: #fff;
 }
 
 .type {
@@ -138,19 +148,23 @@ export default {
 }
 
 .method-input-field {
+  display: block;
+  height: 32px;
+  flex: 7;
+  margin: 3px 0;
   width: 100%;
   padding: 6px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 8px;
   box-sizing: border-box;
   outline: none;
-  background-color: #444;
+  background-color: $newbw_800;
+  border: 1px solid #6d6d6d;
   color: #ffffff;
   transition: background-color 0.3s ease;
 }
 
 .method-input-field:focus {
-  background-color: #555;
+  border: 1px solid #b5b5b5;
 }
 
 .method-output {
@@ -161,10 +175,10 @@ export default {
 }
 
 .method-output-value {
-  padding: 4px;
-  border-radius: 4px;
-  background-color: #444;
-  color: #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: rgba(18, 18, 18, 0.7);
+  color: #fff;
   display: flex;
   align-items: center;
   overflow: auto;
@@ -180,19 +194,14 @@ export default {
 }
 
 .message-success {
-  color: #0d0;
+  color: $cyan_300;
 }
 
 .message-error {
-  color: #f00;
+  color: $red_500;
 }
 
-.divider {
-  height: 1px;
-  background-color: #888;
-  width: 100%;
-  margin-top: 20px;
+.result {
   margin-bottom: 10px;
 }
-
 </style>
