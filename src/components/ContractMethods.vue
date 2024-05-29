@@ -13,15 +13,15 @@
             <input class="method-input-field" type="text" v-model="method.interactionData.inputs[i]" :placeholder="input.name || i">
           </div>
         </div>
-        <button :class="['button', disableCalls ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs)" :disabled="disableCalls">{{ method.name }}</button>
+        <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs)" :disabled="disableCalls">{{ method.name }}</button>
         <!-- Result -->
-        <div v-if="showOutputs && method.outputs && method.interactionData.outputs[0]" class="result">
+        <div v-if="showOutputs && method.outputs && method.interactionData.outputs.length" class="result">
           <label class="label">
             <p>result</p>
             <span v-if="method.outputs.length" class="type">({{ method.outputs.map(output => output.type).join(', ') }})</span>
           </label>
           <div v-for="(output, i) in method.outputs" :key="i">
-            <div class="method-output" v-if="method.interactionData.outputs[i]">
+            <div class="method-output" v-if="method.outputs[i]">
               <p class="method-output-value">{{ method.interactionData.outputs[i] ?? 'result' }}</p>
             </div>
           </div>

@@ -153,7 +153,8 @@ export default {
           message: {
             content: null,
             style: 'message-info'
-          }
+          },
+          requested: false
         })
 
         this.contractAbi[category].push(value)
@@ -267,6 +268,7 @@ export default {
     async contractCall (methodName, inputs) {
       const methodIndex = this.contractAbi[this.CATEGORIES.READ_METHODS].findIndex(m => m.name === methodName)
       const method = this.contractAbi[this.CATEGORIES.READ_METHODS][methodIndex]
+      this.$set(method.interactionData, 'requested', true)
       this.$set(method.interactionData, 'message', { content: 'calling contract...', style: 'message-info' })
 
       try {
@@ -308,6 +310,8 @@ export default {
         this.$set(method.interactionData, 'outputs', [])
         this.$set(method.interactionData, 'message', { content: error.message, style: 'message-error' })
       }
+
+      this.$set(method.interactionData, 'requested', false)
     },
     validateString (value) {
       if (typeof value !== 'string') throw new Error('Invalid string')
