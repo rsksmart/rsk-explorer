@@ -254,11 +254,12 @@ export default {
         })
 
         const tx = await contract[methodName](...args)
-        this.$set(method.interactionData, 'message', { content: `Transaction sent. Waiting for confirmation... (hash: ${tx.hash})`, style: 'message-info' })
+        this.$set(method.interactionData, 'hash', { content: tx.hash, style: 'message-info' })
+        this.$set(method.interactionData, 'message', { content: 'Transaction sent. Waiting for confirmation... hash: ', style: 'message-info' })
 
         await tx.wait() // receipt
 
-        this.$set(method.interactionData, 'message', { content: `Transaction confirmed. Hash: ${tx.hash}`, style: 'message-success' }) // TODO: add button for explorer tx in new tab according to network
+        this.$set(method.interactionData, 'message', { content: 'Transaction confirmed. Hash: ', style: 'message-success' }) // TODO: add button for explorer tx in new tab according to network
       } catch (error) {
         console.error(error)
 

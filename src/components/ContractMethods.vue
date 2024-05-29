@@ -26,8 +26,14 @@
             </div>
           </div>
         </div>
-        <p class="method-output-message" v-if="method.interactionData.message.content" :class="`interaction-message ${method.interactionData.message.style}`">
-          {{ method.interactionData.message.content }}
+        <p class="method-output-message" v-if="'a'" :class="`interaction-message ${method.interactionData.message.style} message-success`">
+          <span v-if="method.interactionData.hash?.content">
+            {{ method.interactionData.message.content }}
+            <a :href="`${siteUrl}/tx/${method.interactionData?.hash.content}`" target="_blank" class="method-output-hash">
+              {{ method.interactionData.hash.content }}
+            </a>
+          </span>
+          <span v-else>{{ method.interactionData?.message.content }}</span>
         </p>
       </accordion>
     </div>
@@ -35,6 +41,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Accordion from './controls/Accordion.vue'
 export default {
   name: 'contract-methods',
@@ -63,6 +70,15 @@ export default {
   data () {
     return {
       showOutputs: this.methodsType === 'read'
+    }
+  },
+  computed: {
+    ...mapGetters(['networkName']),
+    isNetworkmainnet () {
+      return this.networkName === 'mainnet'
+    },
+    siteUrl () {
+      return this.isNetworkmainnet ? process.env.VUE_APP_DOMAIN_MAINNET : process.env.VUE_APP_DOMAIN_TESTNET
     }
   },
   methods: {
@@ -195,6 +211,15 @@ export default {
 
 .message-success {
   color: $cyan_300;
+  opacity: .9;
+}
+
+.method-output-hash {
+  color: white;
+  opacity: .8;
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .message-error {
