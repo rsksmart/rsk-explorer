@@ -26,14 +26,12 @@
             </div>
           </div>
         </div>
-        <p class="method-output-message" v-if="method.interactionData.message.content" :class="`interaction-message ${method.interactionData.message.style} message-success`">
-          <span v-if="method.interactionData.hash?.content">
-            {{ method.interactionData.message.content }}
-            <a :href="`${siteUrl}tx/${method.interactionData?.hash.content}`" target="_blank" class="method-output-hash">
-              {{ method.interactionData.hash.content }}
-            </a>
+        <p v-if="method.interactionData.message.content" :class="`interaction-message ${method.interactionData.message.style}`">
+          <span>{{ method.interactionData.message.content }}</span>
+          <span v-if="method.interactionData.hash.content">
+            <span class="message-info">Hash: </span>
+            <a :href="`${siteUrl}tx/${method.interactionData.hash.content}`" target="_blank" class="method-output-hash">{{ method.interactionData.hash.content }}</a>
           </span>
-          <span v-else>{{ method.interactionData?.message.content }}</span>
         </p>
       </accordion>
     </div>
@@ -203,6 +201,8 @@ export default {
 .interaction-message {
   padding: 5px;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .message-info {

@@ -1,12 +1,20 @@
 <template>
   <!-- Contract Interaction -->
   <div v-if="verification" class="contract-interaction section">
-    <button v-if="!this.signer" class="btn btn-connect" @click="connectToMetamask">Connect to Metamask</button>
-    <div v-if="this.signer && this.signerAddress">
-      <p class="metamask-title">Metamask Connected!</p>
-      <span>Address:
-        <tool-tip :text="this.signerAddress" :trim="false" :link="false" :hideCopy="false" />
-      </span>
+    <div class="flex-container">
+      <div v-if="this.metamaskConnected && this.networkChanged">
+        <p class="network-changed-message">Warning: Network change detected. It's strongly recommended to reload the page to prevent loss of funds or unexpected behaviors.</p>
+        <button class="btn btn-reload" @click="reloadPage">Reload page</button>
+      </div>
+      <div>
+        <button v-if="!this.signer" class="btn btn-connect" @click="connectToMetamask">Connect to Metamask</button>
+        <div v-if="this.signer && this.signerAddress">
+          <p class="metamask-title">Metamask Connected!</p>
+          <span>Address:
+            <tool-tip :text="this.signerAddress" :trim="false" :link="contractInteractionTabUrl" :hideCopy="false" />
+          </span>
+        </div>
+      </div>
     </div>
     <div class="methods-container">
       <div class="btn-content">
@@ -49,11 +57,12 @@
 </template>
 
 <script>
-import { jsonRpcProvider, getBrowserProvider, rskNetworks, envNetwork } from '../jsonRpcProvider'
+import { jsonRpcProvider, browserProvider, rskNetworks, envNetwork } from '../jsonRpcProvider'
 import { ethers } from 'ethers'
 import ContractMethods from './ContractMethods.vue'
 import ToolTip from './General/Tooltip.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'contract-interaction',
@@ -90,7 +99,8 @@ export default {
       signer: null,
       signerAddress: null,
       readMethods: true,
-      methodsKey: 0
+      methodsKey: 0,
+      networkChanged: false
     }
   },
   computed: {
@@ -134,6 +144,10 @@ export default {
       })
 
       return this.contractAbi
+    },
+    contractInteractionTabUrl () {
+      // fix to prevent signer address redirects by missclick to the copy button
+      return `${this.contractAddress}?__ctab=Contract%20Interaction`
     }
   },
   methods: {
@@ -150,6 +164,10 @@ export default {
         this.$set(value, 'interactionData', {
           inputs: [],
           outputs: [],
+          hash: {
+            content: null,
+            style: 'message-info'
+          },
           message: {
             content: null,
             style: 'message-info'
@@ -185,40 +203,54 @@ export default {
     getWriteOnlyContractInstance () {
       return this.contractInstances.write
     },
-    async addNetwork (params) {
-      return window.ethereum.request({ method: 'wallet_addEthereumChain', params })
+    async requestAddRskNetwork () {
+      try {
+        await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [rskNetworks[envNetwork]] })
+      } catch (error) {
+        throw new Error('Error while adding rsk network', error)
+      }
     },
-    async switchNetwork (chainIdHex) {
-      return window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chainIdHex }] })
+    async requestRskNetworkSwitch () {
+      try {
+        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: rskNetworks[envNetwork].chainId }] })
+      } catch (error) {
+        throw new Error('Error while switching to rsk network', error)
+      }
     },
-    async validateNetwork (provider) {
-      const currentNetwork = await provider.getNetwork()
-      const currentNetworkChainId = `0x${currentNetwork.chainId.toString(16)}`
+    async connectToRskNetwork () {
+      await window.ethereum.request({ method: 'eth_requestAccounts' })
+      this.$set(this, 'browserProvider', browserProvider)
 
-      const chainId = rskNetworks[envNetwork].chainId
+      const currentNetwork = await this.browserProvider.getNetwork()
+      const currentChainId = `0x${currentNetwork.chainId.toString(16)}`
+      const rskChainId = rskNetworks[envNetwork].chainId
+      const sameNetwork = currentChainId === rskChainId
 
-      if (currentNetworkChainId !== chainId) {
-        // maybe we should also check network name to ensure its using RPC API url
-        await this.addNetwork([rskNetworks[envNetwork]])
-        await this.switchNetwork(chainId)
+      if (sameNetwork) return
+
+      try {
+        await this.requestRskNetworkSwitch()
+        localStorage.setItem('metamaskAutoconnect', true)
+        this.reloadPage()
+      } catch (error) {
+        if (error.code === 4902) { // Unrecognized chain ID
+          await this.requestAddRskNetwork()
+          await this.requestRskNetworkSwitch()
+          localStorage.setItem('metamaskAutoconnect', true)
+          this.reloadPage()
+        } else {
+          throw new Error('Unhandled error while connecting to rsk network', error)
+        }
       }
     },
     async connectToMetamask () {
+      localStorage.setItem('metamaskAutoconnect', false)
+
       if (window.ethereum) {
-        if (this.metamaskConnected) return
-
         try {
-          await window.ethereum.request({ method: 'eth_requestAccounts' })
-
-          const browserProvider = getBrowserProvider()
-
-          await this.validateNetwork(browserProvider)
-
+          await this.connectToRskNetwork()
           this.$set(this, 'metamaskConnected', true)
-          this.$set(this, 'browserProvider', browserProvider)
-
           await this.setWriteContractInstance()
-          console.log(this)
         } catch (error) {
           console.error('Error when connecting to metamask', error)
         }
@@ -230,10 +262,9 @@ export default {
       const methodIndex = this.contractAbi[this.CATEGORIES.WRITE_METHODS].findIndex(m => m.name === methodName)
       const method = this.contractAbi[this.CATEGORIES.WRITE_METHODS][methodIndex]
       this.$set(method.interactionData, 'hash', { content: null, style: 'message-info' })
-      this.$set(method.interactionData, 'message', { content: 'Sending transaction...', style: 'message-info' })
+      this.$set(method.interactionData, 'message', { content: 'Sending transaction...', style: 'message-success' })
 
       try {
-        await this.validateNetwork(this.browserProvider)
         const contract = this.contractInstances.write
         const args = inputs
 
@@ -255,12 +286,12 @@ export default {
         })
 
         const tx = await contract[methodName](...args)
+        this.$set(method.interactionData, 'message', { content: 'Transaction sent. Waiting for confirmation... (estimated time: 30 secs)', style: 'message-success' })
         this.$set(method.interactionData, 'hash', { content: tx.hash, style: 'message-info' })
-        this.$set(method.interactionData, 'message', { content: 'Transaction sent. Waiting for confirmation... hash: ', style: 'message-info' })
 
         await tx.wait() // receipt
 
-        this.$set(method.interactionData, 'message', { content: 'Transaction confirmed. Hash: ', style: 'message-success' }) // TODO: add button for explorer tx in new tab according to network
+        this.$set(method.interactionData, 'message', { content: 'Transaction confirmed.', style: 'message-success' })
       } catch (error) {
         console.error(error)
 
@@ -276,8 +307,6 @@ export default {
       try {
         // inputs validations
         if (inputs.length < method.inputs.length) throw new Error(`Invalid number of parameters for "${methodName}". Got ${inputs.length} expected ${method.inputs.length}!`)
-
-        await this.validateNetwork(this.jsonRpcProvider)
 
         const contract = this.getReadOnlyContractInstance()
         const args = inputs
@@ -333,10 +362,35 @@ export default {
     selectMethods (value) {
       this.readMethods = value
       this.methodsKey += 1
+    },
+    reloadPage () {
+      location.reload()
+    },
+    handleChainChanged (chainId) {
+      console.log(`Network changed to ${chainId}. It's strongly advised to reload the page...`)
+      if (this.metamaskConnected) this.$set(this, 'networkChanged', true)
+    },
+    ...mapGetters(['networkName']),
+    isNetworkmainnet () {
+      return this.networkName === 'mainnet'
+    },
+    siteUrl () {
+      return this.isNetworkmainnet ? process.env.VUE_APP_DOMAIN_MAINNET : process.env.VUE_APP_DOMAIN_TESTNET
     }
   },
-  mounted () {
+  async mounted () {
     this.setContractAbi()
+
+    if (window.ethereum) window.ethereum.on('chainChanged', this.handleChainChanged)
+
+    // Note: Metamask autoconnection only triggers after switching to an rsk network
+    const metamaskAutoconnect = localStorage.getItem('metamaskAutoconnect') === 'true'
+    if (metamaskAutoconnect) await this.connectToMetamask()
+  },
+  beforeDestroy () {
+    if (window.ethereum) {
+      window.ethereum.removeListener('chainChanged', this.handleChainChanged)
+    }
   }
 }
 </script>
@@ -350,7 +404,27 @@ export default {
   .tooltip .tooltip-text .trim-value .copy-icon svg {
     margin-top: 2px;
   }
-
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .network-changed-message {
+    color: $orange_900;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    margin-bottom: 10px;
+  }
+  .btn-reload {
+    border: 1px solid transparent;
+    padding: 10px;
+    animation: breathe 8s ease infinite;
+    background-color: transparent;
+    transition: color 0.3s ease;
+  }
+  .btn-reload:hover {
+    color: $orange_900;
+  }
   .btn-connect {
     border: 1px solid $newbw_700;
     padding: 10px;
@@ -373,5 +447,20 @@ export default {
       margin-top: 20px;
     }
   }
+
+  @keyframes breathe {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0);
+  }
+  30% {
+    box-shadow: 0 0 10px $orange_900;
+  }
+  70% {
+    box-shadow: 0 0 10px $orange_900;
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0);
+  }
+}
 }
 </style>
