@@ -16,8 +16,7 @@ export const rskNetworks = {
       decimals: 18
     },
     rpcUrls: [
-      rpcServiceApiUrl,
-      'https://public-node.rsk.co' // fallback
+      'https://public-node.rsk.co'
     ],
     blockExplorerUrls: [
       'https://explorer.rootstock.io/',
@@ -33,8 +32,7 @@ export const rskNetworks = {
       decimals: 18
     },
     rpcUrls: [
-      rpcServiceApiUrl,
-      'https://public-node.testnet.rsk.co' // fallback
+      'https://public-node.testnet.rsk.co'
     ],
     blockExplorerUrls: [
       'https://explorer.testnet.rootstock.io/',
@@ -51,7 +49,7 @@ export const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
   }
 )
 
-export const getBrowserProvider = () => new ethers.providers.Web3Provider(window.ethereum)
+export const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
 
 // const getBlockNumber = async () => {
 //   const blockNumber = await jsonRpcProvider.getBlockNumber()
