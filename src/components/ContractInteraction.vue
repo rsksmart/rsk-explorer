@@ -229,6 +229,7 @@ export default {
     async sendTransaction (methodName, inputs) {
       const methodIndex = this.contractAbi[this.CATEGORIES.WRITE_METHODS].findIndex(m => m.name === methodName)
       const method = this.contractAbi[this.CATEGORIES.WRITE_METHODS][methodIndex]
+      this.$set(method.interactionData, 'hash', { content: null, style: 'message-info' })
       this.$set(method.interactionData, 'message', { content: 'Sending transaction...', style: 'message-info' })
 
       try {
@@ -327,7 +328,7 @@ export default {
       return /^(true|false|1|0)$/i.test(text)
     },
     formatBigNumber (num) {
-      return ethers.toBigInt(num)
+      return ethers.BigNumber.from(num)
     },
     selectMethods (value) {
       this.readMethods = value
