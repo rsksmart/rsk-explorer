@@ -75,6 +75,6 @@ export default {
 }
 
 .accordion-content.open {
-  max-height: 400px;
+  max-height: max-content;
 }
 </style>
