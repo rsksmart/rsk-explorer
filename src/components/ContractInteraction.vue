@@ -270,8 +270,7 @@ export default {
 
         if (!contract) throw new Error('Connect to metamask first')
 
-        // inputs validations
-        if (inputs.length < method.inputs.length) throw new Error(`Invalid number of parameters for "${methodName}". Got ${inputs.length} expected ${method.inputs.length}!`)
+        this.validateInputs(inputs, method)
 
         method.inputs.forEach((input, index) => {
           const { type } = input
@@ -305,8 +304,7 @@ export default {
       this.$set(method.interactionData, 'message', { content: 'calling contract...', style: 'message-info' })
 
       try {
-        // inputs validations
-        if (inputs.length < method.inputs.length) throw new Error(`Invalid number of parameters for "${methodName}". Got ${inputs.length} expected ${method.inputs.length}!`)
+        this.validateInputs(inputs, method)
 
         const contract = this.getReadOnlyContractInstance()
         const args = inputs
@@ -343,6 +341,11 @@ export default {
       }
 
       this.$set(method.interactionData, 'requested', false)
+    },
+    validateInputs (inputs, method) {
+      const nonEmptyInputs = inputs.filter(input => input !== '' && input !== undefined && input !== null)
+
+      if (nonEmptyInputs.length !== method.inputs.length) throw new Error(`Invalid number of parameters for "${method.name}". Got ${nonEmptyInputs.length} expected ${method.inputs.length}!`)
     },
     validateString (value) {
       if (typeof value !== 'string') throw new Error('Invalid string')
