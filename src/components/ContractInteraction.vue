@@ -135,7 +135,7 @@ export default {
         } else if (type === 'event') {
           this.registerAbiFragment(fragment, CATEGORIES.EVENTS)
         } else if (type === 'function') {
-          if (stateMutability === 'view') {
+          if (stateMutability === 'view' || stateMutability === 'pure') {
             this.registerAbiFragment(fragment, CATEGORIES.READ_METHODS)
           } else if (stateMutability === 'nonpayable') {
             this.registerAbiFragment(fragment, CATEGORIES.WRITE_METHODS)
