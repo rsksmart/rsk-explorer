@@ -137,7 +137,7 @@ export default {
         } else if (type === 'function') {
           if (stateMutability === 'view' || stateMutability === 'pure') {
             this.registerAbiFragment(fragment, CATEGORIES.READ_METHODS)
-          } else if (stateMutability === 'nonpayable') {
+          } else if (stateMutability === 'nonpayable' || stateMutability === 'payable') {
             this.registerAbiFragment(fragment, CATEGORIES.WRITE_METHODS)
           }
         }
