@@ -304,7 +304,7 @@ export default {
       const routeName = this.$route.name
       const urlParam = this.$route.params.address
       // If the parameters are the same when the router changes, we do not request the address information.
-      if (this.storedRouteName !== routeName || !urlParam) {
+      if (this.storedRouteName !== routeName || !urlParam || this.storedRouteName !== urlParam) {
         // use Date for a random info
         this.storedRouteName = routeName || new Date()
         this.storedUrlParam = urlParam
