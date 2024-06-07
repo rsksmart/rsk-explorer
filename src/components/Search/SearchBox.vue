@@ -12,10 +12,8 @@
   </div>
 </template>
 <script>
-import { ROUTES as r } from '../../config/types'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import CtrlSearch from './CtrlSearch.vue'
-// const RESULTS_LENGTH = 10
 export default {
   name: 'search-box',
   components: {
@@ -24,7 +22,7 @@ export default {
   data () {
     return {
       value: undefined,
-      msg: 'Search by address, block, tx, token name',
+      msg: 'Search by address, block, tx, token name, rns domain',
       msgTimeout: null,
       requestingTimeout: null
     }
@@ -77,26 +75,16 @@ export default {
       this.clearSearchedResults()
     },
     goTo ({ type, value }) {
-      const link = this.getSearchLink()({ type, value })
-      if (!link) return
-      this.clearRequests()
-      this.$router.push(link, () => { })
+      this.getSearchLink()({ type, value })
     },
-    goToSearchPage (value) {
-      const link = `/${r.search}/${value}`
-      this.$router.push(link, () => { })
-    },
-
     setValue (value) {
       this.value = value
       if (this.isSearchPage) {
         history.pushState({}, document.title, value)
       }
     },
-
     onResult ({ event, value }) {
       this.setValue(value)
-      // if (value) this.clearRequests()
     },
     onInput ({ event, value }) {
       this.clearRequests()
@@ -108,9 +96,7 @@ export default {
       await this.prepareSearch({ value })
       value = this.searched
       const { types } = this
-      if (!types || !types.length) {
-        return this.goToSearchPage(value)
-      } else if (types.length === 1) {
+      if (types.length === 1) {
         const type = types[0]
         return this.goTo({ type, value })
       } else {
@@ -120,8 +106,6 @@ export default {
         // redirect when there is only one result
         if (results && results.length === 1) {
           return this.goTo(results[0])
-        } else {
-          this.goToSearchPage(value)
         }
       }
     },

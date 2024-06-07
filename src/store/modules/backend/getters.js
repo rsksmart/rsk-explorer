@@ -10,6 +10,10 @@ export const transactions = state => {
   return state.transactions
 }
 
+export const lastTransactions = state => {
+  return state.responses?.data?.data
+}
+
 export const pendingBlocks = state => {
   return Object.keys(state.pendingBlocks).length
 }
@@ -94,4 +98,10 @@ export const isExportKey = state => key => {
 export const getExportMetadata = state => key => {
   if (!key) return
   return state.exports[key]
+}
+
+export const getDomain = (state) => (address) => {
+  if (typeof address !== 'string') return // console.error('Address should be provided as string')
+
+  return state.rns[address.toLowerCase()]
 }

@@ -30,10 +30,15 @@ export const socketNewTransactions = ({ state, commit, getters }, result) => {
   }
 }
 // handle newBlocks from blocks channel
-export const socketNewBlocks = ({ state, commit, getters }, result) => {
+export const socketNewBlocks = ({ state, commit, getters, dispatch, rootState }, result) => {
   const blocks = result.data || []
   const autoUpdate = getters.autoUpdate
   commit('LAST_BLOCKS', blocks)
+  if (rootState.autoUpdateBlocks) dispatch('updateBlocks')
+  if (rootState.route.path === '/' && autoUpdate) {
+    commit('LAST_BLOCKS_TIME', blocks[0].timestamp)
+    dispatch('fetchRouteData', { action: 'getTransactions', params: undefined, module: 'transactions', key: 'data' })
+  }
   if (!state.lastBlocksTime) commit('LAST_BLOCKS_TIME')
   if (!state.blocks.length || autoUpdate) {
     commit('SET_BLOCKS', blocks.slice())
@@ -55,6 +60,12 @@ export const socketData = ({ state, commit, getters, dispatch }, res) => {
 
   const isExport = getters.isExportKey(key)
   if (isExport) return dispatch('exportPages', res)
+
+  if (res.action === 'getAddress') {
+    const domain = getters.getDomain(req.params.address)
+    res.data.rns = domain
+  }
+
   const response = Object.assign({}, state.responses[key])
   const updating = Object.assign(delayedObject(), response.delayed)
   const isUpdating = Boolean(!updating.registry && updating.fields.length)

@@ -1,15 +1,24 @@
 <template>
   <div class="blocks-wrapper box-block-tx" v-show="blocks.length">
     <div class="box-head">
-      <h2 class="title text-white-100">
-        <router-link :to="entity.listLink" class="text-white-100">
-          <span>{{ pageTitle }}</span>
-        </router-link>
-      </h2>
-      <div class="badge pending-msg flex item-center bg-orange-900" v-if="pending">
-        <button @click="updateBlocks">
-          <div class="text-primary">{{ pending }} new {{ pending > 1 ? 'blocks' : 'block' }}</div>
-        </button>
+      <div class="box-title">
+        <h2 class="title text-white-100">
+          <router-link :to="entity.listLink" class="text-white-100">
+            <span>{{ pageTitle }}</span>
+          </router-link>
+        </h2>
+        <div class="badge pending-msg flex item-center bg-orange-900" v-if="pending">
+          <button @click="updateBlocks">
+            <div class="text-primary">{{ pending }} new {{ pending > 1 ? 'blocks' : 'block' }}</div>
+          </button>
+        </div>
+      </div>
+      <div class="auto-update">
+        autoupdate
+        <label class="checkbox-container">
+          <input type="checkbox" @change="handleAutoUpdate" :checked="autoUpdate" class="custom-checkbox">
+          <span class="checkmark"></span>
+        </label>
       </div>
     </div>
     <div class="blocks" v-if="blocks.length">
@@ -48,14 +57,26 @@ export default {
   computed: {
     ...mapState({
       blocks: state => state.backend.blocks,
-      lastBlocks: state => state.backend.lastBlocks
+      lastBlocks: state => state.backend.lastBlocks,
+      autoUpdate: state => state.config.autoUpdateBlocks
     }),
     ...mapGetters({
       pending: 'pendingBlocks'
     })
   },
   methods: {
-    ...mapActions(['updateBlocks'])
+    ...mapActions([
+      'updateBlocks',
+      'setAutoUpdate'
+    ]),
+    handleAutoUpdate (event) {
+      const value = event.target.checked
+      if (value) this.updateBlocks()
+      this.setAutoUpdate(value)
+    }
+  },
+  created () {
+    this.updateBlocks()
   }
 }
 </script>
