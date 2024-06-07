@@ -57,6 +57,17 @@ export default {
       const field = this.fields.number
       const value = this.block.number
       return this.filterFieldValue()({ field, value })
+    },
+    blockColor () {
+      return this.getBlockColor(this.block.number)
+    },
+    bStyle () {
+      const color = this.blockColor
+      return { color, fill: color }
+    },
+    blockBoxStyle () {
+      const color = this.blockColor
+      return { 'border-color': color }
     }
   }
 }

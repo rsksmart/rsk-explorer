@@ -28,9 +28,6 @@ export const Addresses = () => {
         field: 'blockNumber',
         type: 'block',
         title: 'Updated at block'
-      },
-      rns: {
-        hideIfEmpty: true
       }
     }
   }

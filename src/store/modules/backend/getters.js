@@ -99,9 +99,3 @@ export const getExportMetadata = state => key => {
   if (!key) return
   return state.exports[key]
 }
-
-export const getDomain = (state) => (address) => {
-  if (typeof address !== 'string') return // console.error('Address should be provided as string')
-
-  return state.rns[address.toLowerCase()]
-}

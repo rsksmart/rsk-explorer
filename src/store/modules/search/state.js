@@ -6,8 +6,6 @@ export default function () {
     payloads,
     value: undefined,
     types: {},
-    requested: {},
-    searchLink: null,
-    type: null
+    requested: {}
   }
 }

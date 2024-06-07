@@ -19,7 +19,3 @@ export const SET_SEARCH_TYPES = (state, types) => {
 export const SET_SEARCH_EXPAND = (state, value) => {
   Vue.set(state, 'expanded', value)
 }
-
-export const SET_SEARCH_LINK = (state, value) => {
-  Vue.set(state, 'searchLink', value)
-}
