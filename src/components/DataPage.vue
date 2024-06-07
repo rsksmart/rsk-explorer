@@ -141,6 +141,7 @@ export default {
     return {
       storedTitle: '',
       storedRouteName: null,
+      storedUrlParam: null,
       PAGE_COLORS
     }
   },
@@ -301,10 +302,13 @@ export default {
       const key = this.reqKey
       if (!module || !action) return
       const routeName = this.$route.name
+      const { address, number, hash } = this.$route.params
+      const urlParam = address || number || hash
       // If the parameters are the same when the router changes, we do not request the address information.
-      if (this.storedRouteName !== routeName) {
+      if (this.storedRouteName !== routeName || this.storedUrlParam !== urlParam) {
         // use Date for a random info
         this.storedRouteName = routeName || new Date()
+        this.storedUrlParam = urlParam
         return this.fetchRouteData({ action, params, module, key })
       }
     },
