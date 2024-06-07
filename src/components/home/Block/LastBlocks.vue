@@ -71,12 +71,8 @@ export default {
     ]),
     handleAutoUpdate (event) {
       const value = event.target.checked
-      if (value) this.updateBlocks()
       this.setAutoUpdate(value)
     }
-  },
-  created () {
-    this.updateBlocks()
   }
 }
 </script>

@@ -8,18 +8,12 @@ export const getSearchPayloadByType = state => type => {
 
 export const searchKeysRequested = state => Object.keys(state.requested)
 
-export const getSearchLink = (state, getters, commit) => ({ type, value }) => {
+export const getSearchLink = (state, getters) => ({ type, value }) => {
   const payload = getters.getSearchPayloadByType(type)
   const path = r[payload.type]
   if (!path || !value) return
   const link = `/${path}/${value}`
-  state.searchLink = link
-  state.type = type
   return link
-}
-
-export const linkToSearch = (state) => {
-  return state.searchLink
 }
 
 export const getSearchedResults = (state, getters) => {
@@ -54,10 +48,6 @@ export const searchedValue = state => state.value
 export const searchedTypes = state => {
   const types = state.types
   return Object.keys(types).filter(k => types[k])
-}
-
-export const searchedType = state => {
-  return state.type
 }
 
 export const isSearchPage = (state, getters) => {
