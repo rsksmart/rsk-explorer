@@ -76,7 +76,10 @@ export default {
       if (this.lastTransactions?.length > 0) {
         this.updateTxs(this.lastTransactions)
       }
-      const value = this.lastTransactions?.length > 0 ? this.lastTransactions : this.lastTxsStore
+      let value = this.lastTransactions?.length > 0 ? this.lastTransactions : this.lastTxsStore
+      if (value[0]?.blockNumber > this.blocks[0]?.number) {
+        value = value.filter((v) => v.blockNumber !== value[0]?.blockNumber)
+      }
       return value
     }
   },
