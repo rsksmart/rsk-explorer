@@ -5,6 +5,7 @@ import routes from './routes'
 import { normalizeSearch } from '../lib/js/utils'
 import { isValidAddress } from '@rsksmart/rsk-utils/dist/addresses'
 import { ROUTES as r } from '../config/types'
+import { getAddr } from '../lib/js/rns'
 
 Vue.use(Router)
 const router = new Router({
@@ -58,12 +59,26 @@ router.afterEach((to, from) => {
 /**
  *  Navigation guard for all routes
  */
-function checkBeforeEnter (to, from, next) {
+async function checkBeforeEnter (to, from, next) {
   const chainId = store.getters.chainId
   const { params } = Object.assign({}, to)
   const { address, hash } = params
   if (hash) params.hash = normalizeSearch(hash)
   if (isAddressPath(to, address)) {
+    // Allow `/address/<domain>`
+    if (address.match(/.rsk/)) {
+      const domain = address
+      try {
+        const resolved = await getAddr(domain)
+        if (resolved) {
+          store.commit('SET_DOMAIN', { domain, address: resolved })
+          next(`${r.address}/${resolved}`)
+        }
+      } catch (error) {
+        // console.error(error.message)
+        next()
+      }
+    }
     // checksum error
     let error
     if (!isValidAddress(address, chainId)) {

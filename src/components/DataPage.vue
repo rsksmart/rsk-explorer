@@ -140,7 +140,8 @@ export default {
   data () {
     return {
       storedTitle: '',
-      storedParamAddress: null,
+      storedRouteName: null,
+      storedUrlParam: null,
       PAGE_COLORS
     }
   },
@@ -300,11 +301,13 @@ export default {
       const { module, action, params } = this
       const key = this.reqKey
       if (!module || !action) return
-      const paramsAddress = this.$route.params?.address
+      const routeName = this.$route.name
+      const urlParam = this.$route.params.address
       // If the parameters are the same when the router changes, we do not request the address information.
-      if (this.storedParamAddress !== paramsAddress) {
+      if (this.storedRouteName !== routeName || !urlParam || this.storedRouteName !== urlParam) {
         // use Date for a random info
-        this.storedParamAddress = paramsAddress || new Date()
+        this.storedRouteName = routeName || new Date()
+        this.storedUrlParam = urlParam
         return this.fetchRouteData({ action, params, module, key })
       }
     },

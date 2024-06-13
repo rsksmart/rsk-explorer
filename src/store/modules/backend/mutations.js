@@ -19,8 +19,7 @@ export const LAST_BLOCKS = (state, blocks) => {
 }
 
 export const LAST_BLOCKS_TIME = (state, time) => {
-  if (undefined === time) time = Date.now()
-  state.lastBlocksTime = time
+  state.lastBlocksTime = time ? new Date(time * 1000) : Date.now()
 }
 export const SET_BLOCKS = (state, blocks) => {
   state.blocks = blocks
@@ -107,4 +106,11 @@ export const SET_EXPORT_METADATA = (state, [key, metadata]) => {
   for (const prop in metadata) {
     Vue.set(state.exports[key], prop, metadata[prop])
   }
+}
+
+export const SET_DOMAIN = (state, { domain, address }) => {
+  if (!domain || !address) return
+
+  address = address.toLowerCase()
+  state.rns[address] = domain
 }
