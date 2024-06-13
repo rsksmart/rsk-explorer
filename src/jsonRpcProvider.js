@@ -1,7 +1,5 @@
 import { ethers } from 'ethers'
 
-const rpcServiceApiUrl = process.env.JSON_RPC_PROVIDER
-
 export const envNetwork = process.env.NETWORK
 
 if (!['mainnet', 'testnet'].includes(envNetwork)) throw new Error(`Invalid env network provided: "${envNetwork}"`)
@@ -42,7 +40,7 @@ export const rskNetworks = {
 }
 
 export const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-  rpcServiceApiUrl,
+  rskNetworks[envNetwork].rpcUrls[0],
   {
     name: rskNetworks[envNetwork].chainName,
     chainId: parseInt(rskNetworks[envNetwork].chainId)
