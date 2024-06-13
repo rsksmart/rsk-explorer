@@ -8,8 +8,10 @@
         {{ isOpen ? '-' : '+' }}
       </div>
     </button>
-    <div :class="['accordion-content', { open: isOpen }]" ref="content">
-      <slot></slot>
+    <div :class="['accordion-content-wrapper', { open: isOpen }]">
+      <div class="accordion-content" ref="content">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -63,18 +65,23 @@ export default {
   background-color: #555;
 }
 
+.accordion-content-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-in-out;
+}
+
+.accordion-content-wrapper.open {
+  grid-template-rows: 1fr;
+}
+
 .accordion-content {
-  max-height: 0;
   overflow: hidden;
   padding: 0 15px;
-  transition: max-height 0.5s ease;
   color: #fff;
   border: 1px solid $newbw_700;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
 
-.accordion-content.open {
-  max-height: max-content;
-}
 </style>
