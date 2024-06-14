@@ -2,8 +2,13 @@
   <!-- Contract Interaction -->
   <div v-if="verification" class="contract-interaction section">
     <div class="flex-container">
+      <div v-if="this.showMetamaskNotInstalledMsg">
+        <p class="metamask-connection-message">{{ installMetamaskMsg }}</p>
+        <a class="metamask-link" :href="metamaskExtensionUrl" target="_blank">{{ metamaskExtensionUrl }}</a>
+        <p></p>
+      </div>
       <div v-if="this.metamaskConnected && this.networkChanged">
-        <p class="network-changed-message">Warning: Network change detected. It's strongly recommended to reload the page to prevent loss of funds or unexpected behaviors.</p>
+        <p class="metamask-connection-message">Warning: Network change detected. It's strongly recommended to reload the page to prevent loss of funds or unexpected behaviors.</p>
         <button class="btn btn-reload" @click="reloadPage">Reload page</button>
       </div>
       <div>
@@ -92,9 +97,11 @@ export default {
         readOnly: null,
         write: null
       },
-      jsonRpcProvider,
+      jsonRpcProvider: jsonRpcProvider(),
       metamaskConnected: false,
-      installMetamaskMsg: 'MetaMask extension is not installed. Please install it first: https://metamask.io/download/',
+      showMetamaskNotInstalledMsg: false,
+      installMetamaskMsg: 'MetaMask extension is not installed. Please install it first:',
+      metamaskExtensionUrl: 'https://metamask.io/download/',
       browserProvider: null,
       signer: null,
       signerAddress: null,
@@ -219,7 +226,7 @@ export default {
     },
     async connectToRskNetwork () {
       await window.ethereum.request({ method: 'eth_requestAccounts' })
-      this.$set(this, 'browserProvider', browserProvider)
+      this.$set(this, 'browserProvider', browserProvider())
 
       const currentNetwork = await this.browserProvider.getNetwork()
       const currentChainId = `0x${currentNetwork.chainId.toString(16)}`
@@ -255,6 +262,7 @@ export default {
           console.error('Error when connecting to metamask', error)
         }
       } else {
+        this.$set(this, 'showMetamaskNotInstalledMsg', true)
         console.error(this.installMetamaskMsg)
       }
     },
@@ -412,11 +420,15 @@ export default {
     flex-direction: column;
     gap: 10px;
   }
-  .network-changed-message {
+  .metamask-connection-message {
     color: $orange_900;
     text-decoration: underline;
     text-underline-offset: 2px;
     margin-bottom: 10px;
+  }
+
+  .metamask-link {
+    color: #fff;
   }
   .btn-reload {
     border: 1px solid transparent;

@@ -39,15 +39,31 @@ export const rskNetworks = {
   }
 }
 
-export const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-  rskNetworks[envNetwork].rpcUrls[0],
-  {
-    name: rskNetworks[envNetwork].chainName,
-    chainId: parseInt(rskNetworks[envNetwork].chainId)
-  }
-)
+export const jsonRpcProvider = () => {
+  try {
+    const provider = new ethers.providers.JsonRpcProvider(
+      rskNetworks[envNetwork].rpcUrls[0],
+      {
+        name: rskNetworks[envNetwork].chainName,
+        chainId: parseInt(rskNetworks[envNetwork].chainId)
+      }
+    )
 
-export const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
+    return provider
+  } catch (error) {
+    console.error('Error creating jsonRpcProvider instance:', error)
+  }
+}
+
+export const browserProvider = () => {
+  try {
+    const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
+
+    return browserProvider
+  } catch (error) {
+    console.error('Error creating web3 browser provider instance:', error)
+  }
+}
 
 // const getBlockNumber = async () => {
 //   const blockNumber = await jsonRpcProvider.getBlockNumber()
