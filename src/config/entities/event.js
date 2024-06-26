@@ -173,9 +173,9 @@ export const TransferEvents = () => {
       },
       from,
       to,
-      value,
       date,
-      created
+      created,
+      value
     },
     formatRow: ({ data, parentData, context }) => {
       const { _addressData, address } = data
