@@ -37,6 +37,8 @@ import DataTable from '@/components/General/DataTable'
 import FieldItem from './FieldItem'
 import CollapsibleList from './CollapsibleList'
 import EventCall from './EventCall'
+import ImplementationAddressField from './ImplementationAddressField'
+
 export default {
   name: 'data-item',
   props: [
@@ -51,7 +53,8 @@ export default {
     FieldTitle,
     FieldItem,
     CollapsibleList,
-    EventCall
+    EventCall,
+    ImplementationAddressField
   },
   mixins: [
     dataMixin

@@ -1,0 +1,40 @@
+name: RSK Explorer staging build and deploy
+
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  staging_build_and_deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build-with-tracking:staging
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.STAGING_ROLE_ARN }}
+          aws-region: ${{ secrets.STAGING_AWS_REGION }}
+
+      - name: Deploy site to S3
+        run: |
+          aws s3 sync --sse aws:kms --sse-kms-key-id ${{ secrets.STAGING_KMS_KEY_ID }} --delete --only-show-errors --exclude .gitkeep dist/ ${{ secrets.STAGING_S3_BUCKET }}
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.STAGING_CLOUDFRONT_DISTRIBUTION }} --paths "/*"

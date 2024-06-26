@@ -18,6 +18,7 @@ export const Addresses = () => {
     listLink: `/${r.addresses}`,
     fields: {
       address: null,
+      implementation: null,
       balance: {
         filters: valueFilters(true),
         default: 0,
@@ -43,6 +44,11 @@ export const Address = () => {
   const fields = Object.assign(address.fields, {
     address: {
       trim: 'auto'
+    },
+    implementation: {
+      hideIfEmpty: true,
+      field: 'address',
+      renderAs: 'implementation-address-field'
     },
     contractInterfaces: {
       icon: 'link-external',
