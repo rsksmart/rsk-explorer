@@ -77,7 +77,7 @@
               <template v-if="getCustomRenderProps(field, row)">
                 <component :is="field.renderAs" v-bind="getCustomRenderProps(field, row)"></component>
               </template>
-              <data-field v-else :field="field" :row="row" />
+              <data-field :fieldClassName="tdClass(fieldName)" v-else :field="field" :row="row" />
             </td>
             <td class="from-to-arrow" v-if="isFrom(fieldName, index)" :key="`5-${index}`">
               <icon name="arrow-right"></icon>
