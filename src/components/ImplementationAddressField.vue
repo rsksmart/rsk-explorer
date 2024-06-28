@@ -1,27 +1,27 @@
-<!-- This whole Component is a workaround to display the implementation address of a proxy contract -->
-<!-- TODO: Refactor it to be used as a separate section inside the address view -->
 <template>
+  <!-- Todo: remove "implementationAddress" validation inside the v-if, after contract parser is fixed -->
   <div class="implementation-address-field-container" v-if="isERC1967Contract">
-    <span v-if="implementationAddress" class="text-orange-900">
-      This contract is a ERC1967 Proxy. Implementation address:
-      <a
-        class="implementation-address-link"
-        :href="`${siteUrl}address/${implementationAddress}`"
-        target="_blank"
-      >
-        {{ implementationAddress }}
-      </a>
-    </span>
-    <span class="implementation-address-msg" v-else>
+    <div v-if="implementationAddress">
+      <span class="text-white-100">This contract is an ERC1967 Proxy.</span>
+      <p>
+        <a class="implementation-address-link" :href="`${siteUrl}address/${implementationAddress}`" target="_blank">
+          <span class="text-white-400">Implementation address:</span>
+          <span>{{ implementationAddress }}</span>
+          <icon class="small" name="link-external" />
+        </a>
+      </p>
+    </div>
+    <div class="implementation-address-msg" v-else-if="!this.stopLoaderAnimation">
       <div class="loader">
         <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot"></div>
+      </div>
     </div>
-    </span>
   </div>
 </template>
 <script>
+import { BigNumber } from 'ethers'
 import { jsonRpcProvider } from '../jsonRpcProvider'
 import { mapGetters } from 'vuex'
 
@@ -37,8 +37,10 @@ export default {
     return {
       jsonRpcProvider: jsonRpcProvider(),
       implementationAddress: null,
-      fieldValue: null,
-      isERC1967Contract: null
+      isERC1967Contract: null,
+      isUUPSProxy: false,
+      isBeaconProxy: false,
+      stopLoaderAnimation: false
     }
   },
   computed: {
@@ -51,21 +53,44 @@ export default {
     }
   },
   methods: {
+    isZero (v) {
+      return BigNumber.from(v).isZero()
+    },
+    parseAddress (v) {
+      return `0x${v.slice(-40)}`
+    },
     async getImplementationAddress () {
-      // proxy implementation fetch
+      // ERC1967 Proxy implementation retrieval (https://eips.ethereum.org/EIPS/eip-1967)
+
+      let implementationAddress = null
+      const IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
+      // const BEACON_SLOT = '0xa3f0ad74e5423aebfd80d3ef4346578335a9a72aeaee59ff6cb3582b35133d50'
+
+      // Note: In case of ERC1967 false positives, ERC1967 interface will be manually removed from contractInterfaces (false positive stored in db due to contract parser bug)
       this.isERC1967Contract = this.data.type === 'contract' && this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
-      let implementationAddress
+      this.isUUPSProxy = false
+      this.isBeaconProxy = false
 
       if (this.isERC1967Contract) {
-        this.$set(this, 'fieldValue', 'fetching...')
-        // Retrieve ERC1967 Proxy implementation (https://eips.ethereum.org/EIPS/eip-1967)
-        const IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc' // storage address where the implementation address is stored
-        const implementationSlotValue = await this.jsonRpcProvider.getStorageAt(this.data.address, IMPLEMENTATION_SLOT)
+        // UUPS Check
+        const storedValue = await this.jsonRpcProvider.getStorageAt(this.data.address, IMPLEMENTATION_SLOT)
 
-        if (implementationSlotValue !== '0x0') {
-          implementationAddress = `0x${implementationSlotValue.slice(-40)}` // extract contract address
+        if (!this.isZero(storedValue)) {
+          this.isUUPSProxy = true
+          implementationAddress = this.parseAddress(storedValue)
         } else {
-          this.$set(this, 'fieldValue', 'N/A')
+          // TODO: Beacon check
+
+          // ...beacon check logic
+
+          // TODO: Remove this temporal fix after fixing contract parser bug (false positive stored in db due to contract parser bug)
+          // this condition should never happen if this.isERC1967Contract = true
+          if (!this.isBeaconProxy && !this.isUUPSProxy) {
+            // stop loading animation and manually remove ERC1967 from contract interfaces
+            this.stopLoaderAnimation = true
+            this.data.contractInterfaces = [...this.data.contractInterfaces.filter(v => v !== 'ERC1967')]
+            if (!this.data.contractInterfaces.length) this.data.contractInterfaces = undefined
+          }
         }
       }
 
@@ -73,7 +98,6 @@ export default {
     },
     setImplementationAddress (implementationAddress) {
       this.$set(this, 'implementationAddress', implementationAddress)
-      this.$set(this, 'fieldValue', implementationAddress)
     }
   },
   async mounted () {
@@ -81,7 +105,7 @@ export default {
 
     this.setImplementationAddress(implementationAddress)
 
-    console.log(this.implementationAddress)
+    console.log({ implementationAddress: this.implementationAddress })
   }
 }
 </script>
@@ -91,13 +115,15 @@ export default {
 
 .implementation-address-field-container {
   display: flex;
-  justify-content: center;
+  margin-left: 10px;
   margin-bottom: 15px;
 }
 
 .implementation-address-link {
   color: #bbb;
   transition: color 0.3s ease;
+  display: flex;
+  gap: 5px;
 }
 
 .implementation-address-link:hover {
@@ -118,7 +144,7 @@ export default {
   height: 10px;
   margin: 0 5px;
   border-radius: 50%;
-  background-color: $cyan_300;
+  background-color: $pink_900;
   animation: bounce 0.6s infinite alternate;
 }
 
