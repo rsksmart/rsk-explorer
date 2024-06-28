@@ -1,11 +1,24 @@
 <!-- This whole Component is a workaround to display the implementation address of a proxy contract -->
 <!-- TODO: Refactor it to be used as a separate section inside the address view -->
 <template>
-  <div class="implementation-address-field-container">
-    <span v-if="implementationAddress">
-      <a class="implementation-address-link" :href="`${siteUrl}address/${implementationAddress}`" target="_blank">{{ implementationAddress }}</a>
+  <div class="implementation-address-field-container" v-if="isERC1967Contract">
+    <span v-if="implementationAddress" class="text-orange-900">
+      This contract is a ERC1967 Proxy. Implementation address:
+      <a
+        class="implementation-address-link"
+        :href="`${siteUrl}address/${implementationAddress}`"
+        target="_blank"
+      >
+        {{ implementationAddress }}
+      </a>
     </span>
-    <span class="implementation-address-msg" v-else>{{ fieldValue }}</span>
+    <span class="implementation-address-msg" v-else>
+      <div class="loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+    </span>
   </div>
 </template>
 <script>
@@ -14,12 +27,18 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'implementation-address-field',
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
-      data: this.$parent.data,
       jsonRpcProvider: jsonRpcProvider(),
       implementationAddress: null,
-      fieldValue: null
+      fieldValue: null,
+      isERC1967Contract: null
     }
   },
   computed: {
@@ -34,10 +53,10 @@ export default {
   methods: {
     async getImplementationAddress () {
       // proxy implementation fetch
-      const isERC1967Contract = this.data.type === 'contract' && this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
+      this.isERC1967Contract = this.data.type === 'contract' && this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
       let implementationAddress
 
-      if (isERC1967Contract) {
+      if (this.isERC1967Contract) {
         this.$set(this, 'fieldValue', 'fetching...')
         // Retrieve ERC1967 Proxy implementation (https://eips.ethereum.org/EIPS/eip-1967)
         const IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc' // storage address where the implementation address is stored
@@ -67,9 +86,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '../styles/_variables.scss';
+
 .implementation-address-field-container {
-  margin-left: 76px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
 .implementation-address-link {
@@ -83,5 +106,33 @@ export default {
 
 .implementation-address-msg {
   color: #bbb;
+}
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: $cyan_300;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  to {
+    transform: translateY(-10px);
+  }
 }
 </style>
