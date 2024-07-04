@@ -108,6 +108,11 @@ export default {
     trim: 'auto',
     default: 0
   },
+  gasPriceInGwei: {
+    filters: ['gwei'],
+    trim: 'auto',
+    default: 0
+  },
   address: {
     link: (data, value) => linkAddress(value),
     filters: addressFilters
