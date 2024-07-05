@@ -80,6 +80,12 @@ export default {
       rowNumber = rowNumber || pos
       const row = (rowNumber % 2) ? 'odd' : 'even'
       css.push(row)
+
+      if (field.hideRowSeparator) {
+        console.log(field.fieldName, field.hideRowSeparator)
+        css.push('hidden-separator')
+      }
+
       return css
     },
     componentProps (field) {
@@ -95,3 +101,11 @@ export default {
   }
 }
 </script>
+
+<style>
+
+.hidden-separator {
+  box-shadow: none !important;
+}
+
+</style>

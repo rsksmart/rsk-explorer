@@ -204,9 +204,11 @@ export const Tx = () => {
     },
     gasPrice: {
       field: 'gasPrice',
-      type: 'gasPrice'
+      type: 'gasPrice',
+      hideRowSeparator: true
     },
     gasPriceInGwei: {
+      hideTitle: true,
       field: 'gasPriceInGwei',
       type: 'gasPriceInGwei'
     },
