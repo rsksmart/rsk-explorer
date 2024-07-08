@@ -64,10 +64,3 @@ export const browserProvider = () => {
     console.error('Error creating web3 browser provider instance:', error)
   }
 }
-
-// const getBlockNumber = async () => {
-//   const blockNumber = await jsonRpcProvider.getBlockNumber()
-//   console.log({ blockNumber })
-// }
-
-// getBlockNumber()
