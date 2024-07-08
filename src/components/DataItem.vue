@@ -82,7 +82,6 @@ export default {
       css.push(row)
 
       if (field.hideRowSeparator) {
-        console.log(field.fieldName, field.hideRowSeparator)
         css.push('hidden-separator')
       }
 
