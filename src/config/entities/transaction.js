@@ -205,12 +205,14 @@ export const Tx = () => {
     gasPrice: {
       field: 'gasPrice',
       type: 'gasPrice',
-      hideRowSeparator: true
+      hideRowSeparator: true,
+      trim: 'forced-auto'
     },
     gasPriceInGwei: {
       hideTitle: true,
       field: 'gasPriceInGwei',
-      type: 'gasPriceInGwei'
+      type: 'gasPriceInGwei',
+      trim: 'forced-auto'
     },
     contractAddress: {
       field: 'receipt.contractAddress',
