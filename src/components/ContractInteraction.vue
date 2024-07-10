@@ -1,7 +1,7 @@
 <template>
   <!-- Contract Interaction -->
   <div v-if="verification" class="contract-interaction section">
-    <div class="flex-container">
+    <div v-if="!isProxy" class="flex-container">
       <div v-if="this.showMetamaskNotInstalledMsg">
         <p class="metamask-connection-message">{{ installMetamaskMsg }}</p>
         <a class="metamask-link" :href="metamaskExtensionUrl" target="_blank">{{ metamaskExtensionUrl }}</a>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="methods-container">
+    <div v-if="!isProxy" class="methods-container">
       <div class="btn-content">
         <button
           class="btn"
@@ -58,12 +58,17 @@
         />
       </div>
     </div>
+    <!-- TODO: remove ALL "isProxy" guards after contract interaction with proxies are implemented -->
+    <div v-else style="background-color: #252525; padding: 10px;">
+      <h2 style="color: #ffffff; margin-bottom: 10px;">Coming Soon!</h2>
+      <p style="color: #ffffff; font-weight: bold;">This contract seems to be a proxy. Proxy contract interactions will be available soon!</p>
+    </div>
   </div>
 </template>
 
 <script>
 import { jsonRpcProvider, browserProvider, rskNetworks, envNetwork } from '../jsonRpcProvider'
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import ContractMethods from './ContractMethods.vue'
 import ToolTip from './General/Tooltip.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
@@ -107,7 +112,8 @@ export default {
       signerAddress: null,
       readMethods: true,
       methodsKey: 0,
-      networkChanged: false
+      networkChanged: false,
+      isProxy: false
     }
   },
   computed: {
@@ -158,6 +164,63 @@ export default {
     }
   },
   methods: {
+    async determineProxy () {
+      // This temporal guard is required until support for Proxies interaction is added.
+
+      // --- //
+      // Extra check to ensure it really is a proxy. Required until false ERC1967 contract positives are removed from db. (rsk-contract-parser bug)
+      const IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
+      const isProxy = this.data.type === 'contract' && this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
+
+      let result = {
+        msg: 'proxy recheck',
+        originalContractInterfaces: this.data.contractInterfaces,
+        implementationSlotValue: null,
+        proxy: false,
+        implementationAddress: null,
+        curatedInterfaces: null
+      }
+
+      const implementationSlotValue = await this.jsonRpcProvider.getStorageAt(this.data.address, IMPLEMENTATION_SLOT)
+
+      result = {
+        ...result,
+        implementationSlotValue
+      }
+
+      if (isProxy) {
+        const notAProxy = BigNumber.from(implementationSlotValue).isZero()
+
+        if (notAProxy) {
+          // then remove false positive
+          const curatedInterfaces = this.data.contractInterfaces.filter(v => v !== 'ERC1967')
+
+          this.data.contractInterfaces = curatedInterfaces.length ? curatedInterfaces : undefined
+
+          result = {
+            ...result,
+            curatedInterfaces
+          }
+        } else {
+          this.isProxy = true
+
+          result = {
+            ...result,
+            proxy: true,
+            implementationAddress: `0x${implementationSlotValue.slice(-40)}`
+          }
+        }
+
+        console.log(`Address ${this.data.address} is a proxy`)
+      } else {
+        console.log(`Address ${this.data.address} is not a proxy`)
+      }
+
+      console.log(result)
+      // --- //
+
+      return this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
+    },
     registerAbiFragment (value, category) {
       const CATEGORIES = this.abiCategories
 
@@ -391,6 +454,8 @@ export default {
   },
   async mounted () {
     this.setContractAbi()
+
+    await this.determineProxy()
 
     if (window.ethereum) window.ethereum.on('chainChanged', this.handleChainChanged)
 
