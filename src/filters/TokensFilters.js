@@ -44,6 +44,6 @@ export const txGasPrice = Vue.filter('tx-gas-price', (value, unit = 'wei') => {
   return (value) ? etherUnits.toEther(value, unit) : 0
 })
 
-export const mGasPrice = Vue.filter('m-gas-price', (value, unit = 'gwei') => {
-  return txGasPrice(value, unit)
+export const gweiGasPrice = Vue.filter('gwei-gas-price', (value) => {
+  return txGasPrice(value, 'gwei')
 })
