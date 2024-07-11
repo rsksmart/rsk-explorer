@@ -1,6 +1,6 @@
 <template>
   <!-- Todo: remove "implementationAddress" validation inside the v-if, after contract parser is fixed -->
-  <div class="implementation-address-field-container" v-if="isERC1967Contract">
+  <div class="implementation-address-field-container" v-if="isERC1967Contract && ($route.path === $route.fullPath || $route.query?.__ctab === 'general')">
     <div v-if="implementationAddress">
       <span class="text-white-100">This contract is an ERC1967 Proxy.</span>
       <p>
