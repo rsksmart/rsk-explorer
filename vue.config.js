@@ -20,7 +20,7 @@ module.exports = {
       .plugin('define')
       .tap(args => {
         const env = args[0]['process.env']
-        const props = ['WS_URL', 'STATS_URL', 'GA_TAG', 'HOTJAR_ID', 'STREAM_MITM_URL', 'APPS_URL']
+        const props = ['WS_URL', 'NETWORK', 'STATS_URL', 'GA_TAG', 'HOTJAR_ID', 'STREAM_MITM_URL', 'APPS_URL']
         props.forEach((v) => {
           env[v] = (process.env[v]) ? JSON.stringify(process.env[v]) : env['VUE_APP_' + v] || '""'
         })
@@ -53,6 +53,28 @@ module.exports = {
       .loader('file-loader')
       .options({
         name: 'assets/[name].[hash:8].[ext]'
+      })
+
+    config.module
+      .rule('ethers')
+      .test(/\.js$/)
+      .include.add(/node_modules\/ethers/)
+      .end()
+      .use('babel-loader')
+      .loader('babel-loader')
+      .options({
+        presets: ['@babel/preset-env']
+      })
+
+    config.module
+      .rule('noble-curves')
+      .test(/\.js$/)
+      .include.add(/node_modules\/@noble\/curves/)
+      .end()
+      .use('babel-loader')
+      .loader('babel-loader')
+      .options({
+        presets: ['@babel/preset-env']
       })
   }
 }
