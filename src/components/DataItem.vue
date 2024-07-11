@@ -37,6 +37,7 @@ import DataTable from '@/components/General/DataTable'
 import FieldItem from './FieldItem'
 import CollapsibleList from './CollapsibleList'
 import EventCall from './EventCall'
+
 export default {
   name: 'data-item',
   props: [
