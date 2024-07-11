@@ -12,9 +12,10 @@
     </template>
 
     <!-- Component -->
-    <template v-if="component && data">
+    <div v-if="component && data">
+      <implementation-address-field :data="parentData" />
       <component :is="component" :data="data" :type="dataType" :parentData="parentData" :delayed="delayed"></component>
-    </template>
+    </div>
     <!-- Generic render -->
     <template v-else>
       <template v-if="isTable">
@@ -41,6 +42,7 @@ import Paginator from './Paginator'
 import TxFilters from './TxFilters'
 import Spinner from './Spinner'
 import Message from './Message'
+import ImplementationAddressField from './ImplementationAddressField.vue'
 export default {
   name: 'data-section',
   components: {
@@ -50,7 +52,8 @@ export default {
     Paginator,
     TxFilters,
     Spinner,
-    Message
+    Message,
+    ImplementationAddressField
   },
   props: [
     'module', 'dataType', 'component', 'action', 'reqKey', 'msgs', 'updateOnNewBlock'

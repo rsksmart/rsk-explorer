@@ -41,7 +41,6 @@ The configuration is provided through this environment variables:
 - **STATS_URL**: rsk stats web (link redirect the 'stats' link)
 - **GA_TAG**: (optional) Google analytics tag.
 - **HOTJAR_ID**: (optional) Hotjar ID.
-- **APPS_URL**: rsk apps web (link redirect the 'apps' link)
 
 E.g. *to change the backend url :*
 

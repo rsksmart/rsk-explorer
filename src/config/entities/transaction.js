@@ -6,7 +6,7 @@ import {
   CONTRACT_FAILED
 } from '../types'
 import { BigNumber } from 'bignumber.js'
-import { txGasPrice } from '../../filters/TokensFilters'
+import { gweiGasPrice, txGasPrice } from '../../filters/TokensFilters'
 import { txIcon, txStatus } from '../../filters/TextFilters'
 import { formatEvent, filterTransferEvents, setThisAddress } from './lib/eventsLib'
 import { isAddress } from '../../lib/js/utils'
@@ -53,6 +53,7 @@ const transactionFormatRow = ({ data, parentData, context }) => {
     data.to = (txStatus(data.status) === STATUS.SUCCESS) ? CONTRACT_CREATED : CONTRACT_FAILED
   }
   data._fee = transactionFee(data)
+  data.gasPriceInGwei = gweiGasPrice(data.gasPrice)
   return data
 }
 
@@ -203,7 +204,15 @@ export const Tx = () => {
     },
     gasPrice: {
       field: 'gasPrice',
-      type: 'gasPrice'
+      type: 'gasPrice',
+      hideRowSeparator: true,
+      trim: 'forced-auto'
+    },
+    gasPriceInGwei: {
+      hideTitle: true,
+      field: 'gasPriceInGwei',
+      type: 'gasPriceInGwei',
+      trim: 'forced-auto'
     },
     contractAddress: {
       field: 'receipt.contractAddress',

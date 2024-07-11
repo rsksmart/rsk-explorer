@@ -11,19 +11,11 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   scrollBehavior (to, from, savedPosition) {
-    let x = 0
-    let y = 0
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      let hash = to.hash
-      if (hash) {
-        hash = hash.split(':')
-        x = hash[0]
-        y = hash[1]
-      }
-      return { x, y }
-    }
+    const toBasePath = to.path.split('/')[1]
+    const fromBasePath = from.path.split('/')[1]
+    if (toBasePath === fromBasePath) return false
+    if (savedPosition) return savedPosition
+    return { x: 0, y: 0 }
   },
   routes
 })
