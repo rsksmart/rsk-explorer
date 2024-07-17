@@ -6,7 +6,7 @@ if (!['mainnet', 'testnet'].includes(envNetwork)) throw new Error(`Invalid env n
 
 export const rskNetworks = {
   mainnet: {
-    chainName: 'Rootstock Mainnet - RPC API',
+    chainName: 'Rootstock Mainnet',
     chainId: '0x1e', // 30
     nativeCurrency: {
       name: 'Smart Bitcoin',
@@ -22,7 +22,7 @@ export const rskNetworks = {
     ]
   },
   testnet: {
-    chainName: 'Rootstock Testnet - RPC API',
+    chainName: 'Rootstock Testnet',
     chainId: '0x1f', // 31
     nativeCurrency: {
       name: 'Test Smart Bitcoin',

@@ -343,6 +343,7 @@ export default {
 
         this.validateInputs(inputs, method)
 
+        // TODO: abstract inputs formatter
         method.inputs.forEach((input, index) => {
           const { type } = input
 
@@ -352,6 +353,8 @@ export default {
             throw new Error('Invalid boolean input (possible values: true, false, 1, 0)')
           } else if (type.startsWith('uint') || type.startsWith('int')) {
             args[index] = this.formatBigNumber(args[index])
+          } else if (type.includes('[]')) {
+            args[index] = this.parseArrayFromString(args[index])
           }
         })
 
@@ -380,6 +383,7 @@ export default {
         const contract = this.getReadOnlyContractInstance()
         const args = inputs
 
+        // TODO: abstract inputs formatter
         method.inputs.forEach((input, index) => {
           const { type } = input
 
@@ -388,6 +392,8 @@ export default {
             args[index] = this.normalizeAddress(args[index])
           } else if (type === 'bool') {
             if (!this.isValidBoolean(args[index])) throw new Error('Invalid boolean input (possible values: true, false, 1, 0)')
+          } else if (type.includes('[]')) {
+            args[index] = this.parseArrayFromString(args[index])
           }
         })
 
@@ -412,6 +418,11 @@ export default {
       }
 
       this.$set(method.interactionData, 'requested', false)
+    },
+    parseArrayFromString (str) {
+      if (!str.startsWith('[') || !str.endsWith(']')) throw new Error('Value must be a valid array')
+
+      return JSON.parse(str)
     },
     validateInputs (inputs, method) {
       const nonEmptyInputs = inputs.filter(input => input !== '' && input !== undefined && input !== null)
