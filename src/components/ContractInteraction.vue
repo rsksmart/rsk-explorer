@@ -1,6 +1,6 @@
 <template>
   <!-- Contract Interaction -->
-  <div v-if="verification" class="contract-interaction section">
+  <div class="contract-interaction section">
     <div v-if="!isProxy" class="flex-container">
       <div v-if="this.showMetamaskNotInstalledMsg">
         <p class="metamask-connection-message">{{ installMetamaskMsg }}</p>
@@ -73,6 +73,7 @@ import ContractMethods from './ContractMethods.vue'
 import ToolTip from './General/Tooltip.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
 import { mapGetters } from 'vuex'
+import { bridge } from '../config/entities/lib/bridge'
 
 export default {
   name: 'contract-interaction',
@@ -120,43 +121,77 @@ export default {
     getData () {
       return this.data
     },
+    isBridge () {
+      return this.data.address === bridge.address
+    },
     verification () {
       return this.data.verification || {}
     },
     contractAddress () {
-      return this.data.verification.address
+      return this.data.address
     },
-    stringifiedAbi () {
+    verificationAbi () {
       const { verification } = this
       const abi = (verification) ? verification.abi : null
       return (abi) ? JSON.stringify(abi, null, 2) : null
     },
     abi () {
-      return JSON.parse(this.stringifiedAbi)
+      return this.isBridge ? bridge.abi : JSON.parse(this.verificationAbi)
     },
     abiCategories () {
       return this.CATEGORIES
     },
-    parsedAbi () {
+    getAbiFragmentsRegister () {
       const CATEGORIES = this.abiCategories
+      const allowedBridgeMethods = {
+        read: [
+          // TODO: Define method names (awaiting RSK Core methods list)
+          'getBtcBlockchainBestChainHeight'
+        ],
+        write: [
+          // TODO: Define method names (awaiting RSK Core methods list)
+          'receiveHeaders'
+        ]
+      }
 
-      this.abi.forEach(fragment => {
-        const { type, stateMutability } = fragment
+      const bridgeRegister = Object.freeze({
+        register: (fragment) => {
+          const { type, name } = fragment
+          console.log(fragment)
 
-        if (type === 'constructor') {
-          this.registerAbiFragment(fragment, CATEGORIES.CONTRACT_CONSTRUCTOR)
-        } else if (type === 'event') {
-          this.registerAbiFragment(fragment, CATEGORIES.EVENTS)
-        } else if (type === 'function') {
-          if (stateMutability === 'view' || stateMutability === 'pure') {
-            this.registerAbiFragment(fragment, CATEGORIES.READ_METHODS)
-          } else if (stateMutability === 'nonpayable' || stateMutability === 'payable') {
-            this.registerAbiFragment(fragment, CATEGORIES.WRITE_METHODS)
+          if (type === 'event') {
+            this.registerAbiFragment(fragment, CATEGORIES.EVENTS)
+          } else if (type === 'function') {
+            const isReadMethod = allowedBridgeMethods.read.includes(name)
+            const isWriteMethod = allowedBridgeMethods.write.includes(name)
+            if (isReadMethod) {
+              this.registerAbiFragment(fragment, CATEGORIES.READ_METHODS)
+            } else if (isWriteMethod) {
+              this.registerAbiFragment(fragment, CATEGORIES.WRITE_METHODS)
+            }
           }
         }
       })
 
-      return this.contractAbi
+      const defaultRegister = Object.freeze({
+        register: (fragment) => {
+          const { type, stateMutability } = fragment
+
+          if (type === 'constructor') {
+            this.registerAbiFragment(fragment, CATEGORIES.CONTRACT_CONSTRUCTOR)
+          } else if (type === 'event') {
+            this.registerAbiFragment(fragment, CATEGORIES.EVENTS)
+          } else if (type === 'function') {
+            if (stateMutability === 'view' || stateMutability === 'pure') {
+              this.registerAbiFragment(fragment, CATEGORIES.READ_METHODS)
+            } else if (stateMutability === 'nonpayable' || stateMutability === 'payable') {
+              this.registerAbiFragment(fragment, CATEGORIES.WRITE_METHODS)
+            }
+          }
+        }
+      })
+
+      return this.isBridge ? bridgeRegister : defaultRegister
     },
     contractInteractionTabUrl () {
       // fix to prevent signer address redirects by missclick to the copy button
@@ -249,7 +284,10 @@ export default {
       }
     },
     setContractAbi () {
-      this.$set(this, 'contractAbi', this.parsedAbi)
+      const abiFragmentsRegister = this.getAbiFragmentsRegister
+      this.abi.forEach(fragment => abiFragmentsRegister.register(fragment))
+
+      this.$set(this, 'contractAbi', this.contractAbi)
     },
     setReadOnlyContractInstance () {
       const { contractAddress, abi, jsonRpcProvider } = this

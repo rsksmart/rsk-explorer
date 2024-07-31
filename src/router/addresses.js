@@ -7,6 +7,7 @@ import { ROUTES as r } from '../config/types'
 import { TRANSFER_EVENTS_SIGNATURES } from '../config/entities/lib/eventsLib'
 import store from '../store/'
 import { fillMessage, CHECKSUM_WARN } from '../config/messages'
+import { bridge } from '../config/entities/lib/bridge'
 
 export default [
   {
@@ -65,7 +66,11 @@ export default [
         {
           name: 'Contract Interaction',
           component: ContractInteraction,
-          render: data => (data && data.type === 'contract' && !data.isNative && data.verification),
+          render: data => {
+            const isBridge = data && data.address === bridge.address
+            const isNonNativeVerifiedContract = data && data.type === 'contract' && !data.isNative && data.verification
+            return isNonNativeVerifiedContract || isBridge
+          },
           hideTabs: true
         }
       ],
