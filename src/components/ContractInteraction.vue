@@ -281,11 +281,7 @@ export default {
       }
     },
     async requestRskNetworkSwitch () {
-      try {
-        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: rskNetworks[envNetwork].chainId }] })
-      } catch (error) {
-        throw new Error('Error while switching to rsk network', error)
-      }
+      await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: rskNetworks[envNetwork].chainId }] })
     },
     async connectToRskNetwork () {
       await window.ethereum.request({ method: 'eth_requestAccounts' })
