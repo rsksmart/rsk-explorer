@@ -73,7 +73,7 @@ import ContractMethods from './ContractMethods.vue'
 import ToolTip from './General/Tooltip.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
 import { mapGetters } from 'vuex'
-import { bridge } from '../config/entities/lib/bridge'
+import { bridge, ALLOWED_BRIDGE_METHODS } from '../config/entities/lib/bridge'
 
 export default {
   name: 'contract-interaction',
@@ -95,9 +95,11 @@ export default {
       [CATEGORIES.READ_METHODS]: [],
       [CATEGORIES.WRITE_METHODS]: []
     }
+
     return {
       PAGE_COLORS,
       CATEGORIES,
+      ALLOWED_BRIDGE_METHODS,
       contractAbi,
       contractInstances: {
         readOnly: null,
@@ -143,30 +145,21 @@ export default {
     },
     getAbiFragmentsRegister () {
       const CATEGORIES = this.abiCategories
-      const allowedBridgeMethods = {
-        read: [
-          // TODO: Define method names (awaiting RSK Core methods list)
-          'getBtcBlockchainBestChainHeight'
-        ],
-        write: [
-          // TODO: Define method names (awaiting RSK Core methods list)
-          'receiveHeaders'
-        ]
-      }
+      const ALLOWED_BRIDGE_METHODS = this.ALLOWED_BRIDGE_METHODS
 
       const bridgeRegister = Object.freeze({
         register: (fragment) => {
           const { type, name } = fragment
-          console.log(fragment)
 
           if (type === 'event') {
             this.registerAbiFragment(fragment, CATEGORIES.EVENTS)
           } else if (type === 'function') {
-            const isReadMethod = allowedBridgeMethods.read.includes(name)
-            const isWriteMethod = allowedBridgeMethods.write.includes(name)
-            if (isReadMethod) {
+            const isAllowedReadMethod = ALLOWED_BRIDGE_METHODS.read.includes(name)
+            const isAllowedWriteMethod = ALLOWED_BRIDGE_METHODS.write.includes(name)
+
+            if (isAllowedReadMethod) {
               this.registerAbiFragment(fragment, CATEGORIES.READ_METHODS)
-            } else if (isWriteMethod) {
+            } else if (isAllowedWriteMethod) {
               this.registerAbiFragment(fragment, CATEGORIES.WRITE_METHODS)
             }
           }
