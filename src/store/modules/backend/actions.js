@@ -63,7 +63,7 @@ export const socketData = ({ state, commit, getters, dispatch }, res) => {
 
   if (res.action === 'getAddress') {
     const domain = getters.getDomain(req.params.address)
-    res.data.rns = domain
+    if (domain) res.data.rns = domain
   }
 
   const response = Object.assign({}, state.responses[key])
