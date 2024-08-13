@@ -45,6 +45,7 @@
           :methods="contractAbi.readMethods"
           @contract-interaction-handler="contractCall"
           methodsType="read"
+          :isBridge="isBridge"
           :key="`read-${methodsKey}`"
         />
         <ContractMethods
@@ -53,6 +54,7 @@
           :methods="contractAbi.writeMethods"
           @contract-interaction-handler="sendTransaction"
           methodsType="write"
+          :isBridge="isBridge"
           :disableCalls="!metamaskConnected"
           :key="`write-${methodsKey}`"
         />
@@ -89,21 +91,21 @@ export default {
       READ_METHODS: 'readMethods',
       WRITE_METHODS: 'writeMethods'
     }
-    const contractAbi = {
-      [CATEGORIES.CONTRACT_CONSTRUCTOR]: null,
-      [CATEGORIES.EVENTS]: [],
-      [CATEGORIES.READ_METHODS]: [],
-      [CATEGORIES.WRITE_METHODS]: []
-    }
 
     return {
       PAGE_COLORS,
-      CATEGORIES,
       ALLOWED_BRIDGE_METHODS,
-      contractAbi,
+      CATEGORIES,
+      contractAbi: {
+        [CATEGORIES.CONTRACT_CONSTRUCTOR]: null,
+        [CATEGORIES.EVENTS]: [],
+        [CATEGORIES.READ_METHODS]: [],
+        [CATEGORIES.WRITE_METHODS]: []
+      },
       contractInstances: {
         readOnly: null,
-        write: null
+        write: null,
+        simulation: null
       },
       jsonRpcProvider: jsonRpcProvider(),
       metamaskConnected: false,
@@ -138,7 +140,28 @@ export default {
       return (abi) ? JSON.stringify(abi, null, 2) : null
     },
     abi () {
-      return this.isBridge ? bridge.abi : JSON.parse(this.verificationAbi)
+      const curatedBridgeAbi = bridge.abi.map(fragment => {
+        const { name, stateMutability } = fragment
+        const isAllowedWriteMethod = ALLOWED_BRIDGE_METHODS.write.includes(name)
+
+        if (isAllowedWriteMethod && !stateMutability) {
+          const formattedFragment = {
+            ...fragment,
+            constant: false,
+            stateMutability: 'nonpayable'
+          }
+
+          console.log('Non stardard method detected')
+          console.log('Got:', fragment)
+          console.log('Returning:', formattedFragment)
+
+          return formattedFragment
+        }
+
+        return fragment
+      })
+
+      return this.isBridge ? curatedBridgeAbi : JSON.parse(this.verificationAbi)
     },
     abiCategories () {
       return this.CATEGORIES
@@ -199,22 +222,7 @@ export default {
       // Extra check to ensure it really is a proxy. Required until false ERC1967 contract positives are removed from db. (rsk-contract-parser bug)
       const IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
       const isProxy = this.data.type === 'contract' && this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
-
-      let result = {
-        msg: 'proxy recheck',
-        originalContractInterfaces: this.data.contractInterfaces,
-        implementationSlotValue: null,
-        proxy: false,
-        implementationAddress: null,
-        curatedInterfaces: null
-      }
-
       const implementationSlotValue = await this.jsonRpcProvider.getStorageAt(this.data.address, IMPLEMENTATION_SLOT)
-
-      result = {
-        ...result,
-        implementationSlotValue
-      }
 
       if (isProxy) {
         const notAProxy = BigNumber.from(implementationSlotValue).isZero()
@@ -224,42 +232,26 @@ export default {
           const curatedInterfaces = this.data.contractInterfaces.filter(v => v !== 'ERC1967')
 
           this.data.contractInterfaces = curatedInterfaces.length ? curatedInterfaces : undefined
-
-          result = {
-            ...result,
-            curatedInterfaces
-          }
         } else {
           this.isProxy = true
-
-          result = {
-            ...result,
-            proxy: true,
-            implementationAddress: `0x${implementationSlotValue.slice(-40)}`
-          }
         }
-
-        console.log(`Address ${this.data.address} is a proxy`)
-      } else {
-        console.log(`Address ${this.data.address} is not a proxy`)
       }
-
-      console.log(result)
       // --- //
 
       return this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
     },
-    registerAbiFragment (value, category) {
+    registerAbiFragment (fragment, category) {
+      const abiFragment = { ...fragment }
       const CATEGORIES = this.abiCategories
 
-      if (!Object.values(CATEGORIES).includes(category)) throw new Error(`Error parsing contract abi. Unknown category ${category} for value ${JSON.stringify(value)}`)
+      if (!Object.values(CATEGORIES).includes(category)) throw new Error(`Error parsing contract abi. Unknown category ${category} for abi fragment ${JSON.stringify(abiFragment)}`)
 
       if (category === CATEGORIES.CONTRACT_CONSTRUCTOR) {
-        this.contractAbi[CATEGORIES.CONTRACT_CONSTRUCTOR] = value
+        this.contractAbi[CATEGORIES.CONTRACT_CONSTRUCTOR] = abiFragment
       } else if (category === CATEGORIES.EVENTS) {
-        this.contractAbi[category].push(value)
+        this.contractAbi[category].push(abiFragment)
       } else if (category === CATEGORIES.READ_METHODS || category === CATEGORIES.WRITE_METHODS) {
-        this.$set(value, 'interactionData', {
+        this.$set(abiFragment, 'interactionData', {
           inputs: [],
           outputs: [],
           hash: {
@@ -270,10 +262,11 @@ export default {
             content: null,
             style: 'message-info'
           },
-          requested: false
+          requested: false,
+          callType: 'call'
         })
 
-        this.contractAbi[category].push(value)
+        this.contractAbi[category].push(abiFragment)
       }
     },
     setContractAbi () {
@@ -295,6 +288,38 @@ export default {
       this.$set(this.contractInstances, 'write', contractInstance)
       this.$set(this, 'signer', signer)
       this.$set(this, 'signerAddress', signerAddress)
+
+      // set simulation contract
+      const simulationContractInstance = new ethers.Contract(contractAddress, this.getSimulationMethods(), signer)
+      this.$set(this.contractInstances, 'simulation', simulationContractInstance)
+    },
+    getSimulationMethods () {
+      const newAbi = []
+
+      this.abi.forEach(fragment => {
+        let isWriteMethod
+        if (this.isBridge) {
+          isWriteMethod = ALLOWED_BRIDGE_METHODS.write.includes(fragment.name)
+        } else {
+          // support simulation for normal contracts
+          isWriteMethod = this.contractAbi[this.CATEGORIES.WRITE_METHODS].some(method => method.name === fragment.name)
+        }
+
+        if (isWriteMethod) {
+          // add simulation fragment
+          const simulationMethod = {
+            ...fragment,
+            constant: true,
+            stateMutability: 'view' // what about 'pure'? maybe a selector?
+          }
+
+          console.log({ methodName: fragment.name, simulationMethod })
+
+          newAbi.push(simulationMethod)
+        }
+      })
+
+      return newAbi
     },
     getReadOnlyContractInstance () {
       if (!this.contractInstances.readOnly) this.setReadOnlyContractInstance()
@@ -303,6 +328,9 @@ export default {
     },
     getWriteOnlyContractInstance () {
       return this.contractInstances.write
+    },
+    getSimulationContractInstance () {
+      return this.contractInstances.simulation
     },
     async requestAddRskNetwork () {
       try {
@@ -356,14 +384,14 @@ export default {
         console.error(this.installMetamaskMsg)
       }
     },
-    async sendTransaction (methodName, inputs) {
+    async sendTransaction (methodName, inputs, callType) {
       const methodIndex = this.contractAbi[this.CATEGORIES.WRITE_METHODS].findIndex(m => m.name === methodName)
       const method = this.contractAbi[this.CATEGORIES.WRITE_METHODS][methodIndex]
       this.$set(method.interactionData, 'hash', { content: null, style: 'message-info' })
-      this.$set(method.interactionData, 'message', { content: 'Sending transaction...', style: 'message-success' })
+      this.$set(method.interactionData, 'message', { content: callType === 'call' ? 'Calling contract...' : 'Sending transaction...', style: 'message-success' })
 
       try {
-        const contract = this.contractInstances.write
+        const contract = this.getWriteOnlyContractInstance()
         const args = inputs
 
         if (!contract) throw new Error('Connect to metamask first')
@@ -385,13 +413,36 @@ export default {
           }
         })
 
-        const tx = await contract[methodName](...args)
-        this.$set(method.interactionData, 'message', { content: 'Transaction sent. Waiting for confirmation... (estimated time: 30 secs)', style: 'message-success' })
-        this.$set(method.interactionData, 'hash', { content: tx.hash, style: 'message-info' })
+        console.log({ callType })
 
-        await tx.wait() // receipt
+        if (callType === 'send') {
+          console.log({ contract })
+          const tx = await contract[methodName](...args)
+          this.$set(method.interactionData, 'message', { content: 'Transaction sent. Waiting for confirmation... (estimated time: 30 secs)', style: 'message-success' })
+          this.$set(method.interactionData, 'hash', { content: tx.hash, style: 'message-info' })
 
-        this.$set(method.interactionData, 'message', { content: 'Transaction confirmed.', style: 'message-success' })
+          console.log({ tx })
+          await tx.wait() // receipt
+
+          this.$set(method.interactionData, 'message', { content: 'Transaction confirmed.', style: 'message-success' })
+        } else {
+          // simulation
+          const contract = this.getSimulationContractInstance()
+          // Note: When function has multiple outputs, ethers returns result as a proxy
+          const result = await contract[methodName](...args)
+
+          if (method.outputs.length > 1) {
+            method.outputs.forEach((_, index) => {
+              this.$set(method.interactionData.outputs, index, result[index])
+            })
+            this.$set(method.interactionData, 'message', { content: null, style: 'message-info' })
+          } else if (method.outputs.length === 1) {
+            this.$set(method.interactionData.outputs, 0, result)
+            this.$set(method.interactionData, 'message', { content: null, style: 'message-info' })
+          } else {
+            this.$set(method.interactionData, 'message', { content: 'This method does not return any values.', style: 'message-info' })
+          }
+        }
       } catch (error) {
         console.error(error)
 

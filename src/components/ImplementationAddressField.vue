@@ -104,8 +104,6 @@ export default {
     const implementationAddress = await this.getImplementationAddress()
 
     this.setImplementationAddress(implementationAddress)
-
-    console.log({ implementationAddress: this.implementationAddress })
   }
 }
 </script>
