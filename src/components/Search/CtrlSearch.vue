@@ -136,6 +136,7 @@ export default {
     },
     changeInput (event) {
       const newValue = this.formatValue(this.value)
+      if (!newValue) return
       this.onFocus(false)
       if (this.currentType && this.searchedTypes.length) {
         this.$router.push(this.linkToSearch, () => { })
@@ -224,7 +225,7 @@ export default {
       if (this.$route.name.toLowerCase() !== ROUTES.search.toLowerCase()) {
         this.clearSearchedResults()
         this.value = ''
-      }
+      } else if (this.$route.params?.value) this.value = this.$route.params?.value
     }
   }
 }

@@ -18,7 +18,8 @@ export const clearSearchedResults = async ({ commit, dispatch, getters }) => {
 }
 
 export const updateSearchedValue = async ({ commit, dispatch, state }, value) => {
-  if (value.match(/.rsk/)) {
+  if (!value) return
+  if (value?.match(/.rsk/)) {
     try {
       const address = await getAddr(value)
       store.commit('SET_DOMAIN', { domain: value, address })
@@ -28,7 +29,7 @@ export const updateSearchedValue = async ({ commit, dispatch, state }, value) =>
       // console.error(error.message, value)
     }
   }
-  const lcValue = value.toLowerCase()
+  const lcValue = value?.toLowerCase()
   value = (isHexString(value) && isTxOrBlockHash(lcValue)) ? lcValue : value
   if (state.value !== value) {
     commit('SET_SEARCH_VALUE', value)
