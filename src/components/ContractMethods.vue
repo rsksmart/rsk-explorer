@@ -24,7 +24,7 @@
               <span>Transact (send)</span>
             </label>
           </form>
-          <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs, method.interactionData.callType)" :disabled="disableCalls">{{ method.name }}</button>
+          <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs, method.interactionData.callType)" :disabled="disableCalls || method.interactionData.requested">{{ method.name }}</button>
         </div>
         <!-- Result -->
         <div v-if="showOutputs && method.outputs && method.interactionData.outputs.length" class="result">
@@ -247,8 +247,9 @@ export default {
   margin-bottom: 10px;
 }
 
-// .call-type-selector-form {
-// }
+.call-type-selector-form {
+  margin-top: 10px;
+}
 
 .call-type-options {
   display: flex;

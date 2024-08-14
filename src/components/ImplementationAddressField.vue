@@ -87,8 +87,11 @@ export default {
           // this condition should never happen if this.isERC1967Contract = true
           if (!this.isBeaconProxy && !this.isUUPSProxy) {
             // stop loading animation and manually remove ERC1967 from contract interfaces
+            const contractInterfaces = this.data.contractInterfaces || []
+
+            this.data.contractInterfaces = contractInterfaces.filter(v => v !== 'ERC1967')
             this.stopLoaderAnimation = true
-            this.data.contractInterfaces = [...this.data.contractInterfaces.filter(v => v !== 'ERC1967')]
+
             if (!this.data.contractInterfaces.length) this.data.contractInterfaces = undefined
           }
         }
