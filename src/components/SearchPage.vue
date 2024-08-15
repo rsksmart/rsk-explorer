@@ -9,7 +9,12 @@
             <a :href="result.link">{{ result.name }}</a>
           </li>
         </ul>
-        <div class="not-found" v-if="!results.length && !isSearching">
+        <ul class="results" v-else-if="types.length">
+          <li>
+            <a :href="linkToSearch">{{ currentType }} {{ searched }}</a>
+          </li>
+        </ul>
+        <div class="not-found" v-if="!results.length && !isSearching && !types.length">
           <p>The search didn't match any element</p>
         </div>
       </div>
@@ -34,7 +39,10 @@ export default {
       results: 'getSearchedResults',
       searched: 'searchedValue',
       requesting: 'requestingSearches',
-      types: 'searchedTypes'
+      types: 'searchedTypes',
+      searchedTypes: 'searchedTypes',
+      currentType: 'searchedType',
+      linkToSearch: 'linkToSearch'
     }),
     isSearching () {
       return this.requesting.length
@@ -44,12 +52,45 @@ export default {
     ...mapActions([
       'fetchSearch',
       'prepareSearch',
-      'searchTypes']),
+      'searchTypes'
+    ]),
+    ...mapGetters([
+      'getPage',
+      'getSearchLink'
+    ]),
+    goTo ({ type, value }) {
+      this.getSearchLink()({ type, value })
+    },
     async search (value) {
       await this.prepareSearch({ value })
+      value = this.searched
       const { types } = this
-      if (types.length) await this.searchTypes({ types, value })
-      else await this.fetchSearch({ value })
+      if (types.length === 1) {
+        const type = types[0]
+        return this.goTo({ type, value })
+      } else {
+        await this.searchTypes({ types, value })
+        await this.waitForResults()
+        const { results } = this
+        // redirect when there is only one result
+        if (results && results.length === 1) {
+          return this.goTo(results[0])
+        }
+      }
+    },
+    waitForResults () {
+      const vm = this
+      return new Promise((resolve) => {
+        return vm.createTimeout(() => {
+          if (vm.isLoading) resolve(vm.waitForResults())
+          else resolve(vm.results)
+        })
+      })
+    },
+    createTimeout (cb) {
+      const { requestingTimeout } = this
+      if (requestingTimeout) clearTimeout(requestingTimeout)
+      this.requestingTimeout = setTimeout(cb, 200)
     }
   }
 }
