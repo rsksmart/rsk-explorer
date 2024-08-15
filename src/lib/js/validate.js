@@ -2,7 +2,9 @@ import { isAddress } from '@rsksmart/rsk-utils/dist/addresses'
 import { isHexString, isTxOrBlockHash, add0x } from '@rsksmart/rsk-utils/dist/strings'
 
 export const isValidBlockNumber = (value, lastBlock) => {
-  const number = parseInt(value)
+  let newValue = value
+  if (value.toString().includes(',')) newValue = value.toString().replaceAll(',', '')
+  const number = Number(newValue)
   // optional checks lastBlock
   lastBlock = lastBlock || number
   return number > -1 && number <= lastBlock
