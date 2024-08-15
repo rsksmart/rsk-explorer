@@ -138,7 +138,7 @@ export default {
       const newValue = this.formatValue(this.value)
       if (!newValue) return
       this.onFocus(false)
-      if (this.currentType && this.searchedTypes.length) {
+      if (this.currentType && this.searchedTypes.length && !this.isLoading && !this.typing) {
         this.$router.push(this.linkToSearch, () => { })
       } else {
         const link = `/${ROUTES.search}/${newValue}`
