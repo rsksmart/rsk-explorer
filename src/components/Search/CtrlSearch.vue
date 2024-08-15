@@ -91,6 +91,9 @@ export default {
       'searchTypes',
       'fetchSearch'
     ]),
+    formatValue (value) {
+      return value.toString().replaceAll(',', '')
+    },
     btnClear () {
       this.clear()
       this.$refs.inputRef.focus()
@@ -123,7 +126,8 @@ export default {
     },
     emit (event, type, value) {
       type = type || event.type
-      this.$emit(type, { value, event })
+      const newValue = this.formatValue(value)
+      this.$emit(type, { value: newValue, event })
       let timer = 0
       if (value.includes('.rsk')) timer = 1500
       setTimeout(() => {
@@ -131,16 +135,18 @@ export default {
       }, timer)
     },
     changeInput (event) {
+      const newValue = this.formatValue(this.value)
+      if (!newValue) return
       this.onFocus(false)
-      if (this.currentType && this.searchedTypes.length) {
+      if (this.currentType && this.searchedTypes.length && !this.isLoading && !this.typing) {
         this.$router.push(this.linkToSearch, () => { })
       } else {
-        const link = `/${ROUTES.search}/${this.value}`
+        const link = `/${ROUTES.search}/${newValue}`
         this.$router.push(link, () => { })
       }
     },
     onChange (event) {
-      const value = this.value
+      const value = this.formatValue(this.value)
       this.emit(event, 'change', value)
     },
     selectResult (result) {
@@ -176,7 +182,8 @@ export default {
       this.selectResult(selectedResult)
     },
     onShowMore (event) {
-      this.emit(event, 'showMore', this.value)
+      const value = this.formatValue(this.value)
+      this.emit(event, 'showMore', value)
     },
     debounce (func, wait, immediate) {
       let timeout
@@ -218,7 +225,7 @@ export default {
       if (this.$route.name.toLowerCase() !== ROUTES.search.toLowerCase()) {
         this.clearSearchedResults()
         this.value = ''
-      }
+      } else if (this.$route.params?.value) this.value = this.$route.params?.value
     }
   }
 }
