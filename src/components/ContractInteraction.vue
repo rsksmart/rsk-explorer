@@ -76,7 +76,7 @@ import ToolTip from './General/Tooltip.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
 import { mapGetters } from 'vuex'
 import { bridge, ALLOWED_BRIDGE_METHODS, METHOD_TYPES, isAllowedMethod, removeNonFunctionFragmentsFromAbi } from '../config/entities/lib/bridge'
-import { Indexed, isAddress } from 'ethers/lib/utils'
+import { isAddress } from 'ethers/lib/utils'
 
 export default {
   name: 'contract-interaction',
@@ -379,7 +379,7 @@ export default {
         const invalidArray = type.includes('[]') && (!input.startsWith('[') || !input.endsWith(']'))
         const invalidTuple = type === 'tuple' && (!input.startsWith('[') || !input.endsWith(']')) // behaves like array
         const invalidInteger = (type.startsWith('uint') || type.startsWith('int')) && isNaN(parseInt(input))
- 
+
         if (invalidAddress) {
           throw new Error(`Invalid address provided: ${input}`)
         } else if (invalidInteger) {
@@ -388,7 +388,7 @@ export default {
           throw new Error(`Invalid boolean provided: ${input}`)
         } else if (invalidArray) {
           throw new Error(`Invalid array provided: ${input}`)
-        } else if (invalidTuple){
+        } else if (invalidTuple) {
           throw new Error(`Invalid tuple provided: ${input}`)
         }
       })
