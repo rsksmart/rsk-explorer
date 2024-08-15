@@ -13,7 +13,19 @@
             <input class="method-input-field" type="text" v-model="method.interactionData.inputs[i]" :placeholder="input.name || i">
           </div>
         </div>
-        <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs)" :disabled="disableCalls">{{ method.name }}</button>
+        <div class="call-type-selector-form">
+          <form class="call-type-options" v-if="methodsType === 'write'">
+            <label class="call-type-option">
+              <input v-model="method.interactionData.callType" type="radio" name="call-type" value="call" checked>
+              <span>Simulate (call)</span>
+            </label>
+            <label class="call-type-option">
+              <input v-model="method.interactionData.callType" type="radio" name="call-type" value="send">
+              <span>Transact (send)</span>
+            </label>
+          </form>
+          <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs, method.interactionData.callType)" :disabled="disableCalls || method.interactionData.requested">{{ method.name }}</button>
+        </div>
         <!-- Result -->
         <div v-if="showOutputs && method.outputs && method.interactionData.outputs.length" class="result">
           <label class="label">
@@ -63,11 +75,16 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    isBridge: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data () {
     return {
-      showOutputs: this.methodsType === 'read'
+      showOutputs: true
     }
   },
   computed: {
@@ -80,8 +97,8 @@ export default {
     }
   },
   methods: {
-    contractCall (methodName, inputs) {
-      this.$emit('contract-interaction-handler', methodName, inputs)
+    contractCall (methodName, inputs, callType) {
+      this.$emit('contract-interaction-handler', methodName, inputs, callType)
     }
   }
 }
@@ -228,5 +245,21 @@ export default {
 
 .result {
   margin-bottom: 10px;
+}
+
+.call-type-selector-form {
+  margin-top: 10px;
+}
+
+.call-type-options {
+  display: flex;
+  gap: 20px;
+}
+
+.call-type-option {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
 }
 </style>

@@ -47,7 +47,8 @@
     "vue-router": "^3.4.3",
     "vuex": "^3.5.1",
     "vuex-router-sync": "^5.0.0",
-    "@rsksmart/rns-resolver.js": "^1.1.0"
+    "@rsksmart/rns-resolver.js": "^1.1.0",
+    "@rsksmart/rsk-precompiled-abis": "^6.0.0-ARROWHEAD"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.12",
