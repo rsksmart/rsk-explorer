@@ -1,7 +1,7 @@
 <template>
   <!-- Contract Interaction -->
   <div class="contract-interaction section">
-    <div v-if="!isProxy" class="flex-container">
+    <div class="flex-container">
       <div v-if="this.showMetamaskNotInstalledMsg">
         <p class="metamask-connection-message">{{ installMetamaskMsg }}</p>
         <a class="metamask-link" :href="metamaskExtensionUrl" target="_blank">{{ metamaskExtensionUrl }}</a>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div v-if="!isProxy" class="methods-container">
+    <div class="methods-container">
       <div class="btn-content">
         <button
           class="btn"
@@ -59,11 +59,6 @@
           :key="`write-${methodsKey}`"
         />
       </div>
-    </div>
-    <!-- TODO: remove ALL "isProxy" guards after contract interaction with proxies are implemented -->
-    <div v-else style="background-color: #252525; padding: 10px;">
-      <h2 style="color: #ffffff; margin-bottom: 10px;">Coming Soon!</h2>
-      <p style="color: #ffffff; font-weight: bold;">This contract seems to be a proxy. Proxy contract interactions will be available soon!</p>
     </div>
   </div>
 </template>
