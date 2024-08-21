@@ -25,38 +25,72 @@
       <div class="btn-content">
         <button
           class="btn"
-          :style="{ backgroundColor: readMethods ? PAGE_COLORS[$route.name].cl : ''}"
-          @click="selectMethods(true)"
+          :style="{ backgroundColor: currentMethodsViewSelector === 1 ? PAGE_COLORS[$route.name].cl : ''}"
+          @click="updateCurrentMethodsView(1)"
         >
-          Read Methods
+          Read Proxy
         </button>
         <button
           class="btn"
-          :style="{ backgroundColor: !readMethods ? PAGE_COLORS[$route.name].cl : ''}"
-          @click="selectMethods(false)"
+          :style="{ backgroundColor: currentMethodsViewSelector === 2 ? PAGE_COLORS[$route.name].cl : ''}"
+          @click="updateCurrentMethodsView(2)"
         >
-          Write Methods
+          Write Proxy
+        </button>
+        <button
+          class="btn"
+          :style="{ backgroundColor: currentMethodsViewSelector === 3 ? PAGE_COLORS[$route.name].cl : ''}"
+          @click="updateCurrentMethodsView(3)"
+        >
+          Read Contract
+        </button>
+        <button
+          class="btn"
+          :style="{ backgroundColor: currentMethodsViewSelector === 4 ? PAGE_COLORS[$route.name].cl : ''}"
+          @click="updateCurrentMethodsView(4)"
+        >
+          Write Contract
         </button>
       </div>
       <div class="methods-content">
         <ContractMethods
-          v-if="readMethods"
-          title="Read Methods"
+          v-if="currentMethodsViewSelector === 1 && isProxy"
+          title="Read Proxy"
           :methods="contractAbi.readMethods"
           @contract-interaction-handler="contractCall"
           methodsType="read"
           :isBridge="isBridge"
-          :key="`read-${methodsKey}`"
+          :key="`read-proxy-${currentMethodsViewSelector}`"
         />
         <ContractMethods
-          v-else
+          v-else-if="currentMethodsViewSelector === 2 && isProxy"
+          title="Write Proxy"
+          :methods="contractAbi.writeMethods"
+          @contract-interaction-handler="sendTransaction"
+          methodsType="write"
+          :isBridge="isBridge"
+          :disableCalls="!metamaskConnected"
+          :key="`write-proxy-${currentMethodsViewSelector}`"
+        />
+        <ContractMethods
+          v-else-if="currentMethodsViewSelector === 3"
+          title="Read Contract"
+          :methods="contractAbi.readMethods"
+          @contract-interaction-handler="contractCall"
+          methodsType="read"
+          :isBridge="isBridge"
+          :disableCalls="!metamaskConnected"
+          :key="`read-${currentMethodsViewSelector}`"
+        />
+        <ContractMethods
+          v-else-if="currentMethodsViewSelector === 4"
           title="Write Methods"
           :methods="contractAbi.writeMethods"
           @contract-interaction-handler="sendTransaction"
           methodsType="write"
           :isBridge="isBridge"
           :disableCalls="!metamaskConnected"
-          :key="`write-${methodsKey}`"
+          :key="`write-${currentMethodsViewSelector}`"
         />
       </div>
     </div>
@@ -111,8 +145,7 @@ export default {
       browserProvider: null,
       signer: null,
       signerAddress: null,
-      readMethods: true,
-      methodsKey: 0,
+      currentMethodsViewSelector: 1,
       networkChanged: false,
       isProxy: false
     }
@@ -205,7 +238,7 @@ export default {
     abiWithSimulationMethods () {
       const { abi, getSimulationFragmentMethods } = this
 
-      return [...abi, ...getSimulationFragmentMethods()]
+      return [...abi, ...getSimulationFragmentMethods(abi)]
     }
   },
   methods: {
@@ -257,8 +290,8 @@ export default {
       setSimulationContractInstance()
     },
     setSimulationContractInstance () {
-      const { contractAddress, getSimulationFragmentMethods, jsonRpcProvider } = this
-      const contractInstance = new ethers.Contract(contractAddress, getSimulationFragmentMethods(), jsonRpcProvider)
+      const { contractAddress, getSimulationFragmentMethods, jsonRpcProvider, abi } = this
+      const contractInstance = new ethers.Contract(contractAddress, getSimulationFragmentMethods(abi), jsonRpcProvider)
 
       this.$set(this.contractInstances, 'simulation', contractInstance)
     },
@@ -294,8 +327,8 @@ export default {
 
       return fragment
     },
-    getSimulationFragmentMethods () {
-      const { abi, isWriteMethod, getSimulationFragment } = this
+    getSimulationFragmentMethods (abi) {
+      const { isWriteMethod, getSimulationFragment } = this
 
       const fragments = []
 
@@ -382,9 +415,9 @@ export default {
         } else if (invalidBoolean) {
           throw new Error(`Invalid boolean provided: ${input}`)
         } else if (invalidArray) {
-          throw new Error(`Invalid array provided: ${input}`)
+          throw new Error(`Invalid array format provided. Wrap the values with []: ${input}`)
         } else if (invalidTuple) {
-          throw new Error(`Invalid tuple provided: ${input}`)
+          throw new Error(`Invalid tuple format provided. Wrap the values with []: ${input}`)
         }
       })
     },
@@ -568,9 +601,12 @@ export default {
     formatBigNumber (num) {
       return ethers.BigNumber.from(num)
     },
-    selectMethods (value) {
-      this.readMethods = value
-      this.methodsKey += 1
+    updateCurrentMethodsView (value) {
+      const allowedValues = [1, 2, 3, 4]
+
+      if (!allowedValues.includes(value)) throw new Error(`Invalid methods selector value provided: ${value}`)
+
+      this.currentMethodsViewSelector = value
     },
     reloadPage () {
       location.reload()
