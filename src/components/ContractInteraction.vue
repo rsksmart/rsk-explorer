@@ -79,7 +79,6 @@
           @contract-interaction-handler="contractCall"
           methodsType="read"
           :isBridge="isBridge"
-          :disableCalls="!metamaskConnected"
           :key="`read-${currentMethodsViewSelector}`"
         />
         <ContractMethods
