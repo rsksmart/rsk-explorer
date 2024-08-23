@@ -24,6 +24,7 @@
     <div class="methods-container">
       <div class="btn-content">
         <button
+          v-if="isProxy"
           class="btn"
           :style="{ backgroundColor: currentMethodsViewSelector === 1 ? PAGE_COLORS[$route.name].cl : ''}"
           @click="updateCurrentMethodsView(1)"
@@ -31,6 +32,7 @@
           Read Proxy
         </button>
         <button
+          v-if="isProxy"
           class="btn"
           :style="{ backgroundColor: currentMethodsViewSelector === 2 ? PAGE_COLORS[$route.name].cl : ''}"
           @click="updateCurrentMethodsView(2)"
@@ -54,7 +56,7 @@
       </div>
       <div class="methods-content">
         <ContractMethods
-          v-if="currentMethodsViewSelector === 1 && isProxy"
+          v-if="currentMethodsViewSelector === 1"
           title="Read Proxy"
           :methods="contractAbi.readMethods"
           @contract-interaction-handler="contractCall"
@@ -63,7 +65,7 @@
           :key="`read-proxy-${currentMethodsViewSelector}`"
         />
         <ContractMethods
-          v-else-if="currentMethodsViewSelector === 2 && isProxy"
+          v-else-if="currentMethodsViewSelector === 2"
           title="Write Proxy"
           :methods="contractAbi.writeMethods"
           @contract-interaction-handler="sendTransaction"
@@ -75,7 +77,7 @@
         <ContractMethods
           v-else-if="currentMethodsViewSelector === 3"
           title="Read Contract"
-          :methods="contractAbi.readMethods"
+          :methods="isProxy ? implementation.contractAbi.readMethods : contractAbi.readMethods"
           @contract-interaction-handler="contractCall"
           methodsType="read"
           :isBridge="isBridge"
@@ -84,7 +86,7 @@
         <ContractMethods
           v-else-if="currentMethodsViewSelector === 4"
           title="Write Methods"
-          :methods="contractAbi.writeMethods"
+          :methods="isProxy ? implementation.contractAbi.writeMethods : contractAbi.writeMethods"
           @contract-interaction-handler="sendTransaction"
           methodsType="write"
           :isBridge="isBridge"
@@ -102,9 +104,13 @@ import { BigNumber, ethers } from 'ethers'
 import ContractMethods from './ContractMethods.vue'
 import ToolTip from './General/Tooltip.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { bridge, ALLOWED_BRIDGE_METHODS, METHOD_TYPES, isAllowedMethod, removeNonFunctionFragmentsFromAbi } from '../config/entities/lib/bridge'
 import { isAddress } from 'ethers/lib/utils'
+
+const KEYS = {
+  IMPLEMENTATION_DATA: '__implementationData'
+}
 
 export default {
   name: 'contract-interaction',
@@ -144,9 +150,19 @@ export default {
       browserProvider: null,
       signer: null,
       signerAddress: null,
-      currentMethodsViewSelector: 1,
+      currentMethodsViewSelector: 3,
       networkChanged: false,
-      isProxy: false
+      isProxy: null,
+      implementation: {
+        address: null,
+        data: null,
+        contractAbi: {
+          [ABI_CATEGORIES.CONTRACT_CONSTRUCTOR]: null,
+          [ABI_CATEGORIES.EVENTS]: [],
+          [ABI_CATEGORIES.READ_METHODS]: [],
+          [ABI_CATEGORIES.WRITE_METHODS]: []
+        }
+      }
     }
   },
   computed: {
@@ -155,26 +171,72 @@ export default {
     },
     isBridge () {
       return this.data.address === bridge.address
-    },
-    abi () {
-      if (this.isBridge) return bridge.abi
+    }
+  },
+  methods: {
+    ...mapActions(['fetchData']),
+    ...mapGetters(['isRequesting', 'getPage']),
+    getAbi () {
+      const { isBridge, isProxy, getImplementationData } = this
+      // console.log('getAbi():', { isProxy: this.isProxy })
 
-      return (this.data.verification) ? this.data.verification.abi : null
+      if (isBridge) {
+        return bridge.abi
+      } else if (isProxy) {
+        const implementationData = getImplementationData()
+        // console.log('getAbi():', { implementationData })
+        return implementationData.verification ? implementationData.verification.abi : null
+      } else {
+        return (this.data.verification) ? this.data.verification.abi : null
+      }
+    },
+    fetchAddressData (address) {
+      if (!isAddress(address)) throw new Error(`Address data fetch: Invalid address provided: ${address}`)
+
+      this.fetchData({
+        module: 'addresses',
+        action: 'getAddress',
+        key: KEYS.IMPLEMENTATION_DATA,
+        params: { address }
+      })
+    },
+    isRequestingImplementationAddressData () {
+      return this.isRequesting()(KEYS.IMPLEMENTATION_DATA)
+    },
+    getImplementationDataFromStore () {
+      const responseData = this.getPage()(KEYS.IMPLEMENTATION_DATA)
+
+      if (!responseData.data.address) throw new Error('Invalid response data:', { responseData })
+
+      return responseData.data
+    },
+    setImplementationData (data) {
+      this.$set(this.implementation, 'data', data)
+    },
+    getImplementationData () {
+      return this.implementation.data
     },
     getFragmentsRegistrator () {
-      const { isBridge, ABI_CATEGORIES, contractAbi } = this
+      const { isBridge, ABI_CATEGORIES, contractAbi, isProxy } = this
 
-      const registerAbiFragment = (fragment, category) => {
-        const abiFragment = { ...fragment }
+      const clone = (elem) => JSON.parse(JSON.stringify(elem))
 
-        if (!Object.values(ABI_CATEGORIES).includes(category)) {
-          throw new Error(`Error parsing contract abi. Unknown category: ${JSON.stringify(category)} for abi fragment ${JSON.stringify(abiFragment)}`)
+      const registerAbiFragment = (fragment, category, context) => {
+        const validContext = Object.values(ABI_CATEGORIES).every(category => typeof context === 'object' && Object.prototype.hasOwnProperty.call(context, category))
+        const validCategory = Object.values(ABI_CATEGORIES).includes(category)
+
+        if (!validContext) {
+          console.log('Invalid context:', context)
+          throw new Error('Invalid contract abi context provided')
         }
+        if (!validCategory) throw new Error(`Unknown category: ${category} for abi fragment:`, fragment)
+
+        const abiFragment = clone(fragment)
 
         if (category === ABI_CATEGORIES.CONTRACT_CONSTRUCTOR) {
-          contractAbi[ABI_CATEGORIES.CONTRACT_CONSTRUCTOR] = abiFragment
+          context[ABI_CATEGORIES.CONTRACT_CONSTRUCTOR] = abiFragment
         } else if (category === ABI_CATEGORIES.EVENTS) {
-          contractAbi[ABI_CATEGORIES.EVENTS].push(abiFragment)
+          context[ABI_CATEGORIES.EVENTS].push(abiFragment)
         } else if (category === ABI_CATEGORIES.READ_METHODS || category === ABI_CATEGORIES.WRITE_METHODS) {
           this.$set(abiFragment, 'interactionData', {
             inputs: [],
@@ -191,93 +253,137 @@ export default {
             callType: 'call'
           })
 
-          contractAbi[category].push(abiFragment)
+          context[category].push(abiFragment)
         }
       }
 
       const registrator = Object.freeze({
         register: (fragment) => {
+          const { type, name } = fragment
+
           // bridge register
           if (isBridge) {
-            const { type, name } = fragment
-
             // Constructor: none
             if (type === 'event') {
-              registerAbiFragment(fragment, ABI_CATEGORIES.EVENTS)
+              registerAbiFragment(fragment, ABI_CATEGORIES.EVENTS, contractAbi)
             } else if (type === 'function') {
               if (isAllowedMethod(name, METHOD_TYPES.read)) {
-                registerAbiFragment(fragment, ABI_CATEGORIES.READ_METHODS)
+                registerAbiFragment(fragment, ABI_CATEGORIES.READ_METHODS, contractAbi)
               } else if (isAllowedMethod(name, METHOD_TYPES.write)) {
-                registerAbiFragment(fragment, ABI_CATEGORIES.WRITE_METHODS)
+                registerAbiFragment(fragment, ABI_CATEGORIES.WRITE_METHODS, contractAbi)
               }
             }
 
             return
           }
 
-          // default register
-          const { type, stateMutability } = fragment
+          // default register (normal and proxy contracts)
+          const contractAbiContexts = isProxy ? [contractAbi, this.implementation.contractAbi] : [contractAbi]
 
-          if (type === 'constructor') {
-            registerAbiFragment(fragment, ABI_CATEGORIES.CONTRACT_CONSTRUCTOR)
-          } else if (type === 'event') {
-            registerAbiFragment(fragment, ABI_CATEGORIES.EVENTS)
-          } else if (type === 'function') {
-            if (stateMutability === 'view' || stateMutability === 'pure') {
-              registerAbiFragment(fragment, ABI_CATEGORIES.READ_METHODS)
-            } else if (stateMutability === 'nonpayable' || stateMutability === 'payable') {
-              registerAbiFragment(fragment, ABI_CATEGORIES.WRITE_METHODS)
+          const categoriesMappers = {
+            // constructor
+            // event
+            // function
+            // fallback (not required)
+            // receive (not required)
+            // error (not required)
+            constructor: (fragment) => ABI_CATEGORIES.CONTRACT_CONSTRUCTOR,
+            event: (fragment) => ABI_CATEGORIES.EVENTS,
+            function: (fragment) => {
+              const { stateMutability } = fragment
+              const read = stateMutability === 'view' || stateMutability === 'pure'
+              const write = stateMutability === 'nonpayable' || stateMutability === 'payable'
+
+              if (read) {
+                return ABI_CATEGORIES.READ_METHODS
+              } else if (write) {
+                return ABI_CATEGORIES.WRITE_METHODS
+              } else {
+                console.warn(`Unknown method type '${stateMutability}' for fragment:`, fragment)
+                throw new Error(`Unknown method type provided: '${stateMutability}'`)
+              }
             }
           }
+
+          contractAbiContexts.forEach(context => {
+            const { type } = fragment
+
+            const acceptedFragmentType = Object.keys(categoriesMappers).includes(type)
+            const excludedFragmentType = ['fallback', 'receive', 'error'].includes(type)
+            const unknownFragmentType = !acceptedFragmentType && !excludedFragmentType
+
+            if (!acceptedFragmentType) {
+              if (excludedFragmentType) {
+                // do nothing
+              } else if (unknownFragmentType) {
+                console.warn(`Unknown type: '${type}' for fragment:`, fragment)
+              }
+
+              return
+            }
+
+            registerAbiFragment(fragment, categoriesMappers[type](fragment), context)
+          })
         }
       })
 
       return registrator
     },
-    abiWithSimulationMethods () {
-      const { abi, getSimulationFragmentMethods } = this
+    async isProxyContract () {
+      const isProxy = this.data.type === 'contract' && this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
 
-      return [...abi, ...getSimulationFragmentMethods(abi)]
-    }
-  },
-  methods: {
-    async determineProxy () {
-      // This temporal guard is required until support for Proxies interaction is added.
+      if (!isProxy) {
+        this.$set(this, 'isProxy', false)
+        // console.log('isProxyContract(): not a proxy')
+        return this.isProxy
+      }
 
       // --- //
       // Extra check to ensure it really is a proxy. Required until false ERC1967 contract positives are removed from db. (rsk-contract-parser bug)
       const IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
-      const isProxy = this.data.type === 'contract' && this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
       const implementationSlotValue = await this.jsonRpcProvider.getStorageAt(this.data.address, IMPLEMENTATION_SLOT)
+      const falsePositive = BigNumber.from(implementationSlotValue).isZero()
 
-      if (isProxy) {
-        const notAProxy = BigNumber.from(implementationSlotValue).isZero()
+      if (falsePositive) {
+        // then remove false positive
+        const contractInterfaces = this.data.contractInterfaces || []
+        const curatedInterfaces = contractInterfaces.filter(v => v !== 'ERC1967')
 
-        if (notAProxy) {
-          // then remove false positive
-          const contractInterfaces = this.data.contractInterfaces || []
-          const curatedInterfaces = contractInterfaces.filter(v => v !== 'ERC1967')
+        this.data.contractInterfaces = curatedInterfaces.length ? curatedInterfaces : undefined
+        this.$set(this, 'isProxy', false)
+        // console.log('isProxyContract(): not a proxy (recheck)')
 
-          this.data.contractInterfaces = curatedInterfaces.length ? curatedInterfaces : undefined
-        } else {
-          this.isProxy = true
-        }
+        return this.isProxy
       }
       // --- //
-      return this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
-    },
-    setContractAbi () {
-      const { getFragmentsRegistrator, abi } = this
 
-      abi.forEach(getFragmentsRegistrator.register)
+      this.$set(this, 'isProxy', true)
+      this.$set(this.implementation, 'address', this.parseImplementationAddress(implementationSlotValue))
+
+      // console.log('isProxyContract(): its a proxy')
+      // console.log({ isProxy: this.isProxy, implAddress: this.implementation.address })
+      return this.isProxy
     },
-    setReadContractInstance () {
-      const { contractAddress, abi, jsonRpcProvider } = this
+    parseImplementationAddress (slotValue) {
+      const address = `0x${slotValue.slice(-40)}`
+
+      if (!isAddress(address)) throw new Error(`Slot does not contain an address: ${slotValue}`)
+
+      return address
+    },
+    setContractAbi (abi) {
+      const registrator = this.getFragmentsRegistrator()
+
+      abi.forEach(fragment => registrator.register(fragment))
+    },
+    setReadContractInstance (abi) {
+      const { contractAddress, jsonRpcProvider } = this
       const contractInstance = new ethers.Contract(contractAddress, abi, jsonRpcProvider)
+
       this.$set(this.contractInstances, METHOD_TYPES.read, contractInstance)
     },
-    async setWriteContractInstance () {
-      const { contractAddress, abi, setSimulationContractInstance } = this
+    async setWriteContractInstance (abi) {
+      const { contractAddress, setSimulationContractInstance } = this
       const signer = await this.browserProvider.getSigner()
       const signerAddress = await signer.getAddress()
       const contractInstance = new ethers.Contract(contractAddress, abi, signer)
@@ -286,10 +392,10 @@ export default {
       this.$set(this, 'signer', signer)
       this.$set(this, 'signerAddress', signerAddress)
 
-      setSimulationContractInstance()
+      setSimulationContractInstance(abi)
     },
-    setSimulationContractInstance () {
-      const { contractAddress, getSimulationFragmentMethods, jsonRpcProvider, abi } = this
+    setSimulationContractInstance (abi) {
+      const { contractAddress, getSimulationFragmentMethods, jsonRpcProvider } = this
       const contractInstance = new ethers.Contract(contractAddress, getSimulationFragmentMethods(abi), jsonRpcProvider)
 
       this.$set(this.contractInstances, 'simulation', contractInstance)
@@ -376,13 +482,15 @@ export default {
       }
     },
     async connectToMetamask () {
+      const abi = this.getAbi()
+
       localStorage.setItem('metamaskAutoconnect', false)
 
       if (window.ethereum) {
         try {
           await this.connectToRskNetwork()
           this.$set(this, 'metamaskConnected', true)
-          await this.setWriteContractInstance()
+          await this.setWriteContractInstance(abi)
         } catch (error) {
           console.error('Error when connecting to metamask', error)
         }
@@ -464,16 +572,14 @@ export default {
         this.$set(method.interactionData, 'message', { content: 'This method does not return any values.', style: 'message-info' })
       }
     },
-    async contractCall (methodName, inputs) {
+    async contractCall (methodName, inputs, methods, callType) {
       const {
-        contractAbi,
-        ABI_CATEGORIES,
         getReadContractInstance,
         validateInputs,
         formatInputs,
         updateMethodOutputs
       } = this
-      const method = contractAbi[ABI_CATEGORIES.READ_METHODS].find(m => m.name === methodName)
+      const method = methods.find(m => m.name === methodName)
       const inputsDefinitions = method.inputs
 
       try {
@@ -508,17 +614,15 @@ export default {
 
       this.$set(method.interactionData, 'requested', false)
     },
-    async sendTransaction (methodName, inputs, callType) {
+    async sendTransaction (methodName, inputs, methods, callType) {
       const {
-        contractAbi,
-        ABI_CATEGORIES,
         getWriteContractInstance,
         getSimulationContractInstance,
         formatInputs,
         updateMethodOutputs,
         validateInputs
       } = this
-      const method = contractAbi[ABI_CATEGORIES.WRITE_METHODS].find(m => m.name === methodName)
+      const method = methods.find(m => m.name === methodName)
 
       try {
         validateInputs(inputs, method)
@@ -620,13 +724,48 @@ export default {
     },
     siteUrl () {
       return this.isNetworkmainnet ? process.env.VUE_APP_DOMAIN_MAINNET : process.env.VUE_APP_DOMAIN_TESTNET
+    },
+    getImplementationAddress () {
+      return this.implementation.address
     }
   },
   async mounted () {
-    this.setContractAbi()
-    this.setReadContractInstance()
+    const {
+      isProxyContract,
+      isRequestingImplementationAddressData,
+      getImplementationAddress,
+      fetchAddressData,
+      getImplementationDataFromStore,
+      setImplementationData,
+      updateCurrentMethodsView
+    } = this
 
-    await this.determineProxy()
+    const isProxy = await isProxyContract()
+
+    if (isProxy) {
+      updateCurrentMethodsView(1)
+      // console.log('mounted(): before requesting:', isRequestingImplementationAddressData())
+      fetchAddressData(getImplementationAddress())
+      // console.log('mounted(): after requesting:', isRequestingImplementationAddressData())
+
+      const waitTime = 1000
+      // const startTime = Date.now()
+      while (isRequestingImplementationAddressData()) {
+        // console.log('mounted(): waiting for data responses...')
+        await new Promise(resolve => setTimeout(resolve, waitTime))
+      }
+
+      // console.log(`mounted(): all data responses fullfilled (${Date.now() - startTime} ms)`)
+      // console.log('mounted():', { data: getImplementationDataFromStore(), isProxy: this.isProxy })
+      setImplementationData(getImplementationDataFromStore())
+    }
+
+    // console.log('mounted(): loading abi...')
+    const abi = this.getAbi()
+    // console.log('mounted():', { abi })
+
+    this.setContractAbi(abi)
+    this.setReadContractInstance(abi)
 
     if (window.ethereum) window.ethereum.on('chainChanged', this.handleChainChanged)
 

@@ -10,7 +10,7 @@
               <p>{{ input.name || '&lt;input&gt;' }}</p>
               <span class="type">({{ input.type }})</span>
             </div>
-            <input class="method-input-field" type="text" v-model="method.interactionData.inputs[i]" :placeholder="input.name || i">
+            <input :id="`${methodsType}-method-${method.name}-${`input-${input.name || i }` }`" class="method-input-field" type="text" v-model="method.interactionData.inputs[i]" :placeholder="input.name || i">
           </div>
         </div>
         <div class="call-type-selector-form">
@@ -24,7 +24,7 @@
               <span>Transact (send)</span>
             </label>
           </form>
-          <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="contractCall(method.name, method.interactionData.inputs, method.interactionData.callType)" :disabled="disableCalls || method.interactionData.requested">{{ method.name }}</button>
+          <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="executeMethod(method.name, method.interactionData.inputs, methods, method.interactionData.callType)" :disabled="disableCalls || method.interactionData.requested">{{ method.name }}</button>
         </div>
         <!-- Result -->
         <div v-if="showOutputs && method.outputs && method.interactionData.outputs.length" class="result">
@@ -97,8 +97,8 @@ export default {
     }
   },
   methods: {
-    contractCall (methodName, inputs, callType) {
-      this.$emit('contract-interaction-handler', methodName, inputs, callType)
+    executeMethod (methodName, inputs, methods, callType) {
+      this.$emit('contract-interaction-handler', methodName, inputs, methods, callType)
     }
   }
 }
