@@ -147,6 +147,7 @@ export default {
       showMetamaskNotInstalledMsg: false,
       installMetamaskMsg: 'MetaMask extension is not installed. Please install it first:',
       metamaskExtensionUrl: 'https://metamask.io/download/',
+      disclaimerMsg: 'Please take note that this is a beta version feature and is provided on an "as is" and "as available" basis. Rootstock Explorer does not give any warranties and will not be liable for any loss, direct or indirect through continued use of this feature.',
       browserProvider: null,
       signer: null,
       signerAddress: null,
@@ -482,6 +483,10 @@ export default {
       }
     },
     async connectToMetamask () {
+      const userConfirmation = confirm(this.disclaimerMsg)
+
+      if (!userConfirmation) return
+
       const abi = this.getAbi()
 
       localStorage.setItem('metamaskAutoconnect', false)
