@@ -242,8 +242,23 @@
       flex: 1 1 100%;
       padding: 12px;
       gap: 20px;
+      box-shadow: 0px -1px 0px 0px #3A3A3A inset;
       .field-title.big-field, .field-title.BigField, .field-title.event-call {
         flex: 1;
+      }
+      .big-field:nth-child(2) {
+        flex-direction: column-reverse;
+        .decode {
+          margin-left: unset;
+          margin-bottom: 10px;
+        }
+        textarea {
+          background-color: #1d1d1d;
+          padding: 12px;
+          border-radius: 12px;
+          height: min-content;
+          margin: unset;
+        }
       }
       .big-field, .event-call {
         flex: 5;
