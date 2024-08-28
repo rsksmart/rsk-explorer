@@ -104,10 +104,12 @@ export default {
       const prevKey = this.prevKey()(key)
       const pageKey = this.pageKey()(key)
       const query = { [nextKey]: next, [prevKey]: prev, [pageKey]: page }
+      console.log('query: ', query)
       this.updateRouterQuery({ query, key })
     },
     findPage (page) {
       const { pages } = this
+      console.log('pages: ', pages)
       const index = pages.findIndex(p => p.page === page)
       return (index > -1) ? pages[index] : null
     }
