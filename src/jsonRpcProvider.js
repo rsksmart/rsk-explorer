@@ -61,6 +61,6 @@ export const browserProvider = () => {
 
     return browserProvider
   } catch (error) {
-    console.error('Error creating web3 browser provider instance:', error)
+    console.error('Error creating ethers browser provider instance:', error)
   }
 }
