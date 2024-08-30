@@ -1,8 +1,8 @@
 import precompiled from '@rsksmart/rsk-precompiled-abis'
 
-export const METHOD_TYPES = {
-  write: 'write',
-  read: 'read'
+const METHOD_TYPES = {
+  read: 'read',
+  write: 'write'
 }
 
 // ARROWHEAD
@@ -88,17 +88,6 @@ export const formatBridgeFragments = (bridgeAbi) => {
   } catch (error) {
     console.error(`Error while formatting bridge abi fragments: ${error.message}`)
   }
-}
-
-/* Fragment types: constructor, event, function, fallback, receive */
-export const removeAbiFragmentsByTypes = (abi, types) => {
-  if (!Array.isArray(types)) throw new Error(`Error removing abi fragments. Param must be an array. Provided: ${JSON.stringify(types)}`)
-
-  return abi.filter(fragment => !types.includes(fragment.type))
-}
-
-export const removeNonFunctionFragmentsFromAbi = (abi) => {
-  return removeAbiFragmentsByTypes(abi, ['constructor', 'event', 'fallback', 'receive'])
 }
 
 export const bridge = {

@@ -1,5 +1,5 @@
 <template>
-  <div class="methods-list">
+  <div class="methods-list" :key="`contract-methods-${contractType}-${methodsType}`">
     <h3 class="methods-category-title capitalize">{{ title }} ({{ methods.length }})</h3>
     <div class="method" v-for="(method, index) in methods" :key="index">
       <accordion :title="method.name" :index="index">
@@ -13,18 +13,18 @@
             <input :id="`${methodsType}-method-${method.name}-${`input-${input.name || i }` }`" class="method-input-field" type="text" v-model="method.interactionData.inputs[i]" :placeholder="input.name || i">
           </div>
         </div>
-        <div class="call-type-selector-form">
-          <form class="call-type-options" v-if="methodsType === 'write'">
-            <label class="call-type-option">
-              <input v-model="method.interactionData.callType" type="radio" name="call-type" value="call" checked>
+        <div class="interaction-type-selector-form">
+          <form class="interaction-type-options" v-if="methodsType === INTERACTION_METHOD_TYPES.write">
+            <label class="interaction-type-option">
+              <input v-model="method.interactionData.interactionMode" type="radio" name="interaction-type" :value="INTERACTION_METHOD_TYPES.simulation" checked>
               <span>Simulate (call)</span>
             </label>
-            <label class="call-type-option">
-              <input v-model="method.interactionData.callType" type="radio" name="call-type" value="send">
+            <label class="interaction-type-option">
+              <input v-model="method.interactionData.interactionMode" type="radio" name="interaction-type" :value="INTERACTION_METHOD_TYPES.write">
               <span>Transact (send)</span>
             </label>
           </form>
-          <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="executeMethod(method.name, method.interactionData.inputs, methods, method.interactionData.callType)" :disabled="disableCalls || method.interactionData.requested">{{ method.name }}</button>
+          <button :class="['button', disableCalls || method.interactionData.requested ? 'disabled' : 'enabled']" @click="executeMethod(method, method.interactionData.inputs, method.interactionData.interactionMode)" :disabled="disableCalls || method.interactionData.requested">{{ method.name }}</button>
         </div>
         <!-- Result -->
         <div v-if="showOutputs && method.outputs && method.interactionData.outputs.length" class="result">
@@ -53,6 +53,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import Accordion from './controls/Accordion.vue'
+import { INTERACTION_METHOD_TYPES } from '../config/entities/lib/contractInteraction'
+
 export default {
   name: 'contract-methods',
   components: {
@@ -67,6 +69,10 @@ export default {
       type: Array,
       required: true
     },
+    contractType: {
+      type: String,
+      required: true
+    },
     methodsType: {
       type: String,
       required: true
@@ -75,16 +81,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    isBridge: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
   data () {
     return {
-      showOutputs: true
+      showOutputs: true,
+      INTERACTION_METHOD_TYPES
     }
   },
   computed: {
@@ -97,8 +99,8 @@ export default {
     }
   },
   methods: {
-    executeMethod (methodName, inputs, methods, callType) {
-      this.$emit('contract-interaction-handler', methodName, inputs, methods, callType)
+    executeMethod (method, inputs, interactionMode) {
+      this.$emit('handle-interaction', method, inputs, this.contractType, interactionMode)
     }
   }
 }
@@ -247,16 +249,16 @@ export default {
   margin-bottom: 10px;
 }
 
-.call-type-selector-form {
+.interaction-type-selector-form {
   margin-top: 10px;
 }
 
-.call-type-options {
+.interaction-type-options {
   display: flex;
   gap: 20px;
 }
 
-.call-type-option {
+.interaction-type-option {
   display: flex;
   gap: 5px;
   align-items: center;

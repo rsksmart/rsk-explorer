@@ -26,72 +26,72 @@
         <button
           v-if="isProxy"
           class="btn"
-          :style="{ backgroundColor: currentMethodsViewSelector === 1 ? PAGE_COLORS[$route.name].cl : ''}"
-          @click="updateCurrentMethodsView(1)"
+          :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.readProxy)"
+          @click="updateCurrentMethodsView(METHOD_TABS_IDS.readProxy)"
         >
           Read Proxy
         </button>
         <button
           v-if="isProxy"
           class="btn"
-          :style="{ backgroundColor: currentMethodsViewSelector === 2 ? PAGE_COLORS[$route.name].cl : ''}"
-          @click="updateCurrentMethodsView(2)"
+          :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.writeProxy)"
+          @click="updateCurrentMethodsView(METHOD_TABS_IDS.writeProxy)"
         >
           Write Proxy
         </button>
         <button
           class="btn"
-          :style="{ backgroundColor: currentMethodsViewSelector === 3 ? PAGE_COLORS[$route.name].cl : ''}"
-          @click="updateCurrentMethodsView(3)"
+          :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.readContract)"
+          @click="updateCurrentMethodsView(METHOD_TABS_IDS.readContract)"
         >
           Read Contract
         </button>
         <button
           class="btn"
-          :style="{ backgroundColor: currentMethodsViewSelector === 4 ? PAGE_COLORS[$route.name].cl : ''}"
-          @click="updateCurrentMethodsView(4)"
+          :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.writeContract)"
+          @click="updateCurrentMethodsView(METHOD_TABS_IDS.writeContract)"
         >
           Write Contract
         </button>
       </div>
       <div class="methods-content">
         <ContractMethods
-          v-if="currentMethodsViewSelector === 1"
+          v-if="isProxy && isActiveMethodsTab(METHOD_TABS_IDS.readProxy)"
           title="Read Proxy"
-          :methods="contractAbi.readMethods"
-          @contract-interaction-handler="contractCall"
-          methodsType="read"
-          :isBridge="isBridge"
-          :key="`read-proxy-${currentMethodsViewSelector}`"
+          :key="METHOD_TABS_IDS.readProxy"
+          :contract-type="CONTRACT_TYPES.proxy"
+          :methodsType="INTERACTION_METHOD_TYPES.read"
+          :methods="isProxy ? proxyContractAbi.readMethods : contractAbi.readMethods"
+          @handle-interaction="contractCall"
         />
         <ContractMethods
-          v-else-if="currentMethodsViewSelector === 2"
+          v-else-if="isProxy && isActiveMethodsTab(METHOD_TABS_IDS.writeProxy)"
           title="Write Proxy"
-          :methods="contractAbi.writeMethods"
-          @contract-interaction-handler="sendTransaction"
-          methodsType="write"
-          :isBridge="isBridge"
+          :key="METHOD_TABS_IDS.writeProxy"
+          :contract-type="CONTRACT_TYPES.proxy"
+          :methodsType="INTERACTION_METHOD_TYPES.write"
+          :methods="proxyContractAbi.writeMethods"
+          @handle-interaction="sendTransaction"
           :disableCalls="!metamaskConnected"
-          :key="`write-proxy-${currentMethodsViewSelector}`"
         />
         <ContractMethods
-          v-else-if="currentMethodsViewSelector === 3"
+          v-else-if="isActiveMethodsTab(METHOD_TABS_IDS.readContract)"
           title="Read Contract"
-          :methods="isProxy ? implementation.contractAbi.readMethods : contractAbi.readMethods"
-          @contract-interaction-handler="contractCall"
-          methodsType="read"
-          :isBridge="isBridge"
-          :key="`read-${currentMethodsViewSelector}`"
+          :key="METHOD_TABS_IDS.readContract"
+          :contract-type="CONTRACT_TYPES.normal"
+          :methodsType="INTERACTION_METHOD_TYPES.read"
+          :methods="contractAbi.readMethods"
+          @handle-interaction="contractCall"
         />
         <ContractMethods
-          v-else-if="currentMethodsViewSelector === 4"
-          title="Write Methods"
-          :methods="isProxy ? implementation.contractAbi.writeMethods : contractAbi.writeMethods"
-          @contract-interaction-handler="sendTransaction"
-          methodsType="write"
-          :isBridge="isBridge"
+          v-else-if="isActiveMethodsTab(METHOD_TABS_IDS.writeContract)"
+          title="Write Contract"
+          :key="METHOD_TABS_IDS.writeContract"
+          :contract-type="CONTRACT_TYPES.normal"
+          :methodsType="INTERACTION_METHOD_TYPES.write"
+          :methods="contractAbi.writeMethods"
+          @handle-interaction="sendTransaction"
           :disableCalls="!metamaskConnected"
-          :key="`write-${currentMethodsViewSelector}`"
         />
       </div>
     </div>
@@ -105,12 +105,9 @@ import ContractMethods from './ContractMethods.vue'
 import ToolTip from './General/Tooltip.vue'
 import { PAGE_COLORS } from '@/config/pageColors'
 import { mapActions, mapGetters } from 'vuex'
-import { bridge, ALLOWED_BRIDGE_METHODS, METHOD_TYPES, isAllowedMethod, removeNonFunctionFragmentsFromAbi } from '../config/entities/lib/bridge'
+import { bridge, ALLOWED_BRIDGE_METHODS, isAllowedMethod } from '../config/entities/lib/bridge'
+import { ABI_CATEGORIES, INTERACTION_METHOD_TYPES, CONTRACT_TYPES, removeNonFunctionFragmentsFromAbi } from '../config/entities/lib/contractInteraction'
 import { isAddress } from 'ethers/lib/utils'
-
-const KEYS = {
-  IMPLEMENTATION_DATA: '__implementationData'
-}
 
 export default {
   name: 'contract-interaction',
@@ -120,27 +117,49 @@ export default {
   },
   props: ['data'],
   data () {
-    const ABI_CATEGORIES = {
-      CONTRACT_CONSTRUCTOR: 'contractConstructor',
-      EVENTS: 'events',
-      READ_METHODS: 'readMethods',
-      WRITE_METHODS: 'writeMethods'
+    const METHOD_TABS_IDS = {
+      readProxy: 'readProxy',
+      writeProxy: 'writeProxy',
+      readContract: 'readContract',
+      writeContract: 'writeContract'
+    }
+
+    const KEYS = {
+      IMPLEMENTATION_DATA: '__implementationData'
     }
 
     return {
       PAGE_COLORS,
       ALLOWED_BRIDGE_METHODS,
       ABI_CATEGORIES,
+      INTERACTION_METHOD_TYPES,
+      CONTRACT_TYPES,
+      METHOD_TABS_IDS,
+      KEYS,
+      currentMethodsViewSelector: METHOD_TABS_IDS.readContract,
+      proxyContractAbi: {
+        [ABI_CATEGORIES.contractConstructor]: null,
+        [ABI_CATEGORIES.events]: [],
+        [ABI_CATEGORIES.readMethods]: [],
+        [ABI_CATEGORIES.writeMethods]: []
+      },
       contractAbi: {
-        [ABI_CATEGORIES.CONTRACT_CONSTRUCTOR]: null,
-        [ABI_CATEGORIES.EVENTS]: [],
-        [ABI_CATEGORIES.READ_METHODS]: [],
-        [ABI_CATEGORIES.WRITE_METHODS]: []
+        [ABI_CATEGORIES.contractConstructor]: null,
+        [ABI_CATEGORIES.events]: [],
+        [ABI_CATEGORIES.readMethods]: [],
+        [ABI_CATEGORIES.writeMethods]: []
       },
       contractInstances: {
-        [METHOD_TYPES.read]: null,
-        [METHOD_TYPES.write]: null,
-        simulation: null
+        [CONTRACT_TYPES.proxy]: {
+          [INTERACTION_METHOD_TYPES.read]: null,
+          [INTERACTION_METHOD_TYPES.write]: null,
+          [INTERACTION_METHOD_TYPES.simulation]: null
+        },
+        [CONTRACT_TYPES.normal]: {
+          [INTERACTION_METHOD_TYPES.read]: null,
+          [INTERACTION_METHOD_TYPES.write]: null,
+          [INTERACTION_METHOD_TYPES.simulation]: null
+        }
       },
       jsonRpcProvider: jsonRpcProvider(),
       metamaskConnected: false,
@@ -151,18 +170,11 @@ export default {
       browserProvider: null,
       signer: null,
       signerAddress: null,
-      currentMethodsViewSelector: 3,
       networkChanged: false,
       isProxy: null,
       implementation: {
         address: null,
-        data: null,
-        contractAbi: {
-          [ABI_CATEGORIES.CONTRACT_CONSTRUCTOR]: null,
-          [ABI_CATEGORIES.EVENTS]: [],
-          [ABI_CATEGORIES.READ_METHODS]: [],
-          [ABI_CATEGORIES.WRITE_METHODS]: []
-        }
+        data: null
       }
     }
   },
@@ -177,15 +189,35 @@ export default {
   methods: {
     ...mapActions(['fetchData']),
     ...mapGetters(['isRequesting', 'getPage']),
+    validateMethodsTabId (methodsTabId) {
+      if (!this.METHOD_TABS_IDS[methodsTabId]) throw new Error(`Invalid methods tab id provided: ${methodsTabId}`)
+    },
+    getMethodsHeaderTabStyle (methodsTabId) {
+      const { validateMethodsTabId, currentMethodsViewSelector } = this
+      validateMethodsTabId(methodsTabId)
+
+      const backgroundColor = currentMethodsViewSelector === methodsTabId ? PAGE_COLORS[this.$route.name].cl : ''
+
+      return { backgroundColor }
+    },
+    updateCurrentMethodsView (methodsTabId) {
+      this.validateMethodsTabId(methodsTabId)
+      this.$set(this, 'currentMethodsViewSelector', methodsTabId)
+    },
+    isActiveMethodsTab (methodsTabId) {
+      const { validateMethodsTabId, currentMethodsViewSelector } = this
+      validateMethodsTabId(methodsTabId)
+
+      return currentMethodsViewSelector === methodsTabId
+    },
     getAbi () {
       const { isBridge, isProxy, getImplementationData } = this
-      // console.log('getAbi():', { isProxy: this.isProxy })
 
       if (isBridge) {
         return bridge.abi
       } else if (isProxy) {
         const implementationData = getImplementationData()
-        // console.log('getAbi():', { implementationData })
+
         return implementationData.verification ? implementationData.verification.abi : null
       } else {
         return (this.data.verification) ? this.data.verification.abi : null
@@ -197,15 +229,15 @@ export default {
       this.fetchData({
         module: 'addresses',
         action: 'getAddress',
-        key: KEYS.IMPLEMENTATION_DATA,
+        key: this.KEYS.IMPLEMENTATION_DATA,
         params: { address }
       })
     },
     isRequestingImplementationAddressData () {
-      return this.isRequesting()(KEYS.IMPLEMENTATION_DATA)
+      return this.isRequesting()(this.KEYS.IMPLEMENTATION_DATA)
     },
     getImplementationDataFromStore () {
-      const responseData = this.getPage()(KEYS.IMPLEMENTATION_DATA)
+      const responseData = this.getPage()(this.KEYS.IMPLEMENTATION_DATA)
 
       if (!responseData.data.address) throw new Error('Invalid response data:', { responseData })
 
@@ -217,125 +249,126 @@ export default {
     getImplementationData () {
       return this.implementation.data
     },
-    getFragmentsRegistrator () {
-      const { isBridge, ABI_CATEGORIES, contractAbi, isProxy } = this
+    getImplementationAddress () {
+      return this.implementation.address
+    },
+    cloneElement (element) {
+      if (!element) throw new Error('Invalid value provided')
+      if (ethers.BigNumber.isBigNumber(element)) return ethers.BigNumber.from(element)
 
-      const clone = (elem) => JSON.parse(JSON.stringify(elem))
+      return JSON.parse(JSON.stringify(element))
+    },
+    registerAbiFragment (fragment, category, contractAbiContext) {
+      const { ABI_CATEGORIES, cloneElement } = this
+      const validCategory = ABI_CATEGORIES[category]
+      const validcontractAbiContext = Object.values(ABI_CATEGORIES).every(category => {
+        return typeof contractAbiContext === 'object' && Object.prototype.hasOwnProperty.call(contractAbiContext, category)
+      })
 
-      const registerAbiFragment = (fragment, category, context) => {
-        const validContext = Object.values(ABI_CATEGORIES).every(category => typeof context === 'object' && Object.prototype.hasOwnProperty.call(context, category))
-        const validCategory = Object.values(ABI_CATEGORIES).includes(category)
+      if (!validCategory) throw new Error(`Unknown category: ${category} for abi fragment:`, fragment)
 
-        if (!validContext) {
-          console.log('Invalid context:', context)
-          throw new Error('Invalid contract abi context provided')
-        }
-        if (!validCategory) throw new Error(`Unknown category: ${category} for abi fragment:`, fragment)
-
-        const abiFragment = clone(fragment)
-
-        if (category === ABI_CATEGORIES.CONTRACT_CONSTRUCTOR) {
-          context[ABI_CATEGORIES.CONTRACT_CONSTRUCTOR] = abiFragment
-        } else if (category === ABI_CATEGORIES.EVENTS) {
-          context[ABI_CATEGORIES.EVENTS].push(abiFragment)
-        } else if (category === ABI_CATEGORIES.READ_METHODS || category === ABI_CATEGORIES.WRITE_METHODS) {
-          this.$set(abiFragment, 'interactionData', {
-            inputs: [],
-            outputs: [],
-            hash: {
-              content: null,
-              style: 'message-info'
-            },
-            message: {
-              content: null,
-              style: 'message-info'
-            },
-            requested: false,
-            callType: 'call'
-          })
-
-          context[category].push(abiFragment)
-        }
+      if (!validcontractAbiContext) {
+        console.log('Invalid contractAbiContext:', contractAbiContext)
+        throw new Error('Invalid contract abi context provided')
       }
+
+      const abiFragment = cloneElement(fragment)
+
+      if (category === ABI_CATEGORIES.contractConstructor) {
+        contractAbiContext[ABI_CATEGORIES.contractConstructor] = abiFragment
+      } else if (category === ABI_CATEGORIES.events) {
+        contractAbiContext[ABI_CATEGORIES.events].push(abiFragment)
+      } else if (category === ABI_CATEGORIES.readMethods || category === ABI_CATEGORIES.writeMethods) {
+        this.$set(abiFragment, 'interactionData', {
+          inputs: [],
+          outputs: [],
+          hash: {
+            content: null,
+            style: 'message-info'
+          },
+          message: {
+            content: null,
+            style: 'message-info'
+          },
+          requested: false,
+          interactionMode: INTERACTION_METHOD_TYPES.read
+        })
+
+        contractAbiContext[category].push(abiFragment)
+      }
+    },
+    getFragmentsRegistrator (contractAbiContext) {
+      const { isBridge, ABI_CATEGORIES, registerAbiFragment, getFragmentCategory } = this
 
       const registrator = Object.freeze({
         register: (fragment) => {
           const { type, name } = fragment
 
-          // bridge register
+          // bridge custom register
           if (isBridge) {
             // Constructor: none
             if (type === 'event') {
-              registerAbiFragment(fragment, ABI_CATEGORIES.EVENTS, contractAbi)
+              registerAbiFragment(fragment, ABI_CATEGORIES.events, contractAbiContext)
             } else if (type === 'function') {
-              if (isAllowedMethod(name, METHOD_TYPES.read)) {
-                registerAbiFragment(fragment, ABI_CATEGORIES.READ_METHODS, contractAbi)
-              } else if (isAllowedMethod(name, METHOD_TYPES.write)) {
-                registerAbiFragment(fragment, ABI_CATEGORIES.WRITE_METHODS, contractAbi)
+              if (isAllowedMethod(name, INTERACTION_METHOD_TYPES.read)) {
+                registerAbiFragment(fragment, ABI_CATEGORIES.readMethods, contractAbiContext)
+              } else if (isAllowedMethod(name, INTERACTION_METHOD_TYPES.write)) {
+                registerAbiFragment(fragment, ABI_CATEGORIES.writeMethods, contractAbiContext)
               }
             }
 
             return
           }
 
-          // default register (normal and proxy contracts)
-          const contractAbiContexts = isProxy ? [contractAbi, this.implementation.contractAbi] : [contractAbi]
-
-          const categoriesMappers = {
-            // constructor
-            // event
-            // function
-            // fallback (not required)
-            // receive (not required)
-            // error (not required)
-            constructor: (fragment) => ABI_CATEGORIES.CONTRACT_CONSTRUCTOR,
-            event: (fragment) => ABI_CATEGORIES.EVENTS,
-            function: (fragment) => {
-              const { stateMutability } = fragment
-              const read = stateMutability === 'view' || stateMutability === 'pure'
-              const write = stateMutability === 'nonpayable' || stateMutability === 'payable'
-
-              if (read) {
-                return ABI_CATEGORIES.READ_METHODS
-              } else if (write) {
-                return ABI_CATEGORIES.WRITE_METHODS
-              } else {
-                console.warn(`Unknown method type '${stateMutability}' for fragment:`, fragment)
-                throw new Error(`Unknown method type provided: '${stateMutability}'`)
-              }
-            }
-          }
-
-          contractAbiContexts.forEach(context => {
-            const { type } = fragment
-
-            const acceptedFragmentType = Object.keys(categoriesMappers).includes(type)
-            const excludedFragmentType = ['fallback', 'receive', 'error'].includes(type)
-            const unknownFragmentType = !acceptedFragmentType && !excludedFragmentType
-
-            if (!acceptedFragmentType) {
-              if (excludedFragmentType) {
-                // do nothing
-              } else if (unknownFragmentType) {
-                console.warn(`Unknown type: '${type}' for fragment:`, fragment)
-              }
-
-              return
-            }
-
-            registerAbiFragment(fragment, categoriesMappers[type](fragment), context)
-          })
+          // default register
+          registerAbiFragment(fragment, getFragmentCategory(fragment), contractAbiContext)
         }
       })
 
       return registrator
+    },
+    getCategoriesMappers () {
+      const categoriesMappers = {
+        // constructor
+        // event
+        // function
+        // fallback (not required)
+        // receive (not required)
+        // error (not required)
+        constructor: (fragment) => ABI_CATEGORIES.contractConstructor,
+        event: (fragment) => ABI_CATEGORIES.events,
+        function: (fragment) => {
+          const { stateMutability } = fragment
+          const read = stateMutability === 'view' || stateMutability === 'pure'
+          const write = stateMutability === 'nonpayable' || stateMutability === 'payable'
+
+          if (read) {
+            return ABI_CATEGORIES.readMethods
+          } else if (write) {
+            return ABI_CATEGORIES.writeMethods
+          } else {
+            console.warn(`Unknown method type '${stateMutability}' for fragment:`, fragment)
+            throw new Error(`Unknown method type provided: '${stateMutability}'`)
+          }
+        }
+      }
+
+      return categoriesMappers
+    },
+    getFragmentCategory (fragment) {
+      const { getCategoriesMappers } = this
+      if (!fragment || !fragment.type) throw new Error(`Invalid fragment provided: ${fragment}`)
+
+      const categoriesMapper = getCategoriesMappers()
+      const categoryMapper = categoriesMapper[fragment.type]
+
+      return categoryMapper(fragment)
     },
     async isProxyContract () {
       const isProxy = this.data.type === 'contract' && this.data.contractInterfaces && this.data.contractInterfaces.includes('ERC1967')
 
       if (!isProxy) {
         this.$set(this, 'isProxy', false)
-        // console.log('isProxyContract(): not a proxy')
         return this.isProxy
       }
 
@@ -352,7 +385,6 @@ export default {
 
         this.data.contractInterfaces = curatedInterfaces.length ? curatedInterfaces : undefined
         this.$set(this, 'isProxy', false)
-        // console.log('isProxyContract(): not a proxy (recheck)')
 
         return this.isProxy
       }
@@ -361,8 +393,6 @@ export default {
       this.$set(this, 'isProxy', true)
       this.$set(this.implementation, 'address', this.parseImplementationAddress(implementationSlotValue))
 
-      // console.log('isProxyContract(): its a proxy')
-      // console.log({ isProxy: this.isProxy, implAddress: this.implementation.address })
       return this.isProxy
     },
     parseImplementationAddress (slotValue) {
@@ -372,79 +402,93 @@ export default {
 
       return address
     },
-    setContractAbi (abi) {
-      const registrator = this.getFragmentsRegistrator()
+    setContractAbi (contractAbiContext, abi) {
+      const { getFragmentsRegistrator } = this
+      const registrator = getFragmentsRegistrator(contractAbiContext)
 
-      abi.forEach(fragment => registrator.register(fragment))
+      removeNonFunctionFragmentsFromAbi(abi).forEach(registrator.register)
     },
-    setReadContractInstance (abi) {
-      const { contractAddress, jsonRpcProvider } = this
-      const contractInstance = new ethers.Contract(contractAddress, abi, jsonRpcProvider)
+    createContract (address, abi, signerOrProvider) {
+      return new ethers.Contract(address, abi, signerOrProvider)
+    },
+    async setContractInstance (address, abi, contractInstanceType, methodsType) {
+      const { CONTRACT_TYPES, INTERACTION_METHOD_TYPES, contractInstances, createContract } = this
 
-      this.$set(this.contractInstances, METHOD_TYPES.read, contractInstance)
-    },
-    async setWriteContractInstance (abi) {
-      const { contractAddress, setSimulationContractInstance } = this
-      const signer = await this.browserProvider.getSigner()
-      const signerAddress = await signer.getAddress()
-      const contractInstance = new ethers.Contract(contractAddress, abi, signer)
+      const validAddress = address && isAddress(address)
+      const validAbi = abi && Array.isArray(abi)
 
-      this.$set(this.contractInstances, METHOD_TYPES.write, contractInstance)
-      this.$set(this, 'signer', signer)
-      this.$set(this, 'signerAddress', signerAddress)
+      if (!validAddress) throw new Error(`Invalid address provided: ${address}`)
+      if (!validAbi) throw new Error(`Invalid ABI provided: ${methodsType}`)
+      if (!CONTRACT_TYPES[contractInstanceType]) throw new Error(`Unknown contract type: ${contractInstanceType}`)
+      if (!INTERACTION_METHOD_TYPES[methodsType]) throw new Error(`Unknown methods type: ${methodsType}`)
 
-      setSimulationContractInstance(abi)
-    },
-    setSimulationContractInstance (abi) {
-      const { contractAddress, getSimulationFragmentMethods, jsonRpcProvider } = this
-      const contractInstance = new ethers.Contract(contractAddress, getSimulationFragmentMethods(abi), jsonRpcProvider)
+      let contractInstance
+      let context
+      const proxyContractInstances = contractInstances[CONTRACT_TYPES.proxy]
+      const normalContractInstances = contractInstances[CONTRACT_TYPES.normal]
 
-      this.$set(this.contractInstances, 'simulation', contractInstance)
-    },
-    getReadContractInstance () {
-      return this.contractInstances[METHOD_TYPES.read]
-    },
-    getWriteContractInstance () {
-      return this.contractInstances[METHOD_TYPES.write]
-    },
-    getSimulationContractInstance () {
-      return this.contractInstances.simulation
-    },
-    isWriteMethod (name) {
-      const { ABI_CATEGORIES } = this
-      if (!name) throw new Error(`Invalid method name provided: ${JSON.stringify(name)}`)
+      // constract instance creation
+      if (methodsType === INTERACTION_METHOD_TYPES.write) {
+        // write contracts
+        if (!this.signer) {
+          const newSigner = await this.browserProvider.getSigner()
+          const newSignerAddress = await newSigner.getAddress()
 
-      return this.contractAbi[ABI_CATEGORIES.WRITE_METHODS].some(method => method.name === name)
-    },
-    getSimulationFragment (fragment) {
-      if (!fragment || !fragment.name) throw new Error(`Error while creating simulation fragment. Invalid fragment provided: ${JSON.stringify(fragment)}`)
-
-      const { name } = fragment
-      const { isWriteMethod } = this
-
-      // only
-      if (isWriteMethod(name)) {
-        return {
-          ...fragment,
-          constant: true,
-          stateMutability: 'view' // what about 'pure'? maybe use a selector?
+          this.$set(this, 'signer', newSigner)
+          this.$set(this, 'signerAddress', newSignerAddress)
         }
+
+        contractInstance = createContract(address, abi, this.signer)
+      } else {
+        // read and simulation contracts
+        contractInstance = createContract(address, abi, this.jsonRpcProvider)
       }
 
-      return fragment
+      // context assignment
+      const proxyInstance = contractInstanceType === CONTRACT_TYPES.proxy
+      const normalInstance = contractInstanceType === CONTRACT_TYPES.normal
+
+      if (proxyInstance) {
+        context = proxyContractInstances
+      } else if (normalInstance) {
+        context = normalContractInstances
+      }
+
+      this.$set(context, methodsType, contractInstance)
+    },
+    isWriteMethod (method) {
+      const { ABI_CATEGORIES, filterAbiMethodsByName, contractAbi } = this
+
+      if (!method || !method.name) throw new Error(`Invalid method provided: ${method}`)
+
+      // Just checking contractAbi is enough for all cases
+      const ocurrences = filterAbiMethodsByName(contractAbi[ABI_CATEGORIES.writeMethods], method.name)
+
+      return ocurrences.length >= 1
+    },
+    filterAbiMethodsByName (methods, methodName) {
+      if (!Array.isArray(methods)) throw new Error(`Invalid methods array provided: ${methods}`)
+
+      return methods.filter(method => method.name === methodName)
+    },
+    getSimulationFragmentFromWriteMethod (fragment) {
+      const { cloneElement } = this
+      if (!fragment || !fragment.name) throw new Error(`Error while creating simulation fragment. Invalid fragment provided: ${fragment}`)
+
+      return {
+        ...cloneElement(fragment),
+        constant: true,
+        stateMutability: 'view' // what about 'pure'? should be even considered?
+      }
     },
     getSimulationFragmentMethods (abi) {
-      const { isWriteMethod, getSimulationFragment } = this
+      const { isWriteMethod, getSimulationFragmentFromWriteMethod } = this
 
-      const fragments = []
+      if (!Array.isArray(abi)) throw new Error(`Invalid abi provided: ${abi}`)
 
-      removeNonFunctionFragmentsFromAbi(abi).forEach(fragment => {
-        if (isWriteMethod) {
-          fragments.push(getSimulationFragment(fragment))
-        }
-      })
-
-      return fragments
+      return removeNonFunctionFragmentsFromAbi(abi)
+        .filter(isWriteMethod)
+        .map(getSimulationFragmentFromWriteMethod)
     },
     async requestAddRskNetwork () {
       try {
@@ -487,15 +531,46 @@ export default {
 
       if (!userConfirmation) return
 
-      const abi = this.getAbi()
+      const {
+        getSimulationFragmentMethods,
+        connectToRskNetwork,
+        contractAddress,
+        getImplementationAddress,
+        isProxy,
+        setContractInstance,
+        INTERACTION_METHOD_TYPES
+      } = this
+
+      const abi = this.getAbi() // all fragments, for contract instances
 
       localStorage.setItem('metamaskAutoconnect', false)
 
       if (window.ethereum) {
         try {
-          await this.connectToRskNetwork()
+          await connectToRskNetwork()
           this.$set(this, 'metamaskConnected', true)
-          await this.setWriteContractInstance(abi)
+
+          const simulationsAbi = getSimulationFragmentMethods(abi)
+          const { proxy, normal } = CONTRACT_TYPES
+          const { write, simulation } = INTERACTION_METHOD_TYPES
+
+          if (isProxy) {
+            const proxyAddress = contractAddress
+            const implementationAddress = getImplementationAddress()
+
+            // load write contracts
+            await setContractInstance(proxyAddress, abi, proxy, write)
+            await setContractInstance(implementationAddress, abi, normal, write)
+
+            // load simulations
+            await setContractInstance(proxyAddress, simulationsAbi, proxy, simulation)
+            await setContractInstance(implementationAddress, simulationsAbi, normal, simulation)
+          } else {
+            // load write contract
+            await setContractInstance(contractAddress, abi, normal, write)
+            // load simulation
+            await setContractInstance(contractAddress, simulationsAbi, normal, simulation)
+          }
         } catch (error) {
           console.error('Error when connecting to metamask', error)
         }
@@ -577,15 +652,25 @@ export default {
         this.$set(method.interactionData, 'message', { content: 'This method does not return any values.', style: 'message-info' })
       }
     },
-    async contractCall (methodName, inputs, methods, callType) {
-      const {
-        getReadContractInstance,
-        validateInputs,
-        formatInputs,
-        updateMethodOutputs
-      } = this
-      const method = methods.find(m => m.name === methodName)
-      const inputsDefinitions = method.inputs
+    validateCallParams (method, contractType, methodsType) {
+      const { CONTRACT_TYPES, INTERACTION_METHOD_TYPES } = this
+
+      if (!method || !method.name) throw new Error(`Invalid method: ${method}`)
+      if (!CONTRACT_TYPES[contractType]) throw new Error(`Invalid contract type: ${contractType}`)
+      if (!INTERACTION_METHOD_TYPES[methodsType]) throw new Error(`Invalid methods type: ${methodsType}`)
+    },
+    getContractInstance (contractType, methodsType) {
+      const { contractInstances, CONTRACT_TYPES, INTERACTION_METHOD_TYPES } = this
+
+      if (!CONTRACT_TYPES[contractType]) throw new Error(`Invalid interaction method type provided: ${contractType}`)
+      if (!INTERACTION_METHOD_TYPES[methodsType]) throw new Error(`Invalid interaction method type provided: ${contractType}`)
+
+      return contractInstances[contractType][methodsType]
+    },
+    async contractCall (method, inputs, contractType, methodsType) {
+      const { validateCallParams, validateInputs, formatInputs, updateMethodOutputs, getContractInstance } = this
+
+      validateCallParams(method, contractType, methodsType)
 
       try {
         validateInputs(inputs, method)
@@ -599,7 +684,11 @@ export default {
           }
         })
 
-        const contract = getReadContractInstance()
+        const contract = getContractInstance(contractType, methodsType)
+        console.log({ methodName: method.name, method, contractType, interactionMode: methodsType, inputs, contract })
+
+        const methodName = method.name
+        const inputsDefinitions = method.inputs
         const args = formatInputs(inputs, inputsDefinitions)
         const result = await contract[methodName](...args)
 
@@ -619,15 +708,10 @@ export default {
 
       this.$set(method.interactionData, 'requested', false)
     },
-    async sendTransaction (methodName, inputs, methods, callType) {
-      const {
-        getWriteContractInstance,
-        getSimulationContractInstance,
-        formatInputs,
-        updateMethodOutputs,
-        validateInputs
-      } = this
-      const method = methods.find(m => m.name === methodName)
+    async sendTransaction (method, inputs, contractType, methodsType) {
+      const { validateCallParams, INTERACTION_METHOD_TYPES, getContractInstance, formatInputs, updateMethodOutputs, validateInputs } = this
+
+      validateCallParams(method, contractType, methodsType)
 
       try {
         validateInputs(inputs, method)
@@ -635,28 +719,41 @@ export default {
         this.$set(method, 'interactionData', {
           ...method.interactionData,
           requested: true,
-          message: {
-            content: callType === 'call' ? 'Calling contract...' : 'Sending transaction...',
-            style: 'message-success'
-          },
           hash: {
             content: null,
             style: 'message-info'
           }
         })
 
+        const methodName = method.name
+        const contract = getContractInstance(contractType, methodsType)
+        console.log({ methodName: method.name, method, contractType, interactionMode: methodsType, inputs, contract })
         const inputsDefinitions = method.inputs
         const args = formatInputs(inputs, inputsDefinitions)
+        const isSimulation = methodsType === INTERACTION_METHOD_TYPES.simulation
 
-        if (callType === 'call') {
-          // simulate
-          const contract = getSimulationContractInstance()
+        if (isSimulation) {
+          this.$set(method, 'interactionData', {
+            ...method.interactionData,
+            message: {
+              content: 'Calling contract...',
+              style: 'message-success'
+            }
+          })
+
           const result = await contract[methodName](...args)
 
           updateMethodOutputs(result, method)
         } else {
           // transact
-          const contract = getWriteContractInstance()
+          this.$set(method, 'interactionData', {
+            ...method.interactionData,
+            message: {
+              content: 'Sending transaction...',
+              style: 'message-success'
+            }
+          })
+
           const tx = await contract[methodName](...args)
 
           this.$set(method, 'interactionData', {
@@ -709,13 +806,6 @@ export default {
     formatBigNumber (num) {
       return ethers.BigNumber.from(num)
     },
-    updateCurrentMethodsView (value) {
-      const allowedValues = [1, 2, 3, 4]
-
-      if (!allowedValues.includes(value)) throw new Error(`Invalid methods selector value provided: ${value}`)
-
-      this.currentMethodsViewSelector = value
-    },
     reloadPage () {
       location.reload()
     },
@@ -729,48 +819,55 @@ export default {
     },
     siteUrl () {
       return this.isNetworkmainnet ? process.env.VUE_APP_DOMAIN_MAINNET : process.env.VUE_APP_DOMAIN_TESTNET
-    },
-    getImplementationAddress () {
-      return this.implementation.address
     }
   },
   async mounted () {
     const {
+      INTERACTION_METHOD_TYPES,
       isProxyContract,
       isRequestingImplementationAddressData,
       getImplementationAddress,
       fetchAddressData,
       getImplementationDataFromStore,
       setImplementationData,
-      updateCurrentMethodsView
+      updateCurrentMethodsView,
+      setContractAbi,
+      proxyContractAbi,
+      contractAbi,
+      setContractInstance,
+      contractAddress
     } = this
 
     const isProxy = await isProxyContract()
 
     if (isProxy) {
-      updateCurrentMethodsView(1)
-      // console.log('mounted(): before requesting:', isRequestingImplementationAddressData())
+      updateCurrentMethodsView(this.METHOD_TABS_IDS.readProxy)
       fetchAddressData(getImplementationAddress())
-      // console.log('mounted(): after requesting:', isRequestingImplementationAddressData())
 
       const waitTime = 1000
       // const startTime = Date.now()
       while (isRequestingImplementationAddressData()) {
-        // console.log('mounted(): waiting for data responses...')
         await new Promise(resolve => setTimeout(resolve, waitTime))
       }
 
-      // console.log(`mounted(): all data responses fullfilled (${Date.now() - startTime} ms)`)
-      // console.log('mounted():', { data: getImplementationDataFromStore(), isProxy: this.isProxy })
       setImplementationData(getImplementationDataFromStore())
     }
 
-    // console.log('mounted(): loading abi...')
-    const abi = this.getAbi()
-    // console.log('mounted():', { abi })
+    const abi = this.getAbi() // all fragments, for contract instances
+    const abiMethods = removeNonFunctionFragmentsFromAbi(abi) // function fragments, for methods interaction
 
-    this.setContractAbi(abi)
-    this.setReadContractInstance(abi)
+    if (isProxy) {
+      const proxyAddress = contractAddress
+      const implementationAddress = getImplementationAddress()
+
+      setContractAbi(proxyContractAbi, abiMethods)
+      setContractAbi(contractAbi, abiMethods)
+      setContractInstance(proxyAddress, abi, CONTRACT_TYPES.proxy, INTERACTION_METHOD_TYPES.read)
+      setContractInstance(implementationAddress, abi, CONTRACT_TYPES.normal, INTERACTION_METHOD_TYPES.read)
+    } else {
+      setContractAbi(contractAbi, abi)
+      setContractInstance(contractAddress, abi, CONTRACT_TYPES.normal, INTERACTION_METHOD_TYPES.read)
+    }
 
     if (window.ethereum) window.ethereum.on('chainChanged', this.handleChainChanged)
 
