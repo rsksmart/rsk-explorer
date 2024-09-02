@@ -1,98 +1,111 @@
 <template>
   <!-- Contract Interaction -->
-  <div class="contract-interaction section">
-    <div class="flex-container">
-      <div v-if="this.showMetamaskNotInstalledMsg">
-        <p class="metamask-connection-message">{{ installMetamaskMsg }}</p>
-        <a class="metamask-link" :href="metamaskExtensionUrl" target="_blank">{{ metamaskExtensionUrl }}</a>
-        <p></p>
-      </div>
-      <div v-if="this.metamaskConnected && this.networkChanged">
-        <p class="metamask-connection-message">Warning: Network change detected. It's strongly recommended to reload the page to prevent loss of funds or unexpected behaviors.</p>
-        <button class="btn btn-reload" @click="reloadPage">Reload page</button>
-      </div>
-      <div>
-        <button v-if="!this.signer" class="btn btn-connect" @click="connectToMetamask">Connect to Metamask</button>
-        <div v-if="this.signer && this.signerAddress">
-          <p class="metamask-title">Metamask Connected!</p>
-          <span>Address:
-            <tool-tip :text="this.signerAddress" :trim="false" :hideCopy="false" />
-          </span>
+  <div v-if="loading">
+    <Loader type="section" :fixed="false" />
+  </div>
+  <div v-else class="contract-interaction section">
+    <div v-if="!implementation.verified" class="unverified-implementation-msg">
+      <p class="text-orange-900">{{ implementation.unverifiedMsg }}</p>
+      <a class="implementation-address-link" :href="`${siteUrl()}address/${getImplementationAddress()}`" target="_blank">
+        <span class="text-white-400">Implementation address:</span>
+        <span>{{ getImplementationAddress() }}</span>
+        <icon class="small" name="link-external" />
+      </a>
+    </div>
+    <div v-else>
+      <div class="wallet-connect-container">
+        <div v-if="this.showMetamaskNotInstalledMsg">
+          <p class="metamask-connection-message">{{ installMetamaskMsg }}</p>
+          <a class="metamask-link" :href="metamaskExtensionUrl" target="_blank">{{ metamaskExtensionUrl }}</a>
+          <p></p>
+        </div>
+        <div v-if="this.metamaskConnected && this.networkChanged">
+          <p class="metamask-connection-message">Warning: Network change detected. It's strongly recommended to reload the page to prevent loss of funds or unexpected behaviors.</p>
+          <button class="btn btn-reload" @click="reloadPage">Reload page</button>
+        </div>
+        <div>
+          <button v-if="!this.signer" class="btn btn-connect" @click="connectToMetamask">Connect to Metamask</button>
+          <div v-if="this.signer && this.signerAddress">
+            <p class="metamask-title">Metamask Connected!</p>
+            <span>Address:
+              <tool-tip :text="this.signerAddress" :trim="false" :hideCopy="false" />
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="methods-container">
-      <div class="btn-content">
-        <button
-          v-if="isProxy"
-          class="btn"
-          :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.readProxy)"
-          @click="updateCurrentMethodsView(METHOD_TABS_IDS.readProxy)"
-        >
-          Read Proxy
-        </button>
-        <button
-          v-if="isProxy"
-          class="btn"
-          :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.writeProxy)"
-          @click="updateCurrentMethodsView(METHOD_TABS_IDS.writeProxy)"
-        >
-          Write Proxy
-        </button>
-        <button
-          class="btn"
-          :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.readContract)"
-          @click="updateCurrentMethodsView(METHOD_TABS_IDS.readContract)"
-        >
-          Read Contract
-        </button>
-        <button
-          class="btn"
-          :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.writeContract)"
-          @click="updateCurrentMethodsView(METHOD_TABS_IDS.writeContract)"
-        >
-          Write Contract
-        </button>
-      </div>
-      <div class="methods-content">
-        <ContractMethods
-          v-if="isProxy && isActiveMethodsTab(METHOD_TABS_IDS.readProxy)"
-          title="Read Proxy"
-          :key="METHOD_TABS_IDS.readProxy"
-          :contract-type="CONTRACT_TYPES.proxy"
-          :methodsType="INTERACTION_METHOD_TYPES.read"
-          :methods="isProxy ? proxyContractAbi.readMethods : contractAbi.readMethods"
-          @handle-interaction="contractCall"
-        />
-        <ContractMethods
-          v-else-if="isProxy && isActiveMethodsTab(METHOD_TABS_IDS.writeProxy)"
-          title="Write Proxy"
-          :key="METHOD_TABS_IDS.writeProxy"
-          :contract-type="CONTRACT_TYPES.proxy"
-          :methodsType="INTERACTION_METHOD_TYPES.write"
-          :methods="proxyContractAbi.writeMethods"
-          @handle-interaction="sendTransaction"
-          :disableCalls="!metamaskConnected"
-        />
-        <ContractMethods
-          v-else-if="isActiveMethodsTab(METHOD_TABS_IDS.readContract)"
-          title="Read Contract"
-          :key="METHOD_TABS_IDS.readContract"
-          :contract-type="CONTRACT_TYPES.normal"
-          :methodsType="INTERACTION_METHOD_TYPES.read"
-          :methods="contractAbi.readMethods"
-          @handle-interaction="contractCall"
-        />
-        <ContractMethods
-          v-else-if="isActiveMethodsTab(METHOD_TABS_IDS.writeContract)"
-          title="Write Contract"
-          :key="METHOD_TABS_IDS.writeContract"
-          :contract-type="CONTRACT_TYPES.normal"
-          :methodsType="INTERACTION_METHOD_TYPES.write"
-          :methods="contractAbi.writeMethods"
-          @handle-interaction="sendTransaction"
-          :disableCalls="!metamaskConnected"
-        />
+      <div class="methods-container">
+        <div class="btn-content">
+          <button
+            v-if="isProxy"
+            class="btn"
+            :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.readProxy)"
+            @click="updateCurrentMethodsView(METHOD_TABS_IDS.readProxy)"
+          >
+            Read Proxy
+          </button>
+          <button
+            v-if="isProxy"
+            class="btn"
+            :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.writeProxy)"
+            @click="updateCurrentMethodsView(METHOD_TABS_IDS.writeProxy)"
+          >
+            Write Proxy
+          </button>
+          <button
+            class="btn"
+            :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.readContract)"
+            @click="updateCurrentMethodsView(METHOD_TABS_IDS.readContract)"
+          >
+            Read Contract
+          </button>
+          <button
+            class="btn"
+            :style="getMethodsHeaderTabStyle(METHOD_TABS_IDS.writeContract)"
+            @click="updateCurrentMethodsView(METHOD_TABS_IDS.writeContract)"
+          >
+            Write Contract
+          </button>
+        </div>
+        <div class="methods-content">
+          <ContractMethods
+            v-if="isProxy && isActiveMethodsTab(METHOD_TABS_IDS.readProxy)"
+            title="Read Proxy"
+            :key="METHOD_TABS_IDS.readProxy"
+            :contract-type="CONTRACT_TYPES.proxy"
+            :methodsType="INTERACTION_METHOD_TYPES.read"
+            :methods="isProxy ? proxyContractAbi.readMethods : contractAbi.readMethods"
+            @handle-interaction="contractCall"
+          />
+          <ContractMethods
+            v-else-if="isProxy && isActiveMethodsTab(METHOD_TABS_IDS.writeProxy)"
+            title="Write Proxy"
+            :key="METHOD_TABS_IDS.writeProxy"
+            :contract-type="CONTRACT_TYPES.proxy"
+            :methodsType="INTERACTION_METHOD_TYPES.write"
+            :methods="proxyContractAbi.writeMethods"
+            @handle-interaction="sendTransaction"
+            :disableCalls="!metamaskConnected"
+          />
+          <ContractMethods
+            v-else-if="isActiveMethodsTab(METHOD_TABS_IDS.readContract)"
+            title="Read Contract"
+            :key="METHOD_TABS_IDS.readContract"
+            :contract-type="CONTRACT_TYPES.normal"
+            :methodsType="INTERACTION_METHOD_TYPES.read"
+            :methods="contractAbi.readMethods"
+            @handle-interaction="contractCall"
+          />
+          <ContractMethods
+            v-else-if="isActiveMethodsTab(METHOD_TABS_IDS.writeContract)"
+            title="Write Contract"
+            :key="METHOD_TABS_IDS.writeContract"
+            :contract-type="CONTRACT_TYPES.normal"
+            :methodsType="INTERACTION_METHOD_TYPES.write"
+            :methods="contractAbi.writeMethods"
+            @handle-interaction="sendTransaction"
+            :disableCalls="!metamaskConnected"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -108,12 +121,14 @@ import { mapActions, mapGetters } from 'vuex'
 import { bridge, ALLOWED_BRIDGE_METHODS, isAllowedMethod } from '../config/entities/lib/bridge'
 import { ABI_CATEGORIES, INTERACTION_METHOD_TYPES, CONTRACT_TYPES, removeNonFunctionFragmentsFromAbi } from '../config/entities/lib/contractInteraction'
 import { isAddress } from 'ethers/lib/utils'
+import Loader from './Loaders/Loader.vue'
 
 export default {
   name: 'contract-interaction',
   components: {
     ContractMethods,
-    ToolTip
+    ToolTip,
+    Loader
   },
   props: ['data'],
   data () {
@@ -174,8 +189,11 @@ export default {
       isProxy: null,
       implementation: {
         address: null,
-        data: null
-      }
+        data: null,
+        verified: false,
+        unverifiedMsg: 'Implementation contract is not verified. Please verify it to enable interactions.'
+      },
+      loading: true
     }
   },
   computed: {
@@ -211,17 +229,26 @@ export default {
       return currentMethodsViewSelector === methodsTabId
     },
     getAbi () {
-      const { isBridge, isProxy, getImplementationData } = this
+      const { isBridge, isProxy, getImplementationData, setVerified } = this
+      let abi
 
-      if (isBridge) {
-        return bridge.abi
-      } else if (isProxy) {
+      if (isBridge) { // bridge
+        abi = bridge.abi
+      } else if (isProxy) { // proxies
         const implementationData = getImplementationData()
 
-        return implementationData.verification ? implementationData.verification.abi : null
-      } else {
-        return (this.data.verification) ? this.data.verification.abi : null
+        if (!implementationData.verification || !implementationData.verification.abi) {
+          setVerified(false)
+          console.warn(this.implementation.unverifiedMsg)
+        } else {
+          setVerified(true)
+          abi = implementationData.verification.abi
+        }
+      } else { // normal contracts
+        abi = this.data.verification.abi
       }
+
+      return abi || []
     },
     fetchAddressData (address) {
       if (!isAddress(address)) throw new Error(`Address data fetch: Invalid address provided: ${address}`)
@@ -819,6 +846,12 @@ export default {
     },
     siteUrl () {
       return this.isNetworkmainnet ? process.env.VUE_APP_DOMAIN_MAINNET : process.env.VUE_APP_DOMAIN_TESTNET
+    },
+    setLoading (bool) {
+      this.$set(this, 'loading', bool)
+    },
+    setVerified (bool) {
+      this.$set(this.implementation, 'verified', bool)
     }
   },
   async mounted () {
@@ -835,8 +868,11 @@ export default {
       proxyContractAbi,
       contractAbi,
       setContractInstance,
-      contractAddress
+      contractAddress,
+      setLoading
     } = this
+
+    setLoading(true)
 
     const isProxy = await isProxyContract()
 
@@ -871,6 +907,8 @@ export default {
 
     if (window.ethereum) window.ethereum.on('chainChanged', this.handleChainChanged)
 
+    setLoading(false)
+
     // Note: Metamask autoconnection only triggers after switching to an rsk network
     const metamaskAutoconnect = localStorage.getItem('metamaskAutoconnect') === 'true'
     if (metamaskAutoconnect) await this.connectToMetamask()
@@ -892,7 +930,7 @@ export default {
   .tooltip .tooltip-text .trim-value .copy-icon svg {
     margin-top: 2px;
   }
-  .flex-container {
+  .wallet-connect-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -938,6 +976,17 @@ export default {
     .methods-content {
       margin-top: 20px;
     }
+  }
+
+  .unverified-implementation-msg {
+    margin-top: 20px;
+  }
+
+  .implementation-address-link {
+    color: #bbb;
+    transition: color 0.3s ease;
+    display: flex;
+    gap: 5px;
   }
 
   @keyframes breathe {
