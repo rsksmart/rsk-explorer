@@ -4,7 +4,7 @@
     <Loader type="section" :fixed="false" />
   </div>
   <div v-else class="contract-interaction section">
-    <div v-if="!implementation.verified" class="unverified-implementation-msg">
+    <div v-if="isProxy && !implementation.verified" class="unverified-implementation-msg">
       <p class="text-orange-900">{{ implementation.unverifiedMsg }}</p>
       <a class="implementation-address-link" :href="`${siteUrl()}address/${getImplementationAddress()}`" target="_blank">
         <span class="text-white-400">Implementation address:</span>
@@ -30,6 +30,11 @@
             <span>Address:
               <tool-tip :text="this.signerAddress" :trim="false" :hideCopy="false" />
             </span>
+            <div class="accounts-changed-message-container" v-if="accountsChanged">
+              <p class="text-white-100">Current account changed to <span class="underline">{{ currentAccount }}</span>.</p>
+              <p class="text-white-400">Click the button below if you want to interact with this new account.</p>
+              <button class="btn" @click="updateInteractionAccount">Use new account</button>
+            </div>
           </div>
         </div>
       </div>
@@ -186,6 +191,8 @@ export default {
       signer: null,
       signerAddress: null,
       networkChanged: false,
+      accountsChanged: false,
+      currentAccount: null,
       isProxy: null,
       implementation: {
         address: null,
@@ -457,13 +464,11 @@ export default {
       // constract instance creation
       if (methodsType === INTERACTION_METHOD_TYPES.write) {
         // write contracts
-        if (!this.signer) {
-          const newSigner = await this.browserProvider.getSigner()
-          const newSignerAddress = await newSigner.getAddress()
+        const newSigner = await this.browserProvider.getSigner()
+        const newSignerAddress = await newSigner.getAddress()
 
-          this.$set(this, 'signer', newSigner)
-          this.$set(this, 'signerAddress', newSignerAddress)
-        }
+        this.$set(this, 'signer', newSigner)
+        this.$set(this, 'signerAddress', newSignerAddress)
 
         contractInstance = createContract(address, abi, this.signer)
       } else {
@@ -553,22 +558,69 @@ export default {
         }
       }
     },
-    async connectToMetamask () {
-      const userConfirmation = confirm(this.disclaimerMsg)
+    async updateInteractionAccount () {
+      try {
+        await this.connectToMetamask(true)
+      } catch (error) {
+        console.error('Error while updating interactions account')
+        console.error(error)
+      }
+    },
+    async setProxyContracts () {
+      try {
+        const { contractAddress, getAbi, getSimulationFragmentMethods, getImplementationAddress, setContractInstance } = this
+        const abi = getAbi()
+        const simulationsAbi = getSimulationFragmentMethods(abi)
+        const proxyAddress = contractAddress
+        const implementationAddress = getImplementationAddress()
+        const { proxy, normal } = CONTRACT_TYPES
+        const { read, write, simulation } = INTERACTION_METHOD_TYPES
 
-      if (!userConfirmation) return
+        // load read contracts
+        await setContractInstance(proxyAddress, abi, proxy, read)
+        await setContractInstance(implementationAddress, abi, normal, read)
 
-      const {
-        getSimulationFragmentMethods,
-        connectToRskNetwork,
-        contractAddress,
-        getImplementationAddress,
-        isProxy,
-        setContractInstance,
-        INTERACTION_METHOD_TYPES
-      } = this
+        // load write contracts
+        await setContractInstance(proxyAddress, abi, proxy, write)
+        await setContractInstance(implementationAddress, abi, normal, write)
 
-      const abi = this.getAbi() // all fragments, for contract instances
+        // load simulations
+        await setContractInstance(proxyAddress, simulationsAbi, proxy, simulation)
+        await setContractInstance(implementationAddress, simulationsAbi, normal, simulation)
+      } catch (error) {
+        console.error('Error while creating proxy contract instances')
+        console.error(error)
+      }
+    },
+    async setContracts () {
+      try {
+        const { contractAddress, getAbi, setContractInstance, getSimulationFragmentMethods } = this
+        const abi = getAbi()
+        const { normal } = CONTRACT_TYPES
+        const { read, write, simulation } = INTERACTION_METHOD_TYPES
+
+        // load read contract
+        await setContractInstance(contractAddress, abi, normal, read)
+
+        // load write contract
+        await setContractInstance(contractAddress, abi, normal, write)
+
+        // load simulation
+        await setContractInstance(contractAddress, getSimulationFragmentMethods(abi), normal, simulation)
+      } catch (error) {
+        console.error('Error while creating contract instances')
+        console.error(error)
+      }
+    },
+    async connectToMetamask (isAccountSwitch) {
+      if (!isAccountSwitch) {
+        // prompt user confirmation only first time
+        const userConfirmation = confirm(this.disclaimerMsg)
+
+        if (!userConfirmation) return
+      }
+
+      const { connectToRskNetwork, isProxy, setProxyContracts, setContracts } = this
 
       localStorage.setItem('metamaskAutoconnect', false)
 
@@ -577,27 +629,13 @@ export default {
           await connectToRskNetwork()
           this.$set(this, 'metamaskConnected', true)
 
-          const simulationsAbi = getSimulationFragmentMethods(abi)
-          const { proxy, normal } = CONTRACT_TYPES
-          const { write, simulation } = INTERACTION_METHOD_TYPES
-
           if (isProxy) {
-            const proxyAddress = contractAddress
-            const implementationAddress = getImplementationAddress()
-
-            // load write contracts
-            await setContractInstance(proxyAddress, abi, proxy, write)
-            await setContractInstance(implementationAddress, abi, normal, write)
-
-            // load simulations
-            await setContractInstance(proxyAddress, simulationsAbi, proxy, simulation)
-            await setContractInstance(implementationAddress, simulationsAbi, normal, simulation)
+            await setProxyContracts()
           } else {
-            // load write contract
-            await setContractInstance(contractAddress, abi, normal, write)
-            // load simulation
-            await setContractInstance(contractAddress, simulationsAbi, normal, simulation)
+            await setContracts()
           }
+
+          this.setAccountsChanged(false)
         } catch (error) {
           console.error('Error when connecting to metamask', error)
         }
@@ -712,8 +750,6 @@ export default {
         })
 
         const contract = getContractInstance(contractType, methodsType)
-        console.log({ methodName: method.name, method, contractType, interactionMode: methodsType, inputs, contract })
-
         const methodName = method.name
         const inputsDefinitions = method.inputs
         const args = formatInputs(inputs, inputsDefinitions)
@@ -754,7 +790,6 @@ export default {
 
         const methodName = method.name
         const contract = getContractInstance(contractType, methodsType)
-        console.log({ methodName: method.name, method, contractType, interactionMode: methodsType, inputs, contract })
         const inputsDefinitions = method.inputs
         const args = formatInputs(inputs, inputsDefinitions)
         const isSimulation = methodsType === INTERACTION_METHOD_TYPES.simulation
@@ -852,6 +887,17 @@ export default {
     },
     setVerified (bool) {
       this.$set(this.implementation, 'verified', bool)
+    },
+    handleAccountsChanged (accounts) {
+      console.log('Warning: User changed accounts')
+      this.setAccountsChanged(true)
+      this.setCurrentAccount(accounts[0])
+    },
+    setAccountsChanged (bool) {
+      this.$set(this, 'accountsChanged', bool)
+    },
+    setCurrentAccount (address) {
+      this.$set(this, 'currentAccount', address)
     }
   },
   async mounted () {
@@ -905,7 +951,10 @@ export default {
       setContractInstance(contractAddress, abi, CONTRACT_TYPES.normal, INTERACTION_METHOD_TYPES.read)
     }
 
-    if (window.ethereum) window.ethereum.on('chainChanged', this.handleChainChanged)
+    if (window.ethereum) {
+      window.ethereum.on('chainChanged', this.handleChainChanged)
+      window.ethereum.on('accountsChanged', this.handleAccountsChanged)
+    }
 
     setLoading(false)
 
@@ -916,6 +965,7 @@ export default {
   beforeDestroy () {
     if (window.ethereum) {
       window.ethereum.removeListener('chainChanged', this.handleChainChanged)
+      window.ethereum.removeListener('accountsChanged', this.handleAccountsChanged)
     }
   }
 }
@@ -989,6 +1039,17 @@ export default {
     gap: 5px;
   }
 
+  .accounts-changed-message-container {
+    margin-top: 20px;
+
+    .btn {
+      margin-top: 10px;
+      font-size: 12px;
+      border: 1px solid $newbw_700;
+      padding: 8px;
+    }
+  }
+
   @keyframes breathe {
   0% {
     box-shadow: 0 0 10px rgba(0, 255, 255, 0);
@@ -1002,6 +1063,10 @@ export default {
   100% {
     box-shadow: 0 0 10px rgba(0, 255, 255, 0);
   }
+}
+
+.underline {
+  text-decoration: underline;
 }
 }
 </style>
