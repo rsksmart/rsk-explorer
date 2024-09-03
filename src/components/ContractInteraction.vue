@@ -24,8 +24,8 @@
           <button class="btn btn-reload" @click="reloadPage">Reload page</button>
         </div>
         <div>
-          <button v-if="!this.signer" class="btn btn-connect" @click="connectToMetamask">Connect to Metamask</button>
-          <div v-if="this.signer && this.signerAddress">
+          <button v-if="!this.metamaskConnected" class="btn btn-connect" @click="connectToMetamask">Connect to Metamask</button>
+          <div v-else>
             <p class="metamask-title">Metamask Connected!</p>
             <span>Address:
               <tool-tip :text="this.signerAddress" :trim="false" :hideCopy="false" />
@@ -187,7 +187,7 @@ export default {
       installMetamaskMsg: 'MetaMask extension is not installed. Please install it first:',
       metamaskExtensionUrl: 'https://metamask.io/download/',
       disclaimerMsg: 'Please take note that this is a beta version feature and is provided on an "as is" and "as available" basis. Rootstock Explorer does not give any warranties and will not be liable for any loss, direct or indirect through continued use of this feature.',
-      browserProvider: null,
+      browserProvider: browserProvider(),
       signer: null,
       signerAddress: null,
       networkChanged: false,
@@ -445,7 +445,7 @@ export default {
     createContract (address, abi, signerOrProvider) {
       return new ethers.Contract(address, abi, signerOrProvider)
     },
-    async setContractInstance (address, abi, contractInstanceType, methodsType) {
+    async setContractInstance (address, abi, contractInstanceType, methodsType, useSigner) {
       const { CONTRACT_TYPES, INTERACTION_METHOD_TYPES, contractInstances, createContract } = this
 
       const validAddress = address && isAddress(address)
@@ -460,20 +460,25 @@ export default {
       let context
       const proxyContractInstances = contractInstances[CONTRACT_TYPES.proxy]
       const normalContractInstances = contractInstances[CONTRACT_TYPES.normal]
+      const newSigner = this.browserProvider.getSigner()
+      const newSignerAddress = await newSigner.getAddress()
+
+      this.$set(this, 'signer', newSigner)
+      this.$set(this, 'signerAddress', newSignerAddress)
 
       // constract instance creation
       if (methodsType === INTERACTION_METHOD_TYPES.write) {
         // write contracts
-        const newSigner = await this.browserProvider.getSigner()
-        const newSignerAddress = await newSigner.getAddress()
-
-        this.$set(this, 'signer', newSigner)
-        this.$set(this, 'signerAddress', newSignerAddress)
-
         contractInstance = createContract(address, abi, this.signer)
       } else {
         // read and simulation contracts
-        contractInstance = createContract(address, abi, this.jsonRpcProvider)
+        if (useSigner) {
+          // when user connects its wallet
+          contractInstance = createContract(address, abi, this.signer)
+        } else {
+          // when no wallet is connected
+          contractInstance = createContract(address, abi, this.jsonRpcProvider)
+        }
       }
 
       // context assignment
@@ -534,7 +539,6 @@ export default {
     },
     async connectToRskNetwork () {
       await window.ethereum.request({ method: 'eth_requestAccounts' })
-      this.$set(this, 'browserProvider', browserProvider())
 
       const currentNetwork = await this.browserProvider.getNetwork()
       const currentChainId = `0x${currentNetwork.chainId.toString(16)}`
@@ -566,7 +570,7 @@ export default {
         console.error(error)
       }
     },
-    async setProxyContracts () {
+    async setProxyContracts (useSigner) {
       try {
         const { contractAddress, getAbi, getSimulationFragmentMethods, getImplementationAddress, setContractInstance } = this
         const abi = getAbi()
@@ -577,22 +581,22 @@ export default {
         const { read, write, simulation } = INTERACTION_METHOD_TYPES
 
         // load read contracts
-        await setContractInstance(proxyAddress, abi, proxy, read)
-        await setContractInstance(implementationAddress, abi, normal, read)
+        await setContractInstance(proxyAddress, abi, proxy, read, useSigner)
+        await setContractInstance(implementationAddress, abi, normal, read, useSigner)
 
         // load write contracts
         await setContractInstance(proxyAddress, abi, proxy, write)
         await setContractInstance(implementationAddress, abi, normal, write)
 
         // load simulations
-        await setContractInstance(proxyAddress, simulationsAbi, proxy, simulation)
-        await setContractInstance(implementationAddress, simulationsAbi, normal, simulation)
+        await setContractInstance(proxyAddress, simulationsAbi, proxy, simulation, useSigner)
+        await setContractInstance(implementationAddress, simulationsAbi, normal, simulation, useSigner)
       } catch (error) {
         console.error('Error while creating proxy contract instances')
         console.error(error)
       }
     },
-    async setContracts () {
+    async setContracts (useSigner) {
       try {
         const { contractAddress, getAbi, setContractInstance, getSimulationFragmentMethods } = this
         const abi = getAbi()
@@ -600,42 +604,50 @@ export default {
         const { read, write, simulation } = INTERACTION_METHOD_TYPES
 
         // load read contract
-        await setContractInstance(contractAddress, abi, normal, read)
+        await setContractInstance(contractAddress, abi, normal, read, useSigner)
 
         // load write contract
         await setContractInstance(contractAddress, abi, normal, write)
 
         // load simulation
-        await setContractInstance(contractAddress, getSimulationFragmentMethods(abi), normal, simulation)
+        await setContractInstance(contractAddress, getSimulationFragmentMethods(abi), normal, simulation, useSigner)
       } catch (error) {
         console.error('Error while creating contract instances')
         console.error(error)
       }
     },
-    async connectToMetamask (isAccountSwitch) {
-      if (!isAccountSwitch) {
-        // prompt user confirmation only first time
+    async connectToMetamask (isAccountOrNetworkSwitch) {
+      if (!isAccountOrNetworkSwitch) {
+        // prompt user confirmation
         const userConfirmation = confirm(this.disclaimerMsg)
 
         if (!userConfirmation) return
       }
 
-      const { connectToRskNetwork, isProxy, setProxyContracts, setContracts } = this
+      const {
+        connectToRskNetwork,
+        isProxy,
+        setProxyContracts,
+        setContracts,
+        setAccountsChanged,
+        setMetamaskConnected
+      } = this
 
       localStorage.setItem('metamaskAutoconnect', false)
 
       if (window.ethereum) {
         try {
           await connectToRskNetwork()
-          this.$set(this, 'metamaskConnected', true)
+          setMetamaskConnected(true)
 
+          const useSigner = true
           if (isProxy) {
-            await setProxyContracts()
+            await setProxyContracts(useSigner)
           } else {
-            await setContracts()
+            await setContracts(useSigner)
           }
 
-          this.setAccountsChanged(false)
+          setAccountsChanged(false)
         } catch (error) {
           console.error('Error when connecting to metamask', error)
         }
@@ -898,6 +910,9 @@ export default {
     },
     setCurrentAccount (address) {
       this.$set(this, 'currentAccount', address)
+    },
+    setMetamaskConnected (bool) {
+      this.$set(this, 'metamaskConnected', bool)
     }
   },
   async mounted () {
@@ -960,7 +975,7 @@ export default {
 
     // Note: Metamask autoconnection only triggers after switching to an rsk network
     const metamaskAutoconnect = localStorage.getItem('metamaskAutoconnect') === 'true'
-    if (metamaskAutoconnect) await this.connectToMetamask()
+    if (metamaskAutoconnect) await this.connectToMetamask(true)
   },
   beforeDestroy () {
     if (window.ethereum) {
