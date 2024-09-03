@@ -6,7 +6,7 @@
   <div v-else class="contract-interaction section">
     <div v-if="isProxy && !implementation.verified" class="unverified-implementation-msg">
       <p class="text-orange-900">{{ implementation.unverifiedMsg }}</p>
-      <a class="implementation-address-link" :href="`${siteUrl()}address/${getImplementationAddress()}`" target="_blank">
+      <a class="implementation-address-link" :href="`${siteUrl}address/${getImplementationAddress()}`" target="_blank">
         <span class="text-white-400">Implementation address:</span>
         <span>{{ getImplementationAddress() }}</span>
         <icon class="small" name="link-external" />
@@ -209,6 +209,13 @@ export default {
     },
     isBridge () {
       return this.data.address === bridge.address
+    },
+    ...mapGetters(['networkName']),
+    isNetworkmainnet () {
+      return this.networkName === 'mainnet'
+    },
+    siteUrl () {
+      return this.isNetworkmainnet ? process.env.VUE_APP_DOMAIN_MAINNET : process.env.VUE_APP_DOMAIN_TESTNET
     }
   },
   methods: {
@@ -886,13 +893,6 @@ export default {
     handleChainChanged (chainId) {
       console.log(`Network changed to ${chainId}. It's strongly advised to reload the page...`)
       if (this.metamaskConnected) this.$set(this, 'networkChanged', true)
-    },
-    ...mapGetters(['networkName']),
-    isNetworkmainnet () {
-      return this.networkName === 'mainnet'
-    },
-    siteUrl () {
-      return this.isNetworkmainnet ? process.env.VUE_APP_DOMAIN_MAINNET : process.env.VUE_APP_DOMAIN_TESTNET
     },
     setLoading (bool) {
       this.$set(this, 'loading', bool)
