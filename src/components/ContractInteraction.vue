@@ -19,12 +19,18 @@
           <a class="metamask-link" :href="metamaskExtensionUrl" target="_blank">{{ metamaskExtensionUrl }}</a>
           <p></p>
         </div>
-        <div v-if="this.metamaskConnected && this.networkChanged">
+        <div v-if="this.networkChanged">
           <p class="metamask-connection-message">Warning: Network change detected. It's strongly recommended to reload the page to prevent loss of funds or unexpected behaviors.</p>
           <button class="btn btn-reload" @click="reloadPage">Reload page</button>
         </div>
         <div>
-          <button v-if="!this.metamaskConnected" class="btn btn-connect" @click="connectToMetamask">Connect to Metamask</button>
+          <button
+            v-if="!this.metamaskConnected"
+            :class="['btn btn-connect', networkChanged ? 'btn-disabled' : '']"
+            @click="connectToMetamask" :disabled="networkChanged"
+          >
+            Connect to Metamask
+          </button>
           <div v-else>
             <p class="metamask-title">Metamask Connected!</p>
             <span>Address:
@@ -892,7 +898,10 @@ export default {
     },
     handleChainChanged (chainId) {
       console.log(`Network changed to ${chainId}. It's strongly advised to reload the page...`)
-      if (this.metamaskConnected) this.$set(this, 'networkChanged', true)
+      this.setNetworkChanged(true)
+    },
+    setNetworkChanged (bool) {
+      this.$set(this, 'networkChanged', bool)
     },
     setLoading (bool) {
       this.$set(this, 'loading', bool)
@@ -1024,6 +1033,17 @@ export default {
     border: 1px solid $newbw_700;
     padding: 10px;
   }
+
+  .btn-disabled {
+    border: 1px solid #5f5f5f;
+    color: #5f5f5f;
+    cursor: default;
+  }
+
+  .btn-disabled:hover {
+    background-color: transparent;
+  }
+
   .metamask-title {
     color: $cyan_300;
   }
