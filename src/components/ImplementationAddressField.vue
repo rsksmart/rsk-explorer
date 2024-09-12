@@ -12,11 +12,7 @@
       </p>
     </div>
     <div class="implementation-address-msg" v-else-if="!this.stopLoaderAnimation">
-      <div class="loader">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
+      <Spinner :height="20" :width="20" :border="3" />
     </div>
   </div>
 </template>
@@ -24,9 +20,13 @@
 import { BigNumber } from 'ethers'
 import { jsonRpcProvider } from '../jsonRpcProvider'
 import { mapGetters } from 'vuex'
+import Spinner from './Loaders/Spinner.vue'
 
 export default {
   name: 'implementation-address-field',
+  components: {
+    Spinner
+  },
   props: {
     data: {
       type: Object,
