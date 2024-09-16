@@ -12,11 +12,7 @@
       </p>
     </div>
     <div class="implementation-address-msg" v-else-if="!this.stopLoaderAnimation">
-      <div class="loader">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
+      <Spinner :height="20" :width="20" :border="3" />
     </div>
   </div>
 </template>
@@ -24,9 +20,13 @@
 import { BigNumber } from 'ethers'
 import { jsonRpcProvider } from '../jsonRpcProvider'
 import { mapGetters } from 'vuex'
+import Spinner from './Loaders/Spinner.vue'
 
 export default {
   name: 'implementation-address-field',
+  components: {
+    Spinner
+  },
   props: {
     data: {
       type: Object,
@@ -87,8 +87,11 @@ export default {
           // this condition should never happen if this.isERC1967Contract = true
           if (!this.isBeaconProxy && !this.isUUPSProxy) {
             // stop loading animation and manually remove ERC1967 from contract interfaces
+            const contractInterfaces = this.data.contractInterfaces || []
+
+            this.data.contractInterfaces = contractInterfaces.filter(v => v !== 'ERC1967')
             this.stopLoaderAnimation = true
-            this.data.contractInterfaces = [...this.data.contractInterfaces.filter(v => v !== 'ERC1967')]
+
             if (!this.data.contractInterfaces.length) this.data.contractInterfaces = undefined
           }
         }
@@ -104,8 +107,6 @@ export default {
     const implementationAddress = await this.getImplementationAddress()
 
     this.setImplementationAddress(implementationAddress)
-
-    console.log({ implementationAddress: this.implementationAddress })
   }
 }
 </script>
