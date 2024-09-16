@@ -13,7 +13,7 @@
 
     <!-- Component -->
     <div v-if="component && data">
-      <implementation-address-field :data="parentData" />
+      <implementation-address-field v-if="data.address && data.type" :data="parentData"/>
       <component :is="component" :data="data" :type="dataType" :parentData="parentData" :delayed="delayed"></component>
     </div>
     <!-- Generic render -->
