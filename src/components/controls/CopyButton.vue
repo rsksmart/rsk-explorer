@@ -1,7 +1,7 @@
 <template>
   <div class="copy-button">
     <textarea v-if="value" :ref="refName" class="hidden-ctrl" v-model="value"></textarea>
-    <burp-button :icon="iconName" :message="message || 'copied!'" :title="title" :text="text" @click="copy" :class="css">
+    <burp-button :icon="iconName" :message="message || 'copied!'" :title="title" :text="text" @click="copy" :class="css || defaultStyle">
       <slot></slot>
     </burp-button>
   </div>
@@ -29,6 +29,9 @@ export default {
     targetNode () {
       const { refName, target } = this
       return (target) || this.$refs[refName]
+    },
+    defaultStyle () {
+      return 'white-400'
     }
   },
   methods: {
@@ -39,3 +42,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
+.white-400 {
+  color: $white_400;
+}
+</style>
