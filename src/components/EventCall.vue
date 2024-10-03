@@ -39,12 +39,20 @@ export default {
       return this.data.inputs
     },
     eventSignature () {
-      const { name, inputs } = this
+      const { name, inputs, space, indexed } = this
       const eventName = `${name}`
 
       const eventParams = inputs.map(input => {
-        const inputDetails = `${input.type} ${input.name}`
-        return input.indexed ? `${inputDetails} indexed` : inputDetails
+        const inputType = input.type
+        const inputName = input.name
+
+        let formattedInputLine
+        if (input.indexed) {
+          formattedInputLine = `${inputType}${space}${indexed}${space}${inputName}`
+        } else {
+          formattedInputLine = `${inputType}${space}${inputName}`
+        }
+        return formattedInputLine
       })
 
       return `${eventName} (${eventParams.join(', ').trim()})`
