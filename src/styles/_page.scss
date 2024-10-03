@@ -256,7 +256,8 @@
           background-color: #1d1d1d;
           padding: 12px;
           border-radius: 12px;
-          min-height: 40px;
+          overflow-x: auto;
+          min-height: 45px;
           height: min-content;
           margin: unset;
         }
