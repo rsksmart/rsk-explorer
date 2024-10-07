@@ -69,7 +69,14 @@ export const connectionStart = state => {
 export const getPageTitle = (state, getters) => page => {
   const { appName } = state
   const netName = getters.networkName
-  let title = `${appName} :: ${netName}`
+
+  let title
+  if (netName === 'testnet') {
+    title = `TESTNET ${appName}`
+  } else {
+    title = appName
+  }
+
   if (page) title += ` - ${page}`
   return title
 }
