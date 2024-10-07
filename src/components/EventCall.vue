@@ -1,23 +1,31 @@
 <template>
-  <div class="event-call" v-if="data">
-    <ul class="event">
-      <li class="event-name">{{ name }}
-        <template v-if="inputs">
-          <ul class="args" v-for="(arg, i) in inputs" :key="i">
-            <li class="type" :key="`1-${i}`" :style="{ color: PAGE_COLORS[$route.name].cl }">{{ arg.type }}</li>
-            <li class="index" v-if="arg.indexed">indexed</li>
-            <li class="name">{{ arg.name }}</li>
-          </ul>
-        </template>
-      </li>
-    </ul>
+  <div class="event-details-container">
+    <div class="event-details white-100" v-if="data">
+      <span>{{ name }}{{ space }}</span>
+      <span class="event-args">
+        <span>{{ openingParen }}</span>
+        <span class="event-arg" v-for="(arg, i) in inputs" :key="i">
+          <span class="orange-900">{{ arg.type }}{{ space }}</span>
+          <span class="white-400" v-if="arg.indexed">{{ indexed }}{{ space }}</span>
+          <span>{{ arg.name }}</span>
+          <span class="white-400" v-if="addComma(i, inputs)">{{ comma }}{{ space }}</span>
+        </span>
+        <span>{{ closingParen }}</span>
+      </span>
+    </div>
+    <copy-button :value="eventSignature" title="Copy event signature" css=""/>
   </div>
 </template>
 <script>
 import { PAGE_COLORS } from '../config/pageColors'
+import CopyButton from './controls/CopyButton'
+
 export default {
   name: 'event-call',
   props: ['data'],
+  components: {
+    CopyButton
+  },
   data () {
     return {
       PAGE_COLORS
@@ -29,62 +37,83 @@ export default {
     },
     inputs () {
       return this.data.inputs
+    },
+    eventSignature () {
+      const { name, inputs, space, indexed } = this
+      const eventName = `${name}`
+
+      const eventParams = inputs.map(input => {
+        const inputType = input.type
+        const inputName = input.name
+
+        let formattedInputLine
+        if (input.indexed) {
+          formattedInputLine = `${inputType}${space}${indexed}${space}${inputName}`
+        } else {
+          formattedInputLine = `${inputType}${space}${inputName}`
+        }
+        return formattedInputLine
+      })
+
+      return `${eventName} (${eventParams.join(', ').trim()})`
+    },
+    openingParen () {
+      return '\u0028'
+    },
+    closingParen () {
+      return '\u0029'
+    },
+    comma () {
+      return '\u002C'
+    },
+    space () {
+      return ' '
+    },
+    indexed () {
+      return 'indexed'
+    }
+  },
+  methods: {
+    addComma (index, list) {
+      return index < list.length - 1
     }
   }
 }
 </script>
-<style lang="stylus">
+<style lang="scss" scoped>
+@import '@/styles/variables.scss';
 
-  .event-call
-    margin 0
-    display flex
-    .index
-      font-size .8em
+.event-details-container {
+  flex: 5;
+  text-transform: none;
+  display: flex;
+  gap: 20px;
+  justify-content: start;
+  align-items: center;
+}
 
-    li.event-name
-      font-weight bold
-      color $info
+.event-details {
+  display: inline;
 
-    ul
-      raw()
-      font-size .9em
-      list-style none
-      align-items flex-end
-      font-style italic
-      font-weight normal
-      margin 0
-      padding 0
-      flex-flow row wrap
-      li
-        color white
+}
 
-    ul,li
-      margin 0 0.25em 0 0
-      display flex
+.event-args {
+  display: inline;
+}
 
-      &:last-child:after
-        font-weight bold
+.event-arg {
+  display: inline;
+}
 
-    .args
-      &::before
-        content '('
+.white-400 {
+  color: $white_400;
+}
 
-      &::after
-        content ')'
+.white-100 {
+  color: $white_100;
+}
 
-      .type
-        color white
-        &:after
-          content ''
-
-      .name
-        font-size 0.9em
-        // color green
-
-        &:after
-          content ','
-          font-size 1em
-
-        &:last-child:after
-          content none
+.orange-900 {
+  color: $orange_900;
+}
 </style>
