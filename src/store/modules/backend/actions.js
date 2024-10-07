@@ -48,7 +48,6 @@ export const socketNewBlocks = ({ state, commit, getters, dispatch, rootState },
 
 export const socketData = ({ state, commit, getters, dispatch }, res) => {
   const { req, pages, error, next, prev, delayed } = res
-  console.log('pages: ', pages)
   const key = req.key
   const total = (pages) ? pages.total : null
   const sort = (pages) ? pages.sort : null
