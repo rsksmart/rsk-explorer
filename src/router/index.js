@@ -94,9 +94,54 @@ function isAddressPath ({ path }, address) {
   return `/${r.address}/${address}` === path
 }
 
+function addHashTag (str) {
+  return `#${str}`
+}
+
+function formatParam (paramName, value) {
+  console.log({ paramName, value })
+  let formattedParam = value
+  const isNumber = paramName === 'number'
+  const isHash = typeof value === 'string' && value.includes('0x')
+
+  if (isNumber) {
+    // prexix hashtag # to numbers
+    formattedParam = addHashTag(formattedParam)
+    console.log({ addHashTagAplied: true, formattedParam })
+  } else if (isHash) {
+    // shorten hashes
+    formattedParam = shortenHash(formattedParam)
+    console.log({ shortenHashAplied: true, formattedParam })
+  }
+
+  return formattedParam
+}
+
+function shortenHash (input) {
+  // works for addresses, blockHashes and txHashes
+  const regex = /(0x[a-fA-F0-9]{40,64})/g
+
+  if (regex.test(input)) {
+    // return shortened hash
+    return input.replace(regex, function (match) {
+      return match.substr(0, 6) + '...' + match.substr(-4)
+    })
+  } else {
+    // If no matches, return original input
+    return input
+  }
+}
+
 function getPageTitleFromRoute (route) {
   const { name, params } = route
-  return name + ' - ' + Object.values(params).join(',')
+  const paramsEntries = Object.entries(params)
+
+  if (paramsEntries.length) {
+    const formattedParams = paramsEntries.map(([paramName, value]) => formatParam(paramName, value))
+    return `${name} ${formattedParams.join(' - ')}`
+  } else {
+    return name
+  }
 }
 
 export default router

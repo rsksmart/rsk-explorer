@@ -77,6 +77,8 @@ export const getPageTitle = (state, getters) => page => {
     title = appName
   }
 
-  if (page) title += ` - ${page}`
+  if (page && !page.includes('Home')) {
+    title = `${page} | ${title}`
+  }
   return title
 }
