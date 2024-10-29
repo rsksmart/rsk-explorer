@@ -1,5 +1,5 @@
 
-export const APP_NAME = 'RSK explorer'
+export const APP_NAME = 'Rootstock Explorer'
 
 export const ROUTES = {
   home: 'home',
