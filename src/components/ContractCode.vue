@@ -12,7 +12,7 @@
       <h3 class="subtitle">Contract Source</h3>
 
       <!-- Source -->
-      <ctrl-big-text v-if="source" :value="source.contents" :fileName="source.name" fileType="sol" :title="source.name">
+      <ctrl-big-text v-if="source" :value="source.contents" :fileName="source.name" fileType="sol" :title="source.name" :remixLink="remixLink">
         <source-code language="solidity" :code="source.contents"></source-code>
       </ctrl-big-text>
 
@@ -144,6 +144,16 @@ export default {
       const result = this.result || {}
       const { constructorArguments: decoded, encodedConstructorArguments: encoded } = result
       return (encoded || decoded) ? { encoded, decoded } : undefined
+    },
+    remixLink () {
+      const address = this.data.address
+
+      // backend url format: without protocol and trailing slash
+      // const backend = process.env.WS_URL // Staging behind VPN -> Remix cannot reach it
+      const backend = 'mock-backend.netlify.app/.netlify/functions/index' // TODO: Update with the correct backend once QA is done
+      const link = `https://remix.ethereum.org/?address=${address}&blockscout=${backend}`
+
+      return link
     }
   },
   methods: {
@@ -159,28 +169,5 @@ export default {
   }
 }
 </script>
-// <style lang="stylus">
-// .contract-details
-//   .verify
-//     display block
-//     margin 1em
-//     width 100%
-//     text-align right
-
-//   .files
-//     display flex
-//     flex-flow row wrap
-//     position relative
-//     min-width 100%
-//     width 100%
-//     justify-content flex-start
-
-//     button
-//       margin 0 0.5em
-
-//   .selected-file-enter-active, .selected-file-leave-active
-//     transition opacity 0.2s ease-in
-
-//   .selected-file-enter, .selected-file-leave-to
-//     opacity 0
-// </style>
+<style>
+</style>
