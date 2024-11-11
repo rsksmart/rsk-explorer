@@ -96,7 +96,6 @@ export default {
       const formattedValue = this.formatValue(this.value)
       const regex = new RegExp(`(${formattedValue})`, 'gi')
       const highlightedText = text.replace(regex, (match) => `<span class="highlight">${match}</span>`)
-      console.log({ text, regex, highlightedText, results: this.results })
       return highlightedText
     },
     formatValue (value) {
