@@ -39,8 +39,9 @@
               <a
                 :href="result.link"
                 @touchend.passive="gotoResult($event, i)"
-                @click="gotoResult($event, i)">
-                {{ result.name || result.value }}
+                @click="gotoResult($event, i)"
+                v-html="highlightedText(result.name || result.value)"
+              >
               </a>
             </div>
           </template>
@@ -91,8 +92,15 @@ export default {
       'searchTypes',
       'fetchSearch'
     ]),
+    highlightedText (text) {
+      const formattedValue = this.formatValue(this.value)
+      const regex = new RegExp(`(${formattedValue})`, 'gi')
+      const highlightedText = text.replace(regex, (match) => `<span class="highlight">${match}</span>`)
+      console.log({ text, regex, highlightedText, results: this.results })
+      return highlightedText
+    },
     formatValue (value) {
-      return value.toString().replaceAll(',', '')
+      return value.toString().replaceAll(',', '').trim()
     },
     btnClear () {
       this.clear()
@@ -121,8 +129,8 @@ export default {
       this.selectResult(0)
       const value = event.target.value
       this.value = value
-      this.emit(event, type, value)
-      this.emit(event, 'change', value)
+      this.emit(event, type, value.trim())
+      this.emit(event, 'change', value.trim())
     },
     emit (event, type, value) {
       type = type || event.type
@@ -230,3 +238,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.highlight {
+  background-color: #ffef60;
+  color: #000;
+  border-radius: 4px;
+  font-weight: bold;
+}
+</style>
