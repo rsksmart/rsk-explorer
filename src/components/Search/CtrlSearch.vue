@@ -40,8 +40,8 @@
                 :href="result.link"
                 @touchend.passive="gotoResult($event, i)"
                 @click="gotoResult($event, i)"
-                v-html="highlightedText(result.name || result.value)"
               >
+                {{ result.name || result.value }}
               </a>
             </div>
           </template>
@@ -92,12 +92,6 @@ export default {
       'searchTypes',
       'fetchSearch'
     ]),
-    highlightedText (text) {
-      const formattedValue = this.formatValue(this.value)
-      const regex = new RegExp(`(${formattedValue})`, 'gi')
-      const highlightedText = text.replace(regex, (match) => `<span class="highlight">${match}</span>`)
-      return highlightedText
-    },
     formatValue (value) {
       return value.toString().replaceAll(',', '').trim()
     },
