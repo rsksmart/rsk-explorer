@@ -88,7 +88,7 @@ export default {
     },
     onInput ({ event, value }) {
       this.clearRequests()
-      if (!value || value.length < 2) return
+      if (!value) return
       this.setValue(value)
       this.fetchSearch({ value })
     },
