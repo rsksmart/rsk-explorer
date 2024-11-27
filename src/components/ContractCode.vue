@@ -147,13 +147,12 @@ export default {
     },
     remixLink () {
       const address = this.data.address
+      const remixUrl = 'https://remix.ethereum.org/'
+      // FUTURE: request Remix a dedicated backend key for Rootstock
+      const key = 'blockscout'
+      const backend = process.env.WS_URL.split('://')[1]
 
-      // backend url format: without protocol and trailing slash
-      // const backend = process.env.WS_URL // Staging behind VPN -> Remix cannot reach it
-      const backend = 'mock-backend.netlify.app/.netlify/functions/index' // TODO: Update with the correct backend once QA is done
-      const link = `https://remix.ethereum.org/?address=${address}&blockscout=${backend}`
-
-      return link
+      return `${remixUrl}?address=${address}&${key}=${backend}`
     }
   },
   methods: {
