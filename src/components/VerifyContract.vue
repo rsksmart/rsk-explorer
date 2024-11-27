@@ -34,7 +34,7 @@
           form-row(v-bind='formFields.ABI_ENCODED_ARGUMENTS')
             ctrl-radio-grp.frow(name='encoded' @change='(value)=>abiEncodedArgs=value' :selected='abiEncodedArgs')
           form-row
-            button.brand.big(name="submit")
+            button.brand.big(name="submit" :disabled="errors.length > 0")
               span Verify
 
         form.flex(v-if='method === verifyMethods.SOLIDITY_SOURCE_FILE' @submit.prevent='submit')
@@ -94,7 +94,7 @@
               form-row(v-bind='formFields.LIB_ADDRESS')
                 input(type='text' v-model='lib.address' v-bind='formFields.LIB_ADDRESS.input' )
             form-row
-              button.brand.big(name="submit")
+              button.brand.big(name="submit" :disabled="errors.length > 0")
                 span Verify
               //-button.btn.big(name="submit" @click.passive='resetForm')
                 span Reset
@@ -198,7 +198,8 @@ export default {
       errors: [],
       timer: undefined,
       method: VERIFY_METHODS.SOLIDITY_SOURCE_FILE,
-      sources: undefined
+      sources: undefined,
+      json: undefined
     }
   },
   created () {
@@ -386,15 +387,18 @@ export default {
     },
     handleStandardJsonInput (json) {
       this.errors.pop()
+      this.json = json
       if (json[0]) {
         try {
           const { sources, settings } = JSON.parse(json[0].contents)
-
           if (!sources) this.addError('Invalid JSON, missing sources')
           if (!settings) this.addError('Invalid JSON, missing settings')
-
           this.settings = settings
           this.sources = sources
+          const fileName = json[0].name.replace('.json', '')
+          if (this.name && fileName !== this.name) {
+            this.addError(messages.JSON_INPUT_INVALID(this.name))
+          }
         } catch (error) {
           this.addError(error)
         }
@@ -478,6 +482,21 @@ export default {
     changeName (name) {
       this.name = name.trim()
       this.inputErrors.delete('name')
+      this.clearErrors()
+      if (this.files.length > 0) {
+        const hasMatchingFile = this.files.some(file => file.name.replace('.sol', '') === this.name)
+        if (!hasMatchingFile) {
+          this.errors.push(messages.CONTRACT_NAME_INVALID(this.name))
+        } else {
+          this.clearErrors()
+        }
+      }
+      if (this.json && this.json[0]) {
+        const fileName = this.json[0].name.replace('.json', '')
+        if (fileName !== this.name) {
+          this.addError(messages.JSON_INPUT_INVALID(this.name))
+        }
+      }
     },
 
     changeAddress (address) {
@@ -520,6 +539,15 @@ export default {
     updateFiles (files) {
       this.files = files
       this.inputErrors.delete('file')
+      this.clearErrors()
+      if (files.length > 0) {
+        const hasMatchingFile = files.some(file => file.name.replace('.sol', '') === this.name)
+        if (!hasMatchingFile) {
+          this.errors.push(messages.CONTRACT_NAME_INVALID(this.name))
+        } else {
+          this.clearErrors()
+        }
+      }
     },
     buildsList (builds) {
       return builds.concat().reverse().reduce((v, a, i) => {
