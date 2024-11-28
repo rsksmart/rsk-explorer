@@ -384,6 +384,7 @@ export default {
       this.clearErrors()
       this.sources = undefined
       this.method = method
+      this.files = []
     },
     handleStandardJsonInput (json) {
       this.errors.pop()
@@ -540,7 +541,7 @@ export default {
       this.files = files
       this.inputErrors.delete('file')
       this.clearErrors()
-      if (files.length > 0) {
+      if (this.name && files.length > 0) {
         const hasMatchingFile = files.some(file => file.name.replace('.sol', '') === this.name)
         if (!hasMatchingFile) {
           this.errors.push(messages.CONTRACT_NAME_INVALID(this.name))
