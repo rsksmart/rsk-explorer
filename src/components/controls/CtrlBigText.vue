@@ -5,6 +5,7 @@
         strong.subtitle {{title}}
       copy-button.button(v-bind='{value,css,title:copyTitle}')
       download-button.button(v-if='fileType' v-bind='{fileName,fileType,value,css, title:downloadTitle}')
+      remix-link(v-if='remixLink' :remixLink='remixLink')
     .big-text(:style='style')
       slot
       .content(v-if='!hasSlots') {{value}}
@@ -12,11 +13,14 @@
 <script>
 import CopyButton from './CopyButton'
 import DownloadButton from './DownloadButton'
+import RemixLink from '../RemixLink.vue'
+
 export default {
   name: 'ctrl-big-text',
   components: {
     CopyButton,
-    DownloadButton
+    DownloadButton,
+    RemixLink
   },
   props: {
     value: {
@@ -29,6 +33,10 @@ export default {
     height: {
       type: String,
       default: '20em'
+    },
+    remixLink: {
+      type: String,
+      default: null
     }
   },
   computed: {
