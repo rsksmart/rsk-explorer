@@ -499,7 +499,20 @@ export default {
         }
       }
     },
-
+    verifyContractName () {
+      if (this.name && this.files.length > 0) {
+        const hasMatchingFile = this.files.some(file => file.name.replace('.sol', '') === this.name)
+        if (!hasMatchingFile) {
+          this.errors.push(messages.CONTRACT_NAME_INVALID(this.name))
+        }
+      }
+      if (this.name && this.json && this.json[0]) {
+        const fileName = this.json[0].name.replace('.json', '')
+        if (fileName !== this.name) {
+          this.addError(messages.JSON_INPUT_INVALID(this.name))
+        }
+      }
+    },
     changeAddress (address) {
       this.address = address.trim()
       this.reset()
@@ -509,12 +522,14 @@ export default {
       }
     },
     changeVersion (version) {
+      console.log('version in change is', version)
       this.version = version
       this.inputErrors.delete('version')
       this.errors.pop()
       if (!this.isSupportedSolidityVersion()) {
         this.errors.push(messages.NOT_SUPPORTED_SOLIDITY_VERSION_ERROR(version))
       }
+      this.verifyContractName()
     },
     changeAllVersions (version) {
       this.showAllVersions = version
