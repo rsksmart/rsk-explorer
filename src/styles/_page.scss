@@ -390,6 +390,10 @@
             padding: 12px 30px;
             color: $white_100;
             border-radius: 8px;
+            &:disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+            }
           }
         }
       }
