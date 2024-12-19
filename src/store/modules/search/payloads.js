@@ -13,8 +13,12 @@ export const createPayloads = (payloads) => {
 }
 
 const getAddressName = data => {
-  const { address, name } = data
-  return `${name} ${address}`
+  const { address, symbol, name } = data
+  const validSymbol = typeof symbol === 'string' && symbol !== ''
+
+  if (validSymbol) return `(${symbol}) ${name}: ${address}`
+
+  return `${name}: ${address}`
 }
 
 const getAddressTime = data => {
