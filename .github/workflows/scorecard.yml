@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '33 2 * * 2'
   push:
-    branches: [ "master, develop" ]
+    branches: [ "master", "develop" ]
 
 # Declare default permissions as read only.
 permissions: read-all
@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 #v4.2.1
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
         with:
           persist-credentials: false
 
@@ -42,6 +42,6 @@ jobs:
       # Upload the results to GitHub's code scanning dashboard (optional).
       # Commenting out will disable upload of results to your repo's Code Scanning dashboard
       - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+        uses: github/codeql-action/upload-sarif@aa578102511db1f4524ed59b8cc2bae4f6e88195 # v3.27.6
         with:
           sarif_file: results.sarif
