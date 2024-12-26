@@ -4,6 +4,9 @@ on:
   push:
     branches: [develop]
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   testnet_build_and_deploy:
     runs-on: ubuntu-latest

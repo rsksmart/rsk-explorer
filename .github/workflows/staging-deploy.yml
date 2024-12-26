@@ -4,6 +4,9 @@ on:
   push:
     branches: [staging]
 
+    # Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   staging_build_and_deploy:
     runs-on: ubuntu-latest
