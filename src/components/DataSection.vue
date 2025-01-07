@@ -7,8 +7,6 @@
       <div class="messages" v-if="msgs">
         <message v-for="(msg, key) in messages" :message="msg" :key="key" :data="data" :parentData="parentData"></message>
       </div>
-      <!-- Transactions filters -->
-      <tx-filters class="frame" v-if="action === 'getTransactions'" :q="q" :module="module" :reqKey="reqKey"></tx-filters>
     </template>
 
     <!-- Component -->
@@ -39,7 +37,6 @@ import ToolTip from './ToolTip'
 import DataTable from '@/components/General/DataTable'
 import DataItem from './DataItem'
 import Paginator from './Paginator'
-import TxFilters from './TxFilters'
 import Spinner from './Spinner'
 import Message from './Message'
 import ImplementationAddressField from './ImplementationAddressField.vue'
@@ -50,7 +47,6 @@ export default {
     DataItem,
     ToolTip,
     Paginator,
-    TxFilters,
     Spinner,
     Message,
     ImplementationAddressField
