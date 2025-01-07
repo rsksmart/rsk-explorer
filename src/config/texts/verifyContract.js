@@ -16,7 +16,9 @@ export const messages = {
   REQUEST_VERIFICATION: 'Requesting verification',
   SHOW_RESULT: 'Go to contract page',
   VERIFIER_DATA_ERROR: 'Missing contract verifier data',
-  NOT_SUPPORTED_SOLIDITY_VERSION_ERROR: (value) => `You have selected version ${value} which is not supported. Please, try another one.`
+  NOT_SUPPORTED_SOLIDITY_VERSION_ERROR: (value) => `You have selected version ${value} which is not supported. Please, try another one.`,
+  CONTRACT_NAME_INVALID: (contractName) => `No file matches the Contract Name (${contractName}). Please ensure one of the uploaded files has the correct name.`,
+  JSON_INPUT_INVALID: (contractName) => `The JSON input does not match the contract name (${contractName}). Please ensure the JSON input is correct.`
 }
 
 export const formFields = {
