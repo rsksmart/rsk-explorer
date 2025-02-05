@@ -4,6 +4,9 @@ on:
   push:
     branches: [staging]
 
+    # Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   staging_build_and_deploy:
     runs-on: ubuntu-latest
@@ -13,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup Node 16
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af #v4.1.0
         with:
           node-version: "16"
 
@@ -27,7 +30,7 @@ jobs:
         run: npm run build-with-tracking:staging
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 #v4.0.2
         with:
           role-to-assume: ${{ secrets.STAGING_ROLE_ARN }}
           aws-region: ${{ secrets.STAGING_AWS_REGION }}
