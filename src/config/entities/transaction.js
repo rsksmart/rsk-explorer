@@ -123,6 +123,7 @@ const TxFields = () => {
 const Txs = () => {
   const fields = TxFields()
   delete (fields.index)
+  delete (fields.time)
   fields.status = Object.assign(fields.status, {
     filters: [(value, data, context) => {
       if (isExport(context)) return txStatus(value)

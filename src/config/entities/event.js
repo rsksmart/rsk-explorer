@@ -72,7 +72,6 @@ export const Events = () => {
         renderAs: 'field-list',
         renderAsProps: eventArgumentData
       },
-      timestamp: null,
       blockNumber: {
         type: 'block'
       }
@@ -116,7 +115,10 @@ export const EventFields = () => {
       hideIfEmpty: true,
       trim: 0
     },
-    timestamp: null,
+    timestamp: {
+      field: 'timestamp',
+      type: 'timestamp'
+    },
     created: {
       field: 'timestamp',
       type: 'date'
