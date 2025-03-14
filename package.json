@@ -34,7 +34,7 @@
     "d3-format": "^1.4.3",
     "env-cmd": "^10.1.0",
     "ethers": "^5.7.0",
-    "highlight.js": "^9.18.3",
+    "highlight.js": "^11.11.1",
     "highlightjs-solidity": "git+https://github.com/highlightjs/highlightjs-solidity.git",
     "keccak": "^3.0.4",
     "moment": "^2.27.0",
