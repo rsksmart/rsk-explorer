@@ -23,10 +23,6 @@ const Balances = () => {
         field: 'timestamp',
         type: 'date'
       },
-      time: {
-        field: 'timestamp',
-        type: 'timestamp'
-      },
       balance
     }
   }
@@ -36,10 +32,27 @@ const Balance = () => {
   let { fields } = Balances()
   const { balance } = Address().fields
   balance.filters = valueFilters()
+
+  // reset these fields for proper order display
+  delete fields.block
+  delete fields.date
+  delete fields.balance
+
   fields = Object.assign(fields, {
     balance,
     address: { trim: 'auto' },
-    blockHash: { trim: 'auto' }
+    blockHash: { trim: 'auto' },
+    block: {
+      field: 'blockNumber'
+    },
+    time: {
+      field: 'timestamp',
+      type: 'timestamp'
+    },
+    date: {
+      field: 'timestamp',
+      type: 'date'
+    }
   })
   return {
 

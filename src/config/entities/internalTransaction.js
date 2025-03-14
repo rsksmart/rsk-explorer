@@ -55,7 +55,6 @@ const InternalTransactions = () => {
       type: {
         field: '_type'
       },
-      timestamp: null,
       value: {
         field: 'action.value',
         filters: valueFilters(true),
@@ -84,7 +83,7 @@ const InternalTransactions = () => {
 }
 
 const InternalTransaction = () => {
-  const { from, to, timestamp, value } = InternalTransactions().fields
+  const { from, to, value } = InternalTransactions().fields
   value.filters = valueFilters()
   const fields = {
     from,
@@ -102,7 +101,10 @@ const InternalTransaction = () => {
     status: {
       field: 'status'
     },
-    timestamp,
+    timestamp: {
+      field: 'timestamp',
+      type: 'timestamp'
+    },
     date: {
       field: 'timestamp',
       format: 'date'
