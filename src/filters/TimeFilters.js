@@ -62,7 +62,9 @@ export const sSeconds = Vue.filter('s-seconds', time => {
   return moment.duration(Math.round(time), 's').humanize()
 })
 
-export const formatDate = (timestamp, format = 'YYYY/MM/DD') => {
+const defaultDateFormat = 'MMM DD YYYY HH:mm:ss (Z UTC)' // Example: Mar 08 2024 19:22:36 (-03:00 UTC)
+
+export const formatDate = (timestamp, format = defaultDateFormat) => {
   timestamp = Number(timestamp)
   let date = new Date(timestamp)
   date = String(date.toISOString())
